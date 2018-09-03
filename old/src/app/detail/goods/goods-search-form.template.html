@@ -1,0 +1,38 @@
+<form ng-submit="searchGoods()" class="form-inline">
+  <div class="form-group">
+      <label class="control-label">搜索关键字
+          <input type="search" class="form-control" style="width: 235px;" ng-model="searchData.keyword" placeholder="支持商品名、商品ID、货号">
+      </label>
+  </div>
+  <div class="form-group">
+      <label class="control-label">搜索上架时间
+          <input date-range-picker class="form-control date-picker" style="width: 200px;" type="text" ng-model="datePicker" />
+      </label>
+  </div>
+  <div class="form-group">
+      <label class="control-label">筛选sku类型</label>
+      <select ng-model="searchData.prepare" class="form-control">
+          <option value="" selected>全部</option>
+          <option value="1">准sku</option>
+          <option value="0">sku</option>
+      </select>
+  </div>
+  <div class="form-group">
+      <label class="control-label">筛选卖家类型</label>
+      <select ng-model="searchData.seller_type" class="form-control">
+          <option value="" selected>全部</option>
+          <option value="b2c">b2c</option>
+          <option value="c2c">c2c</option>
+      </select>
+  </div>
+  <div class="form-group">
+      <label class="control-label">发货地</label>
+      <select name="country" class="form-control" ng-model="searchData.ship_country" >
+          <option value="" selected>全部</option>
+          <option ng-repeat="ship_info in countryList" value={{ship_info.location}}>
+              {{ship_info.location}}
+          </option>
+      </select>
+  </div>
+  <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+</form>

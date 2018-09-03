@@ -1,0 +1,123 @@
+<nz-layout id="account-fix">
+  <nz-content>
+    <form nz-form [nzType]="'horizontal'" nz-form [formGroup]="validateForm" *ngIf="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
+      <h3>活动规则
+        <a  href="" (click)="refresh()" class="f-12">{{loadingword}}</a>
+      </h3>
+      <div nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>参与活动总人数</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback [style.fontWeight]="'bold'">
+          {{luckybagConfig?.total}}
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>活动倒流粉丝数</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback [style.fontWeight]="'bold'">
+          {{luckybagConfig?.fans}}
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>大额现金领取人数</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback [style.fontWeight]="'bold'">
+          {{luckybagConfig?.recipients}}
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>已领未拆</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback [style.fontWeight]="'bold'">
+          ￥{{luckybagConfig?.unopenedCash}}万
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>当前已使用金额</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback [style.fontWeight]="'bold'">
+          ￥{{luckybagConfig?.usedCash}}万
+        </div>
+      </div>
+
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label nz-form-item-required>大额现金红包占比</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input-number formControlName="largeCashLuckybagMaxPercentage" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1"
+            [nzMin]="1" [nzPlaceHolder]="'100%为用户第一个福袋一定拆到大额红包'" [style.width.px]="240">
+          </nz-input-number>
+          <span>%</span>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label nz-form-item-required>大额现金红包限制</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input-number [nzFormatter]="formatterInt" [nzParser]="parserInt" formControlName="largeCashLuckybagMaxCount" [nzStep]="1"
+            [nzMin]="1">
+          </nz-input-number>
+          <span>个</span>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label nz-form-item-required>现金红包总限额</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input-number [nzFormatter]="formatterInt" [nzParser]="parserInt" formControlName="cashLuckybagMax" [nzStep]="1" [nzMin]="1">
+          </nz-input-number>
+          <span>元</span>
+          <div nz-form-explain *ngIf="getFormControl('cashLuckybagMax').dirty&&getFormControl('cashLuckybagMax').hasError('bigger')">总限额应大于已领未拆金额!</div>
+        </div>
+      </div>
+
+      <h3>活动信息</h3>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>活动首页介绍</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input formControlName="activityIntroduction" [nzType]="'textarea'" [nzSize]="'large'" [nzRows]="'4'" [nzPlaceHolder]="''">
+          </nz-input>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>活动细则</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input formControlName="activityDetailedRules" [nzType]="'textarea'" [nzSize]="'large'" [nzRows]="'4'" [nzPlaceHolder]="''">
+          </nz-input>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>提现须知</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <nz-input formControlName="withdrawNotice" [nzType]="'textarea'" [nzPlaceHolder]="'可对该入账单做详细的背景说明'" [nzRows]="'4'"></nz-input>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
+          <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="!validateForm.valid">提交</button>
+        </div>
+      </div>
+    </form>
+  </nz-content>
+</nz-layout>

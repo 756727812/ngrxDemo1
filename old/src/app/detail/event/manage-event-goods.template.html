@@ -1,0 +1,174 @@
+<style>
+  .text_overflow {
+    display: inline-block;
+    width: 98%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+</style>
+<div class="header">
+  <h2><strong>管理活动商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">管理活动商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-2 portlet light bordered">
+              <div class="portlet-title">
+                <div class="caption">
+                  <span class="caption-subject bold"> 本栏目所有活动</span>
+                </div>
+              </div>
+              <div ng-repeat="s in events" class="mb10 text_overflow" title="{{s.event_name}}">
+                <a href="" ng-click="selectAct(s)" ng-class="{true:'text-danger'}[event.id==s.id]">{{s.event_name}}</a>
+              </div>
+            </div>
+            <div class="col-sm-10">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="portlet light bordered">
+                    <div class="portlet-title">
+                      <div class="caption">
+                        <span class="caption-subject bold">{{event.event_name}} - 管理商品</span>
+                      </div>
+                    </div>
+                    <div class="portlet-body">
+                      <form ng-submit="submitSearch()" class="form-inline ">
+                        <div class="form-group m-b-10">
+                          <label class="control-label">
+                            状态：
+                            <a ng-click="changeState('all')" ng-class="{true:'text-danger'}[cond.status=='all'||!cond.status]">全部<span class="badge ng-binding badge-see">{{status.all}}</span></a>
+                            | <a ng-click="changeState('0')" ng-class="{true:'text-danger'}[cond.status=='0']">待审核<span class="badge ng-binding badge-see">{{status.unsettled}}</span></a>
+                            | <a ng-click="changeState('1')" ng-class="{true:'text-danger'}[cond.status=='1']">通过<span class="badge ng-binding badge-see">{{status.accepted}}</span></a>
+                            | <a ng-click="changeState('2')" ng-class="{true:'text-danger'}[cond.status=='2']">拒绝<span class="badge ng-binding badge-see">{{status.rejected}}</span></a>
+                        </label>
+                        </div>
+                        <br />
+                        <div class="form-group m-b-10">
+                          <label class="control-label">搜索商品：
+                                                  <input placeholder="商品名、ID、货号" type="text" class="form-control" ng-model="cond.keyword">
+                                              </label>
+                        </div>
+                        <div class="form-group m-b-10">
+                          <label class="control-label">按商户
+                                                  <input placeholder="" type="text" class="form-control" ng-model="cond.seller_name">
+                                              </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary m-b-10"><i class="fa fa-search"></i>搜索</button>
+                        <br />
+                        <div class="form-group m-b-10">
+                          批量操作：
+                          <a ng-click="acceptEventItem(getChecked())" class="btn btn-primary">通过</a>
+                          <a ng-click="rejectEventItem(getChecked())" class="btn btn-primary">拒绝</a>
+                          <a ng-click="move(getChecked())" class="btn btn-primary">移至其它活动</a>
+                        </div>
+                      </form>
+                      <table class="table table-striped table-bordered table-advance table-align-center m-t-20">
+                        <thead>
+                          <tr>
+                            <th>
+                            </th>
+                            <th width="110px">
+                              商品主图
+                            </th>
+                            <th>
+                              基本信息
+                            </th>
+                            <th>
+                              地区
+                            </th>
+                            <th>
+                              品牌
+                            </th>
+                            <th>
+                              品类
+                            </th>
+                            <th>
+                              价格
+                            </th>
+                            <th>
+                              商户
+                            </th>
+                            <th>
+                              备注
+                            </th>
+                            <th>
+                              审核状态
+                            </th>
+                            <th width="100">
+                              <i class="fa fa-edit"></i> 操作
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="item in items">
+                            <td>
+                              <input name="item_check" data-id="{{item.id}}" type="checkbox" />
+                            </td>
+                            <td>
+                              <img see-src="item.item_imgurl" width="100" class="img-viewer" see-viewer />
+                            </td>
+                            <td>
+                              <div>名称:{{item.item_name}}</div>
+                              <div>ID:{{item.item_id}}</div>
+                              <div>货号:{{item.sku_mark}}</div>
+                              <div>库存:{{item.item_stock}}</div>
+                            </td>
+                            <td>
+                              {{item.ship_country}}
+                            </td>
+                            <td>
+                              {{item.brand_id|findDataInArray:brandList:'brand_id':'brand_name'}}
+                            </td>
+                            <td>
+                              {{item.class_id|findDataInArray:classList:'class_id':'class_name'}}
+                            </td>
+                            <td>
+                              {{item.item_price | currency: '￥'}}
+                            </td>
+                            <td>
+                              {{item.seller_name}}
+                              <button ng-click="openDetail(item.backend_id)" class="btn btn-sm btn-primary">商户信息</button>
+                            </td>
+                            <td>
+                              {{item.remark}}
+                            </td>
+                            <td>
+                              <span ng-if="item.status == '0'" class="label label-sm label-default label-mini"> 待审核 </span>
+                              <span ng-if="item.status == '1'" class="label label-sm label-success label-mini"> 通过 </span>
+                              <span ng-if="item.status == '2'" class="label label-sm label-warning label-mini"> 拒绝 </span>
+                              <br>
+                              <p ng-if="coupon.status == '2'">{{item.reason}}</p>
+                            </td>
+                            <td>
+                              <a target="_blank" see-goods="item.item_id" class="btn btn-sm btn-primary pull-left m-b-10"><i class="fa fa-ticket"></i>预览 </a>
+                              <a ng-click="acceptEventItem([item.id])" class="btn btn-sm btn-primary pull-left m-b-10"><i class="fa fa-ticket"></i>通过 </a>
+                              <a ng-click="rejectEventItem([item.id])" class="btn btn-sm btn-primary pull-left m-b-10"><i class="fa fa-ticket"></i>拒绝 </a>
+                              <a ng-click="move([item.id])" class="btn btn-sm btn-primary pull-left m-b-10"><i class="fa fa-ticket"></i>移动 </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <pagination total-items="total_items" items-per-page="10"></pagination>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

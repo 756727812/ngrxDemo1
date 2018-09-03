@@ -1,0 +1,72 @@
+<form class="mb-md" [nzLayout]="'inline'" nz-form [formGroup]="form" (ngSubmit)="refreshData(true)">
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="8">
+      <nz-input nzType="text" formControlName="itemNo" [nzPlaceHolder]="'货号'"></nz-input>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-input nzType="text" formControlName="itemName" [nzPlaceHolder]="'商品名'"></nz-input>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">
+        <i class="anticon anticon-search"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="mb-md" *ngIf="selectedSkuMark">
+  <nz-alert [nzType]="'info'">
+    <span alert-body>
+      已选择货号 <strong class="text-primary">{{ selectedSkuMark }}</strong>
+    </span>
+  </nz-alert>
+</div>
+
+<nz-table #nzTable
+  nzShowSizeChanger
+  [nzLoading]="loading"
+  [nzAjaxData]="data.list"
+  [nzTotal]="data.count"
+  [(nzPageSize)]="pageSize"
+  (nzPageSizeChange)="refreshData(true)"
+  [(nzPageIndex)]="page"
+  (nzPageIndexChange)="refreshData()">
+  <thead nz-thead>
+    <tr>
+      <th nz-th>
+        <span>商品名</span>
+      </th>
+      <th nz-th>
+        <span>规格</span>
+      </th>
+      <th nz-th>
+        <span>可售库存</span>
+      </th>
+      <th nz-th>
+        <span>操作</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let item of nzTable.data; let index = index">
+      <td nz-td>
+        <p class="m-b-0">SEE仓ID：{{ item.id }}</p>
+        <ellipsis lines="1">
+          <span [innerText]="item.itemName" [title]="item.itemName"></span>
+        </ellipsis>
+      </td>
+      <td nz-td>
+        <p class="m-b-0">货号：{{ item.itemNo }}</p>
+        <p>{{ item.specificationName }}</p>
+      </td>
+      <td nz-td [innerText]="item.sellableStock"></td>
+      <td nz-td>
+        <a *ngIf="!item.selected; else selectedWord" (click)="select($event, item)">选择</a>
+        <ng-template #selectedWord>
+          <a *ngIf="item.itemNo === selectedSkuMark" (click)="unSelect($event, index)">取消选择</a>
+          <span *ngIf="item.itemNo !== selectedSkuMark">已选择</span>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

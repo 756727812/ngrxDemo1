@@ -1,0 +1,131 @@
+@primaryColor: #5971e8;
+
+.res-pane {
+  width: 110px * 2 + 6px + 21px;
+  height: 100%;
+  background-color: #fff;
+  padding-top: 20px;
+  padding-right: 21px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0; /* remove scrollbar space */
+    background: transparent; /* optional: just make scrollbar invisible */
+  }
+}
+
+ul.groups {
+  > li {
+    margin-bottom: 37px;
+
+    .head {
+      margin-bottom: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      > .title {
+        font-size: 14px;
+        text-align: left;
+        color: #000;
+        font-weight: bold;
+        padding-left: 8px;
+      }
+
+      i {
+        display: inline-block;
+        transform: rotate(-90deg) scale(0.7);
+        font-weight: bold;
+        transform-origin: center;
+        color: #979797;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+ul.items {
+  &.collapse-items {
+    opacity: 0;
+    max-height: 0;
+  }
+  overflow: hidden;
+  opacity: 1;
+  // max-height: 300px;
+  transition: 0.5s;
+
+  > li {
+    cursor: pointer;
+
+    * {
+      cursor: pointer;
+    }
+
+    background-color: #f8f8f8;
+    border: solid 2px #ececec;
+    width: 110px;
+    height: 141px;
+    padding: 6px;
+    color: #999;
+    display: inline-flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      i {
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      .count {
+        min-width: 14px;
+        text-align: left;
+      }
+    }
+
+    .main {
+      flex: 1;
+      text-align: center;
+
+      img {
+        height: 59px;
+        width: 88px;
+      }
+    }
+
+    label {
+      font-size: 14px;
+      color: #000;
+      height: 28px;
+      line-height: 28px;
+      display: block;
+      text-align: center;
+      font-weight: normal;
+    }
+
+    &:hover,
+    &.active {
+      background-color: #fff;
+      border: solid 2px @primaryColor;
+
+      i,
+      label {
+        color: @primaryColor;
+        font-weight: bold;
+      }
+    }
+
+    &:nth-child(odd) {
+      margin-right: 6px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+<div class="header">
+  <h2><strong>商详公告</strong></h2>
+</div>
+<div class="row">
+    <div class="col-sm-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="pull-right">
+                  <button class="btn btn-primary" ng-click="$ctrl.addNotice()">添加新公告</button>
+                </div>
+                <div class="table-scrollabel">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>时间范围</th>
+                        <th>标题</th>
+                        <th>发货地</th>
+                        <!--
+                        <th>品类限制</th>
+                        -->
+                        <th>公告位置</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in $ctrl.list_notice track by $index">
+                        <td>{{item.start_time * 1000 | date: 'yyyy-MM-dd'}}
+                        ~{{item.end_time * 1000 | date: 'yyyy-MM-dd'}}</td>
+
+                        <td>{{item.title}}</td>
+                        <td>{{item.limit_location}}</td>
+                        <!--
+                        <td>{{item.limit_class}}</td>
+                        -->
+                        <td>
+                            <label ng-if="item.limit_device==='0'">所有</label>
+                            <label ng-if="item.limit_device==='1'">App购买流程</label>
+                            <label ng-if="item.limit_device==='2'">KOL购买流程</label>
+                        </td>
+                        <td>
+                            <label ng-if="item.str_enabled !== ''">
+                                <font color="green">{{item.str_enabled}}</font>
+                            </label>
+                            <label ng-if="item.str_warning !== '' && item.str_warning !== '待上线'">
+                                <font color="gray">{{item.str_warning}}</font>
+                            </label>
+                            <label ng-if="item.str_warning !== '' && item.str_warning === '待上线'">
+                                <font color="red">{{item.str_warning}}</font>
+                            </label>
+                        </td>
+                        <td>
+                            <button ng-if="item.is_public === '1'" class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editNotice(item)">
+                                <i class="fa fa-edit"></i>编辑
+                            </button>
+                            <button ng-if="item.str_enabled !== ''" class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.noticeOnline(item.id,0)">
+                                <i class="fa fa-trash-o"></i>强制下线
+                            </button>
+
+                            <button ng-if="item.is_public === '0'" class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editNotice(item)"><i class="icon-screen-smartphone"></i>查看</button>
+                            <!--
+
+                            <a class="temp-detail-switch" href ng-if="item.is_public === '0'" ng-click="$ctrl.noticeOnline(item.id,1)">
+                                <div id="div1" class="close1">
+                                    <div id="div2" class="close2"></div>
+                                </div>
+                                <span>上线</span>
+                            </a>
+                            <a class="temp-detail-switch" href ng-if="item.is_public === '1'" ng-click="$ctrl.noticeOnline(item.id,0)">
+                                <div id="div1" class="open1">
+                                    <div id="div2" class="open2"></div>
+                                </div>
+                                <span>上线</span>
+                            </a>-->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

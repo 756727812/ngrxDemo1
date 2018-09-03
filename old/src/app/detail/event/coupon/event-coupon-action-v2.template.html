@@ -1,0 +1,336 @@
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-header">
+        <p class="p-10">
+          <a href="" ng-click="$ctrl.backToCouponList(couponForm)" class="text-primary">
+            <i class="fa fa-chevron-left"></i>返回优惠券列表</a>
+        </p>
+      </div>
+      <div class="panel-header">
+        <h3 class="m-l-20">
+          <strong>{{$ctrl.title}}优惠券</strong>
+        </h3>
+      </div>
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="couponForm">
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">优惠券类型</label>
+            <div class="col-sm-8">
+              <label class="radio-inline" ng-if="$ctrl.formData.type !== 2">
+                <input type="radio" name="couponType" ng-value="1" ng-model="$ctrl.formData.type" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view' || $ctrl.isNewBrand"> 普通优惠券
+              </label>
+              <label class="radio-inline" ng-if="$ctrl.formData.type === 2">
+                <input type="radio" name="couponType" ng-value="2" ng-model="$ctrl.formData.type" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view' || $ctrl.isNewBrand"> 普通优惠券
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="couponType" ng-value="3" ng-model="$ctrl.formData.type" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view' || $ctrl.isNewBrand"> 抽奖团优惠券
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="couponType" ng-value="4" ng-model="$ctrl.formData.type" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view' || $ctrl.isNewBrand"> 下单返券优惠券
+              </label>
+
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.formData.type">
+                <i class="si si-danger"></i>&nbsp;请选择优惠券类型</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">优惠券名称</label>
+            <div class="col" style="width: 20%">
+              <input type="text" class="form-control" name="couponname" ng-model="$ctrl.formData.name" required w5c-customizer="$ctrl.verifyLength(0,10,$ctrl.formData.name)"
+                ng-disabled="$ctrl.type === 'view'">
+            </div>
+          </div>
+          <div class="form-group" ng-class="{ 'has-custom-error': couponForm.$submitted && !$ctrl.formData.moneyPayer }">
+            <label class="col-sm-2 control-label required">承担者</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="moneyPayer" ng-value="1" ng-model="$ctrl.formData.moneyPayer" ng-checked="$ctrl.formData.type < 3" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view' || $ctrl.isNewBrand || $ctrl.formData.type > 2 "> 小电铺客户
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="moneyPayer" ng-value="2" ng-model="$ctrl.formData.moneyPayer" ng-checked="$ctrl.formData.type > 2" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view' || $ctrl.isNewBrand"> SEE
+              </label>
+              <label class="icon-inline">
+                <i class="icon si si-info" uib-tooltip="即该优惠券金额由谁来承担，若选择SEE承担，则该优惠券被用于下单时，优惠券金额将作为补贴返还给小电铺客户" tooltip-placement="top-center"
+                  tooltip-trigger="'mouseenter focus'"></i>
+              </label>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.formData.moneyPayer">
+                <i class="si si-danger"></i>&nbsp;请选择优惠券承担者</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">面额</label>
+            <div class="col" style="width: 20%">
+              <input type="number" class="form-control" name="couponPrice" ng-model="$ctrl.formData.couponPrice" required w5c-customizer="$ctrl.verifyCouponPrice()"
+                ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'">
+            </div>
+            <p class="col-sm-2 form-text text-left">元</p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-custom-error': couponForm.$submitted && $ctrl.verifyLimitMoney() }">
+            <label class="col-sm-2 control-label required">使用门槛</label>
+            <p class="col form-text text-left p-l-15 p-r-0" style="width: 30px">满</p>
+            <div class="col" style="width: calc(20% - 30px);">
+              <input type="number" class="form-control w5c-error-not-show" name="limitMoney" ng-model="$ctrl.formData.limitMoney" required
+                ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'">
+            </div>
+            <p class="col-sm-2 form-text text-left">元可用</p>
+            <div class="col-sm-8 col-sm-offset-2">
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && ($ctrl.formData.limitMoney === undefined)">
+                <i class="si si-danger"></i>&nbsp;请填写使用门槛金额</span>
+              <span class="custom-error" ng-if="couponForm.$submitted && $ctrl.verifyLimitMoney()">
+                <i class="si si-danger"></i>&nbsp;使用门槛金额需大于优惠券面额，且为不超过7位的正整数</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">有效期</label>
+            <style>
+              .coupon-date-range .ant-input{height: 32px;padding:0}
+              .coupon-date-range .ant-calendar-range-picker-separator{line-height: 32px}
+            </style>
+            <div class="col coupon-date-range" style="width: 500px">
+              <nz-rangepicker required
+                [nz-size]="large"
+                formControlName="rangeTime"
+                ng-model="$ctrl.formData.dateRange"
+                [nz-show-time]="true"
+                [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                [nz-disabled-date]="$ctrl.disabledStartDate"
+                [nz-disabled]="$ctrl.type === 'edit' || $ctrl.type === 'view'">
+                ng-change="$ctrl.dateRangeChange($event)"
+              </nz-rangepicker>
+              <span class="custom-error" ng-show="couponForm.$submitted && !$ctrl.formData.dateRange[0]"><i class="si si-danger"></i>&nbsp;请选择有效期</span>
+            </div>
+            <!-- <div class="col-sm-10">
+              <div class="row">
+                <style>.ant-calendar-year-panel-table{max-height: 200px}</style>
+                <div class="col w-20p">
+                  <nz-datepicker class="full-width" required ng-class="{ disabled: $ctrl.type === 'edit' || $ctrl.type === 'view' }" ng-change="$ctrl.startValueChange()"
+                    ng-model="$ctrl.formData.avaliableTimeStart" [nz-disabled-date]="$ctrl.disabledStartDate" [nz-show-time]="true"
+                    [nz-format]="'YYYY-MM-DD HH:mm'" [nz-place-holder]="'请选择开始时间'"></nz-datepicker>
+                  <span class="custom-error" ng-if="couponForm.$submitted && !$ctrl.formData.avaliableTimeStart">
+                    <i class="si si-danger"></i>&nbsp;请填写有效期开始时间</span>
+                </div>
+                <div class="col w-20p">
+                  <nz-datepicker class="full-width" ng-class="{ disabled: $ctrl.type === 'edit' || $ctrl.type === 'view' }" ng-change="$ctrl.endValueChange()"
+                    ng-model="$ctrl.formData.avaliableTimeEnd" [nz-disabled-date]="$ctrl.disabledEndDate" [nz-show-time]="$ctrl.endTime"
+                    [nz-format]="'YYYY-MM-DD HH:mm'" [nz-place-holder]="'请选择结束时间'"></nz-datepicker>
+                  <span class="custom-error" ng-if="couponForm.$submitted && !$ctrl.formData.avaliableTimeEnd">
+                    <i class="si si-danger"></i>&nbsp;请填写有效期结束时间</span>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="form-group" ng-if="$ctrl.formData.type < 3" ng-class="{ 'has-custom-error': couponForm.$submitted && ($ctrl.verifyAllCount() || $ctrl.type === 'edit' && $ctrl.formData.allCount < $ctrl.item.allCount) }">
+            <label class="col-sm-2 control-label required">发行量</label>
+            <div class="col" style="width: 20%;">
+              <input type="number" class="form-control" name="allCount" ng-model="$ctrl.formData.allCount" required
+                ng-disabled="$ctrl.type === 'view' || $ctrl.isNewBrand && $ctrl.formData.moneyPayer === 2">
+              <span class="custom-error" ng-if="couponForm.$submitted && ($ctrl.formData.allCount === undefined)">
+                <i class="si si-danger"></i>&nbsp;请输入发行量</span>
+              <span class="custom-error" ng-if="couponForm.$submitted && $ctrl.verifyAllCount()">
+                <i class="si si-danger"></i>&nbsp;发行量需大于0张</span>
+              <span class="custom-error" ng-if="couponForm.$submitted && $ctrl.type === 'edit' && $ctrl.formData.allCount < $ctrl.item.allCount">
+                <i class="si si-danger"></i>&nbsp;优惠券发行量不可减少</span>
+            </div>
+            <p class="col-sm-2 form-text text-left">张</p>
+          </div>
+          <div class="form-group" ng-hide="$ctrl.formData.type > 2" ng-class="{ 'has-custom-error': couponForm.$submitted && !$ctrl.formData.type }">
+            <label class="col-sm-2 control-label required">领取资格</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="type" ng-value="1" ng-model="$ctrl.formData.type" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'"> 全体用户
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="type" ng-value="2" ng-model="$ctrl.formData.type" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'"> 仅限新用户
+              </label>
+              <label class="icon-inline">
+                <i class="icon si si-info" uib-tooltip="若选中仅限新用户，则该优惠券仅限在小电铺未发生过支付行为的新用户领取（仅支付过一分钱抽奖团的用户仍被视为新用户）" tooltip-placement="top-center"
+                  tooltip-trigger="'mouseenter focus'"></i>
+              </label>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.formData.type">
+                <i class="si si-danger"></i>&nbsp;请选择领取资格</span>
+            </div>
+          </div>
+          <div class="form-group" ng-hide="$ctrl.formData.type > 2">
+            <label class="col-sm-2 control-label required">每人限领数量</label>
+            <div class="col" style="width: 20%;">
+              <select name="limitPer" class="form-control" ng-model="$ctrl.formData.limitPer" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'">
+                <option ng-repeat="n in $ctrl.limitNumbers track by n" ng-value="n" ng-bind="n"></option>
+                <option ng-value="999999" ng-checked="$ctrl.formData.type > 2">不限</option>
+              </select>
+            </div>
+            <p class="col-sm-2 form-text text-left">张</p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-custom-error': couponForm.$submitted && $ctrl.isAdmin && !$ctrl.formData.xiaodianpuId }">
+            <label class="col-sm-2 control-label required">适用店铺</label>
+            <div class="col" style="width: 20%;" ng-if="$ctrl.isNewBrand">
+              <label class="radio-inline">
+                <input type="radio" name="shiyongshangpin" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'" ng-checked="true">全店商品
+              </label>
+              <!-- <label class="icon-inline">
+                <i class="icon si si-info" uib-tooltip="目前创建的优惠券针对店内所有商品均可使用（包括自营商品与分销商品），后续将尽快支持针对指定商品发放优惠劵的功能" tooltip-placement="top-center"
+                  tooltip-trigger="'mouseenter focus'"></i>
+              </label> -->
+            </div>
+            <div class="col" style="width: 20%;" ng-if="$ctrl.isAdmin">
+              <input type="text" ng-model="$ctrl.formData.xiaodianpuId" placeholder="请选择小电铺" class="form-control" ng-disabled="$ctrl.type === 'edit' || $ctrl.type === 'view'"
+                uib-typeahead="xdp as xdp.sellerName for xdp in $ctrl.getXDPList($viewValue)" typeahead-loading="$ctrl.loadingXdpList"
+                typeahead-no-results="$ctrl.noResults" typeahead-wait-ms="300" typeahead-template-url="typeaheadTemplate.html"
+                typeahead-select-on-blur="true" typeahead-select-on-exact="true">
+              <i ng-show="$ctrl.loadingXdpList" class="glyphicon glyphicon-refresh spin p-0"></i>
+              <div ng-show="$ctrl.noResults">
+                <span class="custom-error">
+                  <i class="si si-danger"></i>&nbsp;没有符合搜索的小电铺</span>
+              </div>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.formData.xiaodianpuId">
+                <i class="si si-danger"></i>&nbsp;请选择小电铺</span>
+            </div>
+            <!-- <div class="col-sm-2 p-l-0" ng-if="$ctrl.isAdmin">
+              <label class="icon-inline m-0">
+                <i class="icon si si-info" uib-tooltip="选择小电铺后，优惠券将被用于指定小电铺内经营的所有商品，包括自营与分销商品。我们后续将尽快支持给小电铺内指定商品发放优惠券的功能~" tooltip-placement="top-right"
+                  tooltip-trigger="'mouseenter focus'"></i>
+              </label>
+            </div> -->
+          </div>
+          <!-- 适用范围 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">适用范围</label>
+            <div class="col-sm-8">
+              <label class="radio-inline" ng-repeat="(type, attr) in $ctrl.couponScopeConst">
+                <input type="radio" name="scope" ng-value="+type" ng-model="$ctrl.formData.scope" ng-change="$ctrl.setDefaultInfo()" ng-disabled="$ctrl.type !== 'add'">{{attr.label}}
+              </label>
+            </div>
+          </div>
+          <!-- 品类选择 -->
+          <div class="form-group" ng-show="$ctrl.formData.scope === 2">
+            <label class="col-sm-2 control-label required">品类选择</label>
+            <div class="col-sm-8">
+              <ng1-see-tree-select-category [api-type]="'java'"
+                [disabled-edit]="$ctrl.type !== 'add'" [fast-view-data]="$ctrl.fastViewData"
+                (on-select-change)="$ctrl.classChange($event)"></ng1-see-tree-select-category>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.classFormData.targetIds.length">
+                <i class="si si-danger"></i>&nbsp;请选择品类</span>
+            </div>
+          </div>
+          <!-- 品类限制名称显示 -->
+          <div class="form-group" ng-show="$ctrl.type === 'add' && $ctrl.formData.scope === 2">
+            <label class="col-sm-2 control-label required">品类限制名称显示</label>
+            <div class="col-sm-8">
+              <label class="radio-inline" ng-repeat="item in $ctrl.classNameRadios">
+                <input type="radio" name="classNameDisplay" ng-value="item.value" ng-model="$ctrl.classNameDisplay" ng-change="$ctrl.setDefaultScopeText()" ng-disabled="$ctrl.type !== 'add'">{{item.label}}
+              </label>
+            </div>
+          </div>
+          <!-- 品牌选择 -->
+          <div class="form-group" ng-show="$ctrl.formData.scope === 3">
+            <label class="col-sm-2 control-label required">品牌选择</label>
+            <div class="col-sm-8">
+              <ng1-app-brand-selector [placeholder]="'请选择品牌'" [disabled]="$ctrl.type !== 'add'" [mode]="'multiple'" [brand-ids]="$ctrl.brandIds"
+                (on-value-change)="$ctrl.brandChange($event)"></ng1-app-brand-selector>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.brandFormData.targetIds.length">
+                <i class="si si-danger"></i>&nbsp;请选择品牌</span>
+            </div>
+          </div>
+          <!-- 商品选择 -->
+          <div class="form-group" ng-show="$ctrl.formData.scope === 4">
+            <label class="col-sm-2 control-label required">商品选择</label>
+            <div class="col-sm-8" style="margin-top: 6px;">
+              <span ng-hide="$ctrl.type !== 'add' || ($ctrl.isAdmin ? $ctrl.formData.xiaodianpuId && $ctrl.formData.xiaodianpuId.id : $ctrl.newBrandXdpId)">（请先选择店铺）</span>
+              <ng1-see-select-goods ng-if="$ctrl.type === 'add' && ($ctrl.isAdmin ? $ctrl.formData.xiaodianpuId && $ctrl.formData.xiaodianpuId.id : $ctrl.newBrandXdpId)"
+                                    [xdp-id]="$ctrl.isAdmin ? $ctrl.formData.xiaodianpuId.id : $ctrl.newBrandXdpId"
+                                    [for-create-coupon]="true"
+                                    [added-list]="$ctrl.goodsList"
+                                    (on-select-change)="$ctrl.goodsChange($event)"></ng1-see-select-goods>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.CommodityFormData.targetIds.length">
+                <i class="si si-danger"></i>&nbsp;请选择商品</span>
+              <table ng-if="$ctrl.goodsList.length" class="table-center table-condensed goods-table">
+                <thead>
+                  <tr>
+                    <th class="name">商品名</th>
+                    <th>价格</th>
+                    <th>售卖状态</th>
+                    <th ng-if="$ctrl.type === 'add'">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.goodsListDisplay">
+                    <td>
+                      <ellipsis lines="1"
+                                style="width: 300px;">
+                        <span ng-bind="item.item_name" title="{{item.item_name}}"></span>
+                      </ellipsis>
+                    </td>
+                    <td>￥{{item.item_price}}</td>
+                    <td>{{item.item_status}}</td>
+                    <td ng-if="$ctrl.type === 'add'">
+                      <a href="javascript:void(0);" ng-click="$ctrl.removeGoods($index)">移除</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <ul uib-pagination ng-if="$ctrl.goodsList.length" total-items="$ctrl.goodsList.length" items-per-page="10" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged($ctrl.currentPage)"
+                max-size="5" class="pagination-sm m-t-0" direction-links="true" previous-text="上一页" next-text="下一页" boundary-link-numbers="true">
+              </ul>
+            </div>
+          </div>
+          <!-- 适用范围文案 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">适用范围文案</label>
+            <div class="col scope-text-col">
+              <div class="block-container">
+                <input type="text" class="form-control" name="scopeText" ng-model="$ctrl.formData.frontendShowName" required w5c-customizer="$ctrl.verifyLength(0, $ctrl.scopeTextLimit, $ctrl.formData.frontendShowName)"
+                  ng-disabled="$ctrl.type !== 'add'">
+              </div>
+              <div class="limit-str-length-tips">{{$ctrl.getEnLength($ctrl.formData.frontendShowName) / 2}} / {{$ctrl.scopeTextLimit}}</div>
+              <label class="icon-inline scope-text-tooltip">
+                <i class="icon si si-info"></i>
+              </label>
+              <img class="scope-text-tooltip-img" see-src="$ctrl.scopeTextTooltipImg" thumbnail="500x178" alt="" />
+            </div>
+          </div>
+          <!-- 优惠券图片 -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">优惠券图片</label>
+            <div class="col-sm-8" style="margin-top: 10px;">
+              <ng1-see-img-upload [init-file-list]="$ctrl.initImg"
+                [disabled-edit]="$ctrl.type !== 'add'"
+                [upload-text]="'上传'"
+                [img-valid]="$ctrl.imgValid"
+                (on-upload-success)="$ctrl.uploadImgSuccess($event, couponForm)"
+                (on-upload-error)="$ctrl.uploadImgError($event, couponForm)"
+                (on-remove-img)="$ctrl.removeImg($event, couponForm)"></ng1-see-img-upload>
+              <span class="custom-error" style="display: block" ng-if="couponForm.$submitted && !$ctrl.formData.icon">
+                <i class="si si-danger"></i>&nbsp;请选择优惠券图片</span>
+              <span class="custom-error" style="display: block" ng-if="$ctrl.validateImgShape && $ctrl.showImgShapeTips">
+                <i class="si si-danger"></i>&nbsp;请选择正方形图片(长宽相差10像素以内)</span>
+              <label class="icon-inline coupon-icon-tooltip">
+                <i class="icon si si-info"></i>
+              </label>
+              <img class="coupon-icon-tooltip-img" see-src="$ctrl.couponIconTooltipImg" thumbnail="500x178" alt="" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+              <button type="submit" w5c-form-submit="$ctrl.save(couponForm)" class="btn btn-primary m-0" ng-disabled="$ctrl.isSubmitting || $ctrl.type === 'view'">确定</button>
+              <button type="button" ng-click="$ctrl.backToCouponList(couponForm)" class="btn btn-default m-b-0 m-l-20">取消</button>
+              <div class="inline-block" ng-show="$ctrl.errors.length > 0">
+                <p ng-repeat="err in $ctrl.errors track by $index">
+                  <i class="si si-danger invalid"></i>&nbsp;{{err}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/ng-template" id="typeaheadTemplate.html">
+    <a>
+      <h5 ng-bind-html="match.label | uibTypeaheadHighlight:query" style="font-weight: normal"></h5>
+      <small>
+        id：{{match.model.id}} 手机号：
+        <span ng-bind-html="match.model.sellerMobile | uibTypeaheadHighlight:query"></span>
+      </small>
+    </a>
+  </script>
+</div>

@@ -1,0 +1,28 @@
+<div class="row top-part">
+  <div class="col-xs-12">
+    <div class="panel bi-panel">
+      <div class="panel-content">
+        <nz-tabset>
+          <nz-tab>
+            <ng-template #nzTabHeading>
+              数据概览
+            </ng-template>
+            <app-bi-summary></app-bi-summary>
+          </nz-tab>
+          <nz-tab>
+            <ng-template #nzTabHeading>
+              交易分析
+            </ng-template>
+            <app-bi-trade></app-bi-trade>
+          </nz-tab>
+          <nz-tab>
+            <ng-template #nzTabHeading>
+              商品分析
+            </ng-template>
+            <app-bi-goods></app-bi-goods>
+          </nz-tab>
+        </nz-tabset>
+      </div>
+    </div>
+  </div>
+</div>

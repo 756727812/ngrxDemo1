@@ -1,0 +1,16 @@
+<ul class="icon-radio-group">
+  <nz-radio-group class="list" [(ngModel)]="value" (ngModelChange)="handleIconChange($event)">
+    <li *ngFor="let icon of iconArray">
+      <label nz-radio [nzValue]="icon.imgUrl">
+        <span>
+          <img [alt]="icon.name" [src]="icon.imgUrl"/>
+        </span>
+      </label>
+    </li>
+    <li>
+      <label nz-radio [nzValue]="''">
+        <span>无</span>
+      </label>
+    </li>
+  </nz-radio-group>
+</ul>

@@ -1,0 +1,29 @@
+<div class="res-pane">
+  <ul *ngFor="let group of groups; trackBy:trackByGroup"
+      class="groups">
+    <li>
+      <div class="head" (click)="handleGroupClick(group)" [ngClass]="{'collapse-head': group.isCollapse}">
+        <div class="title">{{group.title}}</div>
+        <i class="si si-arrow-left"></i>
+      </div>
+      <ul class="items" [ngClass]="{'collapse-items': group.isCollapse}">
+        <li *ngFor="let item of group.items; trackBy:trackByItem"
+            class="res-item"
+            [class.active]="activeType===item.type"
+            (click)="hanldeClickItem(item)"
+            [hidden]="item.hidden"
+          >
+          <div class="top">
+            <i class="si si-plus"></i>
+            <span class="count">{{(elemsCount$ | async)[item.type] || 0}}</span>
+          </div>
+          <div class="main">
+              <img [src]="item.icon">
+          </div>
+          <label>{{item.label}}</label>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+</div>

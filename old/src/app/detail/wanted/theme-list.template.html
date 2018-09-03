@@ -1,0 +1,112 @@
+<div class="header">
+  <h2>
+    <strong>{{title}}心愿</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/wanted">心愿管理</a></li>
+      <li class="active">所有心愿</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <p ng-if="!isMine">还有<b class="text-danger" ng-bind="themeCount"></b>条心愿未回答，加油哦~ </p>
+        <p see-access="C2C-Seller">
+          用户名不带S角标的是用户发的求同款心愿，会展示在发现流中，服务商们可以把有出售的商品通过回答心愿的形式推荐给用户，用户喜欢则会找答题者购买。
+          <img ng-click="prompt()" class="event_wenhao" alt="" src="//static.seecsee.com/seego_backend/images/wenhao.png"
+               style="width:30px"/>
+        </p>
+        <form class="form-inline" ng-submit="searchTheme()">
+          <div class="form-group" see-hide="C2C-Seller C2C-Service">
+            <label class="control-label">搜索时间</label>
+            <input type="date" class="form-control" ng-model="searchData.from">&nbsp;&dash;&nbsp;
+            <input type="date" class="form-control" ng-model="searchData.to">
+          </div>
+          <div class="form-group">
+            <label class="control-label">筛选心愿</label>
+            <select name="type" class="form-control" ng-model="searchData.type">
+              <option value="" selected>-- 请选择 --</option>
+              <option value="1">同款</option>
+              <option value="2">分享</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">搜索内容</label>
+            <input type="text" class="form-control" ng-model="searchData.keyword" placeholder="ID,描述">
+          </div>
+          <button type="submit" class="btn btn-primary">
+            搜索
+          </button>
+        </form>
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>图片</th>
+                <th>描述</th>
+                <th>发布时间</th>
+                <th ng-if="!isMine">物品名称</th>
+                <th>其他标签</th>
+                <th>品牌</th>
+                <th ng-if="!isMine">地区</th>
+                <th>商品id</th>
+                <th>回答数</th>
+                <th  see-hide="Hide-DD" see-access="See-Admin Oper Super-Admin">真实同求数</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="theme in themeList track by $index">
+                <td ng-bind="theme.t_id"></td>
+                <td><img width="100" style="min-width: 100px;" class="img-thumbnail img-viewer" alt="{{::theme.t_title}}" see-src="theme.t_imgurl" ng-click="openLightboxModal($index)"></td>
+                <td ng-bind="theme.t_title"></td>
+                <td ng-bind="theme.t_time"></td>
+                <td ng-if="!isMine" ng-bind="theme.cl_class"></td>
+                <td ng-bind="isMine?(theme.t_tag_json | formatArray):theme.cl_text"></td>
+                <td ng-bind="isMine?theme.t_brand:theme.cl_brand"></td>
+                <td ng-if="!isMine" ng-bind="theme.cl_area"></td>
+                <td ng-bind="isMine?(theme.t_item_list):theme.item_id"></td>
+                <td ng-bind="theme.t_findcount"></td>
+                <td  see-hide="Hide-DD" see-access="See-Admin Oper Super-Admin" ng-bind="theme.t_followcount"></td>
+                <td>
+                  <a see-access="Oper Super-Admin See-Admin PGC-Part" class="btn btn-sm btn-primary" target="_blank" ng-href="/wanted/theme/edit/{{::theme.t_id}}"> <i class="fa fa-edit"></i>编辑</a>
+                  <a class="btn btn-sm btn-primary" target="_blank" ng-href="/wanted/themeList/theme-answer/{{::theme.t_id}}?ori=themeList"> <i class="fa fa-eye"></i>查看答案</a>
+                  <!--<a class="btn btn-sm btn-primary" target="_blank" ng-href="/wanted/themeList/addAnswer?tid={{::theme.t_id}}&ori=themeList"> <i class="fa fa-plus-circle"></i>添加答案</a>-->
+                  <button ng-if="!isMine" type="button" class="btn btn-sm btn-primary" ng-click="matchImgPop(theme.t_id,theme.t_imgurl,s_id,host)"
+                          see-access="Super-Admin  B2C-Service Part-time"> <i class="fa fa-check"></i>匹配答案</button>
+                  <button ng-if="!isMine" type="button" class="btn btn-sm btn-primary" ng-click="recommendPop(theme.t_id,theme.t_imgurl,s_id,host)"
+                          see-access="Super-Admin  B2C-Service Part-time Oper"> <i class="fa fa-heart"></i>推荐答案</button>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="hideMe(theme.t_id)"
+                          see-access="See-Admin Oper Super-Admin"> <i class="fa fa-cloud"></i>隐藏</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination total-items="total_items"></pagination>
+
+        <script type="text/ng-template" id="exampleModal.html">
+          <div class="modal-header">
+
+            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title">普通用户心愿</h3>
+          </div>
+          <div class="modal-body text-center">
+            <img class="img-thumbnail" src="//static.seecsee.com/seego_backend/images/wanted_theme_list.png" alt="">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+            <button class="btn dark" type="button" ng-click="cancel()">取消</button>
+          </div>
+        </script>
+
+
+      </div>
+    </div>
+  </div>

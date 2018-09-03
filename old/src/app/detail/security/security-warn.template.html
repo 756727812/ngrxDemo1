@@ -1,0 +1,73 @@
+<div class="header">
+  <h2><strong>报警日志</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/security">安全管理</a></li>
+      <li class="active">报警日志</li>
+    </ol>
+  </div>
+</div> 
+
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+
+        <div>
+          <form class="form-inline" ng-submit="$ctrl.changeFilter()">
+            <div class="form-group m-b-10">
+                <label class="control-label"> 平台
+                  <select class="form-control" ng-model="$ctrl.platform" ng-options="item.value as item.name for item in $ctrl.filter_platform" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+            </div>
+          </form>
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>平台</th>
+                  <th>异常账号</th>
+                  <th>账号名</th>
+                  <th>模块名</th>
+                  <th>接口名</th>
+                  <th>触发原因</th>
+                  <th>请求次数</th>
+                  <th>时间</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.list_warn track by $index">
+                	  <td>{{item.platform_name}}</td>
+                    <td>{{item.seller_email}}</td>
+                    <td>{{item.seller_name}}</td>
+                    <td>{{item.ctrl_name}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.str_desc}}</td>
+                    <td><font color="red">{{item.type_value === ''?0:item.type_value}}</font></td>
+                    <td>{{item.create_time}}</td>
+
+                    <td ng-if="item.is_ingore === '1' ">
+                      <font color="black">已失效</font>
+                    </td>
+                    <td ng-if="item.is_ingore === '0'">
+                      <button class="btn btn-sm btn-primary" type="button"  ng-click="$ctrl.resetIsIngore(item.warning_id)">强制失效</button>
+                    </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+ 
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,132 @@
+<div class="panel tmpl-panel">
+  <div class="panel-content tmpl-panel-content">
+    <div class="template-title">新建模板消息</div>
+    <form nz-form
+          [ngClass]="{submitted:submitted}"
+          [formGroup]="formGroup"
+          [nzLayout]="'vertical'"
+          class="template-form"
+          (ngSubmit)="submit()">
+
+    <!-- 发送店铺 -->
+    <div nz-form-item
+          nz-row>
+      <div nz-form-label
+            nz-col
+            [nzSm]="4">
+        <label nz-form-item-required>发送店铺：</label>
+      </div>
+      <div nz-form-control
+            nz-col
+            [nzSm]="20">
+            <div class="flex-container">
+              <see-tag-arrays formControlName="kolList" (edit)="selectKOLs()"></see-tag-arrays>
+              <span class="custom-error"
+                    *ngIf="submitted && formGroup.get('kolList').hasError('required')">
+                <i class="si si-danger"></i>&nbsp;请选择店铺</span>
+            </div>
+      </div>
+    </div>
+
+    <!-- 标题 -->
+    <div nz-form-item
+          nz-row>
+      <div nz-form-label
+            nz-col
+            [nzSm]="4">
+        <label for="title"
+                nz-form-item-required>标题：</label>
+      </div>
+      <div nz-form-control
+            nz-col
+            [nzSm]="20">
+            <div class="flex-container">
+              <div class="title-wrapper">
+                <nz-input [nzSize]="'large'" formControlName="title" [nzId]="'title'">
+                  <ng-template #addOnAfter>
+                    {{titleTextCount}}/{{titleTextLimitCount}}
+                  </ng-template>
+                </nz-input>
+              </div>
+              <span class="custom-error" nz-form-explain
+                    *ngIf="submitted && formGroup.get('title').hasError('required')">
+                <i class="si si-danger"></i>&nbsp;请输入标题</span>
+              <span class="custom-error" nz-form-explain
+                    *ngIf="enLenLimitError(this.getFormField('title'), 7)">
+                <i class="si si-danger"></i>&nbsp;标题最长为 {{titleTextLimitCount}} 个汉字</span>
+            </div>
+      </div>
+    </div>
+
+    <!-- 内容 -->
+    <div nz-form-item
+          nz-row>
+      <div nz-form-label
+            nz-col
+            [nzSm]="4">
+        <label for="content"
+                nz-form-item-required>内容：</label>
+      </div>
+      <div nz-form-control
+            nz-col
+            [nzSm]="20">
+            <div class="content-textarea">
+              <nz-input formControlName="content" [nzId]="'content'" [nzType]="'textarea'" [nzAutosize]="{ minRows: 8 }" [nzPlaceHolder]="'支持回车'"></nz-input>
+              <div class="content-length-tips">{{contentTextCount}}/{{contentTextLimitCount}}</div>
+            </div>
+            <span class="custom-error" nz-form-explain
+                  *ngIf="submitted && formGroup.get('content').hasError('required')">
+              <i class="si si-danger"></i>&nbsp;请输入内容</span>
+            <span class="custom-error" nz-form-explain
+                  *ngIf="enLenLimitError(this.getFormField('content'), 100)">
+              <i class="si si-danger"></i>&nbsp;内容最长为 {{contentTextLimitCount}} 个汉字</span>
+      </div>
+    </div>
+
+    <!-- 跳转至 -->
+    <div nz-form-item *ngIf="getFormField('kolList').length"
+          nz-row>
+      <div nz-form-label
+            nz-col
+            [nzSm]="4">
+        <label nz-form-item-required>跳转至：</label>
+      </div>
+      <div nz-form-control
+            nz-col class="jump-address"
+            [nzSm]="20">
+
+            <ng-container *ngIf="getFormField('kolList').length === 1">
+              <nz-tag *ngIf="singleAddressInfo.type === 2">{{limitName(singleAddressInfo.name)}}</nz-tag>
+              <a href="javascript: void(0)" (click)="selectJumpAddress(2)">商品</a>
+              <!-- <nz-tag *ngIf="singleAddressInfo.type === 3">{{singleAddressInfo.name}}</nz-tag>
+              <a href="javascript: void(0)" (click)="selectJumpAddress(3)">活动</a> -->
+              <nz-tag *ngIf="singleAddressInfo.type === 4">{{limitName(singleAddressInfo.name)}}</nz-tag>
+              <a href="javascript: void(0)" (click)="selectJumpAddress(4)">页面</a>
+            </ng-container>
+            <span class="custom-error" *ngIf="submitted && singleAddressError()">
+              <i class="si si-danger"></i>&nbsp;请选择跳转地址</span>
+
+            <nz-radio-group *ngIf="getFormField('kolList').length > 1" formControlName="jumpType">
+              <label nz-radio [nzValue]="0">
+                <span>商城首页</span>
+              </label>
+              <label nz-radio [nzValue]="1">
+                <span>购物车页</span>
+              </label>
+            </nz-radio-group>
+
+      </div>
+    </div>
+
+    <div class="btn-footer">
+      <button type="button" nz-button [nzSize]="'large'" [nzType]="'default'" (click)="cancelEdit()">
+        <span>取消</span>
+      </button>
+      <button type="submit" class="submit-btn" nz-button [nzSize]="'large'" [nzType]="'primary'" [disabled]="hasSent" >
+        <span>发送</span>
+      </button>
+    </div>
+
+    </form>
+  </div>
+</div>

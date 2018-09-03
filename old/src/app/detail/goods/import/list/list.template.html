@@ -1,0 +1,153 @@
+<div class="row" id="goods-import-module">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-title align-center import-goods-title">外部商品导入流程</div>
+      <div class="panel-content p-b-10 p-t-10">
+        <step-bar-one active="0" steps="$ctrl.steps"></step-bar-one>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col w-200 p-r-0 p-t-20">
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.addShop()">
+              <i class="fa fa-plus"></i>添加电铺
+            </button>
+            <see-tabset vertical="true">
+              <see-tab ng-repeat="t in $ctrl.shopList" heading="{{t.name}}" select="$ctrl.selectTab(target)" type="{{t.shopId}}">
+              </see-tab>
+            </see-tabset>
+          </div>
+          <div class="col border-left" style="width: calc(100% - 200px);">
+            <form ng-submit="$ctrl.submitSearch()" class="form-inline m-b-10" ng-if="$ctrl.shopList.length > 0">
+              <div class="form-group">
+                <input class="form-control" type="text" ng-model="$ctrl.searchForm.itemName" placeholder="商品名">
+              </div>
+              <div class="form-group">
+                <label class="control-label">
+                  <select id="" name="status" ng-model="$ctrl.searchForm.status" class="form-control" ng-change="$ctrl.submitSearch()">
+                    <option value="">全部铺货状态</option>
+                    <option value="0">未铺货</option>
+                    <option value="1">已铺货</option>
+                    <option value="2">铺货失败</option>
+                  </select>
+                </label>
+              </div>
+              <button class="btn btn-primary btn-max-w m-r-20 pull-right" type="button" ng-click="$ctrl.check()">检查有赞新增商品</button>
+            </form>
+            <div class="table-scrollable" ng-if="$ctrl.shopList.length > 0">
+              <table class="table table-hover table-striped import-list-table">
+                <thead>
+                  <tr>
+                    <th class="select-all-th">
+                      <see-checkbox ng-model="$ctrl.markAll" ng-change="$ctrl.markAllChange()" name="groupName">全选</see-checkbox>
+                      <!-- <input name="" type="checkbox" value=""  />
+                      <span>全选</span> -->
+                    </th>
+                    <th>商品主图</th>
+                    <th>商品名称</th>
+                    <th>总库存</th>
+                    <th>品类设置</th>
+                    <th>铺货状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.list">
+                    <td>
+                      <input name="" type="checkbox" ng-click="$ctrl.markItem(item.itemId, item.id)" ng-model="$ctrl.markedItem[item.itemId]" ng-disabled="item.status==1"
+                      />
+                    </td>
+                    <td>
+                      <a ng-href="{{item.detailUrl}}" target="_blank">
+                        <img see-src="item.thumbnail" class="img-viewer" style="width:150px;height:150px" alt="">
+                      </a>
+                    </td>
+                    <td>
+                      <a ng-href="{{item.detailUrl}}" target="_blank">{{item.title}}</a>
+                      <br>
+                      <span class="item_price">{{item.price | currency: '￥'}}</span>
+                    </td>
+                    <td>{{item.quantity}}</td>
+                    <td>
+                      <span class="attr-name" ng-if="item.status == 1">{{item.itemType > 0 ? item.className : '未设置'}}</span>
+                      <a ng-click="$ctrl.updateClass(item)" ng-if="item.status != 1" href="">{{item.itemType > 0 ? item.className : '未设置'}}</a>
+                      <a href="" ng-click="$ctrl.updateClass(item)"
+                        class="set-attr-btn" ng-if="item.status != 1">
+                        <i class="icon si si-bi"></i>
+                      </a>
+                    </td>
+                    <td ng-switch="item.status">
+                      <span ng-switch-when="0">未铺货</span>
+                      <span ng-switch-when="1">铺货成功</span>
+                      <span class="errorStatus" ng-switch-when="2">铺货失败</span>
+                      <span ng-switch-when="3">铺货中</span>
+                      <span class="errorStatus" ng-switch-when="4">铺货失败</span>
+                      <span class="errorStatus" ng-switch-when="5">铺货失败</span>
+                      <span class="errorStatus" ng-switch-when="6">铺货失败</span>
+                      <span class="errorStatus" ng-switch-when="7">铺货失败</span>
+                      <span class="errorStatus" ng-switch-when="8">铺货失败</span>
+                      <!-- <span ng-switch-when="2">铺货失败，规格不匹配</span>
+                           <span ng-switch-when="4">铺货失败，商品下架</span>
+                           <span ng-switch-when="5">铺货失败，网络异常</span>
+                           <span ng-switch-when="6">铺货失败，未设置品类</span>
+                           <span ng-switch-when="7">铺货失败，品类下线</span>
+                           <span ng-switch-when="8">铺货失败，有赞商品不完善</span>  -->
+                      <span class="reason">
+                        <br/>{{item.reason}}</span>
+                    </td>
+                    <td>
+                      <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.add(item)" ng-if="item.status == 0">铺货</a>
+                      <a class="btn btn-primary btn-sm" ng-click="$ctrl.jumpToGoods(item)" ng-if="item.status == 1">查看小电铺商品</a>
+                      <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.add(item)" ng-if="item.status <= 8 && item.status >=5">重新铺货</a>
+                      <!-- <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.addWithAttr(item)" ng-if="item.status == 2">重新铺货</a> -->
+                      <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.add(item)" ng-if="item.status == 2">重新铺货</a>
+                      <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.matchAttr(item)" ng-if="item.status == 2">{{item.attrJson ? '查看匹配规格' : '匹配规格'}}</a>
+                      <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.delete(item)" ng-if="item.status == 4">删除</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="panel-content my-shop-empty" ng-if="$ctrl.list.length == 0 && !$ctrl.loading">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h1 class="m-b-10">
+                      <i class="icon si si-emoji-sad"></i>没有符合条件的商品</h1>
+                    <div class="text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-content my-shop-empty" ng-if="$ctrl.list.length == 0 && $ctrl.loading">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h1 class="m-b-10">
+                      <i class="icon si si-emoji-sad"></i>正在加载，请稍候...</h1>
+                    <div class="text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button class="btn btn-primary btn-max-w" type="button" ng-click="$ctrl.batchAdd()">批量铺货</button>
+                <button class="btn btn-primary btn-max-w" type="button" ng-click="$ctrl.allAdd()">全店铺货</button>
+                <button class="btn btn-primary btn-max-w" type="button" ng-click="$ctrl.batchUpdate()">批量设置品类</button>
+              </div>
+              <pagination total-items="$ctrl.count" items-per-page="50"></pagination>
+            </div>
+            <div class="panel-content my-shop-empty" ng-if="$ctrl.shopList.length == 0">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h1 class="m-b-10">
+                    <i class="icon si si-emoji-sad"></i>尚未添加任何店铺</h1>
+                  <div class="text-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

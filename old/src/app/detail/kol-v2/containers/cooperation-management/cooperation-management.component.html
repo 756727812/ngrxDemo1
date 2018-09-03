@@ -1,0 +1,43 @@
+
+<nz-layout class="layout">
+  <nz-sider [nzWidth]="130" style="background:#fff" *ngIf="isAdmin">
+    <div class="text-center">
+      <img [seeSrc]="kolInfo?.avatar" class="kolAvatar" alt="">
+      <h3>{{ kolInfo?.kolName }}</h3>
+    </div>
+    <ul nz-menu [nzMode]="'inline'">
+      <li nz-menu-item>
+        <a class="nav-text" [routerLink]="['baseinfo']" [queryParams]="{ wechat_id: kolInfo?.wechatId, page: 1 }" fragment="2" >基本信息</a>
+      </li>
+      <li id="#storeConstruction" nz-submenu [nzOpen]="true" [routerLinkActive]="'ant-menu-submenu-open'">
+        <span title [innerText]="tabs[0].heading"></span>
+        <ul id="decorate-nav">
+          <li nz-menu-item *ngFor="let c of tabs[0].children" class="{{c.path}}" [routerLinkActive]="'ant-menu-item-selected'">
+            <a [routerLink]="[c.path]">{{ c.heading }}</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-menu-item [routerLinkActive]="'ant-menu-item-selected'">
+        <a class="nav-text" [routerLink]="['article']" [queryParams]="">文章管理</a>
+      </li>
+      <li nz-menu-item [routerLinkActive]="'ant-menu-item-selected'">
+        <a class="nav-text" [routerLink]="['article-v2']" [queryParams]="">文章管理2.0</a>
+      </li>
+      <li nz-menu-item>
+        <a class="nav-text" [routerLink]="['/kol/kol-cooperation-management', kolInfo?.kolId]" [queryParams]="{ wechat_id: kolInfo?.wechatId, page: 1 }" fragment="2" >商品管理</a>
+      </li>
+      <li nz-menu-item [routerLinkActive]="'ant-menu-item-selected'">
+        <a class="nav-text" [routerLink]="['goods-v2']" [queryParams]="">商品管理2.0</a>
+      </li>
+      <li nz-menu-item [routerLinkActive]="'ant-menu-item-selected'">
+        <a class="nav-text" [routerLink]="['marketing-tools']" [queryParams]="">营销工具</a>
+      </li>
+      <li nz-menu-item [routerLinkActive]="'ant-menu-item-selected'">
+        <a class="nav-text" [routerLink]="['bi']" [queryParams]="getQueryParams('bi')">数据中心</a>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-content class="content">
+    <router-outlet></router-outlet>
+  </nz-content>
+</nz-layout>

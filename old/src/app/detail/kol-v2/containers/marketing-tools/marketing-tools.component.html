@@ -1,0 +1,91 @@
+<!-- <div class="marketing-tools">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-md-6 marketing-item">
+            <img src="./marketing-tools-coupon.svg" alt="">
+            <h3>优惠券</h3>
+            <p>发放日常粉丝福利，提供新人专享优惠</p>
+            <a *seeAccess="'New-Brand'" href="/event/couponv2?kolId={{kolInfo.kolId}}&wechatId={{ kolInfo.wechatId }}&from=kolV2"></a>
+            <a *seeHide="'New-Brand'" href="/event/couponv2?name={{kolInfo.sellerMobile}}&kolId={{kolInfo.kolId}}&wechatId={{ kolInfo.wechatId }}&from=kolV2"></a>
+          </div>
+          <div class="col-md-6 marketing-item">
+            <img src="./marketing-tools-seckill.svg" alt="">
+            <h3>秒杀</h3>
+            <p>限量秒杀抢购或限时折扣专场
+              <br/>多种活动玩法等你来</p>
+            <a href="/event/seckill?kolId={{kolInfo.kolId}}&wechat_id={{kolInfo.wechatId}}&from=kolV2"></a>
+          </div>
+          <div class="col-md-6 marketing-item">
+            <img src="./marketing-tools-group.svg" alt="">
+            <h3>拼团</h3>
+            <p>依托微信好友关系社交裂变
+              <br/>引导用户分享购买</p>
+            <a href="/event/group?kolId={{kolInfo.kolId}}&wechat_id={{kolInfo.wechatId}}&from=kolV2"></a>
+          </div>
+          <div class="col-md-6 marketing-item marketing-item__more">
+            <img src="./marketing-tools-more.svg" alt="">
+            <h3>更多营销工具</h3>
+            <p>敬请期待…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div nz-row [nzGutter]="30">
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="marketing-item">
+      <img src="./marketing-tools-coupon.svg" alt="">
+      <h3>优惠券</h3>
+      <p>发放日常粉丝福利，提供新人专享优惠</p>
+      <a *seeAccess="'New-Brand'" href="/event/couponv2?kolId={{kolInfo.kolId}}&wechatId={{ kolInfo.wechatId }}&from=kolV2"></a>
+      <a *seeHide="'New-Brand'" href="/event/couponv2?name={{kolInfo.sellerMobile}}&kolId={{kolInfo.kolId}}&wechatId={{ kolInfo.wechatId }}&from=kolV2"></a>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="marketing-item">
+      <img src="./marketing-tools-seckill.svg" alt="">
+      <h3>秒杀</h3>
+      <p>限量秒杀抢购或限时折扣专场
+        <br/>多种活动玩法等你来</p>
+      <a href="/event/seckill?kolId={{kolInfo.kolId}}&wechat_id={{kolInfo.wechatId}}&from=kolV2"></a>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="marketing-item">
+      <img src="./marketing-tools-group.svg" alt="">
+      <h3>拼团</h3>
+      <p>依托微信好友关系社交裂变
+        <br/>引导用户分享购买</p>
+      <a href="/event/group?kolId={{kolInfo.kolId}}&wechat_id={{kolInfo.wechatId}}&from=kolV2"></a>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="12" see-access="Super-Admin Elect-Admin">
+      <div class="marketing-item">
+        <img src="./marketing-tools-order-coupon.png" alt="">
+        <h3>下单返券</h3>
+        <p>用户下单支付即返优惠券
+          <br/>刺激复购增强粘性</p>
+        <a href="/event2/coupon?kolId={{kolInfo.kolId}}&xdpId={{kolInfo.xdpId}}&wechat_id={{kolInfo.wechatId}}&from=kolV2"></a>
+      </div>
+    </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="marketing-item">
+      <img src="./marketing-tools-fulloff.png" alt="" style='width:98px;height:67px'>
+      <h3>满减</h3>
+      <p>提供直观优惠力度，激励用户凑单转化
+        <br/>为用户提供优惠</p>
+      <a [routerLink]="['/kol-benefit/v2',kolInfo.kolId,kolInfo.wechatId,kolInfo.xdpId,'benefit-list']"></a>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="marketing-item marketing-item__more">
+      <img src="./marketing-tools-more.svg" alt="">
+      <h3>更多营销工具</h3>
+      <p>敬请期待…</p>
+    </div>
+  </div>
+</div>

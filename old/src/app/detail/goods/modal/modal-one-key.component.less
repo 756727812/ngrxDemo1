@@ -1,0 +1,62 @@
+.cur-progress{padding:120px 160px}
+
+.little-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.little-circle.success {
+  background-color: #78af2d;
+}
+
+.little-circle.fail {
+  background-color: #bc2a42;
+}
+
+.batch-err{
+  color:#bc2a42;font-size: 20px;padding:40px;text-align: center;
+}
+
+#xcx-code-auth-one-key {
+  ul {
+    > li {
+      padding-left: 20px;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      height: 80px;
+
+      button {
+        height: 34px;
+        line-height: 34px;
+        border: none;
+        appearance: none;
+        background-color: #5971e8;
+        color: white;
+        padding: 0 20px;
+        border-radius: 2px;
+
+        &:focus {
+          outline: none;
+        }
+
+        &[disabled] {
+          opacity: 0.7;
+        }
+      }
+
+      .desc-wrap {
+        font-size: 13px;
+        padding-left: 40px;
+        line-height: 1.2;
+
+        .warning {
+          color: #fc3d38;
+        }
+      }
+    }
+  }
+}

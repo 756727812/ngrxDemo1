@@ -1,0 +1,15 @@
+<div>
+    <form role="form" lpformnum="1" _lpchecked="1">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="control-label">输入要添加圈子名：</label>
+                <angucomplete-alt placeholder="Search Circless" selected-object="selectedCircle" pause="100" remote-url="/api/circle/searchCircle?keyword="
+                remote-url-data-field="data" title-field="cir_name" description-field="cir_id" minlength="1" input-class="form-control form-control-small"
+                />
+            </div>
+        </div>
+        <button ng-click="relateCircleAct()" type="submit" class="btn btn-primary">
+            添加
+        </button>
+    </form>
+</div>

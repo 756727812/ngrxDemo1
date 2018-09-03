@@ -1,0 +1,43 @@
+<nz-spin [nzSpinning]="busy">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel bi-panel">
+        <div class="panel-content">
+          <div class="h">
+            <div class="txt-h">
+              交易分布
+              <app-bi-mark-tip tipName="BI_TRADE_DIST"></app-bi-mark-tip>
+            </div>
+            <div class="right">
+              <app-bi-date-filter class="date-filter"
+                                  [types]="dateTypeOptions"
+                                  (ngModelChange)="onDateFilterModelChange($event)"
+                                  [(ngModel)]="dateVal"></app-bi-date-filter>
+              <app-bi-btn-export name="TRADE_DIST"
+                                 [params]="exportParams"></app-bi-btn-export>
+            </div>
+          </div>
+          <div class="clearfix main"
+               nz-row>
+            <div class="left chart-ct"
+                 nz-col
+                 [nzMd]="12">
+              <div class="caption">营销模块分布</div>
+              <div class="chart bar"
+                   #barChart>
+              </div>
+            </div>
+            <div class="right chart-ct"
+                 nz-col
+                 [nzMd]="12">
+              <div class="caption">订单金额分布</div>
+              <div class="chart pie"
+                   #pieChart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

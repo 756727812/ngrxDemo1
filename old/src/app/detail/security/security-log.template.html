@@ -1,0 +1,94 @@
+<div class="header">
+  <h2><strong>访问日志</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/security">安全管理</a></li>
+      <li class="active">访问日志</li>
+    </ol>
+  </div>
+</div> 
+
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+
+        <div>
+          <form class="form-inline" ng-submit="$ctrl.changeFilter()">
+            <div class="form-group m-b-10">
+                <label class="control-label"> 平台
+                  <select class="form-control" ng-model="$ctrl.platform" ng-options="item.value as item.name for item in $ctrl.filter_platform" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 模块
+                  <select class="form-control" ng-model="$ctrl.ctrl_id" ng-options="item.value as item.name for item in $ctrl.filter_ctrl" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label" ng-if="$ctrl.num_api > 0"> 接口
+                  <select class="form-control" ng-model="$ctrl.api_id" ng-options="item.value as item.name for item in $ctrl.filter_api" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 时间
+                  <select class="form-control" ng-model="$ctrl.time" ng-options="item.value as item.name for item in $ctrl.filter_time" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 组
+                  <select class="form-control" ng-model="$ctrl.pri" ng-options="item.value as item.name for item in $ctrl.filter_pri"  ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label" ng-if="$ctrl.num_backend > 0"> 账号
+                  <select class="form-control" ng-model="$ctrl.backend_id" ng-options="item.value as item.name for item in $ctrl.filter_backend"  ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                
+ 
+                <button class="btn btn-primary" type="submit">搜索</button>
+            </div>
+          </form>
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>平台</th>
+                  <th>角色</th>
+                  <th>账号</th>
+                  <th>账号名</th>
+                  <th>IP</th>
+                  <th>模块名</th>
+                  <th>接口名</th>
+                  <th>时间</th>
+                  <th>处理结果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.list_log track by $index">
+                	  <td>{{item.platform_name}}</td>
+                    <td>{{item.pri_name}}</td>
+                    <td>{{item.seller_email}}</td>
+                    <td>{{item.seller_name}}</td>
+                    <td>{{item.ip}}</td>
+                    <td>{{item.ctrl_name}}</td>
+                    <td>{{item.str_url}}</td>
+                    <td>{{item.str_time}}</td>
+                    <td ng-if="item.result_msg === ''">
+                      <font color="blue">成功</font>
+                    </td>
+                    <td ng-if="item.result_msg !== ''">
+                      <font color="red">{{item.result_msg}}</font>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+ 
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+

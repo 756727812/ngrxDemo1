@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h3 class="modal-title">选择品类</h3>
+</div>
+<div class="modal-body">
+  <div ivh-treeview="vm.class_list" ivh-treeview-id-attribute="'id'" ivh-treeview-label-attribute="'className'" ivh-treeview-default-selected-state="false"
+    ivh-treeview-on-cb-change="vm.onSelectSingle(ivhNode, ivhIsSelected, ivhTree)" ivh-treeview-filter="vm.search">
+    <script type="text/ng-template">
+      <span ivh-treeview-toggle>
+        <span ivh-treeview-twistie></span>
+      </span>
+      <span class="s-ivh-mbox" ng-click="trvw.toggleSelected(node)" ng-if="trvw.isLeaf(node) && node.classPath.split(',').length == 2">
+        <!-- <span ng-show="node.selected" class="s-ivh-cb s-cb-selected"></span>
+        <span ng-show="node.__ivhTreeviewIndeterminate" class="s-ivh-cb s-cb-indeterminate">
+        </span> -->
+        <input type="radio" name="class">
+        <!-- <span ng-hide="node.selected || node.__ivhTreeviewIndeterminate" class="s-ivh-cb s-cb-unselected"></span> -->
+      </span>
+      <span class="ivh-treeview-node-label" ivh-treeview-toggle>
+        {{trvw.label(node)}}
+      </span>
+      <div ivh-treeview-children></div>
+    </script>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+</div>

@@ -1,0 +1,65 @@
+<div class="editor shop-construct-editor" [hidden]="isUpgradeInfoVisible">
+
+  <div class="head">
+    <div class="caption">小电铺装修
+      <a [href]="backToMall" [hidden]="!isAdmin">前往商城</a>
+      <div class="release-warn" [hidden]="!(hasUnSaved$ | async)">
+        <i class="si si-info1 info-icon"></i>当前页面存在新增改动未发布
+      </div>
+    </div>
+    <div *ngIf="(meta$ | async)?.editTime || startConfig" class="submit-btns">
+      <div class="btn-wrap">
+        <div (click)="handleSave($event)" class="button btn-save">
+          保存
+        </div>
+        <div *ngIf="(meta$ | async)?.editTime" class="time">上次保存 {{(meta$ | async)?.editTime | date:'MM.dd HH:mm'}}</div>
+      </div>
+      <div class="btn-wrap">
+        <div (click)="handleRelease($event)" class="button btn-release">发布</div>
+        <div *ngIf="(meta$ | async)?.publishTime" class="time">上次发布 {{(meta$ | async)?.publishTime | date:'MM.dd HH:mm'}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="main" *ngIf="(meta$ | async)?.editTime || startConfig">
+    <div class="busy-mask" [hidden]="!(busy$ | async) && !loading">
+      <nz-spin class="spin" [nzSize]="'large'"></nz-spin>
+    </div>
+    <app-res-pane></app-res-pane>
+    <app-preview-pane #previewPane></app-preview-pane>
+    <!-- <app-ctrl-pane #ctrlPane class="ctrl-pane"></app-ctrl-pane> -->
+  </div>
+  <div class="intro" *ngIf="!(meta$ | async)?.editTime && !startConfig && !(loading$ | async)">
+    <div class="guide">
+      <p [style.fontWeight]="'bold'">
+        你目前还没有进行小店铺装修，没有装修的小店铺在前端不会显示任何内容
+      </p>
+      <!-- <p>
+           良好的装修时经营店铺的第一步，通常吧啦啦啦， 总之这里会有几句入门级装修建议，不要太多，两三行就行了， 到时候找evan要文案
+           </p> -->
+      <div (click)="handleStartConfig($event)" class="button btn-start">开始装修</div>
+    </div>
+    <div class="pic">
+      <img src="../../../../../images/shop-iphone.png" alt="" />
+    </div>
+  </div>
+</div>
+
+<!-- <button nz-button [nzType]="'primary'" (click)="showUpgradeInfoModal()">
+     <span>显示更新信息对话框</span>
+     </button> -->
+
+<nz-modal [nzVisible]="isUpgradeInfoVisible" [nzTitle]="'版本更新'" [nzContent]="modalContent" [nzFooter]="false" (nzOnCancel)="handleUpgradeInfoModalCancel($event)"
+  (nzOnOk)="handleUpgradeInfoModalOk($event)">
+  <ng-template #modalContent>
+    <div class="upgrade-info-modal">
+      <h2 class="upgrade-info-modal__title">当前小程序版本暂不支持新版小电铺装修</h2>
+      <p class="upgrade-info-modal__desc">你可以在使用小电铺装修1.0的同时</p>
+      <p class="upgrade-info-modal__desc m-b-15">联系客服人员进行升级</p>
+      <div class="qrcode" [hidden]="isAdmin">
+        <img src="../../../../../images/qr/service.jpg" alt="">
+        <p class="text-center">扫码升级</p>
+      </div>
+      <a [href]="oldEntryPath" *ngIf="(meta$ | async)?.userType != 1" class="btn btn-primary old-entry-btn">小电铺装修1.0</a>
+    </div>
+  </ng-template>
+</nz-modal>

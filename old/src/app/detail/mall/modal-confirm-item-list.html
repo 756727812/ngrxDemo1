@@ -1,0 +1,174 @@
+<div class="modal-header">
+  <!--
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  -->
+  {{vm.updateNumClash()}}
+  <div>
+    <h1 ng-if="vm.from_params.type_distribute == 1" class="modal-title">
+      <font color="black" style="font-size:20px">模板分配 - 确认清单</font>
+    </h1>
+
+    <h1 ng-if="vm.from_params.type_template_add_item == 1" class="modal-title">
+      <font color="black" style="font-size:20px">模板添加商品 - 确认清单</font>
+    </h1>
+
+    <h1 ng-if="vm.from_params.type_mall_add_item == 1" class="modal-title">
+      <font color="black" style="font-size:20px">添加商品 - 确认清单</font>
+    </h1>
+
+    <h1 ng-if="vm.from_params.type_template_item_set == 1" class="modal-title">
+      <font color="black" style="font-size:20px">模板批量个性化 - 确认清单</font>
+    </h1>
+
+    <h1 ng-if="vm.from_params.type_mall_set_item == 1" class="modal-title">
+      <font color="black" style="font-size:20px">商品设置 - 确认清单</font>
+    </h1>
+
+  </div>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-20 portlets" style="padding-left:20px;">
+      <div>
+        <div class="table-scrollable" ng-if="vm.mall_id == 0">
+          <div class="pull-left">
+            <label class="text-danger">【{{vm.template_info.template_name}}】模板</font>
+            </label>
+            <br />
+            <label>本次共覆盖
+              <font color="red">{{vm.num_set_kol}}</font> 个KOL，即将更新
+              <font color="red">{{vm.num_set_item}}</font> 件商品</label>
+            <br />
+            <label ng-if="vm.is_set_one_item != 1">其中
+              <font color="red">{{vm.getNumClash()}}</font> 件商品有冲突情况待处理</label>
+          </div>
+          <div class="pull-right" style="padding-right:20px;" ng-if="vm.num_set_item > 0 && vm.num_set_kol > 0 && vm.is_set_one_item != 1">
+            <br />
+            <button class="btn btn-primary" type="button" ng-click="vm.popSet(false)">批量设置/KOL个性化设置</button>
+          </div>
+        </div>
+        <div class="table-scrollable" ng-if="vm.mall_id != 0">
+          <div class="pull-left add-tips">
+            <label ng-if="vm.add_item_info.is_ok">本次即将更新
+              <i>{{vm.num_set_item}}</i> 件商品</label>
+            <label ng-if="!vm.add_item_info.is_ok">总共添加
+              <i>{{vm.add_item_info.total}}</i>个，添加成功
+              <i>{{vm.add_item_info.success}}</i>个，失败
+              <i>{{vm.add_item_info.fail}}</i>个，下面为添加失败的商品列表</label>
+            <br />
+          </div>
+          <div class="pull-right" style="padding-right:20px;" ng-if="vm.num_set_item > 0 && vm.num_set_kol > 0 && vm.is_set_one_item != 1">
+            <br />
+            <button see-hide="KOL New-Brand" class="btn btn-primary" type="button" ng-click="vm.popSet(false)">批量设置</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-scrollable">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>商品图</th>
+              <th see-hide="KOL New-Brand">品牌
+                <br />商品ID
+                <br />商品名</th>
+              <th see-access="KOL New-Brand">商品名</th>
+              <th>售价</th>
+              <th>供货价</th>
+              <th see-hide="KOL New-Brand">母商品库存
+                <br />闲置/已锁/总</th>
+              <th see-hide="KOL New-Brand">库存设置</th>
+              <th ng-if="vm.is_set_one_item != 1 && vm.mall_id == 0">状态</th>
+              <th ng-if="vm.mall_id == 0">上线时间</th>
+            </tr>
+          </thead>
+          <tbody style="cursor:{{vm.class_type_cursor}}">
+            <tr ng-repeat="item in vm.list_item  track by $index" ng-click="vm.popSet(vm.list_item[$index])">
+              <td>
+                <img see-src="item.item_imgurl" style="width:60px;height:60px;">
+                <i class="si si-danger" ng-if="!vm.add_item_info.is_ok"></i>
+              </td>
+
+              <td see-hide="KOL New-Brand" title="{{item.item_name}}">
+                {{item.brand_name| moreContent:10}}
+                <br />{{item.item_id}}
+                <br />{{item.item_name | moreContent:10}}
+              </td>
+
+              <td see-access="KOL New-Brand" title="{{item.item_name}}">
+                {{item.item_name | moreContent:60}}
+              </td>
+
+              <td>
+                <label ng-if="item.price_min == item.price_max">
+                  ￥{{item.price_min}}
+                </label>
+                <label ng-if="item.price_min !== item.price_max">
+                  ￥{{item.price_min}}~￥{{item.price_max}}
+                </label>
+              </td>
+
+              <td>
+                <label ng-if="item.price_kol_min == item.price_kol_max">
+                  ￥{{item.price_kol_min}}
+                </label>
+                <label ng-if="item.price_kol_min !== item.price_kol_max">
+                  ￥{{item.price_kol_min}}~￥{{item.price_kol_max}}
+                </label>
+              </td>
+
+              <td see-hide="KOL New-Brand">{{item.stock_info.free}}/{{item.stock_info.locked}}/{{item.stock_info.all}}</td>
+
+              <td see-hide="KOL New-Brand">
+                <label ng-if="item.not_share_parent_stock == 0">
+                  读取闲置库存
+                </label>
+                <label ng-if="item.not_share_parent_stock != 0">
+                  <label class="text-primary">{{item.not_share_parent_stock}} </label>KOL已锁定库存
+                </label>
+              </td>
+
+              <td ng-if="vm.is_set_one_item != 1 && vm.mall_id == 0">
+                <label ng-if="item.num_clash == 0">
+                  <font color="green">已就绪</font>
+                </label>
+                <label ng-if="item.num_clash != 0">
+                  <font color="red">{{item.num_clash}}个冲突</font>
+                </label>
+              </td>
+
+
+              <td ng-if="vm.mall_id == 0">
+                <label ng-if="item.num_time == 0">
+                  {{item.ori_online_time_stmp * 1000 | date: 'MM/dd HH:mm'}}
+                </label>
+                <label ng-if="item.num_time != 0">
+                  <font color="green">{{item.num_time}}个KOL已个性化设置</font>
+                </label>
+              </td>
+
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--
+  <div style="float:left; padding-left:40px;padding-top:15px;">
+    <select class="form-control" ng-model="vm.cur_page" ng-change="vm.changePage()" ng-options="item for item in vm.list_page">
+       <option value="" selected>-- 页数 --</option>
+    </select>
+  </div>
+-->
+<div class="modal-footer">
+  <font color="red" ng-if="vm.is_clash == 1">请先解决冲突</font>
+  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+  <!--
+  <button class="btn btn-default" type="button" ng-click="vm.goBack()">上一步</button>
+-->
+  <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+
+</div>

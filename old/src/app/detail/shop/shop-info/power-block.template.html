@@ -1,0 +1,35 @@
+<div class="row power-block">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-sm-12 main-wrap">
+            <strong>小电铺能力</strong>
+            <ul class="tags">
+              <li
+                class="tag-wrap"
+                ng-repeat="tag in $ctrl.data.label_info track by tag.label_id"
+                ng-class="{active:tag.label_status === 1}"
+              >
+                <div class="tag">{{tag.label_name}}</div>
+
+                <div ng-if="tag.label_desc !== ''" class="pop">
+                  <!-- TODO 后台还没有是否绑定了公众号标识-->
+                  <div class="inner clearfix">
+                    <div>
+                      <p
+                        ng-repeat="line in tag.label_desc.split('\n') track by $index"
+                      >{{line}}</p>
+                      <a ng-if="tag.label_btn_text !== ''" ng-click="$ctrl.gogoUrl(tag.label_btn_url)">{{tag.label_btn_text}}</a>
+                    </div>
+
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

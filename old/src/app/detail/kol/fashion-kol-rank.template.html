@@ -1,0 +1,191 @@
+<div class="header">
+  <h2><strong>KOL合作管理</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <!--<li><a href="/kol">KOL管理</a></li>-->
+      <li class="active">总榜</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.rank_type === '1'}" ng-click="$ctrl.rankTypeFilter('1')">KOL商业榜</button>
+              <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.rank_type === '2'}" ng-click="$ctrl.rankTypeFilter('2')">内容品牌&品类榜</button>
+              <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.rank_type === '3'}" ng-click="$ctrl.rankTypeFilter('3')">购买品牌&品类榜</button>
+              <br />
+          </div>
+
+          <div ng-if="$ctrl.rank_type === '1'">
+            <div>
+              <form class="form-inline" ng-submit="$ctrl.submitSearch()">
+                <div class="form-group m-b-10">
+                  <label class="control-label">KOL </label>
+
+                  <ui-select multiple ng-model="$ctrl.list_select" theme="bootstrap" close-on-select="false" title="选择KOL" style="width: 300px;">
+                    <ui-select-match placeholder="选择KOL...">{{$item.name}}</ui-select-match>
+                    <ui-select-choices repeat="item.name as item in $ctrl.list_key_kol | propsFilter: {name: $select.search}">
+                      <div ng-bind="item.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                  </ui-select>
+                <!--
+                  <input type="text" class="form-control" style="min-width: 210px;" placeholder="搜索KOL" ng-model="$ctrl.list_select" ng-trim="true">
+                    </label>
+                    -->
+                </div>
+                <div class="form-group m-b-10">
+                  <button class="btn btn-primary" type="submit">搜索</button>
+                </div>
+              </form>
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>排名</th>
+                      <th>KOL<!--
+                        <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;"
+                    uib-tooltip="基于基础热度指数计算得出，0-60为中，60-80为较高，80-100为高。"><i class="fa fa-question text-primary"></i></button>-->
+                      </th>
+                      <th>KQI<!--
+                        <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;"
+                    uib-tooltip="基于公号的阅读、点赞、评论点赞、内容商业特征(品牌、品类)覆盖度、内容商业特征离散程度以及融合置信降权的因子等计算出来的KOL质量指标，用于衡量KOL在内容商业化方面的能力。"><i class="fa fa-question text-primary"></i></button>-->
+                      </th>
+                      <th>商业化属性
+
+                      </th>
+                      <th>商品均价
+
+                      </th>
+                      <th>粉丝购买欲望<!--
+                        <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;"
+                    uib-tooltip="基于KOL文章评论的购买欲望特征频度、特征点赞、覆盖度，以及基础阅读、点赞等因子，计算得出，用于衡量KOL粉丝的购买欲望程度大小。"><i class="fa fa-question text-primary"></i></button>-->
+                      </th>
+                      <th>粉丝消费力<!--
+                        <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;"
+                    uib-tooltip="KOL成交订单中，订单均价。"><i class="fa fa-question text-primary"></i></button>-->
+                      </th>
+                      <th>粉丝转化率<!--
+                        <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;"
+                    uib-tooltip="粉丝登录商品详情页到购买的转化率。"><i class="fa fa-question text-primary"></i></button>-->
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in $ctrl.list_info_kol track by $index">
+                        <td>{{item.rank}}</td>
+                        <td><a  href="/kol/kol-cooperation-management/0?wechat_id={{item.wechat_id}}#3" class=""><span style="color:black;">{{item.wechat_name}}</span></a></td>
+                        <td>{{item.kqi}}</td>
+                        <td>{{item.price_coverage}}</td>
+                        <td>{{item.avg_price}}</td>
+                        <td>{{item.buy_desire}}</td>
+                        <td>{{item.per_customer_transaction}}</td>
+                        <td>{{item.avg_conver_rate}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div ng-if="$ctrl.rank_type === '2' || $ctrl.rank_type === '3'">
+            <div>
+              <see-tabset>
+                <see-tab heading="品牌榜" select="$ctrl.selectTab()" type="1"></see-tab>
+                <see-tab heading="品类榜" select="$ctrl.selectTab()" type="2"></see-tab>
+              </see-tabset>
+
+              <div ng-if="$ctrl.hash === '1'">
+                <form class="form-inline" ng-submit="$ctrl.submitSearch()">
+                  <div class="form-group m-b-10">
+                    <label class="control-label">品牌 </label>
+
+                    <ui-select ng-if="$ctrl.type == 2" multiple ng-model="$ctrl.list_select" theme="bootstrap" close-on-select="false" title="选择品牌" style="width: 300px;">
+                      <ui-select-match placeholder="选择品牌...">{{$item.name}}</ui-select-match>
+                      <ui-select-choices repeat="item.name as item in $ctrl.list_key_brand | propsFilter: {name: $select.search}">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                      </ui-select-choices>
+                    </ui-select>
+
+                    <input ng-if="$ctrl.type == 1"  type="text" class="form-control" style="min-width: 210px;" placeholder="搜索品牌" ng-model="$ctrl.list_select" ng-trim="true">
+                    </label>
+                  </div>
+                  <div class="form-group m-b-10">
+                    <button class="btn btn-primary" type="submit">搜索</button>
+                  </div>
+                </form>
+                <div class="table-scrollabel">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>排名</th>
+                        <th>品牌</th>
+                        <th ng-if="$ctrl.rank_type === '2'">评分</th>
+                        <th ng-if="$ctrl.rank_type === '3'">频次</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in $ctrl.list_info_brand track by $index">
+                        <td>{{item.rank}}</td>
+                        <td><a  href="/kol/kol-rank/{{$ctrl.type}}/{{$ctrl.category}}/{{item.key_word}}" class="text-primary">{{item.key_word}}</a></td>
+                        <td ng-if="$ctrl.rank_type === '2'">{{item.score}}</td>
+                        <td ng-if="$ctrl.rank_type === '3'">{{item.num}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div ng-if="$ctrl.hash === '2'">
+                <form class="form-inline" ng-submit="$ctrl.submitSearch()">
+                  <div class="form-group m-b-10">
+                    <label class="control-label">品类 </label>
+
+                    <ui-select multiple ng-model="$ctrl.list_select" theme="bootstrap" close-on-select="false" title="选择品类" style="width: 300px;">
+                      <ui-select-match placeholder="选择品类...">{{$item.name}}</ui-select-match>
+                      <ui-select-choices repeat="item.name as item in $ctrl.list_key_class | propsFilter: {name: $select.search}">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                      </ui-select-choices>
+                    </ui-select>
+                 <!--
+                    <input type="text" class="form-control" style="min-width: 210px;" placeholder="搜索品类" ng-model="$ctrl.list_select" ng-trim="true">
+                    </label>-->
+                  </div>
+                  <div class="form-group m-b-10">
+                    <button class="btn btn-primary" type="submit">搜索</button>
+                  </div>
+                </form>
+                <div class="table-scrollabel">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>排名</th>
+                        <th>品类</th>
+                        <th ng-if="$ctrl.rank_type === '2'">评分</th>
+                        <th ng-if="$ctrl.rank_type === '3'">频次</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in $ctrl.list_info_class track by $index">
+                        <td>{{item.rank}}</td>
+                        <td><a  href="/kol/kol-rank/{{$ctrl.type}}/{{$ctrl.category}}/{{item.key_word}}" class="text-primary">{{item.key_word}}</a></td>
+                        <td ng-if="$ctrl.rank_type === '2'">{{item.score}}</td>
+                        <td ng-if="$ctrl.rank_type === '3'">{{item.num}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

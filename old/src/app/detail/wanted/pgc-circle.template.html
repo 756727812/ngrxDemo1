@@ -1,0 +1,78 @@
+<div class="header">
+  <h2>
+    <strong>我的圈子</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">我的圈子</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div>
+          <h4>圈子列表</h4>
+          <button ng-click="jumpToCreateCircle()" type="button" class="btn btn-primary" see-hide="PGC-Part">创建pgc圈子</button>
+          <form class="form-inline" ng-submit="searchPgcCircle ()">
+            <div class="form-group">
+              <label class="control-label">搜索圈子</label>
+              <input type="text" class="form-control" ng-model="searchData.keyword" placeholder="圈子名" />
+            </div>
+            <button type="submit" class="btn btn-primary">搜索</button>
+          </form>
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>编号</th>
+                  <th see-access="Super-Admin See-Admin Oper">圈主ID</th>
+                  <th see-access="Super-Admin See-Admin Oper">圈主头像</th>
+                  <th>圈子banner</th>
+                  <th>圈子logo</th>
+                  <th>名称</th>
+                  <th>心愿数</th>
+                  <th>申请时间</th>
+                  <th>粉丝数</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="circle in circleList">
+                  <td>{{circle.cir_id}}</td>
+                  <td see-access="Super-Admin See-Admin Oper">{{circle.owner_id}}</td>
+                  <td see-access="Super-Admin See-Admin Oper">
+                    <img width="50" height="50" class="img-circle" alt="{{circle.owner_username}}" see-src="circle.u_headimg"/></td>
+                    <td>
+                      <img width="50" height="50" class="img-circle" alt="{{circle.cir_name}}" see-src="circle.cir_banner" />
+                    </td>
+                    <td>
+                      <img width="50" height="50" class="img-circle" alt="{{circle.cir_name}}" see-src="circle.cir_logo" />
+                    </td>
+                    <td>
+                      <h4>{{circle.cir_name}}</h4>
+                      <span>{{circle.cir_description}}</span>
+                    </td>
+                    <td>{{circle.themecount}}</td>
+                    <td>{{circle.cir_time}}</td>
+                    <td>{{circle.followcount}}</td>
+                    <td>已有</td>
+                    <td><a class="btn btn-sm btn-primary" ng-href="/wanted/myCircle/circleInfo?cir_id={{circle.cir_id}}">进入圈子</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination total-items="total_items"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+
+</footer>

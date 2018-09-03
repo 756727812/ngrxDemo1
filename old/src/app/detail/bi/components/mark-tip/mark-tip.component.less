@@ -1,0 +1,99 @@
+// 把 z-index 10 换成变量，不着调为啥定义变量就 undefined
+
+.qm-wrap {
+  padding-left: 5px;
+  display: inline-block;
+  display: inline-flex;
+  position: relative;
+  z-index: 10;
+
+  i {
+    color: #5971e8;
+    font-size: 16px;
+  }
+
+  img {
+    vertical-align: middle;
+  }
+
+  .tips {
+    font-weight: normal;
+    padding: 10px;
+    display: block;
+    font-size: 12px;
+    line-height: 1.42;
+    background-color: #fff;
+    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.06);
+    border: solid 1px #ebebeb;
+  }
+
+  .hold-wrap {
+    z-index: 10;
+    position: absolute;
+    white-space: nowrap;
+    width: auto;
+    background-color: transparent;
+    display: none;
+
+    &.visible {
+      display: block;
+    }
+
+    &.r-t {
+      left: 100%;
+      bottom: 50%;
+      margin-bottom: -10px;
+
+      .tips {
+        margin-left: 8px;
+        margin-bottom: 10px;
+      }
+    }
+
+    &.r-b {
+      left: 100%;
+      top: 50%;
+      margin-top: -10px;
+
+      .tips {
+        margin-left: 8px;
+        margin-bottom: 10px;
+      }
+    }
+
+    &.l-t {
+      right: 100%;
+      bottom: 50%;
+
+      .tips {
+        margin-right: 8px;
+      }
+    }
+
+    &.t {
+      bottom: 100%;
+
+      .tips {
+        margin-bottom: 8px;
+      }
+    }
+
+    &.t-c {
+      bottom: 100%;
+      transform: translateX(-50%);
+      left: 50%;
+
+      .tips {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  &:hover {
+    z-index: 10 + 1;
+
+    .hold-wrap {
+      display: block;
+    }
+  }
+}

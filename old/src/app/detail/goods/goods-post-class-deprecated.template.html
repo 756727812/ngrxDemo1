@@ -1,0 +1,72 @@
+<div class="header">
+  <h2><strong>发布商品</strong><span>--选择商品品类</span></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">发布商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div ng-show="classType" id="selectType">
+          <div class="row" ng-if="type == 'editPost'">
+            <div class="pull-left" style="display: inline-block;">
+              <img width="150" height="auto" class="img-rounded" see-src="item_img_url" alt="{{item_name}}">
+            </div>
+            <div class="col-xs-3">
+              <h4>{{item_name}}</h4>
+            </div>
+          </div>
+          <p ng-if="type == 'editPost'" class="edit-post-font">品类:{{editClassType}}</p>
+          <div class="select-address form-inline">
+            <div class="select-address-container well">
+              <ul class="row">
+                <li class="col-xs-12 col-md-4">
+                  <span class="item-title" ng-repeat="listItem in classList" ng-click="selectType($index,$last,0);setList($index,1);checkLast(listItem.childs);"
+                    ng-class="{'label label-primary': select_f[0][$index]}">
+                                                      {{listItem.class_name}}
+                                                  </span>
+                </li>
+
+                <li class="col-xs-12 col-md-4" ng-if="show2">
+                  <span class="item-title" ng-repeat="listItem in classList[classSelect[1]].childs" ng-click="selectType($index,$last,1);setList($index,2);setClass(listItem.class_id);checkLast(listItem.childs);show3=true"
+                    ng-class="{'label label-primary': select_f[1][$index]}">
+                                                      {{listItem.class_name}}
+                                                  </span>
+                </li>
+
+                <li class="col-xs-12 col-md-4" ng-if="show3">
+                  <span class="item-title" ng-repeat="listItem in classList[classSelect[1]].childs[classSelect[2]].childs" ng-click="selectType($index,$last,2);setList($index,3);setClass(listItem.class_id);checkLast(listItem.childs);"
+                    ng-class="{'label label-primary': select_f[2][$index]}">
+                                                      {{listItem.class_name}}
+                                                  </span>
+                  <h5 ng-show="!classList[classSelect[1]].childs[classSelect[2]].childs.length" class="text-muted text-center">没有更多了</h5>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="selected-result">你当前选择的是：<span class="text-primary">{{classList[classSelect[1]].class_name}}</span>
+            <i ng-show="classList[classSelect[1]].childs[classSelect[2]].class_name">&gt;</i>
+            <span class="text-primary">{{classList[classSelect[1]].childs[classSelect[2]].class_name}}</span>
+            <i ng-show="classList[classSelect[1]].childs[classSelect[2]].childs[classSelect[3]].class_name">&gt;</i>
+            <span class="text-primary">{{classList[classSelect[1]].childs[classSelect[2]].childs[classSelect[3]].class_name}}</span>
+          </p>
+
+          <div class="text-center">
+            <a ng-if="goodId" ng-hide="from == 'match_img_list'" class="btn btn-lg btn-primary" ng-class="{'forbin':!isclassLast}" ng-disabled="!isclassLast"
+              ng-href="/goods/Post/{{selectClass}}/{{type}}/{{goodId}}">确认</a>
+            <a ng-if="!goodId" ng-hide="from == 'match_img_list'" class="btn btn-lg btn-primary" ng-class="{'forbin':!isclassLast}" ng-disabled="!isclassLast"
+              ng-click="goClass(selectClass)" href="">确认</a>
+            <a ng-if="from == 'match_img_list'" class="btn btn-lg btn-primary" ng-class="{'forbin':!isclassLast}" ng-disabled="!isclassLast"
+              ng-click="selectedClass(selectClass)" href="">确认</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

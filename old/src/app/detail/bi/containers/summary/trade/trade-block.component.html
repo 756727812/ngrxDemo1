@@ -1,0 +1,65 @@
+<nz-spin [nzSpinning]="busy">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel bi-panel summary-trade">
+        <div class="panel-content">
+          <div class="h">
+            <div class="txt-h">
+              交易概览
+              <app-bi-mark-tip align="r-t"
+                               tipName="BI_SUMMARY_TRADE"></app-bi-mark-tip>
+
+            </div>
+            <div class="flex-wrap">
+              <app-bi-date-filter class="date-filter"
+                                  [types]="dateTypeOptions"
+                                  (ngModelChange)="onDateFilterModelChange($event)"
+                                  [(ngModel)]="dateVal"></app-bi-date-filter>
+              <app-bi-right-nav label="交易分析"
+                                class="right-nav"
+                                href="/bi/trade"></app-bi-right-nav>
+            </div>
+          </div>
+          <div class="clearfix main"
+               nz-row>
+            <ul nz-col
+                [nzMd]="24"
+                [nzLg]="6"
+                nz-row>
+              <li *ngFor="let item of items; let i = index;"
+                  [ngClass]="{active:item.active}"
+                  [ngSwitch]="item.fmt"
+                  (click)="onClickItem(item, i)"
+                  nz-col
+                  [nzSm]="12"
+                  [nzMd]="12"
+                  [nzLg]="24">
+                <div class="wrap">
+                  <div class="icon-wrap"
+                       *ngIf="item.active">
+                    <i class="fa fa-check icon"></i>
+                  </div>
+                  <span class="labe">{{item.desc}}</span>
+
+                  <span *ngSwitchCase="'number'"
+                        class="val">{{data[item.name] | number}}</span>
+                  <span *ngSwitchCase="'currency'"
+                        class="val">{{data[item.name] | _currency}}</span>
+                  <span *ngSwitchCase="'percent'"
+                        class="val">{{data[item.name] | percent:'.2'}}</span>
+                  <span *ngSwitchDefault
+                        class="val">{{data[item.name]}}</span>
+                </div>
+              </li>
+            </ul>
+            <div class="chart"
+                 nz-col
+                 [nzMd]="24"
+                 [nzLg]="18"
+                 #chart></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

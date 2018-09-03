@@ -1,0 +1,78 @@
+<h1><img src="//static.seecsee.com/seego_backend/global/images/logo/see-logo-black.png"" alt="">&nbsp;自媒体注册</h1>
+<form name="registerForm" class="form-signup w5c-form" role="form" novalidate w5c-form-validate>
+  <label class="m-b-10"> 账户信息 </label>
+  <div class="append-icon">
+    <input type="email" name="email" class="form-control form-white" placeholder="注册邮箱" autocomplete="off" required ng-model="$ctrl.formData.seller_email"
+      ng-blur="$ctrl.validateEmail(registerForm)">
+    <label for="seller_email" class="error" ng-show="$ctrl.email_validate_result" ng-bind="$ctrl.email_validate_result"></label>
+    <i class="icon-envelope"></i>
+  </div>
+  <div class="append-icon">
+    <input type="password" name="password" class="form-control form-white" placeholder="设置密码" autocomplete="off" required ng-model="$ctrl.formData.seller_pwd"
+      ng-pattern="/^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/">
+    <i class="icon-lock"></i>
+  </div>
+  <div class="append-icon">
+    <input type="password" name="password2" class="form-control form-white" placeholder="确认密码" autocomplete="off" ng-model="$ctrl.formData.pwd_repeat"
+      w5c-repeat="password" required>
+    <i class="icon-lock"></i>
+  </div>
+  <div class="append-icon">
+    <input type="text" name="seeusername" class="form-control form-white" placeholder="See APP账号绑定的手机号" autocomplete="off" ng-model="$ctrl.formData.bind_see_account"
+      required>
+    <i class="icon-screen-smartphone"></i>
+  </div>
+  <p>若为第三方账号注册，请填写绑定的手机号 <a href="" ng-click="$ctrl.showBind()" class="text-primary">如何绑定？</a></p>
+  <div class="append-icon">
+    <input type="password" name="seepassword" class="form-control form-white" placeholder="See APP注册密码" autocomplete="off" ng-model="$ctrl.formData.bind_see_pwd"
+      required>
+    <i class="icon-lock"></i>
+  </div>
+  <label class="m-b-10"> 联系人信息 </label>
+  <div class="append-icon">
+    <input type="text" name="contacter" class="form-control form-white contacter" placeholder="联系人姓名" ng-model="$ctrl.formData.seller_name"
+      required>
+    <i class="icon-user-following"></i>
+  </div>
+  <div class="append-icon">
+    <input type="text" name="alipay" class="form-control form-white" placeholder="支付宝账号" ng-model="$ctrl.formData.alipay_account"
+      required>
+    <i class="icon-user"></i>
+  </div>
+  <div class="append-icon">
+    <input type="text" name="wechat" class="form-control form-white" placeholder="微信号" ng-model="$ctrl.formData.wx_account" required>
+    <i class="fa fa-wechat"></i>
+  </div>
+  <label class="m-b-10"> 达人描述区 </label>
+  <div class="append-icon">
+    <input type="text" name="pgc_name" class="form-control form-white" placeholder="公众号名称" ng-model="$ctrl.formData.service_name"
+      required>
+    <i class="fa fa-wechat"></i>
+  </div>
+  <div class="append-icon">
+    <select name="tag_list" class="form-control form-white m-b-10" required ng-model="$ctrl.formData.u_tag" ng-options="t as t for t in $ctrl.user_tag">
+                    <option value="" selected>-- 请选择达人标签(伴随名称一起出现) --</option>
+                </select>
+  </div>
+  <div class="append-icon ">
+    <textarea class="form-control form-white m-b-10 " rows="2 " placeholder="达人描述(展示在个人信息中,帮助用户更加了解你,40字以内) " name="u_tag_desc"
+      ng-model="$ctrl.formData.u_tag_desc" required maxlength="40"></textarea>
+  </div>
+  <div class="terms option-group ">
+    <label for="terms" class="m-t-10 ">
+                    <input type="checkbox" name="terms" id="terms" data-checkbox="icheckbox_square" required/> 同意遵守
+                    <a href="//m.seeapp.com/see/static/seego/daily.html " target="_blank ">《See购服务商日常交易行为规范》</a>
+                </label>
+  </div>
+  <div class="form-group m-b-10 " ng-show="$ctrl.errors.length">
+    <div class="alert alert-danger">
+      <ui>
+        <li ng-repeat="error in $ctrl.errors track by $index" ng-bind="error"></li>
+      </ui>
+    </div>
+  </div>
+  <button type="button" class="btn btn-lg btn-dark m-t-20" ng-disabled="$ctrl.btn_disabled" w5c-form-submit="$ctrl.signup()">注册</button>
+  <div class="clearfix">
+    <p class="pull-right m-t-20"><a href="login.html">已经有账号?点击登录</a></p>
+  </div>
+</form>

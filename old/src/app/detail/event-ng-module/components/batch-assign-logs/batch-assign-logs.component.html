@@ -1,0 +1,95 @@
+<div class="panel">
+  <div class="panel-content">
+    <h1>指派记录</h1>
+    <div class="tbar">
+      <div class="right search">
+        <nz-input class="keyword"
+                  [(ngModel)]="_createUser"
+                  [nzType]="'search'"
+                  (nzOnSearch)="searchClick($event)"
+                  [nzPlaceHolder]="'创建人员名称、邮箱'"></nz-input>
+        <button nz-button
+                [nzType]="'primary'"
+                (click)="searchClick()">
+          <i class="anticon anticon-search"></i>
+          <span>搜索</span>
+        </button>
+      </div>
+    </div>
+
+    <nz-table #tableRef
+              [nzAjaxData]="dataSet"
+              [nzLoading]="loading"
+              [nzTotal]="totalCount"
+              [(nzPageIndex)]="page"
+              (nzPageIndexChange)="getTasks()"
+              nzShowSizeChanger
+              [(nzPageSize)]="pageSize"
+              (nzPageSizeChange)="getTasks(true)">
+      <thead nz-thead>
+        <tr>
+          <th nz-th>创建人员</th>
+          <th nz-th>
+            <span>指派类型</span>
+            <nz-dropdown [nzTrigger]="'click'">
+              <i class="anticon anticon-filter" nz-dropdown></i>
+              <ul nz-menu>
+                <li nz-menu-item *ngFor="let filter of filterTypeArray">
+                  <label nz-checkbox [(ngModel)]="filter.check" (ngModelChange)="updateFilter(filter.name, $event)">
+                    <span>{{filter.name}}</span>
+                  </label>
+                </li>
+              </ul>
+              <div nz-table-filter>
+                <span nz-table-filter-confirm (click)="filterClick()">确定</span>
+                <span nz-table-filter-clear (click)="filterReset(filterTypeArray)">重置</span>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th nz-th>模板KOL</th>
+          <th nz-th>批量复制数</th>
+          <th nz-th>指派状态</th>
+          <th nz-th>指派时间</th>
+          <th nz-th>操作</th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr *ngFor="let item of tableRef.data">
+          <td nz-td>
+            {{item.createUserName}}<br/>{{item.createUserEmail}}
+          </td>
+          <td nz-td>
+            {{assignTypes[item.type]}}
+          </td>
+          <td nz-td>
+            {{item.sourceKolName}}<br/>{{item.sourceKolEmail}}
+          </td>
+          <td nz-td>
+            {{item.count}}
+          </td>
+          <td nz-td>
+            <div *ngIf="item.status === 1 || item.status === 2" class="status-col">
+              <nz-spin [nzSize]="'small'" class="small-spin"></nz-spin>{{assignStatus[item.status]}}
+            </div>
+            <div *ngIf="item.status === 3" class="status-col">
+              <div class="little-circle success"></div>{{assignStatus[item.status]}}
+            </div>
+            <div *ngIf="item.status === 4 || item.status === 5" class="status-col">
+              <div class="little-circle fail"></div>{{assignStatus[item.status]}}
+            </div>
+          </td>
+          <td nz-td>
+            {{item.createTime | date:'yyyy-MM-dd HH:mm'}}
+          </td>
+          <td nz-td>
+            <a href="javascript:void(0)" (click)="getTaskDetail(item.batchId, item.type, item.status !== 1 && item.status !== 2)">详情</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <app-event-quick-jumper *ngIf="showPaginaton"
+                            [maxPage]="max_page"
+                            (quickJumperFun)="quickJumperFun($event)">
+    </app-event-quick-jumper>
+  </div>
+</div>

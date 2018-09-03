@@ -1,0 +1,55 @@
+<div class="header">
+  <h2><strong>虚拟订单管理</strong></h2>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+
+              <div class="table-scrollable">
+                <div class="pull-right">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.addItem()">添加</button>
+                </div>
+
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>KOL信息</th>
+                      <th>文章ID</th>
+                      <th>文章名</th>
+                      <th>虚拟订单数</th>
+                      <th>虚拟订单GMV</th>
+                      <th style="width:300px;">时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in $ctrl.list">
+
+                        <td>id:{{item.kol_id}}
+                          <br /><a  href="/kol/kol-cooperation-management/{{item.kol_id}}?wechat_id={{item.weixin_id}}#1" class=""><span style="color:black;">{{item.kol_name}}</span></a>
+                        </td>
+                        <td>{{item.article_id}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.virtual_order_num}}</td>
+                        <td>￥{{item.virtual_order_gmv}}</td>
+                        <td>创建:{{item.virtual_order_time * 1000 | date: 'MM-dd HH:mm'}}<br />
+                            更新:{{item.virtual_order_update_time * 1000 | date: 'MM-dd HH:mm'}}
+                        </td>
+                        <td>
+                          <button class="btn btn-sm btn-primary" ng-click="$ctrl.editItem(item)">编辑</button>
+                          <button class="btn btn-sm btn-primary" ng-click="$ctrl.delteItem(item)">删除</button>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

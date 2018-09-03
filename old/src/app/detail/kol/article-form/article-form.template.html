@@ -1,0 +1,114 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.dismiss()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">{{$ctrl.modalTitle}}</h3>
+</div>
+<div class="modal-body clearfix">
+  <p class="tips">
+    公众号文章推送前，请确保下方信息填写正确，否则将会影响到文章数据的获取，下方信息稍后可在当前页面进行编辑
+  </p>
+  <form class="form-horizontal w5c-form"
+        name="addKOLForm"
+        novalidate
+        w5c-form-validate="$ctrl.validateOptions"
+        role="form">
+    <div style="display: none;">
+      <!--
+          为了屏蔽 chrome 自动填写表单
+
+          https://stackoverflow.com/questions/12374442/chrome-browser-ignoring-autocomplete-off#30873633
+          -->
+      <input type="text"
+             id="PreventChromeAutocomplete"
+             name="PreventChromeAutocomplete"
+             autocomplete="address-level4" />
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3 required">文章标题</label>
+      <div class="col-sm-7">
+        <input name="title"
+               type="text"
+               class="form-control"
+               ng-model="$ctrl.form_data.title"
+               ng-trim="true"
+               required
+               placeholder="公众号上即将发布或已发布的文章的标题">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3 required">上线时间</label>
+      <div class="col-sm-7">
+        <div class="dropdown"
+             style="display: inline-block;">
+          <a class="dropdown-toggle"
+             id="dropdown2"
+             role="button"
+             data-toggle="dropdown"
+             data-target="#"
+             href=""
+             aria-expanded="false">
+                <input type="text" name="start_time" datetime="yyyy-MM-dd" class="form-control" style="height: 34px;width: 170px;" data-ng-model="$ctrl.form_data.start_time" required placeholder="填写文章发布时间">
+              </a>
+          <ul class="dropdown-menu"
+              role="menu"
+              aria-labelledby="dLabel">
+            <datetimepicker name="start_time" required
+            data-ng-model="$ctrl.form_data.start_time"
+                            data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minView: 'day' }" />
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3 required">文章楼层</label>
+      <div class="col-sm-7">
+        <input input-mask="{{$ctrl.articleFloorInputMask}}"
+               name="floor_level"
+               type="text"
+               class="form-control"
+               ng-model="$ctrl.form_data.floor_level"
+               placeholder="{{$ctrl.articleFloorPlaceholder}}"
+               ng-trim="true"
+               required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3">文章链接</label>
+    <div class="col-sm-7">
+        <input name="url"
+              w5c-customizer="$ctrl.validateWechatArticleUrl()"
+              w5c-dynamic-element
+               type="text"
+               class="form-control"
+               placeholder="填写文章的具体链接"
+               ng-model="$ctrl.form_data.url"
+               ng-trim="true">
+      </div>
+    </div>
+    <div class="form-group"
+         ng-if="$ctrl.form_data.from_type === '2'">
+      <label class="control-label col-sm-3 required">转载来源（文章ID）</label>
+      <div class="col-sm-7">
+        <input name="from_article_id"
+               type="text"
+               class="form-control"
+               placeholder="输入转载文章的ID"
+               ng-model="$ctrl.form_data.from_article_id"
+               ng-trim="true"
+               required>
+      </div>
+    </div>
+
+    <br />
+    <div class="modal-footer">
+      <button class="btn btn-primary"
+              type="button"
+              w5c-form-submit="$ctrl.ok()">确定</button>
+      <button class="btn btn-default"
+              type="button"
+              ng-click="$ctrl.cancel()">取消</button>
+    </div>
+  </form>
+</div>

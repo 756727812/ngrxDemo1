@@ -1,0 +1,220 @@
+<div class="header">
+  <h2><strong>KOL订单管理</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/kol">KOL管理</a></li>
+      <li class="active">订单管理</li>
+    </ol>
+  </div>
+</div>
+<div>
+  <!--所有订单-->
+  <div class="panel">
+    <div class="panel-content">
+      <form ng-submit="submitSearchOrder()" class="form-inline">
+        <div class="form-group m-b-10">
+          <label class="control-label">关键词
+            <input type="search" class="form-control" style="width: 300px;" ng-model="searchForm.filter.key" placeholder="订单号/买家名/商品名/商品ID/品牌/规格">
+          </label>
+        </div>
+        <div class="form-group m-b-10">
+          <label class="control-label">下单时间
+            <input date-range-picker class="form-control date-picker" style="width: 200px;" type="text" ng-model="searchForm.datePicker">
+          </label>
+        </div>
+        <div class="form-group m-b-10">
+          <label class="control-label">KOL </label>
+          <ui-select multiple ng-model="searchForm.kol_select" theme="bootstrap" close-on-select="false" title="选择KOL"
+                     style="width: 300px;">
+            <ui-select-match placeholder="选择KOL...">{{$item.value}}</ui-select-match>
+            <ui-select-choices repeat="seller.value as seller in $ctrl.list_seller_email | propsFilter: {value: $select.search}">
+              <div ng-bind-html="seller.value | highlight: $select.search"></div>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <div class="form-group m-b-10">
+          <label class="control-label">发货地 </label>
+          <ui-select multiple ng-model="searchForm.ship_country" theme="bootstrap" close-on-select="false" title="选择KOL"
+                     style="width: 300px;">
+            <ui-select-match placeholder="选择发货地...">{{$item.value}}</ui-select-match>
+            <ui-select-choices repeat="seller.value as seller in $ctrl.list_ship_country | propsFilter: {value: $select.search}">
+              <div ng-bind-html="seller.value | highlight: $select.search"></div>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <div class="form-group m-b-10">
+          <label class="control-label">订单类型 </label>
+          <ui-select multiple ng-model="searchForm.order_type" theme="bootstrap" close-on-select="false" title="选择订单类型"
+                     style="width: 300px;">
+            <ui-select-match placeholder="选择订单类型...">{{$item.value}}</ui-select-match>
+            <ui-select-choices repeat="seller.value as seller in $ctrl.list_order_type | propsFilter: {value: $select.search}">
+              <div ng-bind-html="seller.value | highlight: $select.search"></div>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <div class="form-group" ng-repeat="(key,value) in OrderFilter">
+          <select name="type" class="form-control" ng-model="searchForm.filter[key]">
+            <option ng-repeat="item in value" value="{{item.key=='0'?'':item.key}}">{{item.value}}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+        <button class="btn btn-primary" ng-click="exportOrderData()">导出</button>
+        <div class="btn-group hidden" uib-dropdown see-access="Super-Admin Elect-Admin KOL-Admin">
+          <button id="single-button1" type="button" class="btn btn-primary" uib-dropdown-toggle>
+            {{orderText || '订单筛选'}} <span class="caret"></span>
+          </button>
+          <ul uib-dropdown-menu role="menu" aria-labelledby="single-button1">
+            <li role="menuitem"><a href="" ng-click="locationMark(1)">星标订单</a></li>
+            <li role="menuitem"><a href="" ng-click="locationMark(0)">所有订单</a></li>
+          </ul>
+        </div>
+      </form>
+      <form ng-submit="submitSearchSellerOrder()" hidden see-access="Super-Admin Elect-Admin" class="form-inline" style="margin-top: 10px;">
+        <div class="form-group">
+          <label class="control-label">商家搜索
+            <input type="text" class="form-control" ng-model="adminSearchData.seller_email" placeholder="输入商家注册邮箱">
+          </label>
+        </div>
+        <button type="submit" class="btn btn-danger"><i class="fa fa-search"></i>搜索</button>
+        <div class="form-group">
+          <label for="control-label"></label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="orderImages" class="table-scrollable">
+    <table class="table table-light font-size-12">
+      <thead>
+        <tr class="bg-f1f4f7">
+          <th width="120" style="width: 120px;"></th>
+          <th>商品</th>
+          <th>发货地</th>
+          <th>单价数量</th>
+          <th>优惠总额</th>
+          <th>实付金额</th>
+          <th>下单时间</th>
+          <th>更新时间</th>
+          <th>商户账号</th>
+          <th>税费和实付运费</th>
+          <th>状态</th>
+          <th see-hide="C2C-Seller New-Brand">派发信息</th>
+          <th>囤货出库状态</th>
+          <th width="100">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-f1f4f7 tdbtn" ng-repeat-start="order in Order">
+          <td colspan="9">
+            <p>中订单号：{{order.summary_info.order_id}} <span see-access="Super-Admin Fin-Admin Elect-Admin" ng-show="order.summary_info.big_order_id">， 对账编号：{{order.summary_info.big_order_id}}</span></p>
+            <p class="ellipsis">收货信息：{{order.summary_info.recv_addr}}</p>
+          </td>
+          <td>
+            <p ng-class="{'text-primary': +order.summary_info.tax > 0}">被税：{{order.summary_info.tax | currency: '￥'}}</p>
+          </td>
+          <td>
+            <p>{{order.summary_info.status_str}}</p>
+            <p ng-show="order.status == '30001' || order.status == '30004'">{{order.summary_info.is_withdraw ? '已提现' : '未提现'}}</p>
+            <a ng-href="/order/detail/{{order.summary_info.order_id}}/1" class="" ng-show="order.summary_info.status == 20002">查看物流</a>
+            <p ng-show="order.summary_info.sendgood_result" class="font-red-mint">发货失败
+              <button type="button" uib-popover="{{order.summary_info.sendgood_result}}" popover-trigger="focus" class="btn btn-sm  btn-danger">失败原因
+              </button>
+            </p>
+          </td>
+          <td see-access="B2C-Service Oper Super-Admin Elect-Admin KOL-Admin"></td>
+          <td></td>
+          <td>
+            <a ng-href="/order/detail/{{order.summary_info.order_id}}" class="m-l-10 m-r-10">查看详情</a>
+            <!--
+                 <button see-access="Super-Admin C2C-Seller New-Brand KOL-Admin" class="btn btn-sm btn-primary" ng-click="contactUser(order.summary_info.order_id)">联系用户</button>
+               -->
+          </td>
+        </tr>
+        <tr class="bg-f1f4f7" ng-repeat-start="smallOrder in order.order_list">
+          <td colspan="10">
+            <!--订单号:{{smallOrder.order_id}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            备注:<a href="" id="{{smallOrder.order_id}}" data-type="textarea" data-pk="{{smallOrder.order_id}}"
+                    data-url="/api/order/addOrderComments" data-placeholder="备注信息" data-original-title="输入备注信息" class="editable editable-pre-wrapped editable-click"
+                    style="display: inline; background-color: rgba(0, 0, 0, 0);" see-editable>{{smallOrder.comments}}</a>
+          </td>
+          <td>
+            <div see-access="Super-Admin Elect-Admin KOL-Admin" ng-if="order.summary_info.is_mark_star == 1" class="text-warning"><i class="icon-star"></i>
+              <i class="icon-star"></i>
+              <i class="icon-star"></i></div>
+          </td>
+          <td see-access="B2C-Service Oper Super-Admin Elect-Admin KOL-Admin"></td>
+          <td></td>
+          <td>
+            <button  see-access="Super-Admin Elect-Admin KOL-Admin" class="btn btn-sm btn-primary hidden" ng-click="markStar(order.summary_info.order_id,order.summary_info.is_mark_star == 0?1:0)">{{order.summary_info.is_mark_star == 0?'设为星标':'取消星标'}}</button>
+          </td>
+        </tr>
+        <tr class="bg-f1f4f7" ng-repeat-end>
+          <td style="width: 120px;">
+            <img see-src="smallOrder.f_imgurl"  see-viewer width="100" class="img-viewer" alt="{{smallOrder.item_name}}">
+          </td>
+          <td>
+            <p>{{smallOrder.subject}}</p>
+            <!--<p>SKU ID: {{smallOrder.sku_id}}</p>-->
+            <p>货号：{{smallOrder.sku_mark}}</p>
+            <p>规格:{{smallOrder.attr_value}}</p>
+            <div ng-if="smallOrder.item_ori_url">
+              <a ng-href="{{smallOrder.item_ori_url}}" class="text-primary" target="_blank"><i class="fa fa-external-link"></i>原官网链接</a>
+            </div>
+          </td>
+          <td>发货地</td>
+          <td>
+            <p class="price">{{smallOrder.buy_price | currency: '¥'}}</p>
+            <p class="quantity">{{smallOrder.quantity}}件</p>
+          </td>
+          <td>
+            <p>优惠总额：{{smallOrder.total_full_off_price | currency: '¥'}}</p>
+            <p>优惠券：{{smallOrder.coupon_price | currency: '¥'}}</p>
+            <p>满减活动：{{smallOrder.full_off_price | currency: '¥'}}</p>
+          </td>
+          <td>
+            {{smallOrder.total_fee | currency: '¥'}}
+          </td>
+          <td>
+            {{smallOrder.buy_time | date:'yyyy-MM-dd HH:mm:ss'}}
+          </td>
+          <td>
+            {{smallOrder.update_time | date:'yyyy-MM-dd HH:mm:ss'}}
+          </td>
+          <td>
+            <p>KOL账号：{{smallOrder.daren_seller_name}}</p>
+            <p>KOL名称：{{smallOrder.daren_name}}</p>
+          </td>
+          <td>
+            <p>运费：{{smallOrder.freight_cost | currency: '¥'}}</p>
+            <p ng-class="{'text-primary': +smallOrder.tax > 0}">税费：{{smallOrder.tax | currency: '¥'}}</p>
+          </td>
+          <td>
+            {{smallOrder.status_str}}
+          </td>
+          <td ng-class="{'border-left-right': smallOrder.dispatch_seller_id != '0'}" see-hide="C2C-Seller New-Brand">
+            <div ng-if="smallOrder.dispatch_seller_id != '0'">
+              <p>已派发</p>
+              <p>派发商户</p>
+              <p>{{smallOrder.dispatch_seller_account}}</p>
+              <p>金额{{smallOrder.dispatch_price | currency: '¥'}}</p>
+              <!--<button type="button" class="btn btn-sm btn-circle btn-outline btn-primary" ng-click="changeDispatchPriceModal(smallOrder.order_id,smallOrder.total_fee)">
+                   <i class="fa fa-edit"></i>编辑
+                   </button>-->
+            </div>
+          </td>
+          <td>{{smallOrder.store_msg.msg}}</td>
+          <td></td>
+        </tr>
+        <tr ng-repeat-end>
+          <td style="height: 30px;border-top: none;"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination total-items="total_items"></pagination>
+</div>

@@ -1,0 +1,15 @@
+<div class="video-upload">
+  <div class="init-trigger" [hidden]="value||uploading">
+    <nz-basic-upload   [isVideo]="isVideo" name="image" [name]="'file'" [nzBeforeUpload]="beforeUpload" [nzAccept]="'video/mp4'"
+      [nzAction]="'https://upload.qiniu.com/'" (nzOnError)="onError($event)" (nzOnProgress)="onProgress($event)" (nzOnStart)="onStart($event)"
+      (nzOnSuccess)="onSuccess($event)">
+    </nz-basic-upload>
+  </div>
+  <div class="img-seat" *ngIf="value||uploading">
+    <div class="spin-wrap" [hidden]="!uploading">
+      <nz-spin class="spin" [nzSize]="'large'"></nz-spin>
+    </div>
+    <img [hidden]="!value" [src]="cover">
+  </div>
+  <span class="edit-trigger" [hidden]="!value" (click)="handleEditClick()"><i class="i-close-icon close si si-close2"></i></span>
+</div>

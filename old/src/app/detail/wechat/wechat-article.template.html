@@ -1,0 +1,111 @@
+<div class="header">
+  <h2><strong>内容榜单</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">微信趋势</a></li>
+      <li class="active">内容榜单</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-2">
+
+            <div class="list-group">
+              <a href="" class="list-group-item bg-info color-white">内容分类</a>
+              <a href="" class="list-group-item" ng-repeat="lib in list_category" ng-click="changeCategory(lib.platform)" ng-class="{'active': catalog_name === lib.platform}"
+                ng-bind="lib.platform"></a>
+
+            </div>
+          </div>
+
+          <div class="col-xs-10">
+            <form class="form-inline m-b-10" ng-submit="searchArticle()">
+              <div class="form-group">
+                <!-- <label class="control-label">文章搜索：</label> -->
+                <input type="search" ng-model="keyword" class="form-control" placeholder="搜索文章">
+              </div>
+              <button class="btn btn-primary">查询</button>
+            </form>
+            <div class="clear-fix" ng-show="showDate">
+              <p class="input-group pull-left" style="width: 200px;">
+                <input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" ng-model="dt" is-open="opened"
+                  current-text="今天" clear-text="清空" close-text="关闭" />
+                <span class="input-group-btn">
+                              <button type="button" class="btn btn-primary" ng-click="opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+              </p>
+              <p class="text-info m-t-5 pull-left">榜单周期：<span ng-bind="calcPeriod()"></span></p>
+            </div>
+            <see-tabset>
+              <see-tab heading="最新最热" select="selectTab()" type="newest"></see-tab>
+              <see-tab heading="今日榜" select="selectTab()" type="today"></see-tab>
+              <see-tab heading="日榜单" select="selectTab()" type="daily"></see-tab>
+              <see-tab heading="周榜单" select="selectTab()" type="weekly"></see-tab>
+              <see-tab heading="月榜单" select="selectTab()" type="monthly"></see-tab>
+            </see-tabset>
+            <div class="table-scrollable">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr class="boss-header">
+                    <th style="min-width:330px;">标题</th>
+                    <th class="sort-col" data-sort="publish_time" style="width:150px;">发布时间</th>
+                    <th>自媒体</th>
+                    <th>分类</th>
+                    <th class="text-right sort-col" data-sort="read_num">阅读数</th>
+                    <th class="text-right sort-col" data-sort="like_num">点赞数</th>
+                    <th class="text-right sort-col" data-sort="like_rate">点赞率</i>
+                    </th>
+                    <th class="text-right sort-col" data-sort="reward_num">打赏数</i>
+                    </th>
+                    <th class="text-right sort-col" data-sort="comment_num">评论数</i>
+                    </th>
+                    <th class="text-right sort-col" data-sort="score">影响力</i>
+                    </th>
+                    <th class="text-right sort-col" data-sort="speed">热度</i>
+                    </th>
+                    <th class="text-right sort-col" data-sort="quality">流行度</i>
+                    </th>
+                    <th class="text-right sort-col sorted" data-sort="relative_score">爆款指数</i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-show="isNull">
+                    <td colspan="12"> 暂无数据 </td>
+                  </tr>
+                  <tr ng-repeat="article in articleslist">
+                    <td>
+                      <a ng-href="/wechat/article/{{article.article_id}}" ng-bind-html="article.title | trustHtml"></a>
+                    </td>
+                    <td ng-bind="article.publish_time | dateFormat"></td>
+                    <td>
+                      <a ng-href="/wechat/media/{{article.account_id}}" ng-bind="article.account_name"></a>
+                    </td>
+                    <td ng-bind="article.article_tags"></td>
+                    <td ng-bind="article.read_num"></td>
+                    <td ng-bind="article.like_num"></td>
+                    <td ng-bind="article.like_rate | percentage"></td>
+                    <td ng-bind="article.reward_num"></td>
+                    <td ng-bind="article.comment_num"></td>
+                    <td ng-bind="article.score"></td>
+                    <td ng-bind="article.speed"></td>
+                    <td ng-bind="article.quality"></td>
+                    <td class="text-danger" ng-bind="article.relative_score"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="total_items" items-per-page="50"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">创建新的母商品</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">商户</label>
+            <div class="col-sm-10">
+                <input name="choice_c2c" type="text" class="form-control" ng-model="vm.choice_c2c" autocomplete="off" required uib-typeahead="c2cItem as c2cItem.seller_name for c2cItem in vm.list_c2c | filter:{seller_name:$viewValue} | limitTo:8" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">品类</label>
+            <div class="col-sm-10">
+                <div class="col-sm-4">
+                    <select name="category_one" class="form-control" ng-model="vm.category.one" ng-options="v.class_id as v.class_name for (k, v) in vm.list_class">
+                        <option value="" selected>-- 请选择 --</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select name="category_one" class="form-control" ng-model="vm.category.two" ng-options="v.class_id as v.class_name for (k, v) in vm.list_class[vm.category.one].children" >
+                        <option value="" selected>-- 请选择 --</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select name="category_one" class="form-control" ng-model="vm.category.three" ng-options="v.class_id as v.class_name for (k, v) in vm.list_class[vm.category.one].children[vm.category.two].children" >
+                        <option value="" selected>-- 请选择 --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">品牌</label>
+            <div class="col-sm-10">
+                <input name="choice_brand" type="text" class="form-control" ng-model="vm.choice_brand" autocomplete="off" required uib-typeahead="brandItem as brandItem.brand_name for brandItem in vm.list_brand | filter:{brand_name:$viewValue} | limitTo:8" />
+            </div>
+        </div>
+        
+        <div class="form-group" ng-show="vm.errors.length > 0">
+            <ul class="col-sm-offset-2 col-sm-8">
+              <li class="alert alert-danger" ng-repeat="err in vm.errors track by $index" ng-bind="err"></li>
+            </ul>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

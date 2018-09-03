@@ -1,0 +1,18 @@
+<div class="panel">
+  <div class="panel-content">
+    <div class="top-avatar">
+      <nz-avatar nzSize="large" nzText="{{ruleName | textAvatar}}" class="rule-avatar"></nz-avatar>
+      {{ruleName}}
+    </div>
+    <nz-tabset>
+      <nz-tab>
+        <ng-template #nzTabHeading>规则详情</ng-template>
+        <app-rules-content [ruleId]="ruleId" [isElectAdmin]="isElectAdmin" (getStatus)="getStatus($event)" (getRuleName)="getRuleName($event)" (getShopHeadPic)="getShopHeadPic($event)"></app-rules-content>
+      </nz-tab>
+      <nz-tab>
+        <ng-template #nzTabHeading>成员管理</ng-template>
+        <app-kol-list [ruleId]="ruleId" [status]="status" [isElectAdmin]="isElectAdmin" [shopHeadPic]="shopHeadPic"></app-kol-list>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>

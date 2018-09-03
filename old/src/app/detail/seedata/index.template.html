@@ -1,0 +1,85 @@
+<div class="header">
+  <h2>
+    <strong>小电铺概况</strong>
+  </h2>
+</div>
+<div id="seedataInfo">
+  <div class="row shop-info-header avatar-block shop-info" ng-if="$ctrl.profileData">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-7 profile-section">
+              <img see-src="$ctrl.sellerinfo.seller_heading" width="64" height="64" alt="" class="img-circle m-r-10">
+              <ul class="desc-block">
+                <li>
+                  <strong class="name" ng-bind="$ctrl.sellerinfo.seller_name"></strong>
+                </li>
+                <li ng-if="$ctrl.userinfo.isVip">
+                  <span class="label-vip">VIP</span>
+                  <span>会员到期时间：{{$ctrl.userinfo.endTime | date: 'yyyy年MM月dd日 HH:mm:ss'}}</span>
+                  <a class="btn btn-default recharge-btn" ng-if="!$ctrl.isFree" ng-click="$ctrl.applyRecharge('续费')">续费</a>
+                </li>
+                <li ng-if="!$ctrl.userinfo.isVip">
+                  <span class="label-xdp-v">普通用户</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-4 ammount-section col-sm-offset-1">
+              <a class="btn btn-primary" ng-click="$ctrl.goSeedata()">进入SEE数</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="buy">
+        <div class="nowPrivilege">
+          <h4>普通用户权限</h4>
+          <ul class="privList">
+            <li ng-repeat="item in $ctrl.nowPrivList">
+              <span class="privName">{{item['name']}}</span>
+              <span class="privDetail">
+                <span class="count">{{item['count']}}</span>
+                <span class="unit">{{item['unit']}}</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="arrow">
+          <i class="si si-right"></i>
+        </div>
+        <div class="vipPrivilege">
+          <h4>
+            <img class="crown" src="data:image/png;base64,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"
+                 alt="">
+            <span>会员权限</span>
+            <div class="free-tip">
+              <span class="triangle"></span>
+              <span class="shadow"></span>
+              <span class="text">VIP</span>
+            </div>
+          </h4>
+          <p class="limited">不限次数</p>
+          <ul>
+            <li ng-repeat="item in $ctrl.vipPrivilege">
+              <span class="privName">{{item['name']}}</span>
+            </li>
+            <li>......</li>
+            <li>更多会员功能敬请期待</li>
+          </ul>
+          <div class="not-free" ng-if="!$ctrl.isFree">
+            <span class="price">￥199/月</span>
+            <a class="btn btn-primary recharge-btn" ng-click="$ctrl.applyRecharge('升级服务')">升级成为会员</a>
+          </div>
+          <div class="free" ng-if="$ctrl.isFree">
+            <div>
+              <span class="price">￥199/月</span>
+              <span class="free-text">限时免费</span>
+            </div>
+            <a class="btn btn-primary recharge-btn" ng-if="!$ctrl.userinfo.isVip" ng-click="$ctrl.free90Days()">领取三个月会员</a>
+            <a class="btn disabled recharge-btn" ng-if="$ctrl.userinfo.isVip" >已领取三个月会员</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

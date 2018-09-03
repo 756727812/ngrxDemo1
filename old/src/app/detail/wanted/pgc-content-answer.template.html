@@ -1,0 +1,226 @@
+<div class="header">
+  <h2>
+    <strong>PGC内容回答</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">PGC内容回答</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="circle-container group">
+          <see-tabset cur-idex="0">
+            <see-tab heading="{{isC2C ? '达人心愿' : 'PGC心愿列表'}}" type="kejian" see-access="Super-Admin PGC-Service See-Admin Oper C2C-Seller New-Brand">
+              <div ng-controller="pgcThemeListController">
+                <p see-access="C2C-Seller New-Brand">
+                  当用户名带S角标的是See时尚编辑或时尚达人分享的内容，主要是给用户推荐好的商品，该模块中的信息将于对应的时间点展现至首屏推荐页面中。
+                  <img ng-click="promptTheme()" class="event_wenhao" alt="" src="//static.seecsee.com/seego_backend/images/wenhao.png" style="width:30px" />
+                </p>
+                <form class="form-inline" ng-submit="searchTheme()">
+                  <div class="form-group" see-hide="C2C-Seller New-Brand C2C-Service">
+                    <label class="control-label">搜索时间</label>
+                    <input type="date" class="form-control" ng-model="searchData.from">&nbsp;&dash;&nbsp;
+                    <input type="date" class="form-control" ng-model="searchData.to">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">搜索品类</label>
+                    <select name="type" class="form-control" ng-model="searchData.cy_id">
+                      <option value="" selected>-- 请选择 --</option>
+                      <option ng-repeat="cy in categoryList" value="{{cy.cy_id}}">
+                        {{cy.cy_name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">搜索内容</label>
+                    <input type="text" class="form-control" ng-model="searchData.keyword" placeholder="心愿ID,描述">
+                  </div>
+                  <button type="submit" class="btn btn-primary">
+                    搜索
+                  </button>
+                </form>
+                <div class="table-scrollable">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th width="120">图片</th>
+                        <th>描述</th>
+                        <th>期望价格</th>
+                        <th>心愿作者</th>
+                        <th>所属圈子</th>
+                        <th style="min-width: 90px;">发布时间</th>
+                        <th>品类</th>
+                        <th>标签</th>
+                        <th>回答数</th>
+                        <th see-hide="Hide-DD">真实同求数</th>
+                        <th width="120">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="theme in themeList">
+                        <td>{{theme.t_id}}</td>
+                        <td><img width="100" class="img-viewer" see-src="theme.t_imgurl" see-viewer></td>
+                        <td>{{theme.t_title}}</td>
+                        <td>{{theme.t_price}}</td>
+                        <td>{{theme.u_username}}</td>
+                        <td>{{theme.circles}}</td>
+                        <td>{{theme.t_time}}</td>
+                        <td>{{theme.cy_name}}</td>
+                        <td>{{theme.tab}}</td>
+                        <td>{{theme.t_findcount}}</td>
+                        <td see-hide="Hide-DD">{{theme.t_followcount}}</td>
+                        <td class="operate">
+                          <a class="btn btn-sm btn-primary" ng-href="/wanted/themeList/theme-answer/{{theme.t_id}}"> <i class="fa fa-eye"></i>查看答案</a>
+                          <a class="btn btn-sm btn-primary" ng-href="/wanted/themeList/addAnswer?tid={{theme.t_id}}&ori=pgckejian">
+                            <i class="fa fa-plus-circle"></i>添加答案</a>
+                          <a class="btn btn-sm btn-primary" ng-click="matchImgPop(theme.t_id,theme.t_imgurl,seller_id,host)" see-access="Super-Admin">匹配答案</a>
+                          <!--<a ng-href="/wanted/themeList/matchImg?t_imgurl={{theme.t_imgurl}}" see-access="Super-Admin">匹配答案</a>-->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <pagination total-items="total_items"></pagination>
+                <script type="text/ng-template" id="darenTheme.html">
+                  <div class="modal-header">
+
+                    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">达人心愿</h3>
+                  </div>
+                  <div class="modal-body text-center">
+                    <img class="img-thumbnail" src="//static.seecsee.com/seego_backend/images/darenTheme.png" alt="">
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+                    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+                  </div>
+                </script>
+              </div>
+            </see-tab>
+            <see-tab heading="{{isC2C ? '特色专题' : 'PGC专题内容'}}" type="topic" see-access="Super-Admin PGC-Service See-Admin Oper C2C-Seller PGC-Part">
+              <p see-access="C2C-Seller New-Brand">
+                该模块以专题文章的形式展示给用户，专题中的信息将于对应的时间点展现至首屏推荐页面中，首页是See用户流量最大模块也是购买转化率较高模块。
+                <img ng-click="promptTopic()" class="event_wenhao" alt="" src="//static.seecsee.com/seego_backend/images/wenhao.png" style="width:30px" />
+              </p>
+              <form class="form-inline" ng-submit="searchTopicQuestion()">
+                <div class="form-group">
+                  <label class="control-label">搜索品类</label>
+                  <select name="type" class="form-control" ng-model="searchData.cy_name">
+                    <option value="" selected>-- 请选择 --</option>
+                    <option ng-repeat="cy in categoryList" value="{{cy.cy_name}}">
+                      {{cy.cy_name}}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">搜索内容</label>
+                  <input type="text" class="form-control" placeholder="专题标题" ng-model="searchData.keyword">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  搜索
+                </button>
+              </form>
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th width="120">图片</th>
+                      <th>专题标题</th>
+                      <th>发布者</th>
+                      <th>所属圈子</th>
+                      <th>品类</th>
+                      <th>款式</th>
+                      <th>原链接</th>
+                      <th>备注</th>
+                      <th width="120">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="question in questionList">
+                      <td>{{question.q_id}}</td>
+                      <td>
+                        <img width="100" class="img-viewer" see-src="question.con_imgurl" see-viewer>
+                      </td>
+                      <td>{{question.title}}</td>
+                      <td>{{question.cir_detail.owner_username}}</td>
+                      <td>{{question.cir_detail.cir_name}}</td>
+                      <td>{{question.category}}</td>
+                      <td>{{question.style}}</td>
+                      <td>{{question.ori_link}}</td>
+                      <td>{{question.q_desc}}</td>
+                      <td>
+                        <a class="btn btn-sm btn-primary" ng-href="/wanted/pgcAnswer?q_id={{question.q_id}}" see-hide="C2C-Seller New-Brand"> <i class="fa fa-eye"></i>查看答案</a>
+                        <a class="btn btn-sm btn-primary" ng-href="/wanted/themeList/addAnswer?q_id={{question.q_id}}&ori=pgctopic">
+                          <i class="fa fa-plus-circle"></i>添加答案</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination total-items="total_items"></pagination>
+              <script type="text/ng-template" id="topicModal.html">
+                <div class="modal-header">
+                  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3 class="modal-title">达人心愿</h3>
+                </div>
+                <div class="modal-body text-center">
+                  <img class="img-thumbnail" src="//static.seecsee.com/seego_backend/images/topic_example.png" alt="">
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+                  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+                </div>
+              </script>
+            </see-tab>
+            <see-tab heading="{{isC2C ? '我的专题回答' : '我的PGC专题回答'}}" type="myTopicAnswer">
+              <div ng-controller="myPgcTopicAnswerController">
+                <div class="table-scrollable">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th width="120">图片</th>
+                        <th>描述</th>
+                        <th>回答者</th>
+                        <th>价格</th>
+                        <th style="min-width: 90px;">回答时间</th>
+                        <th width="100">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="answer in answerList">
+                        <td>{{answer.a_id}}</td>
+                        <td>
+                          <img width="100" class="img-viewer" see-src="answer.item.item_imgurl" alt="{{answer.item.item_desc}}" see-viewer/>
+                        </td>
+                        <td>{{answer.item.item_desc}}</td>
+                        <td>{{answer.backend_id}}</td>
+                        <td>{{answer.item.price | currency: '￥'}}</td>
+                        <td>{{answer.submit_time*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-primary" ng-click="deleteAnswer(answer.a_id)"><i class="fa fa-trash-o"></i>删除
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <pagination total-items="total_items"></pagination>
+              </div>
+            </see-tab>
+          </see-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

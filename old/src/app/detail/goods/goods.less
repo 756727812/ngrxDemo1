@@ -1,0 +1,58 @@
+.modal-picture-center {
+  .img-del-btn {
+    display: none;
+  }
+
+  .img-container:hover {
+    .img-del-btn {
+      display: inline-block;
+    }
+  }
+
+  .css-label {
+    position: absolute;
+    right: 8px;
+    bottom: 2px;
+  }
+
+  .picture-center {
+    &-container {
+      display: flex;
+      flex-flow: row wrap;
+      // justify-content: space-between;
+      width: 700px;
+    }
+
+    &-item {
+      margin-bottom: 24px;
+      width: 160px;
+      height: 160px;
+      position: relative;
+      margin-right: 20px;
+
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.04), 0 2px 1px -1px rgba(0, 0, 0, 0.02);
+
+      &:hover {
+        .img-del-btn {
+          display: inline-block;
+        }
+      }
+
+      .img-container {
+        text-align: center;
+        vertical-align: middle;
+        display: table-cell;
+
+        img {
+          padding: 0;
+          max-width: 160px;
+          max-height: 160px;
+        }
+      }
+    }
+  }
+}

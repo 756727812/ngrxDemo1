@@ -1,0 +1,35 @@
+.magic-cube {
+  height: 369px;
+  .placeholder {
+    width: 100%;
+    height: 369px;
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > img {
+      width: 30%;
+    }
+  }
+  &_con {
+    position: relative;
+    > div {
+      position: absolute;
+      overflow: hidden;
+      background: #f9f9f9;
+      text-align: center;
+    }
+  }
+}
+
+.preview-item {
+  width: 414px;
+  /* border: 2px solid #ccc; */
+  border: 2px solid #fff;
+  &:hover {
+    border: 2px solid #ccc;
+  }
+  &.active {
+    border: 2px solid #5958d2;
+  }
+}

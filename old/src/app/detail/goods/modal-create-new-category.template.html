@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">{{title}}<span class="text-primary m-l-10" ng-show="parents">父级品类：<span ng-repeat="parent in parents">{{parent.class_name}}&nbsp;</span></span>
+  </h3>
+</div>
+<div class="modal-body">
+  <div class="scrollable-table">
+    <form name="createCatForm" class="form-horizontal" novalidate>
+      <div class="form-group">
+        <label class="control-label col-sm-4 required">品类名称</label>
+        <div class="col-sm-7">
+          <input class="form-control" type="text" placeholder="{{old_name}}" ng-model="formData.class_name" required>
+        </div>
+      </div>
+      <div class="form-group" ng-if="lvl=='三'">
+        <label class="control-label col-sm-4 required">重量</label>
+        <div class="col-sm-7">
+          <input class="form-control" type="number" name="item_real_weight" placeholder="单位：克（g）" required ng-model="formData.class_weight"
+            ng-blur="vm.changeLogistic()" uib-tooltip="注意：重量会影响运费计算，请仔细填写哦" tooltip-placement="top-center" tooltip-trigger="'mouseenter focus'">
+          <!-- <input class="form-control" type="text" placeholder="" ng-model="formData.class_weight" required> -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">发货</h3>
+</div>
+<div class="modal-body">
+    <button ng-click="birCreateOrder()" see-access="">order</button>
+    <button ng-click="birCreatePackage()" see-access="">package</button>
+
+    <uib-tabset>
+        <uib-tab heading="Seego物流" select="setShowType(1)" active="tab1">
+            <form class="mt20">
+                <div class="form-group">
+                    <label class="control-label  required" for="storage">收货仓库:</label>
+                    <select name="storage" id="storage" class="form-control" ng-model="sendGood1.item_location">
+                        <option value="" selected>-- 请选择你包裹发往的转运仓 --</option>
+                        <option value="1">美国转运仓</option>
+                        <!--<option value="52" see-access="Super-Admin">波特兰仓(笨鸟转运)</option>-->
+                        <option value="5">澳洲转运仓</option>
+                        <!--<option value="51" see-access="Super-Admin">悉尼仓(笨鸟转运)</option>-->
+                        <!--<option value="6">德国仓(一号仓转运)</option>-->
+                        <option value="7">日本转运仓</option>
+                        <!--<option value="53" see-access="Super-Admin">日本仓(笨鸟转运)</option>-->
+                        <option value="101">英国仓</option>
+                        <option value="102">韩国仓</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="num">请输入物流单号:</label>
+                    <input type="text" class="form-control" id="transport_no1" placeholder="请输入官网发出包裹的物流单号" ng-model="sendGood1.transport_no"/>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="singleBox" value="singleBox" name="dispatchBox" ng-model="sendGood1.dispactchType"/>
+                    <label class="control-label" for="singleBox">包裹只有一个中订单</label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="dispatchBox" value="dispatchBox" name="dispatchBox"
+                           ng-model="sendGood1.dispactchType"/>
+                    <label class="control-label" for="dispatchBox">包裹含有多个中订单</label>
+                </div>
+                <div class="form-group" ng-show="sendGood1.dispactchType == 'dispatchBox'">
+                    <textarea rows="5" id="dispatchbox-orderid1" name="dispatchbox-orderid"
+                              ng-model="sendGood1.mid_order_id_list" placeholder="请输入该包裹包含的其他中订单号，一行一个订单号"
+                              class="form-control"></textarea>
+                </div>
+            </form>
+        </uib-tab>
+        <uib-tab heading="非Seego物流" select="setShowType(2)" active="tab2">
+            <form class="mt20">
+                <div class="form-group">
+                    <label class="control-label required" for="transport_code">物流公司:</label>
+                    <select name="transport_code" id="transport_code" class="form-control"
+                            ng-model="sendGood2.transport_code">
+                        <option value="" selected>-- 请选择官网发出包裹使用的物流公司 --</option>
+                        <option ng-repeat="transport_info in transportList" value={{transport_info.transport_code}}>
+                            {{transport_info.transport_name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group" ng-show="sendGood2.transport_code == 'other'">
+                    <label class="control-label required" for="add_transport_name">添加的物流公司:</label>
+                    <input type="text" class="form-control" id="add_transport_name"
+                           ng-model="sendGood2.transport_name"/>
+                </div>
+                <div class="form-group" ng-show="sendGood2.transport_code == 'other'">
+                    <label class="control-label required" for="add_transport_url">物流追踪网址:</label>
+                    <input type="text" class="form-control" id="add_transport_url"
+                           placeholder="https://" ng-model="sendGood2.transport_url"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="num">请输入物流单号:</label>
+                    <input type="text" class="form-control" id="num" placeholder="请输入官网发出包裹的物流单号" ng-model="sendGood2.transport_no"/>
+                </div>
+                <div class="form-group">
+                    <label for="dispatchbox-orderid" class="control-label">该包裹包含的其他中订单:</label>
+                    <textarea rows="5" id="dispatchbox-orderid" name="dispatchbox-orderid"
+                              ng-model="sendGood2.mid_order_id_list"
+                              placeholder="如果该包裹包含其他中订单,请输入中订单号，一行一个订单号"
+                              class="form-control"></textarea>
+                </div>
+            </form>
+        </uib-tab>
+    </uib-tabset>
+    <p class="col-sm-12 alert alert-info mt10 mb10" ng-show="infoMsg">{{infoMsg}}</p>
+
+    <p class="alert alert-danger" style="margin-bottom: 30px;margin-top: 20px;" ng-show="form_mesg">
+        {{form_mesg}}
+    </p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

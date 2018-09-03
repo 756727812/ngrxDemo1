@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">发起退款</h3>
+</div>
+<form class="modal-body" id="refundForm" ng-submit="ok()">
+  <p>确认对该订单发起退款？一旦发起，系统将立刻发起自动转账，退款金额会即时退回至用户，请谨慎操作</p>
+  <p class="text-primary">特别提示：退款前请确认已联系用户说明退款原因，否则不允许直接发起退款</p>
+  <div class="form-group">
+    <select ng-model="refundData.reason_type" class="form-control" required>
+      <option value="" selected>请选择退款原因：</option>
+      <option value="1" selected>用户因个人原因要求退款</option>
+      <option value="2">缺货</option>
+      <option value="0">其他</option>
+    </select>
+  </div>
+  <div class="form-group" >
+    <input type="search" class="form-control" style="width: 235px;" ng-model="refundData.otherReason" placeholder="请输入具体的原因" ng-if="refundData.reason_type==='0'" required>
+  </div>
+</form>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="submit" form="refundForm">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

@@ -1,0 +1,214 @@
+<div class="header">
+  <h2>
+    <strong>订单详情</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">订单管理</a></li>
+      <li class="active">订单详情</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+  <div class="panel-content">
+    <div>
+      <uib-tabset active="active">
+        <uib-tab index="0" heading="订单信息">
+          <div class="orderdetail">
+            <p>订单编号：{{order_id}}</p>
+            <p>中订单状态：{{base_info.status_str}}</p>
+            <p>创建时间：{{base_info.buy_time}}</p>
+            <p>更新时间：{{base_info.update_time}}</p>
+          </div>
+          <h3>商品信息</h3>
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <tr class="title">
+                <th width="120">#</th>
+                <th>商品名称</th>
+                <th>宝贝属性</th>
+                <th>状态</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>运费</th>
+                <th>优惠额度</th>
+                <th>商品总价</th>
+              </tr>
+              <tbody>
+                <tr ng-repeat="order in order_list">
+                  <td>
+                    <img width="100" class="img-thumbnail" see-src="order.item_imgurl">
+                  </td>
+                  <td>
+                    <h5>{{order.item_name}}</h5>
+                    <p>商品ID: {{order.item_id}}</p>
+                    <p>{{order.item_comments}}</p>
+                  </td>
+                  <td>
+                    {{order.attr_value}}
+                  </td>
+                  <td>{{order.status_str}}</td>
+                  <td>{{order.buy_price | currency: '￥'}}</td>
+                  <td>{{order.quantity}}</td>
+                  <td>{{order.freight_cost | currency: '￥'}}</td>
+                  <td>
+                    <p>优惠合计：{{order.total_full_off_price | currency: '¥'}}</p>
+                    <p>优惠券：{{order.coupon_price | currency: '¥'}}</p>
+                    <p>满减活动：{{order.full_off_price | currency: '¥'}}</p>
+                  </td>
+                  <td>{{order.buy_price * order.quantity |currency: '￥'}}
+                    <br>
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+          <div class="totalprice">
+            实收款：<span>{{base_info.total_fee | currency: ''}}</span>元
+          </div>
+        </uib-tab>
+        <uib-tab index="1" heading="收货和物流信息">
+          <h3>买家信息</h3>
+          <form class="form-horizontal" name="ordertailForm">
+            <div class="form-group">
+              <label class="control-label col-sm-2">昵称</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" ng-model="base_info.nickname" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2">收货人</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" ng-model="base_info.name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2">手机号</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" ng-model="base_info.mobile">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2">收货地址</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" ng-model="base_info.addr" ng-click="modifyAddr()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2">身份证号码</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" ng-model="base_info.idcard_no">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">身份证照片</label>
+              <div style="display: inline-block;padding-left: 15px;padding-right:15px;">
+                <div>
+                  <img width="172" class="img-viewer idcard_front_imgurl" see-viewer see-src="base_info.idcard_front_imgurl" alt="{{base_info.name}}"
+                    >
+                </div>
+
+                <div class="m-t-10">
+                  <label class="btn btn-primary">
+                                        修改身份证正面
+                                        <input class="hidden" type="file" see-file-select="uploadFront" accept="image/jpg, image/jpeg, image/png">
+                                    </label>
+                </div>
+              </div>
+              <div style="display: inline-block;padding-left: 15px;padding-right:15px;">
+                <div>
+                  <img width="172" class="img-viewer idcard_back_imgurl" see-viewer see-src="base_info.idcard_back_imgurl" alt="{{base_info.name}}"
+                    >
+                </div>
+
+                <div class="m-t-10">
+                  <label class="btn btn-primary">
+                                        修改身份证背面
+                                        <input class="hidden" type="file" see-file-select="uploadBack" accept="image/jpg, image/jpeg, image/png">
+                                    </label>
+                </div>
+              </div>
+              <div class="col-xs-10 col-xs-offset-2">
+                <button type="button" ng-click="modifyIDCardInfoFromAddr(id)" class="btn btn-primary">从买家收货地址中选择</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2">支付方式</label>
+              <div class="col-sm-7">
+                <label class="radio-inline">
+                                    <input type="radio" name="payOption" id="payOption1" ng-model="base_info.pay_type" value="微信支付" disabled> 微信支付
+                                </label>
+                <label class="radio-inline">
+                                    <input type="radio" name="payOption" id="payOption2" ng-model="base_info.pay_type" value="支付宝支付" disabled> 支付宝支付
+                                </label>
+              </div>
+            </div>
+            <div class="form-group" ng-show="ordertailForm.$dirty || infoChangedFlag">
+              <button class="btn btn-primary col-sm-offset-2" type="button" ng-click="modifyOrderInfo()">保存</button>
+            </div>
+          </form>
+          <h3>物流信息</h3>
+          <div class="table-scrollable" style="width:75%;overflow-y:hidden;">
+            <table class="table01">
+              <tr>
+                <td class="col-sm-2">收货地址</td>
+                <td class="col-sm-7">{{base_info.name}}<span class="name">,{{base_info.mobile}}</span><span class="phone">,{{base_info.addr}}</td>
+                </tr>
+                <tr ng-repeat-start="transport in logistic_info.transport_info">
+                    <td ng-show="transport.action_text"  class="col-sm-2">发货方式</td>
+                    <td ng-show="transport.action_text" class="col-sm-7">[{{transport.action_text}}]</td>
+                </tr>
+                <tr>
+                    <td  class="col-sm-2">物流公司名称</td>
+                    <td class="col-sm-7">{{transport.transport_name}}</td>
+                </tr>
+                <tr >
+                    <td  class="col-sm-2">运单号</td>
+                    <td class="col-sm-7">{{transport.transport_no}}</td>
+                </tr>
+                <tr ng-show="transport.transport_url">
+                    <td  class="col-sm-2">物流追踪网址</td>
+                    <td class="col-sm-7"><a ng-href="{{transport.transport_url}}" class="text-info" target="_blank">{{transport.transport_url}}</a></td>
+                </tr>
+                <tr ng-repeat-end>
+                    <td  class="control-label col-sm-2">实际物流费用</td>
+                    <td class="col-sm-7">{{transport.transit_fee | currency:''}}元</td>
+                </tr>
+                <tr class="express">
+                  <td style="vertical-align: top"  class="control-label col-sm-2">物流跟踪</td>
+                  <td ng-if="!logistics_list"  class="col-sm-7">
+                      <ul class="expresslog" ng-repeat="logistic in logistic_info.list">
+                          <li ng-class="{'active': $first,'begin': $last}">{{logistic.status_message}}<span>{{logistic.time | date:'yyyy-MM-dd HH:mm:ss' }}</span></li>
+                  </ul>
+                </td>
+                <td ng-if="logistics_list">
+                  <ul class="expresslog_1" ng-repeat="logistic in logistics_list_vertical">
+                    <li ng-class="{'active': $first,'begin': $last}">
+                      <div class="active-node" ng-if="$first" style="margin-top: -15px;"></div>
+                      <div class="big-node" ng-if="logistic.node_type == '1' && !$first"></div>
+                      <div class="small-node" ng-if="logistic.node_type == '0' && !$first"></div>
+                      <div class="logistic-mess" ng-class="{'first-mess': $first}">
+                        <span class="node_content" ng-if="logistic.node_name">{{logistic.node_name}}</span>
+                        <span class="node_content" ng-if="logistic.is_other">（由于暂时无法读取物流信息，请复制运单号<span>{{logistic.transport_no}}</span>并
+                        <a ng-href="{{logistic.transport_url}}" target="_blank">点击此处</a>到物流公司官网查询）</span>
+                        <span ng-class="{'active': $first}" ng-if="logistic.node_time_str" class="data">{{logistic.node_time_str | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                        <span ng-if="logistic.isFirstBigNode && logistic.next_node" class="next-node">下一步 &gt; {{logistic.next_node}}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </uib-tab>
+      </uib-tabset>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+

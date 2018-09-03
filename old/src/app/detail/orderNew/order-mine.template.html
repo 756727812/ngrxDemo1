@@ -1,0 +1,108 @@
+<div class="header">
+  <h2>
+    <strong see-hide="New-Brand">我的订单</strong>
+    <strong see-access="New-Brand">我的分销订单</strong>
+    <!--<label style="font-weight:normal">(共{{ $ctrl.total_items }})</label>-->
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">订单管理</a></li>
+      <li class="active">我的订单</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+          <div class="form-group">
+            <label class="control-label">
+              关键词
+              <input type="search" class="form-control w-300" ng-model="$ctrl.form_data.keyword" placeholder="订单号/商品名/微信昵称/下单用户">
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+          <a class="btn btn-primary" target="_blank" ng-if="$ctrl.xdp_type != 3" ng-click="$ctrl.exportOrders()">批量导出</a>
+        </form>
+      </div>
+    </div>
+    <div class="table-scrollable">
+      <table class="table table-hover">
+        <thead>
+          <tr class="bg-f1f4f7">
+            <th see-hide="New-Brand">来源</th>
+            <th>下单用户</th>
+            <th>商品</th>
+            <th></th>
+            <th>单价数量</th>
+            <th>运费和税费</th>
+            <th>优惠总额</th>
+            <th>实付金额</th>
+            <th>下单时间</th>
+            <th style="min-width: 72px;">状态</th>
+            <!--
+            <th>囤货出库仓库</th>
+          -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-f1f4f7" ng-repeat-start="order in $ctrl.order_list">
+            <td see-hide="New-Brand">
+              <b ng-bind="order.article_title"></b>
+            </td>
+            <td>
+              微信昵称：{{order.weixin_name}}
+              <br />下单用户：{{order.u_username_2}}
+            </td>
+            <td>
+              <div class="img-container">
+                <img see-src="order.f_imgurl" thumbnail="150x150" see-viewer alt="{{order.item_name}}">
+              </div>
+            </td>
+            <td>
+              <p>订单号：{{order.mid_order_id}}</p>
+              <p>商品：{{order.subject}}</p>
+              <!--
+              <p ng-if="order.sku_mark">货号：<span ng-bind="order.sku_mark"></span></p>
+            -->
+              <p>规格：<span ng-bind="order.attr_value"></span></p>
+            </td>
+            <td>
+              <p ng-bind="order.buy_price | currency: '¥'"></p>
+              <p ng-bind="order.quantity">件</p>
+            </td>
+            <td>
+              <p>运费：<span ng-bind="order.freight_cost | currency: '¥'"></span></p>
+              <p ng-class="{'text-primary': +order.tax > 0}">税费：<span ng-bind="order.tax | currency: '¥'"></span></p>
+            </td>
+            <td>
+              <p>优惠总额：{{order.total_full_off_price | currency: '¥'}}</p>
+              <p>优惠券：{{order.coupon_price | currency: '¥'}}</p>
+              <p>满减活动：{{order.full_off_price | currency: '¥'}}</p>
+            </td>
+            <td ng-bind="order.total_fee | currency: '¥'"></td>
+            <td ng-bind="order.buy_time | date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+              <p ng-bind="order.status_str"></p>
+              <p ng-if="order.summary_info.group_status == 1">
+                拼团中<br>
+                <span class="color-ff6b6b" ng-if="order.summary_info.group_owner_flag == 1">团主</span>
+              </p>
+              <p class="color-ff6b6b" ng-if="order.summary_info.group_status > 1">{{ order.summary_info.group_status | orderGrouponStatus }}{{order.summary_info.group_owner_flag == 1 ? '/团主' : ''}}</p>
+            </td>
+            <!--
+            <td>{{order.store_msg.msg}}</td>
+          -->
+          </tr>
+          <tr ng-repeat-end>
+            <td style="height: 20px;border-top: none;"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <pagination total-items="$ctrl.total_items"></pagination>
+  </div>
+</div>
+

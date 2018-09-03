@@ -1,0 +1,110 @@
+<div class="header">
+  <h2><strong>微信舆情</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">微信趋势</a></li>
+      <li class="active">微信舆情</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-2">
+
+            <div class="list-group">
+              <a href="" class="list-group-item bg-info color-white">选品参考</a>
+              <a href="" class="list-group-item" ng-repeat="lib in list_xp" ng-click="changeCategory(lib.tags, xp_id)" ng-class="{'active': catalog_name === lib.tags && cate === '1'}"
+                ng-bind="lib.tags"></a>
+            </div>
+
+            <div class="list-group">
+              <a href="" class="list-group-item bg-info color-white">行文参考</a>
+              <a href="" class="list-group-item" ng-repeat="lib in list_xw" ng-click="changeCategory(lib.tags, xw_id)" ng-class="{'active': catalog_name === lib.tags && cate === '2'}"
+                ng-bind="lib.tags"></a>
+            </div>
+
+            <div class="list-group">
+              <a href="" class="list-group-item bg-info color-white">十点读书</a>
+              <a href="" class="list-group-item" ng-repeat="lib in list_sd" ng-click="changeCategory(lib.tags, sd_id)" ng-class="{'active': catalog_name === lib.tags && cate === '3'}"
+                ng-bind="lib.tags"></a>
+            </div>
+
+          </div>
+
+          <div class="col-xs-10">
+            <!-- <form class="form-inline m-b-10" ng-submit="searchArticle()">
+                 <div class="form-group">
+                 <input type="search" ng-model="keyword" class="form-control" placeholder="搜索文章">
+                 </div>
+                 <button class="btn btn-primary">查询</button>
+                 </form> -->
+            <see-tabset style="width:50%;">
+              <see-tab heading="最新最热" select="selectTab()" type="newest"></see-tab>
+              <see-tab heading="今日榜" select="selectTab()" type="today"></see-tab>
+              <see-tab heading="日榜单" select="selectTab()" type="daily"></see-tab>
+              <see-tab heading="周榜单" select="selectTab()" type="weekly"></see-tab>
+              <see-tab heading="月榜单" select="selectTab()" type="monthly"></see-tab>
+            </see-tabset>
+            <div  style="position:absolute; margin-top:-42px;margin-left:520px;">
+                  <label style="margin-top:-50px;"><input type="checkbox" ng-model="has_store" ng-change="changeCheckAll()">仅显示可能有商品的内容</label>
+              </div>
+ 
+
+            <div class="table-scrollable">
+ 
+
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr class="boss-header">
+                    <th style="min-width:330px;">标题</th>
+                    <th class="sort-col" data-sort="publish_time" style="width:150px;">发布时间</th>
+                    <th>自媒体</th>
+                    <th class="sort-col" data-sort="read_num">阅读数<a href="" ng-hide="searchType=='newest'" ng-click="changeOrder('read_num')" ng-class="{ 'text-info': sort_by !== 'read_num'}"><i class="fa fa-caret-down"></i></a></th>
+                    <th class="sort-col" data-sort="like_num">点赞数<a href="" ng-hide="searchType=='newest'" ng-click="changeOrder('like_num')" ng-class="{ 'text-info': sort_by !== 'like_num'}"><i class="fa fa-caret-down"></i></a></th>
+                    <th class="sort-col" data-sort="like_rate">点赞率<a href="" ng-hide="searchType=='newest'" ng-click="changeOrder('like_rate')" ng-class="{ 'text-info': sort_by !== 'like_rate'}"><i class="fa fa-caret-down"></i></a></i></th>
+                    <th class="sort-col" data-sort="comment_num">评论数<a href="" ng-hide="searchType=='newest'" ng-click="changeOrder('comment_num')" ng-class="{ 'text-info': sort_by !== 'comment_num'}"><i class="fa fa-caret-down"></i></a></i></th>
+                    <!-- <th class="sort-col" data-sort="quality">关键词</i> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-show="isNull">
+                    <td colspan="12"> 暂无数据 </td>
+                  </tr>
+                  <tr ng-repeat="article in articleslist">
+                    <td>
+                      <!-- 阅读原文链接-->
+                      <img src="https://image.seecsee.com/s/p/public_v2/ab4/4d0/di7/t4eluogs4o888s8koogw8480ww.png" ng-if="article.store_source && article.store_source !==''" width="18" height="18" />
+                      <!-- 商城标识-->
+                      <img src="https://image.seecsee.com/s/p/public_v2/632/28a/2vk/3kx51wk4sgc0cso8kkogskcoco.png" ng-if="article.view_source && article.view_source !==''" width="18" height="18" />
+                      <a ng-href="{{article.from_url}}" ng-bind-html="article.title | trustHtml" target="_blank"></a>
+                    </td>
+                    <td ng-bind="article.art_time"></td>
+                    <td>
+                      <a href="" ng-click="searchKolArticle(article.account_id)" ng-bind="article.art_auth"></a>
+                    </td>
+                    <td ng-bind="article.read_num"></td>
+                    <td ng-bind="article.like_num"></td>
+                    <td ng-bind="article.like_rate*100 | percentage"></td>
+                    <!-- <td ng-bind="article.reward_num"></td> -->
+                    <td ng-bind="article.comment_num"></td>
+                    <!-- <td ng-bind="article.score"></td>
+                         <td ng-bind="article.speed"></td>
+                         <td ng-bind="article.quality"></td> -->
+                    <!-- <td class="text-danger" ng-bind="article.relative_score"></td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="total_items" items-per-page="20"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

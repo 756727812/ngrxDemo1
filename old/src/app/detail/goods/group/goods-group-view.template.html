@@ -1,0 +1,90 @@
+<div class="header">
+  <h2>
+    <strong></strong>
+  </h2>
+</div>
+<div id="goods-group-view" class="clearfix">
+  <div ng-show="$ctrl.initDataLoaded">
+    <!-- 头部 -->
+    <div class="search-form-wrap">
+      <goods-group-search-goods-form on-init="$ctrl.onSearchFormInit" on-submit="$ctrl.onSearchSubmit" kol-id="$ctrl.kolId"></goods-group-search-goods-form>
+    </div>
+
+    <!--列表-->
+    <div ng-show="!$ctrl.noneSearchResult">
+      <div class="row list-block">
+        <div class="col-sm-12 portlets">
+          <div class="panel">
+            <div class="panel-content">
+              <table class="table table-striped goods-table">
+                <thead>
+                  <tr>
+                    <th>商品图</th>
+                    <th class="goods-name">商品名</th>
+                    <th>品牌</th>
+                    <th>价格（元）</th>
+                    <th>创建时间</th>
+                    <th ng-if="$ctrl.shouldShowOrderOpCol()">所属分组</th>
+                    <th ng-if="$ctrl.shouldShowOrderOpCol()">售卖状态</th>
+                    <th ng-if="$ctrl.shouldShowOrderOpCol()">是否隐藏</th>
+                    <th class="order-op" ng-if="$ctrl.shouldShowOrderOpCol()">组内商品排序</th>
+                    <th class="op" ng-if="$ctrl.shouldShowOpCol()">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.pageData.list track by $index">
+                    <td class="goods-img">
+                      <img see-img ng-src="{{item.imgUrl+'?imageView2/5/w/160/h/160'}}">
+                    </td>
+                    <td class="goods-name">{{item.commodityName}}</td>
+                    <td class="brand-name">{{item.brandName}}</td>
+                    <td class="price">{{item.price}}</td>
+                    <td class="date">{{$ctrl.formatDate(item.itemCreateTime)}}</td>
+                    <td class="group" ng-if="$ctrl.shouldShowOrderOpCol()">
+                      <span>{{item.belongToGroups[0]}}</span>
+                      <div class="more" ng-if="item.belongToGroups.length>1">
+                        <span class="trigger">
+                          <i class="caret"></i>更多（{{item.belongToGroups.length-1}}）
+                          <ul>
+                            <li ng-repeat="str in item.belongToGroups track by $index" ng-if="$index!==0">{{str}}</li>
+                          </ul>
+                        </span>
+                      </div>
+                    </td>
+
+                    <td ng-if="$ctrl.shouldShowOrderOpCol()">{{item.onsaleStatus}}</td>
+                    <td ng-if="$ctrl.shouldShowOrderOpCol()">{{item.hidden?'是':'否'}}</td>
+
+                    <td class="order-op" ng-if="$ctrl.shouldShowOrderOpCol()">
+                      <ul>
+                        <li title="{{$ctrl.canMoveTop(item, $index) ? '置顶' : ''}}" class="top" ng-click="$ctrl.moveTop(item, $index)" ng-class="{disabled:!$ctrl.canMoveTop(item, $index)}"></li>
+                        <li title="{{$ctrl.canMoveUp(item, $index)?'上移':''}}" class="up" ng-click="$ctrl.moveUp(item, $index)" ng-class="{disabled:!$ctrl.canMoveUp(item, $index)}"></li>
+                        <li title="{{$ctrl.canMoveDown(item, $index)?'下移':''}}" class="down" ng-click="$ctrl.moveDown(item, $index)" ng-class="{disabled:!$ctrl.canMoveDown(item, $index)}"></li>
+                        <li title="{{$ctrl.canMoveBottom(item, $index)?'置底':''}}" class="bottom" ng-click="$ctrl.moveBottom(item, $index)" ng-class="{disabled:!$ctrl.canMoveBottom(item, $index)}"></li>
+                      </ul>
+                    </td>
+                    <td class="op" ng-if="$ctrl.shouldShowOpCol()">
+                      <span class="button-remove" ng-click="$ctrl.removeFromGroup(item)">移出分组</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <pagination total-items="$ctrl.pageData.count" items-per-page="$ctrl.pageData.itemsPerPage"></pagination>
+    </div>
+  </div>
+  <div ng-if="$ctrl.isNonGoods" ng-show="$ctrl.initDataLoaded" class="empty-tips">
+    <div class="content-wrap">
+      <p>当前商品分组未添加任何商品</p>
+      <span ng-click="$ctrl.toAddGoods(item)" ng-if="$ctrl.canAddGoods()" class="btn-add-goods">添加商品</span>
+    </div>
+  </div>
+  <div ng-if="$ctrl.noneSearchResult" class="empty-tips">
+    <div class="content-wrap">
+      <p>当前搜索条件下没有合适商品</p>
+    </div>
+  </div>
+</div>

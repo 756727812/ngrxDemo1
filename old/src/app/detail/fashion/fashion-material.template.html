@@ -1,0 +1,162 @@
+<div class="header">
+	<h2><strong>时尚素材&热点趋势</strong></h2>
+
+	<div class="breadcrumb-wrapper"  ng-hide="true">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/fashion">全球时尚</a></li>
+			<li class="active">时尚素材&热点趋势</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-sm-3 col-lg-2 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<div class="list-group">
+						<a href="" class="list-group-item" see-hide="KOL New-Brand" ng-click="$ctrl.applyNewLib()"><i class="fa fa-plus"></i>添加新库</a>
+						<a href="" class="list-group-item bg-info color-white">开放平台</a>
+						<a href="" class="list-group-item" ng-click="$ctrl.searchKol('all')" ng-class="{'active': $ctrl.searchForm.kol === 'all'}">全部</a>
+						<!--<a href="" class="list-group-item" ng-repeat="lib in $ctrl.public_libs" ng-click="$ctrl.searchLib(lib, 1)" ng-class="{'active': $ctrl.platform === lib}"
+              ng-bind="lib"></a>-->
+						<a href="" class="list-group-item" ng-repeat="kol in $ctrl.public_kol_catalogs" ng-click="$ctrl.searchKol(kol.kol_id)" ng-class="{'active': $ctrl.searchForm.kol === kol.kol_id}"
+							ng-bind="kol.kol"></a>
+					</div>
+					<div class="list-group" see-access="Super-Admin See-Admin PGC-Part Elect-Admin Oper">
+						<a href="" class="list-group-item bg-info color-white">内部平台</a>
+						<a href="" class="list-group-item" ng-repeat="lib in $ctrl.inner_libs" ng-click="$ctrl.searchLib(lib.platform, '001')" ng-class="{'active': $ctrl.platform === lib.platform}"
+							ng-bind="lib.platform"></a>
+					</div>
+					<div class="list-group" see-access="Super-Admin">
+						<a href="" class="list-group-item" ng-click="$ctrl.applyCustomLib()"><i class="fa fa-plus"></i>自定义素材库</a>
+						<a href="" class="list-group-item" ng-repeat="custom in $ctrl.public_cust_catalogs" ng-click="$ctrl.searchCust(custom.item_id, '100')" ng-class="{'active': $ctrl.custom === custom.item_id}" ng-bind="custom.item_id"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-9 col-lg-10 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<form ng-submit="$ctrl.submitSearch()" class="form-inline">
+						<div class="form-group m-b-10" see-access="Super-Admin See-Admin PGC-Part Elect-Admin Oper">
+							<select class="form-control" ng-model="$ctrl.searchForm.catalog" ng-options="circle.catalog_id as circle.catalog for circle in $ctrl.circle_catalog">
+                <option value="" selected>-- 圈子分类 --</option>
+              </select>
+						</div>
+						<div class="form-group m-b-10" see-access="Super-Admin See-Admin PGC-Part Elect-Admin Oper">
+							<select class="form-control" ng-model="$ctrl.searchForm.kol" ng-options="kol.kol_id as kol.kol for kol in $ctrl.inner_kol_catalog">
+                <option value="" selected>-- KOL分类 --</option>
+              </select>
+						</div>
+						<div class="form-group m-b-10">
+							<select class="form-control" ng-model="$ctrl.searchForm.country" ng-options="country.country_id as country.country for country in $ctrl.country_catalog">
+                <option value="" selected>-- 国家分类 --</option>
+              </select>
+						</div>
+						<div class="form-group m-b-10">
+							<label class="control-label">
+                  <input date-range-picker class="form-control date-picker" placeholder="发布时间" type="text" ng-model="$ctrl.datePicker">
+              </label>
+						</div>
+						<div class="form-group m-b-10">
+							<label class="control-label">
+                  <input type="search" class="form-control" ng-model="$ctrl.searchForm.keyword" placeholder="关键词">
+              </label>
+						</div>
+						<button type="submit" class="btn btn-primary m-b-10"><i class="fa fa-search"></i>搜索</button>
+						<!--<button type="reset" class="btn btn-dark m-b-10" ng-click="$ctrl.clearSearch()"><i class="fa fa-refresh"></i>清空</button>-->
+						<div class="btn-group m-b-10" uib-dropdown>
+							<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                        {{$ctrl.getFilteText() || '排序'}} <span class="caret"></span>
+                    </button>
+							<ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+								<li role="menuitem"><a href="" ng-click="$ctrl.materialFilter('publish_time')">按发布时间</a></li>
+								<!--<li role="menuitem"><a href="" ng-click="$ctrl.materialFilter('visits')">按浏览数</a></li>-->
+								<li role="menuitem"><a href="" ng-click="$ctrl.materialFilter('likes')">按点赞数</a></li>
+							</ul>
+						</div>
+						<div class="btn-group font-size-25">
+							<a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'table'}" ng-disabled="$ctrl.show_type === 'table'" ng-click="$ctrl.changeShowType('table')"><i class="fa fa-list"></i></a>&nbsp;|&nbsp
+							<a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'grid'}" ng-disabled="$ctrl.show_type === 'grid'" ng-click="$ctrl.changeShowType('grid')"><i class="fa fa-table"></i></a>
+						</div>
+					</form>
+
+					<div class="table-scrollable moveupdown materialList" ng-if="$ctrl.show_type === 'table'">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>描述</th>
+									<th>博主</th>
+									<!--<th>平台 </th>-->
+									<th>浏览数</th>
+									<th>点赞数</th>
+									<th>发布时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="mt in $ctrl.material_list track by mt._id">
+									<td>
+										<img see-src="mt.item.img_url" see-viewer width="100" class="img-viewer" alt="">
+									</td>
+									<td ng-bind-html="mt.item.desc | trustHtml"></td>
+									<td>
+										<a ng-href="/fashion/material?blogger={{mt.author.blogger}}" ng-bind="mt.author.blogger"></a>
+									</td>
+									<!--<td ng-bind="mt.platform"></td>-->
+									<td ng-bind="mt.item.visits"></td>
+									<td ng-bind="mt.item.likes"></td>
+									<td ng-bind="+mt.item.publish_time * 1000 | date:'yyyy-MM-dd HH:mm:ss'"></td>
+									<td>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.removeFavoriteItem(mt._id)" ng-if="mt.isfavorite === true"><i class="fa fa-heart"></i>已收藏</button>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.addToFavorite(mt._id)" ng-if="mt.isfavorite === false"><i class="fa fa-heart-o"></i>收藏</button>
+										<button type="button" class="btn btn-sm btn-primary" see-access="See-Admin Super-Admin PGC-Part Elect-Admin" ng-click="$ctrl.itemHide(mt._id, mt.is_hide, $index)"><i class="fa fa-eye-slash"></i>隐藏</button>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.seeDetail(mt)">查看详情</button>
+										<a ng-href="{{mt.item.img_url}}" target="_blank" class="btn btn-sm btn-primary" download>下载图片</a>
+										<button type="button" class="btn btn-sm btn-primary" see-access="See-Admin Super-Admin PGC-Part" ng-click="$ctrl.generateWish(mt.item.desc, mt.item.img_url)">生成心愿</button>
+
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="grid moveupdown materialList" ng-if="$ctrl.show_type === 'grid'">
+						<div class="grid-sizer"></div>
+						<div class="grid-item" ng-repeat="mt in $ctrl.material_list track by mt._id">
+							<div class="grid-item-image">
+								<img see-src="mt.item.img_url" see-viewer width="100" class="img-viewer" alt="">
+								<div class="btn-group font-size-25 top">
+									<a href="" class="" ng-click="$ctrl.removeFavoriteItem(mt._id)" title="取消收藏" ng-show="mt.isfavorite === true"><i class="fa fa-heart" style="color: #ff5972;"></i></a>
+									<a href="" class="" ng-click="$ctrl.addToFavorite(mt._id)" title="收藏" ng-show="mt.isfavorite === false"><i class="fa fa-heart-o"></i></a>
+									<a ng-href="{{mt.item.img_url}}" target="_blank" class="" title="下载图片" download><i class="fa fa-download"></i></a>
+								</div>
+								<div class="btn-group font-size-25 bottom" see-access="See-Admin Super-Admin PGC-Part Elect-Admin">
+									<a href="" class="" ng-click="$ctrl.generateWish(mt.item.desc, mt.item.img_url)" title="生成心愿"><i class="fa fa-share"></i></a>
+									<a href="" class="" ng-click="$ctrl.itemHide(mt._id, mt.is_hide, $index)" title="隐藏"><i class="fa fa-eye-slash"></i></a>
+								</div>
+							</div>
+							<p class="clear-fix p-5 m-0" style="font-size: 12px;">
+								<span class="pull-left">
+                    <span ng-bind="mt.item.publish_time * 1000 | date: 'yyyy-MM-dd HH:mm:ss'"></span>
+								</span>
+								<span class="pull-right"><i class="fa fa-thumbs-o-up"></i>{{mt.item.likes}}</span>
+							</p>
+							<p class="grid-item-desc m-b-10" ng-bind-html="mt.item.desc | trustHtml"></p>
+							<span>
+                <img class="img-circle" style="width: 30px;" see-src="mt.author.blogger_pic" alt="mt.author.blogger" />
+                <a ng-href="/fashion/material?blogger={{mt.author.blogger}}" style="position: relative;z-index: 99;" ng-bind="mt.author.blogger"></a>
+              </span>
+
+							<a href="" class="grid-item-overlay" ng-click="$ctrl.seeDetail(mt)"></a>
+						</div>
+					</div>
+					<p class="text-info" ng-if="!$ctrl.total_items">暂时还没有数据哦！</p>
+					<pagination total-items="$ctrl.total_items"></pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

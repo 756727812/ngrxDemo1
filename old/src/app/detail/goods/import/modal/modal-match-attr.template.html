@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">匹配规则</h3>
+</div>
+<form class="form-horizontal w5c-form" novalidate w5c-form-validate name="matchAttrForm" w5c-submit="vm.ok()">
+  <div class="modal-body">
+    <p class="progress_desc">请设置有赞与小电铺规格匹配关系</p>
+    <table class="table table-bordered">
+      <tr>
+        <th>有赞规格</th>
+        <th>小电铺规格</th>
+      </tr>
+
+      <tr ng-repeat="item in vm.youzanAttr">
+        <td>{{item}}</td>
+        <td>
+          <select id="" ng-model="vm.attrMap[item]" class="form-control" required="" ng-options="attr for attr in vm.seeAttr"
+            w5c-dynamic-element="" w5c-dynamic-name="'attr'+$index">
+            <option value="">---请选择---</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="sbumit">确定</button>
+    <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+  </div>
+</form>

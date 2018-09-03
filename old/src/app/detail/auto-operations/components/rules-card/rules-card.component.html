@@ -1,0 +1,66 @@
+<div class="list-item-card">
+
+  <div class="card-body">
+    <div class="card-meta">
+      <div class="card-meta-avatar">
+        <nz-avatar nzSize="large" nzText="{{data.rule_name | textAvatar}}" class="rule-avatar"></nz-avatar>
+      </div>
+      <div class="card-meta-detail">
+        <div class="title" *ngIf="!isUpdateRulesNameFormShow"><span class="title-text">{{data.rule_name}}</span><i class="anticon anticon-edit rule-name-update" (click)="setUpdateRulesNameFormShow(true)"></i></div>
+        <div class="title" *ngIf="isUpdateRulesNameFormShow">
+          <nz-input [(ngModel)]="newRulesName" (ngModelChange)="onNewRuleNameUpdate($event)" (nzBlur)="updateRulesName()">
+            <ng-template #addOnAfter>
+              {{ruleNameTextCount}}/{{ruleNameTextLimitCount}}
+            </ng-template>
+          </nz-input>
+          <div class="error-tips" *ngIf="textLimitTipsShow">
+            规则名称不能为空且最长为{{ruleNameTextLimitCount}}个汉字
+          </div>
+          <!-- <button nz-button [nzType]="'primary'" [nzSize]="'small'" (click)="updateRulesName()">
+            <span>确定</span>
+          </button>
+          <button nz-button [nzType]="'default'" [nzSize]="'small'" (click)="setUpdateRulesNameFormShow(false)">
+            <span>取消</span>
+          </button> -->
+        </div>
+        <div class="content">
+          <div>
+            <span>KOL个数：</span><span>{{data.kol_count}}</span>
+          </div>
+          <div>
+            <span>当前状态：</span><span><i class="status-icon" [class]="data.status === 1 ? 'status-icon on' : 'status-icon off'">&bull;</i> {{rulesStatus[data.status]}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="card-actions">
+
+    <li (click)="viewRulesInfo(data.rule_id)">
+      <span>
+        <img class="normal" [seeSrc]="settingImgUrl"/>
+        <img class="hover" [seeSrc]="settingHoverImgUrl" nz-tooltip="查看规则详情" />
+      </span>
+    </li>
+
+    <nz-popconfirm *ngIf="data.status === 1" [nzTitle]="'确认禁用当前规则？该规则下所有KOL将停止自动更新商品和营销活动'" (nzOnConfirm)="updateRulesStatus(0)">
+      <li nz-popconfirm>
+        <span>
+          <img class="normal" [seeSrc]="lockImgUrl"/>
+          <img class="hover" [seeSrc]="lockHoverImgUrl" nz-tooltip="禁用规则" />
+        </span>
+      </li>
+    </nz-popconfirm>
+
+    <nz-popconfirm *ngIf="data.status === 0 || data.status === 2" [nzTitle]="'确认启用当前规则？该规则下所有KOL将自动更新商品和营销活动'" (nzOnConfirm)="updateRulesStatus(1)">
+      <li nz-popconfirm>
+        <span>
+          <img class="normal" [seeSrc]="unLockImgUrl"/>
+          <img class="hover" [seeSrc]="unLockHoverImgUrl" nz-tooltip="启用规则" />
+        </span>
+      </li>
+    </nz-popconfirm>
+  </ul>
+
+</div>

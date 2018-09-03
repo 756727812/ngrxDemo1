@@ -1,0 +1,62 @@
+<div class="login-container" id="login-block" [ngClass]="{mobile:isMobile}">
+  <div class="contentContainer">
+    <div class="content">
+      <h1 class="color-333 logo"></h1>
+      <div class="login-panel">
+        <ul class="login-tab" [hidden]="isMobile">
+          <li class="login-tab-item" [ngClass]="{active:activeTab === 1}" (click)="activeTab = 1">微信扫一扫</li>
+          <li class="login-tab-item" [ngClass]="{active:activeTab === 2}" (click)="activeTab = 2">账号登录</li>
+        </ul>
+        <div class="tab-container">
+          <div class="tab-content tab-content-qr" [ngClass]="{active:activeTab === 1}">
+            <p class="tab-content-qr-tip">微信扫码，安全登录/注册</p>
+            <iframe frameborder="0" scrolling="no" width="200px" height="210px" class="block-center"  [src]="iFrameUrl"></iframe>
+            <p class="tab-content-qr-tip lighter">新用户请使用微信扫码安全注册</p>
+          </div>
+          <div class="tab-content tab-content-form" [ngClass]="{active:activeTab === 2}">
+            <form class="auth-form" [formGroup]="loginForm">
+              <div class="form-group">
+                <div class="form-item append-item">
+                  <input type="text" class="form-control" [ngClass]="{'form-error':formErrors.username}" name="userName" formControlName="username" [(ngModel)]="form_data.username" (blur)="handleBlur()" placeholder="请输入邮箱/手机号"  style="width: 260px"/>
+                  <i class="icon icon-user"></i>
+                </div>
+                <div class="form-valid-tip" *ngIf="formErrors.username"><i class="fa fa-exclamation-circle"></i>{{formErrors.username}}</div>
+              </div>
+              <div class="form-group">
+                <div class="form-item append-item">
+                  <input type="password" class="form-control" [ngClass]="{'form-error':formErrors.password}" name="userName" formControlName="password" [(ngModel)]="form_data.password"   placeholder="请输入密码" style="width: 260px"/>
+                  <i class="icon icon-lock"></i>
+                </div>
+                <div class="form-valid-tip" *ngIf="formErrors.password"><i class="fa fa-exclamation-circle"></i>{{formErrors.password}}</div>
+              </div>
+              <div id="GACode" class="form-group" *ngIf="is_GA">
+                <div class="form-item append-item">
+                  <input  name="code" [(ngModel)]="form_data.code" formControlName="code"   type="password" class="form-control" placeholder="验证码(开启两步验证后必填)" style="width: 260px"/>
+                  <i class="icon icon-lock"></i>
+                </div>
+              </div>
+              <div class="option-group">
+                <input type="checkbox" name="check" [(ngModel)]="is_remember_account" formControlName="is_remember_account"  id="check"/><label class="check" for="check">记住密码</label>
+                <a *ngIf="!isMobile" routerLink="/forget" class="href pull-right m-t-10">忘记密码</a>
+              </div>
+              <p class="error-msg" *ngIf="error">{{error}}</p>
+              <div class="login-button-warp">
+                <button report="'PAGE_ENTRY.BTN_LOGIN'" type="submit" id="submit-form"  [disabled]="is_btn_disabled"   (click)="handleLoginBtnClick()">登录</button>
+              </div>
+              <div class="register-link-warp">
+                <p>还没有账号?
+                  <!-- PC 则正常注册流程 -->
+                  <a *ngIf="!isMobile && !isWechat" class="href" (click)="goToRegisterRightNow()" href="javascript:void(0);">立即注册</a>
+                  <!-- 手机 & 非微信，展示图片引导公众号 -->
+                  <a *ngIf="isMobile && !isWechat" class="href" href="/wechat-indicator.html">立即注册</a>
+                  <!-- 手机 & 微信，拉起授权 -->
+                  <a *ngIf="isMobile && isWechat" class="href" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx55d175ecd4b6f7a5&redirect_uri=https%3a%2f%2fm.seeapp.com%2fauthority%2fsuccessLoginQRCode%3ftype%3d2%26test%3d1%26v%3d1%26platform%3d1%26action%3dlogin%26host%3dhttps%3a%2f%2fbackend.seecsee.com&response_type=code&scope=snsapi_userinfo&state=456">立即注册</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

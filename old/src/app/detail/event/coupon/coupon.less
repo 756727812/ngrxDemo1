@@ -1,0 +1,80 @@
+table.goods-table {
+  margin-top: 10px;
+
+  th {
+    width: 100px;
+  }
+
+  th.name {
+    width: 300px;
+  }
+
+  th, td {
+    border: 1px solid #cecece;
+  }
+}
+
+div.scope-text-col {
+  width: 40%;
+  display: flex;
+
+  div.block-container {
+    display: block;
+    flex: 1;
+  }
+
+  div.limit-str-length-tips {
+    width: 62px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    height: 36px;
+  }
+
+  label.scope-text-tooltip {
+    margin-left: 0;
+
+    .tooltip .tooltip-inner {
+      width: 514px;
+      max-width: unset;
+      height: 184px;
+    }
+  }
+}
+
+label.coupon-icon-tooltip {
+  position: absolute;
+  top: -6px;
+  left: 116px;
+
+  .tooltip .tooltip-inner {
+    width: 514px;
+    max-width: unset;
+    height: 184px;
+  }
+}
+
+img.scope-text-tooltip-img {
+  position: absolute;
+  top: -174px;
+  right: 24px;
+  transform: translateX(50%);
+  display: none;
+}
+
+label.scope-text-tooltip:hover + img.scope-text-tooltip-img {
+  display: block;
+}
+
+img.coupon-icon-tooltip-img {
+  position: absolute;
+  top: -180px;
+  left: 136px;
+  transform: translateX(-50%);
+  display: none;
+}
+
+label.coupon-icon-tooltip:hover + img.coupon-icon-tooltip-img {
+  display: block;
+}

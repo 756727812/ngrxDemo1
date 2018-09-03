@@ -1,0 +1,12 @@
+<div class="modal-header alert-warning">
+	<button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+	<h3 class=portlet-title ng-bind="vm.modalWord.title"></h3>
+</div>
+<div class="modal-body">
+	<p ng-bind="vm.modalWord.actmessage"></p>
+	<p ng-bind-html="vm.modalWord.desc|trustHtml" class="bold"></p>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="vm.ok()">确认</button>
+	<button class="btn dark btn-outline" type="button" ng-click="vm.cancel()">取消</button>
+</div>

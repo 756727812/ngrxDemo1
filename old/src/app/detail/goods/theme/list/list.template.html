@@ -1,0 +1,153 @@
+<div class="header">
+</div>
+<div id="goods-theme-list"
+     class="clearfix">
+  <div class="top-bar">
+    <span ng-if="$ctrl.isAdmin()"
+          class="btn-add-theme"
+          ng-click="$ctrl.toCreateTheme()">添加主题</span>
+    <span>&nbsp;</span>
+    <form novalidate
+          ng-submit="$ctrl.search()">
+      <div class="select-wrap">
+        <ui-select ng-if="$ctrl.isAdmin()"
+                   class="see-select"
+                   ng-model="$ctrl.formData.filterType"
+                   ng-change="$ctrl.onFilterTypeChange()"
+                   search-enabled="false">
+          <ui-select-match class="ui-select-match"
+                           placeholder="">{{$select.selected.name}}</ui-select-match>
+          <ui-select-choices class="ui-select-choices"
+                             repeat="item in $ctrl.FILTER_TYPE_OPTIONS track by $index">
+            <span ng-bind="item.name"></span>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <input input-clear="submit"
+             type="text"
+             name="keyword"
+             ng-model="$ctrl.formData.keyword"
+             class="see-input-text"
+             placeholder="请输入你感兴趣的主题">
+      <button type="submit"
+              class="see-btn-search">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </div>
+  <div class="theme-wrap">
+    <ul class="theme row"
+        infinite-scroll="$ctrl.isUseScrollLoad()&&$ctrl.scrollLoadNextPage()"
+        infinite-scroll-distance="1">
+      <li ng-repeat="item in $ctrl.pageData.list track by item.id"
+          loading-mask="item._busy"
+          ng-class="{'custom-bg':!$ctrl.isDefaultBg(item)}"
+          class="biz-box xxxxcol-xs-6 xxxxcol-lg-4 xxxxcol-xl-3 box"
+          report="PAGE_THEME_LIST.CLICK_THEME"
+          report-ext3="{{item.id}}">
+        <div class="inner-wrap">
+          <div class="content-wrap"
+               ng-click="$ctrl.toViewGoods(item)">
+            <div class="main"
+                 ng-style="{'background-image':$ctrl.getBgImg(item)}">
+              <div class="article-tag"
+                   ng-show="$ctrl.isItemHasArticle(item)">文章</div>
+              <div class="name-box">
+                <div class="name-lines">
+                  <p ng-if="line&&$index<=1"
+                     ng-repeat="line in item.title.split('\n') track by $index">{{line}}</p>
+                </div>
+                <div class="rotate-bg"
+                     ng-if="$ctrl.isDefaultBg(item)"></div>
+              </div>
+              <!-- 内部权限操作按钮-->
+              <div ng-if="$ctrl.isAdmin()"
+                   ng-click="$event.stopPropagation();">
+                <ul class="top-icons icons">
+                  <li ng-click="$ctrl.toggleVisible(item)"
+                      title="{{item.status === 1 ?  '当前隐藏' : '当前可见'}}">
+                    <i class="fa"
+                       ng-class="{'fa-eye':item.status===2,'fa-eye-slash':item.status===1}"></i>
+                  </li>
+                  <li ng-click="$ctrl.toDel(item)">
+                    <i class="fa fa-trash-o"></i>
+                  </li>
+                </ul>
+                <ul class="bottom-icons icons"
+                    ng-click="$event.stopPropagation();">
+                  <li title="置顶"
+                      ng-click="$ctrl.toTop(item)">
+                    <i class="si si-zhiding"></i>
+                  </li>
+                  <li title="添加商品"
+                      ng-click="$ctrl.toAppendGoods(item)">
+                    <i class="si si-bag-plus"></i>
+                  </li>
+                  <li title="编辑主题信息"
+                      ng-click="$ctrl.toEdit(item)">
+                    <i class="si si-14-edit-cover"></i>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="bottom">
+              <div class="descr-lines">
+                <div class="desc-txt">
+                  <p ng-repeat="line in item.description.split('\n') track by $index">
+                    {{line}}
+                  </p>
+                </div>
+              </div>
+              <!-- 外部权限添加到xx按钮-->
+              <div class="v-btns"
+                   ng-if="false"
+                   ng-click="$event.stopPropagation();">
+                <!--onsale 0：表示添加到仓库(下架)，1：添加到小店铺（上架）,-1:都没添加 ,-->
+                <span report="PAGE_THEME_LIST.BTN_ADD_TO_ARTICLE"
+                      report-ext3="{{item.id}}"
+                      ng-click="$ctrl.toAppendToArticle(item)"
+                      class="button btn-to-article">添加到文章合集</span>
+                <span report="PAGE_THEME_LIST.BTN_OFF_SALE"
+                      report-ext3="{{item.id}}"
+                      ng-if="item.onsale !== 0"
+                      ng-click="$ctrl.toAppendToOff(item)"
+                      class="button btn-to-off">添加到仓库</span>
+                <span ng-if="item.onsale === 0"
+                      class="button has-off">已添加到仓库</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li ng-repeat="item in $ctrl.hackBoxList track by $index"
+          class="hack-box box">
+        <div class="inner-wrap"
+             loading-mask="true"></div>
+      </li>
+    </ul>
+    <div class="empty-search-tips"
+         ng-if="$ctrl.nonSearchResult">
+      没有搜索到符合该条件的主题
+    </div>
+  </div>
+  <div class="see-pagination-wrap"
+       ng-if="!$ctrl.nonSearchResult && !$ctrl.isUseScrollLoad()">
+    <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+    </div>
+    <ul uib-pagination
+        ng-if="$ctrl.pageData.count"
+        total-items="$ctrl.pageData.count"
+        items-per-page="$ctrl.pageData.pageSize"
+        ng-model="$ctrl.pageData.page"
+        ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+        max-size="5"
+        previous-text="上一页"
+        next-text="下一页"
+        boundary-link-numbers="true">
+    </ul>
+  </div>
+  <div class="all-loaded-tips"
+       ng-if="$ctrl.hasLastPageLoaded&&$ctrl.isUseScrollLoad()">
+    - 更多个性化主题，敬请期待 -
+  </div>
+</div>

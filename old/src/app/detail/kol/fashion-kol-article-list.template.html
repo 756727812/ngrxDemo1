@@ -1,0 +1,117 @@
+<div class="header">
+  <h2><strong>KOL合作管理</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a  href="/kol/kol-cooperation-management">KOL合作管理</a></li>
+      <li class="active">详情页</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>上线时间</th>
+                <th>楼层</th>
+                <th>合集ID</th>
+                <th>案例形式</th>
+                <th>转载来源</th>
+                <th>文章阅读量</th>
+                <th>总订单量</th>
+                <th>总GMV</th>
+                <th see-hide="Hide-DD">包税路线</th><!--真实-->
+                <th see-hide="Hide-DD">包税路线GMV</th>
+                <th see-hide="Hide-DD">活动订单</th><!--真实-->
+                <th see-hide="Hide-DD">活动GMV</th>
+                <th see-hide="Hide-DD">国内路线</th><!--总刷单量-->
+                <th see-hide="Hide-DD">国内路线GMV</th>
+                <th see-hide="Hide-DD">包税路线GMV/阅读</th>
+                <th see-hide="Hide-DD">总转化率</th>
+                <th see-hide="Hide-DD">包税路线转化率</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{$ctrl.article.start_time * 1000 | date: 'yyyy-MM-dd'}}</td><!--  HH:mm:ss -->
+                <td>{{$ctrl.article.floor_level}}</td>
+                <td>{{$ctrl.article.collection_id}}</td>
+                <td>{{item.from_type_name}}</td>
+                <td>{{item.from_collection_id}}</td>
+                <td>{{$ctrl.article.read_count}}</td>
+                <td>{{$ctrl.article.gmv_info.all.order}}</td>
+                <td>{{$ctrl.article.gmv_info.all.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.gmv_info.normal.order}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.gmv_info.normal.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.gmv_info.act.order}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.gmv_info.act.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.gmv_info.invisible.order + $ctrl.article.gmv_info.visible.order}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.gmv_info.invisible.gmv + $ctrl.article.gmv_info.visible.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.read_count ? $ctrl.article.gmv_info.normal.gmv/$ctrl.article.read_count: 0}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.read_count ? 100 * $ctrl.article.gmv_info.all.order/$ctrl.article.read_count: 0 | percentage: 2}}</td>
+                <td see-hide="Hide-DD">{{$ctrl.article.read_count ? 100 * $ctrl.article.gmv_info.normal.order/$ctrl.article.read_count: 0 | percentage: 2}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr>
+        <select class="form-control" ng-model="$ctrl.article_id"
+          ng-options="art.article_id as art.title for art in $ctrl.article_list"
+          ng-change="$ctrl.changeArticle($ctrl.article_id)">
+          <option value="" selected>-- 请选择文章 --</option>
+        </select>
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>文章阅读量</th>
+                <th>当日阅读量</th>
+                <th>当日总订单量</th>
+                <th see-hide="Hide-DD">当日包税路线订单</th>
+                <th see-hide="Hide-DD">单日极速路线</th>
+                <th see-hide="Hide-DD">当日性价比路线</th>
+                <th>当日总GMV</th>
+                <th see-hide="Hide-DD">当日包税GMV</th>
+                <th see-hide="Hide-DD">当日国内路线GMV</th>
+                <th see-hide="Hide-DD">当日总GMV/阅读</th>
+                <th see-hide="Hide-DD">当日包税GMV/当日阅读</th>
+                <th see-hide="Hide-DD">当日总转化率</th>
+                <th see-hide="Hide-DD">当日包税路线转化率</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in $ctrl.log_list track by $index">
+                <td>{{item.time}}</td>
+                <td>{{item.read_num}}</td>
+                <td>{{item.current_read_num}}</td>
+                <td>{{item.gmv_info.all.order}}</td>
+                <td see-hide="Hide-DD">{{item.gmv_info.normal.order}}</td>
+                <td see-hide="Hide-DD">{{item.gmv_info.visible.order}}</td>
+                <td see-hide="Hide-DD">{{item.gmv_info.invisible.order}}</td>
+                <td>{{item.gmv_info.all.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{item.gmv_info.normal.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{+item.gmv_info.visible.gmv + +item.gmv_info.invisible.gmv | currency: '￥'}}</td>
+                <td see-hide="Hide-DD">{{item.current_read_num ? item.gmv_info.all.gmv/item.current_read_num
+                  : 0}}</td>
+                <td see-hide="Hide-DD">{{item.current_read_num ? item.gmv_info.normal.gmv/item.current_read_num
+                  : 0}}</td>
+
+                <td see-hide="Hide-DD">{{item.read_count ? 100 * item.gmv_info.all.order/item.read_count: 0 | percentage: 2}}</td>
+                <td see-hide="Hide-DD">{{item.read_count ? 100 * item.gmv_info.normal.order/item.read_count: 0 | percentage: 2}}</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

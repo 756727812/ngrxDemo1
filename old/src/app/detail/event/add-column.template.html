@@ -1,0 +1,63 @@
+<div class="header">
+  <h2><strong>新建活动栏目</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">新建活动栏目</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form id="submitActiveForm" name="submitActiveForm" role="form" class="form-horizontal mt20" ng-submit="submitForm(submitActiveForm.$valid)"
+        novalidate>
+
+            <div class="form-group" ng-class="{'has-error': submitActiveForm.set_name.$touched && submitActiveForm.set_name.$invalid}">
+                <label for="active_name" class="col-sm-2 control-label required">栏目名称</label>
+
+                <div class="col-sm-7">
+                    <input id="active_name" type="text" name="set_name" class="form-control" placeholder="5-10个字" ng-model="formData.set_name"
+                    required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">栏目配图</label>
+                <div class="col-sm-7">
+                    <img width="150" ng-show="formData.banner_imgurl" class="img-thumbnail" see-src="formData.banner_imgurl" alt="" see-img>
+                    <input type="hidden" name="banner_imgurl" ng-model="formData.banner_imgurl" required/>
+                    <div>
+                        <label class="btn btn-outline btn-primary">
+                            上传图片
+                            <input style="display:none" type="file" see-file-select="uploadImg" accept="image/jpg, image/jpeg, image/png">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': submitActiveForm.description.$touched && submitActiveForm.description.$invalid}">
+                <label class="col-sm-2 control-label required">栏目简介</label>
+                <div class="col-sm-7">
+                    <textarea ng-model="formData.description" rows="5" class="form-control" name="description" required maxlength="500">
+                    </textarea>
+                    <p style="color:gray">(500个字)</p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <button id="submitBtn" type="submit" class="btn btn-lg btn-primary col-sm-offset-2 ladda-button" data-style="expand-left">确定
+                </button>
+                <button id="cancelBtn" type="button" class="btn btn-lg btn-primary col-sm-offset-2 ladda-button" data-style="expand-left"
+                ng-click="cancel()">取消
+                </button>
+            </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

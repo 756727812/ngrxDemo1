@@ -1,0 +1,255 @@
+@import '../../../../styles/var';
+
+@select-width: 77px;
+@category-select-width: 88px;
+@val-wrap-height: 28px;
+@val-font-size: 12px;
+
+.modal-goods-group-add-goods {
+  width: 780px;
+
+  .btn-add-all {
+    pointer-events: initial;
+    cursor: pointer;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 2px;
+    padding: 0 15px;
+    color: white;
+    background: #5971e8;
+    position: absolute;
+    top: 65px;
+    right: 28px;
+  }
+
+  .modal-title {
+    display: flex;
+    align-items: center;
+
+    .group-name {
+      display: inline-block;
+      max-width: 90px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .modal-body {
+    padding: 20px 13px;
+  }
+
+  .line-wrap {
+    & + .line-wrap {
+      margin-top: 20px;
+    }
+
+    .labe {
+      color: #000;
+      margin-right: 8px;
+    }
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    > * {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .btn-search {
+      cursor: pointer;
+      width: 42px;
+      height: 28px;
+      border-radius: 2px;
+      background-color: @primary-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .val-wrap {
+      display: inline-block;
+      margin-right: 10px;
+
+      input[type='number'],
+      input[type='text'] {
+        font-size: @val-font-size !important;
+        height: @val-wrap-height;
+        line-height: @val-wrap-height;
+      }
+
+      .ui-select-container {
+        .ui-select-toggle {
+          font-size: @val-font-size !important;
+          height: @val-wrap-height !important;
+        }
+
+        .ui-select-choices-row > span {
+          font-size: @val-font-size !important;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          padding-top: 7px;
+          padding-bottom: 7px;
+          line-height: 1;
+        }
+      }
+    }
+
+    .val-wrap.channel {
+      width: @select-width;
+
+      .ui-select-choices {
+        min-width: @select-width;
+      }
+    }
+
+    .val-wrap.category {
+      width: @category-select-width;
+
+      .ui-select-choices {
+        min-width: @category-select-width;
+      }
+    }
+
+    .val-wrap.keyword {
+      input {
+        width: 100px;
+      }
+    }
+
+    .val-wrap.date-range {
+      input {
+        width: 180px;
+      }
+    }
+
+    .val-wrap.price-range {
+      display: flex;
+      align-items: center;
+
+      input {
+        width: 70px;
+      }
+
+      .hyphen {
+        display: inline-block;
+        height: 1px;
+        width: 6px;
+        margin: 0 8px;
+        background-color: #e5e5e5;
+      }
+    }
+  }
+
+  table {
+    th,
+    td {
+      border: none !important;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    img {
+      width: 46px;
+    }
+
+    td.group {
+      .more {
+        display: block;
+        text-align: center;
+        position: relative;
+
+        .trigger {
+          white-space: nowrap;
+          cursor: default;
+          position: relative;
+          color: @primary-color;
+
+          .caret {
+            padding: 0 !important;
+            margin-right: 3px;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            vertical-align: middle;
+            border-top: 8px solid @primary-color;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+          }
+        }
+
+        &:hover {
+          ul {
+            display: block;
+          }
+        }
+
+        ul {
+          z-index: 999;
+          //margin-top: 6px;
+          left: 0;
+          top: 100%;
+          width: 102px;
+          background-color: #fff;
+          box-shadow: 0 2px 7px 0 rgba(243, 243, 243, 0.5);
+          border: solid 1px #f6f6f6;
+          position: absolute;
+          display: none;
+          padding: 3px 15px;
+
+          li {
+            line-height: 1;
+            list-style: none;
+            padding: 8px 0;
+            color: #000;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+
+    td {
+      .button {
+        display: inline-block;
+        width: 43px;
+        height: 26px;
+        text-align: center;
+        line-height: 26px;
+        cursor: pointer;
+      }
+
+      .btn-add {
+        color: #fff;
+        background-color: #5971e8;
+      }
+
+      .btn-cancel {
+        background-color: #e5e8f5;
+        color: #787c92;
+      }
+    }
+  }
+  //  单独弄个loading 组件吧\
+  .empty-tips,
+  .content-wrap {
+    min-height: 120px;
+  }
+
+  .empty-tips {
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.14;
+    color: #8b8ea1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

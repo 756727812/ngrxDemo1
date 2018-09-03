@@ -1,0 +1,66 @@
+<ng-form novalidate name="$ctrl.form" class="banner-form">
+  <!-- 上传图片 -->
+  <div class="form-group required banner_imgurl">
+    <span class="label">上传图片</span>
+    <shop-operate-img-uploader
+      dirty="$ctrl.uploaderDirty"
+      img-src="$ctrl.data.banner_imgurl"
+      on-fail="$ctrl.onUploadFail"
+      name="banner_imgurl"
+      required
+      ng-model="$ctrl.data.banner_imgurl"
+    ></shop-operate-img-uploader>
+    <div class="input-tips">
+      <p class="star">建议上传图片尺寸为 710*{{$ctrl.recommendedImgHeight||334}}</p>
+      <p class="star">图片格式支持 png、jpg</p>
+    </div>
+  </div>
+
+  <!-- 跳转地址 -->
+  <div class="form-group skip_addr_url">
+    <span class="label">跳转地址</span>
+    <span class="href-title ellipsis" ng-show="$ctrl.hrefItem" ng-bind="$ctrl.hrefItem.title"></span>
+    <a ng-click="$ctrl.openHrefPicker()">
+      <span ng-show="$ctrl.hrefItem">修改</span>
+      <span ng-show="!$ctrl.hrefItem">设置跳转地址</span>
+    </a>
+    <div ng-show="!$ctrl.hrefItem" class="input-tips">
+      <p class="star">跳转地址非必填</p>
+    </div>
+  </div>
+
+  <!-- 显示时间 -->
+  <div class="form-group required show_time">
+    <span class="label">显示时间</span>
+    <input
+      name="show_time"
+      ng-model="$ctrl.rangeDate"
+      type="text"
+      date-range-picker
+      date-range-picker-dirty
+      options="{locale: {format: 'YYYY/MM/DD'}}"
+      required
+      readonly
+    >
+    <div class="input-tips">
+      <p>非显示时间段内，<br />
+        Banner在前端隐藏</p>
+    </div>
+  </div>
+
+  <!-- 当前状态 -->
+  <div class="form-group" ng-if="$ctrl.shouldShowBannerStatus()">
+    <span class="label">当前状态</span>
+    <span>{{$ctrl.getBannerStatusText()}}</span>
+  </div>
+
+  <!-- 错误信息 -->
+  <ul class="error-msgs" ng-if="$ctrl.formSubmitted && $ctrl.hasError()">
+    <li ng-repeat="item in $ctrl.form.$error.required track by $index">
+      <i class="fa fa-info-circle"></i>
+      <span ng-if="item.$name==='banner_imgurl'">请上传Banner图</span>
+      <span ng-if="item.$name==='show_time'">请填写有效时间</span>
+    </li>
+  </ul>
+
+</ng-form>

@@ -1,0 +1,35 @@
+<div class="brand-selector" *ngIf="mode === 'multiple'">
+  <nz-select [nzMode]="'multiple'"
+             [nzPlaceHolder]="placeholder"
+             nzKeepUnListOptions
+             (nzSearchChange)="searchChange($event)"
+             [(ngModel)]="value"
+             [nzNotFoundContent]="'无法找到'"
+  >
+    <ng-container *ngFor="let item of dataSource">
+      <nz-option *ngIf="!isLoading" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+    </ng-container>
+    <nz-option *ngIf="isLoading" nzDisabled>
+      <ng-template #nzOptionTemplate><i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...</ng-template>
+    </nz-option>
+  </nz-select>
+</div>
+
+<div class="brand-selector" *ngIf="mode !== 'multiple'">
+  <nz-select [nzPlaceHolder]="placeholder"
+             nzAllowClear
+             [nzFilter]="false"
+             (nzSearchChange)="searchChange($event)"
+             [(ngModel)]="value"
+             [nzNotFoundContent]="'无法找到'"
+             nzShowSearch
+  >
+    <ng-container *ngFor="let item of dataSource">
+      <nz-option *ngIf="!isLoading" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+    </ng-container>
+    <nz-option *ngIf="isLoading" nzDisabled>
+      <ng-template #nzOptionTemplate><i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...</ng-template>
+    </nz-option>
+  </nz-select>
+</div>
+

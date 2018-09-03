@@ -1,0 +1,24 @@
+<div class="container">
+  <form class="auth-form" [formGroup]="forgetFormTwo">
+    <div class="form-group">
+    <label>重置登录密码</label>
+    <div class="form-item">
+      <input name="seller_pwd"  type="password" class="form-control" [ngClass]="{'form-error':formErrors.seller_pwd}" [(ngModel)]="formData.seller_pwd"  formControlName="seller_pwd" placeholder="请设置你的登陆密码" style="width: 260px"/>
+    </div>
+    <div class="form-valid-tip" *ngIf="formErrors.seller_pwd"><i class="fa fa-exclamation-circle"></i>{{formErrors.seller_pwd}}</div>
+  </div>
+    <div class="form-group">
+      <label>再次确认</label>
+      <div class="form-item">
+        <input name="seller_confirm_pwd"  type="password" class="form-control" [ngClass]="{'form-error':formErrors.seller_confirm_pwd}" [(ngModel)]="formData.seller_confirm_pwd"  formControlName="seller_confirm_pwd" placeholder="请设置你的登陆密码" style="width: 260px"/>
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.seller_confirm_pwd"><i class="fa fa-exclamation-circle"></i>{{formErrors.seller_confirm_pwd}}</div>
+    </div>
+    <div class="form-group" *ngIf="error">
+      <p class="error-msg"><i class="fa fa-info-circle"></i>&nbsp;{{error}}</p>
+    </div>
+    <div class="next-btn-warp">
+      <button type="button" class="primary-btn" (click)="onSubmitStepTwo()">下一步</button>
+    </div>
+  </form>
+</div>

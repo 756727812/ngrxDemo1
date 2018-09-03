@@ -1,0 +1,123 @@
+image: andthensome/docker-node-rsync
+
+cache:
+  key: cache_yarn
+  paths:
+    - .cache_yarn
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - yarn install --cache-folder .cache_yarn --pure-lockfile --registry "https://registry.npm.taobao.org"
+    - yarn run build
+  artifacts:
+    paths:
+      - dist
+
+deploy_devcdn:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 119.29.20.128 /data/backend/xiaodianpu_sass
+  environment:
+    name: devcdn
+    url: https://backend.devcdn.seecsee.com
+  dependencies:
+    - build
+  only:
+    - some_nonexistent_branch
+  when: manual
+
+deploy_publish:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 119.29.20.128 /data/backend_publish/xiaodianpu_sass
+  environment:
+    name: publish
+    url: https://backend.publish.seecsee.com
+  dependencies:
+    - build
+  only:
+    - hotfix/goodThemeSearchId
+  when: manual
+
+deploy_test:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 111.230.31.56 /data/backend/xiaodianpu_sass
+  environment:
+    name: test
+    url: https://backend-test.seecsee.com
+  dependencies:
+    - build
+  only:
+    - master
+  when: manual
+
+deploy_test_pb:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 111.230.31.56 /data/backend_publish/xiaodianpu_sass
+  environment:
+    name: test-pb
+    url: http://backend-test-pb.seecsee.com
+  dependencies:
+    - build
+  only:
+    - july-sprint2-0831
+  when: manual
+
+deploy_test_2:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 111.230.68.176 /data/backend/xiaodianpu_sass
+  environment:
+    name: test-2
+    url: https://backend-test-2.seecsee.com
+  dependencies:
+    - build
+  only:
+    - some_nonexistent_branch
+  when: manual
+
+deploy_test_3:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 122.152.230.76 /data/backend/xiaodianpu_sass
+  environment:
+    name: test-3
+    url: https://backend-test-3.seecsee.com
+  dependencies:
+    - build
+  only:
+    - some_nonexistent_branch
+  when: manual
+
+deploy_test_01:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 119.29.81.35 /data/backend/xiaodianpu_sass
+  environment:
+    name: test-01
+    url: https://backend-test-01.seecsee.com
+  dependencies:
+    - build
+  only:
+    - 10-welfare-groupon-for-the-new-users
+  when: manual
+
+backend-test-shopcart:
+  stage: deploy
+  script:
+    - sh rsync-script.sh 111.230.31.56 /data/backend_shopcart/xiaodianpu_sass
+  environment:
+    name: test-shopcart
+    url: backend-test-shopcart.seecsee.com
+  dependencies:
+    - build
+  only:
+    - master
+  when: manual

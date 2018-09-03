@@ -1,0 +1,155 @@
+.rules-content-wrap {
+  display: flex;
+  background-color: rgb(249, 249, 249);
+  padding-top: 30px;
+
+  .card-contents {
+    flex: 1 1 auto;
+    padding: 0 10px;
+
+    .rules-panel {
+      background-color: #fff;
+      margin-bottom: 10px;
+
+      .panel-top {
+        height: 50px;
+        padding-left: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid #d9d9d9;
+        display: flex;
+        align-items: center;
+      }
+
+      .panel-form {
+        padding: 30px 0;
+
+        .rule-sub-title {
+          padding: 20px;
+          font-size: 16px;
+
+          &::nth-child(1) {
+            padding-top: 0;
+          }
+        }
+      }
+    }
+
+    .btn-footer {
+      height: 60px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      .submit-btn {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .side-bar-img {
+    margin: 0 14px;
+    background-color: #fff;
+    width: 350px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .side-bar-title {
+      width: 100%;
+      height: 50px;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      font-size: 20px;
+      border-bottom: 1px solid #d9d9d9;
+    }
+
+    img {
+      width: 240px;
+      height: 350px;
+      margin: 20px 0;
+    }
+  }
+}
+
+i.i-tips {
+  font-size: 12px;
+  color: #5971e8;
+  margin-left: 5px;
+  line-height: 36px;
+}
+
+.custom-error {
+  font-size: 12px;
+  margin-left: 10px;
+
+  i.si {
+    color: #ff6b6b;
+    position: static;
+    width: 18px;
+  }
+}
+
+.flex-container {
+  display: flex;
+}
+
+.prefix-text {
+  width: 60px;
+}
+
+.prefix-text-price {
+  width: 100px;
+}
+
+.prefix-text-supply-price {
+  width: 120px;
+}
+
+.suffix-text {
+  margin-left: 5px;
+}
+
+.goods-price-wrapper {
+  width: 200px;
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .ant-form-item-control {
+    font-size: 14px;
+    line-height: 36px !important;
+  }
+
+  .ant-form-item-label {
+    text-align: right !important;
+    padding-right: 24px !important;
+    line-height: 36px !important;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .ant-form-item {
+    margin-top: 15px;
+    margin-bottom:0
+  }
+}
+
+.coupon-tips {
+  font-size: 16px;
+  margin-left: 40px;
+}
+
+.number-nz-input {
+  width: 84px;
+}
+
+.panel-form {
+  label, .prefix-text, .suffix-text {
+    font-size: 14px;
+  }
+}

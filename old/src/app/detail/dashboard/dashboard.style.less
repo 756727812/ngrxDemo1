@@ -1,0 +1,374 @@
+@import '../../../styles/var.less';
+
+.filter-gray {
+  filter: grayscale(100%);
+}
+
+.main-content .page-content {
+  .shop-info {
+    &-header {
+      .panel-content {
+        padding-bottom: 20px;
+
+        h3 {
+          position: relative;
+          margin-top: 0;
+          margin-bottom: 0;
+          font-size: 16px;
+          line-height: 64px;
+          font-family: @font-family;
+
+          a {
+            color: #000;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          strong {
+            font-family: @font-family;
+          }
+        }
+      }
+    }
+
+    .panel-header {
+      border-bottom: 1px solid rgba(218, 218, 218, 0.5);
+      margin: 0 10px;
+
+      h3 {
+        font-family: @font-family;
+
+        strong {
+          font-family: @font-family;
+        }
+      }
+    }
+
+    .my-shop {
+      .panel-content {
+        padding-bottom: 0;
+      }
+    }
+  }
+}
+
+.main-content .page-content .panel .panel-content.my-shop-empty {
+  padding-top: 48px !important;
+  padding-bottom: 45px !important;
+
+  .btn {
+    margin: 20px auto 0;
+  }
+
+  h1 {
+    font-family: @font-family;
+    font-size: 18px;
+    color: #000;
+    font-weight: 500;
+
+    .icon {
+      color: #c1c4d0;
+      font-size: 24px;
+    }
+  }
+
+  p {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+.shop-info {
+  .my-shop {
+    .shop-item-wrap {
+      float: left;
+      margin-left: 30px;
+      margin-bottom: 30px;
+    }
+
+    .shop-item {
+      width: 240px;
+      border-top: 3px solid #5971e8;
+      background-color: #f8f8f8;
+      position: relative;
+
+      &:first-child {
+        height: 150px;
+      }
+
+      &-title {
+        padding-top: 25px;
+        padding-left: 25px;
+
+        h2 {
+          margin: 0;
+          font-size: 14px;
+          font-family: @font-family;
+          color: #000;
+          text-align: left;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        @avatar-img-size: 40px;
+
+        &-img {
+          position: relative;
+          float: left;
+          width: @avatar-img-size;
+
+          img {
+            vertical-align: middle;
+            width: @avatar-img-size;
+            height: @avatar-img-size;
+          }
+        }
+
+        &-detail {
+          position: relative;
+          float: left;
+          width: calc(100% - 40px);
+          padding-left: 10px;
+
+          .badge {
+            margin-top: 3px;
+          }
+        }
+      }
+
+      &-status {
+        color: #ff6b6b;
+        font-size: 14px;
+        font-weight: bold;
+
+        &.primary-color {
+          color: @primary-color;
+        }
+      }
+
+      &-date {
+        font-size: 12px;
+        color: #999;
+      }
+
+      &-add {
+        min-height: 128px;
+
+        .add-shop {
+          text-align: center;
+          font-size: 70px;
+          margin: 0 auto;
+
+          a {
+            color: #d8d8d8;
+          }
+        }
+
+        p {
+          font-size: 14px;
+          color: #999;
+          font-weight: bold;
+        }
+      }
+
+      &-btn {
+        &-group {
+          position: absolute;
+          top: -3px;  // 覆盖border-top
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding-top: 10px;
+          background-color: rgba(256, 256, 256, 0.5);
+        }
+      }
+
+      &:hover {
+        .shop-item-btn-group {
+          display: flex;
+        }
+      }
+
+      .current-shop-pin {
+        display: none;
+        position: absolute;
+        right: 8px;
+        top: -18px;
+        width: 22px;
+        height: 31px;
+        z-index: 999;
+      }
+    }
+  }
+
+  .data {
+    .panel-content {
+      padding-bottom: 30px !important;
+    }
+
+    &-icon-beyond-title {
+      // position: relative;
+      // top: 15px;
+      i.icon {
+        font-size: 20px;
+        color: #c0c0c0;
+      }
+    }
+
+    &-item-title {
+      font-size: 14px;
+      font-family: @font-family;
+      color: #666;
+    }
+
+    &-item-detail {
+      font-family: @font-family-AvenirNext;
+      font-size: 32px;
+      font-weight: 500;
+      color: #434655;
+      // width: 155px;
+      max-width: 280px;
+      display: inline-block;
+    }
+  }
+
+  .profit {
+    position: relative;
+
+    &-noty {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 15px 15px;
+      background-color: rgba(256, 256, 256, 0.9);
+
+      span {
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: #333;
+      }
+    }
+  }
+
+  .help {
+    &-info-block {
+      height: 75px;
+      padding: 0 5px;
+      float: left;
+
+      &:first-child {
+        padding-left: 15px;
+      }
+
+      a {
+        cursor: pointer;
+      }
+    }
+
+    &-container {
+      width: 165px;
+      height: 100%;
+      border: 1px solid #e3e3e3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+      position: relative;
+
+      &-icon {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        text-align: center;
+
+        .icon {
+          font-size: 20px;
+          color: #5971e8;
+        }
+      }
+
+      &-href {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      p {
+        display: block;
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 14px;
+        color: #000;
+        font-weight: bold;
+      }
+
+      a {
+        display: block;
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 14px;
+        color: #000;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .trade-data {
+    &-container {
+      p {
+        margin-bottom: 0;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .pull-right {
+        p {
+          color: #787c92;
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .btn-transparent {
+      border-width: 2px !important;
+    }
+
+    .btn.btn-sm {
+      padding: 2px 10px !important;
+    }
+
+    .btn-primary {
+      border: 2px solid @primary-color;
+    }
+  }
+
+  @media (max-width: 1624px) {
+    .trade-data .panel {
+      padding-bottom: 47px !important;
+    }
+  }
+
+  @media (max-width: 1325px) {
+    .trade-data .panel {
+      padding-bottom: 67px !important;
+    }
+  }
+
+  .echart-container {
+    height: 200px;
+  }
+}

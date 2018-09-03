@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">添加 Banner</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+    <div class="form-group">
+      <label class="control-label col-sm-4 required">标题</label>
+      <div class="col-sm-7">
+        <input name="banner_title" type="text" class="form-control" ng-model="form_data.banner_title" ng-trim="true" required ng-change="changeItem()" ng-disabled="is_limit">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4 required">图片</label>
+      <div class="col-sm-7">
+        <label class="btn btn-primary btn-sm">上传图片
+          <input type="file" see-file-select="upload" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize ng-disabled="is_limit">
+        </label>
+        <img id="mainImage" style="max-height:120px;" class="img-viewer" see-src="form_data.banner_imgurl">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4">H5链接</label>
+      <div class="col-sm-7">
+        <input name="banner_url" type="text" class="form-control" ng-model="form_data.banner_url" ng-trim="true" ng-change="changeItem()" ng-disabled="is_limit">
+        <font style="font-color:gray;font-size:9px;">
+            1、配置为空时，将不在H5页面显示；
+          <br />2、填写链接格式如: https://xxxx，可到KOL配置链接里面复制)
+        </font>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4">小程序链接</label>
+      <div class="col-sm-7">
+        <input name="xcx_url" type="text" class="form-control" ng-model="form_data.xcx_url" ng-trim="true"  ng-change="changeItem()" ng-disabled="is_limit">
+        <font style="font-color:gray;font-size:9px;">
+            1、配置为空时，将不在小程序内显示；
+          <br />2、填写链接格式如: pages/commodity?xxxx，可到KOL配置链接里面复制)
+        </font>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4 required">轮播位置</label>
+      <div class="col-sm-7">
+        <input name="pos" type="number" class="form-control" ng-model="form_data.pos" ng-trim="true" required ng-change="changeItem()" ng-disabled="is_limit">
+      </div>
+    </div>
+    <!--
+    <div class="form-group">
+      <label class="control-label col-sm-4 required">活动时间</label>
+      <div class="col-sm-7">
+        <input date-range-picker class="form-control date-picker" type="text" placeholder="请选择日期" ng-model="date_range" required ng-disabled="is_limit">
+      </div>
+    </div>
+  -->
+  <!-- 这个要精确到分秒的上线时间 -->
+      <div class="form-group">
+          <label class="control-label col-sm-4 required">开始时间</label>
+          <div class="col-sm-7">
+            <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" name="start_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="date_range.start_time" required ng-disabled="is_limit">
+                </a>
+                <ul ng-if="!is_limit" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <datetimepicker data-ng-model="date_range.start_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" />
+                </ul>
+            </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4 required">结束时间</label>
+        <div class="col-sm-7">
+          <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+            <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+              <input type="text" name="end_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="date_range.end_time" required>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <datetimepicker data-ng-model="date_range.end_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }" />
+            </ul>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" w5c-form-submit="ok()">确定</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+    </div>
+  </form>
+</div>

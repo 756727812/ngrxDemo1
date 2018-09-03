@@ -1,0 +1,17 @@
+<div class="ctrl-widget"
+     *ngIf="compClass"
+     [class.global-save-error-visible]="elem.formErrorVisible">
+  <div class="head">
+    <span class="title">{{headTitle}}</span>
+    <i (click)="handleClose()"
+       class="si si-close2"></i>
+  </div>
+  <div class="body">
+    <ndc-dynamic #ctrlBaseWidget
+                 *ngIf="elem?.data"
+                 [ndcDynamicComponent]="compClass"
+                 [ndcDynamicInputs]="{ data: elem.data, currentModalType: currentModalType }"
+                 [ndcDynamicOutputs]="{configSave:hanldeSave,configChange:hanldeChange}"></ndc-dynamic>
+
+  </div>
+</div>

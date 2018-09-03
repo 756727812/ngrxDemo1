@@ -1,0 +1,9 @@
+<div class="btn-group btn-tab">
+  <button type="button" class="btn" ng-repeat="item in $ctrl.group track by item.key"
+          ng-class="{'btn-primary': $ctrl.filter_type === item.key}" ng-click="$ctrl.typeFilter(item.key)">
+    <div class="btn-content">
+      {{ item.name }}
+    </div>
+    <span class="badge badge-see" ng-bind="$ctrl.count[item.key]"></span>
+  </button>
+</div>

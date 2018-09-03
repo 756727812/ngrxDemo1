@@ -1,0 +1,62 @@
+<div nz-row>
+  <div nz-form-control nz-col [nzSm]="4">
+    <button nz-button (click)="addItem()" type="button" [nzSize]="'large'" [nzType]="'primary'" *ngIf="!disabled" style="margin-bottom: 10px;">
+      <i class="anticon anticon-plus"></i><span>添加商品</span>
+    </button>
+  </div>
+</div>
+<div nz-row>
+  <nz-table nz-col [nzAjaxData]="_value" [nzSm]="24" #nzTable [nzIsPagination]="false" nzCustomNoResult>
+    <div noResult style="text-align: center">
+      尚未添加商品
+    </div>
+    <thead nz-thead>
+      <tr>
+        <th nz-th [hidden]="disabled"></th>
+        <th nz-th><span>编号</span></th>
+        <th nz-th><span>商品</span></th>
+        <th nz-th><span>规格</span></th>
+        <th nz-th width="100px"><span>单位</span></th>
+        <th nz-th><span>采购数量</span></th>
+        <th nz-th><span>采购单价</span></th>
+        <th nz-th><span>小计</span></th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of nzTable.data">
+        <td nz-td [hidden]="disabled">
+          <a (click)="deleteItem(item.id)">删除</a>
+        </td>
+        <td nz-td>
+          SEE仓ID: {{item.warehouseItemid || item.id}} <br>
+          货号：{{item.itemNo}}
+        </td>
+        <td nz-td>
+          {{item.itemName}}
+        </td>
+        <td nz-td>
+          {{item.specificationName}}
+        </td>
+        <td nz-td width="50px">
+            <nz-input [nzPlaceHolder]="'件'" [(ngModel)]="item.unit" name="unit" [nzDisabled]="true" (change)="emitChange()"></nz-input>
+        </td>
+        <td nz-td width="100px">
+            <nz-input-number [(ngModel)]="item.quantity" name="quantity" [nzDisabled]="disabled"
+              (change)="emitChange()" (nzBlur)="handleNumberBlur(item, 'quantity')"  [nzStep]="1"></nz-input-number>
+        </td>
+        <td nz-td width="100px">
+            <nz-input [(ngModel)]="item.unitPrice" name="unitPrice" [nzDisabled]="disabled" (change)="emitChange()" (nzBlur)="handleNumberBlur(item, 'unitPrice')"></nz-input>
+            <span style="color:red;" *ngIf="!disabled && item.unitPrice <= 0">采购单价不能为0</span>
+        </td>
+        <td nz-td class="nowrap-td">
+          {{getItemPriceSum(item)}}
+        </td>
+      </tr>
+      <tr nz-tbody-tr [hidden]="_value.length === 0">
+        <td [attr.colspan]="disabled ? 4 : 5" nz-td>合计</td>
+        <td colspan="2" nz-td>{{quantitySum || 0}}</td>
+        <td nz-td class="nowrap-td">{{priceSum || 0}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

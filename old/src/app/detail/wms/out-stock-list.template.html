@@ -1,0 +1,128 @@
+<div class="header">
+  <h2><strong>出库管理</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="#">库存管理</a></li>
+      <li class="active">出库管理</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+            <div class="form-group m-b-10">
+                <label class="control-label">出库单号
+                    <input type="search" class="form-control" ng-model="$ctrl.searchForm.exWarehouseOrderId">
+                </label>
+            </div>
+            <div class="form-group m-b-10">
+                <label class="control-label">订单号
+                  <input class="form-control" type="text" ng-model="$ctrl.searchForm.orderId" placeholder="大/中/小订单">
+                </label>
+            </div>
+            <div class="form-group m-b-10">
+                <label class="control-label">物流单号
+                  <input class="form-control" type="text" ng-model="$ctrl.searchForm.trackingNumber">
+                </label>
+            </div>
+            <div class="form-group m-b-10">
+                <label class="control-label">收货人
+                  <input class="form-control" type="text" ng-model="$ctrl.searchForm.consignee" placeholder="收货人姓名">
+                </label>
+            </div>
+            <div class="form-group m-b-10">
+                <label class="control-label">出库单创建时间
+                  <input date-range-picker class="form-control date-picker" type="text" ng-model="$ctrl.datePicker" placeholder="">
+                </label>
+            </div>
+            <div class="form-group">
+              <label class="control-label">出库类型</label>
+              <select name="type" class="form-control" ng-model="$ctrl.searchForm.type">
+                <option value="">全部</option>
+                <option value="1">销售出库</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">出库状态</label>
+              <select name="type" class="form-control" ng-model="$ctrl.searchForm.status">
+                <option value="">--请选择--</option>
+                <option value="1">新建</option>
+                <option value="2">出库中</option>
+                <option value="3">出库成功</option>
+                <option value="4">出库失败</option>
+                <option value="5">已撤销</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">出库是否异常</label>
+              <select name="type" class="form-control" ng-model="$ctrl.searchForm.isUnnormal">
+                <option value="">--请选择--</option>
+                <option value="0">否</option>
+                <option value="1">是</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+            <button type="button" ng-click="$ctrl.resetSearch()" class="btn">重置</button>
+ 
+            <div class="form-group m-b-10">
+                <label class="control-label">中订单号
+                  <input class="form-control" type="text" ng-model="$ctrl.post_mid_order" placeholder="">
+                </label>
+                <button type="button" ng-click="$ctrl.postOrder()" class="btn btn-primary">重新出库</button>
+            </div>
+
+            <div class="form-group">
+              <button type="button" ng-click="$ctrl.postOrderBatch()" class="btn btn-primary">批量重新出库</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix"> 
+ 
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                   <th>创建时间</th>
+                   <th>出库单号</th>
+                   <th>订单号</th>
+                   <th>出库类型</th>
+                   <th>出库状态</th>
+                   <th>出库信息</th>
+                   <th>异常告警</th>
+                   <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.list">
+                  <td ng-bind="item.createTime | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                  <td ng-bind="item.exWarehouseOrderId"></td>
+                  <td>{{item.bigOrderId}}<br/><a href="order/all?keyword={{item.midOrderId}}">{{item.midOrderId}}</a></td>
+                  <td ng-bind="item.type | exType"></td> 
+                  <td>
+                    {{item.status | exStatus}}<br/> {{item.status==4?item.exWarehouseErrMsg:''}}
+                  </td> 
+                  <td>物流：{{item.logisticsCompany || '暂无'}}&nbsp;&nbsp;{{item.trackingNumber}}<br/>收件人：<span ng-bind-html='item.consignee'></span></td>
+                  <td class="text-left"><i class="fa {{item.isUnnormal==1?'fa-exclamation-triangle text-danger':''}}" style="width:300px;"><br/>{{item.isUnnormal==1?item.exceptionMsg:''}}</i></td>
+                  <td><a href="/wms/out-stock-detail/{{item.midOrderId}}">查看详情</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        
+           
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+<footer></footer>

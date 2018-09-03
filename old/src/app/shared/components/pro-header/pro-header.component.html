@@ -1,0 +1,20 @@
+<nz-breadcrumb class="ant-breadcrumb" *ngIf="paths && paths.length > 0">
+  <nz-breadcrumb-item *ngFor="let i of paths">
+    <a [routerLink]="i.link" *ngIf="i.link">{{ i.title }}</a>
+    <span *ngIf="!i.link">{{ i.title }}</span>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div class="detail">
+  <div class="main">
+    <div class="row">
+      <h1 *ngIf="title" class="title" [innerHTML]="title"></h1>
+      <div *ngIf="status" class="status"><ng-template [ngTemplateOutlet]="status"></ng-template></div>
+      <div *ngIf="action" class="action"><ng-template [ngTemplateOutlet]="action"></ng-template></div>
+    </div>
+    <div class="row">
+      <div *ngIf="content" class="desc"><ng-template [ngTemplateOutlet]="content"></ng-template></div>
+      <div *ngIf="extra" class="extra"><ng-template [ngTemplateOutlet]="extra"></ng-template></div>
+    </div>
+  </div>
+</div>

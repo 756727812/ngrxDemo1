@@ -1,0 +1,167 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel bi-panel summary">
+      <div class="panel-content">
+        <div class="h">
+          <div class="txt-h">交易概况</div>
+          <div class="flex-wrap">
+            <app-bi-date-filter class="date-filter"
+                                [types]="dateTypeOptions"
+                                (ngModelChange)="onDateFilterModelChange($event)"
+                                [(ngModel)]="dateVal"></app-bi-date-filter>
+            <app-bi-btn-export name="TRADE_SUMMARY"
+                               [params]="exportParams"></app-bi-btn-export>
+          </div>
+        </div>
+        <div class="clearfix top-part"
+             nz-row>
+          <div class="left"
+               nz-col
+               [nzXl]="9"
+               [nzLg]="9"
+               [nzMd]="24"
+               nz-row>
+            <div class="pay col"
+                 nz-col
+                 [nzXl]="24"
+                 [nzLg]="24"
+                 [nzMd]="12"
+                 [nzSm]="12">
+              <div class="innerwrap">
+                <span>付款金额（元）<app-bi-mark-tip class="bi-mark-tip" [tipContent]="'包含退款退货金额。'"></app-bi-mark-tip></span>
+                <span>{{data.pay_price_sum | _currency}}</span>
+              </div>
+            </div>
+            <div class="profit col"
+                 nz-col
+                 [nzXl]="24"
+                 [nzLg]="24"
+                 [nzMd]="12"
+                 [nzSm]="12">
+              <div class="innerwrap">
+                <div class="l">
+                  <div>收益（元）</div>
+                  <div class="val">{{data.profit_sum | _currency}}</div>
+                </div>
+                <div class="r">
+                  <div class="t">
+                    <span class="labe">已入账收益（元）</span>
+                    <span class="val">{{data.recorded_profit_sum | _currency}}</span>
+                  </div>
+                  <div class="b">
+                    <span class="labe">待入账收益（元）</span>
+                    <span class="val">{{data.unrecord_profit_sum | _currency}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="funnel right"
+               nz-col
+               [nzXl]="15"
+               [nzLg]="15"
+               [nzMd]="24">
+            <div class="l-arrow-block">
+              <div class="text-wrap">
+                <span class="labe">访问-付款
+                  <br/>转化率</span>
+                <span class="val">{{data.visit_pay_tran | percent:'.2' }}</span>
+              </div>
+            </div>
+            <ul class="blocks">
+              <li class="access">
+                <div class="wrap">
+                  <div class="category">访问
+                    <div class="block-arrow">
+                      <span class="labe">访问-下单
+                        <br/>转化率</span>
+                      <span class="val">{{data.visit_order_tran | percent:'.2' }}</span>
+                    </div>
+                  </div>
+                  <ul class="data">
+                    <li>
+                      <span class="labe">
+                        访客数量
+                        <app-bi-mark-tip class="bi-mark-tip" [tipContent]="uvTipContent"></app-bi-mark-tip>
+                      </span>
+                      <span class="val">{{data.user_num | number}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">访问商品量</span>
+                      <span class="val">{{data.item_num | number}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">人均访问商品量</span>
+                      <span class="val">{{data.user_avg_item | number}}</span>
+                    </li>
+                  </ul>
+
+                </div>
+              </li>
+              <li class="order">
+                <div class="wrap">
+                  <div class="category">下单
+                    <div class="block-arrow">
+                      <span class="labe">下单-付款
+                        <br/>转化率</span>
+                      <span class="val">{{data.order_pay_tran | percent:'.2' }}</span>
+                    </div>
+                  </div>
+                  <ul class="data">
+                    <li>
+                      <span class="labe">下单量</span>
+                      <span class="val">{{data.order_num | number}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">下单人数</span>
+                      <span class="val">{{data.order_user_num | number}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">下单金额</span>
+                      <span class="val">{{data.order_price_sum | _currency}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="pay">
+                <div class="wrap">
+                  <div class="category">付款</div>
+                  <ul class="data">
+                    <li>
+                      <span class="labe">付款单量</span>
+                      <!-- 确认字段 -->
+                      <span class="val">{{data.pay_num | number}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">付款金额（元）</span>
+                      <span class="val">{{data.pay_price_sum | _currency}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">付款人数</span>
+                      <span class="val">{{data.pay_user_num | number}}</span>
+                    </li>
+                    <li>
+                      <span class="labe">客单价（元）</span>
+                      <span class="val">{{data.user_avg_price | _currency}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <nz-spin [nzSpinning]="chartBusy">
+          <div class="bottom-part">
+            <div class="chart"
+                 #chart></div>
+          </div>
+        </nz-spin>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-bi-trade-dist-block></app-bi-trade-dist-block>
+<app-bi-trade-rebuy-block></app-bi-trade-rebuy-block>
+<app-bi-trade-as-block></app-bi-trade-as-block>

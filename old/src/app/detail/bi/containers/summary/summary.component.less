@@ -1,0 +1,149 @@
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .bi-table-wrap {
+    width: 100%;
+    margin-top: 29px;
+    padding: 0 27px 0 20px;
+
+    table {
+      margin-bottom: 0;
+      width: 100%;
+
+      th,
+      td {
+        font-size: 12px;
+        text-align: center;
+      }
+
+      th {
+        background: #e8e8e8;
+        font-weight: bold;
+        height: 29px;
+        line-height: 29px;
+      }
+
+      td {
+        height: 47px;
+        line-height: 1.1;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.top-part {
+  .left {
+    // width: 540px;
+    padding-right: 35px;
+
+    > .caption {
+      padding: 23px 0 11px;
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    ul.money-line {
+      height: 40px;
+      display: flex;
+      background: #f9f9f9;
+      align-items: center;
+
+      > li {
+        height: 28px;
+        display: inline-block;
+        font-size: 0;
+        text-align: center;
+
+        &.sep {
+          width: 2px;
+          background: #d8d8d8;
+        }
+
+        &.l,
+        &.r {
+          flex: 1;
+          font-size: 15px;
+          font-weight: bold;
+        }
+
+        &.r {
+          color: #999;
+        }
+      }
+    }
+  }
+
+  .right {
+    // width: 567px;
+    height: 410px;
+    padding-top: 33px;
+
+    > ul {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0 0;
+
+      > li {
+        flex: 1;
+        display: inline-block;
+        width: 281px;
+        height: 119px;
+        background: #f9f9f9;
+        padding: 20px 0 0 25px;
+
+        &:first-child {
+          margin-right: 5px;
+        }
+
+        .labe {
+          font-size: 15px;
+          font-weight: bold;
+        }
+
+        .val {
+          font-size: 20px;
+          font-weight: bold;
+          margin-top: 11px;
+        }
+      }
+    }
+
+    .y-wrap {
+      font-size: 15px;
+      color: #999;
+    }
+
+    .t {
+      height: 119px;
+      background: #f9f9f9;
+      display: flex;
+      align-items: center;
+
+      > .labe {
+        padding: 0 40px 0 27px;
+        font-size: 20px;
+        font-weight: bold;
+        display: inline-block;
+      }
+
+      .r-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .val {
+          align-self: flex-start;
+          font-size: 36px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.chart {
+  height: 320px;
+  width: 100%;
+}

@@ -1,0 +1,6 @@
+<div class="item-container">
+  <div class="item-tag-container" *ngFor="let item of tags; index as index">
+    <nz-tag nzClosable (nzClose)="onClose(index)">{{item.name}}</nz-tag>
+  </div>
+  <a href="javascript: void(0)" (click)="onEdit()">{{tags.length ? '编辑' : '点击选择'}}</a>
+</div>

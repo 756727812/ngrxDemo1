@@ -1,0 +1,307 @@
+<div class="header">
+  <h2><strong>财务管理入账管理</strong></h2>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline m-b-10">
+          <div class="form-group">
+            <label class="control-label">交易号</label>
+            <input class="form-control" type="text" ng-model="$ctrl.searchForm.transNo" placeholder="大中小订单号/入账单号">
+          </div>
+          <div class="form-group">
+            <label class="control-label">入账方
+              <input class="form-control" type="text" ng-model="$ctrl.searchForm.accountInfo" placeholder="小电铺名称/手机号/邮箱">
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-label">商品信息
+              <input class="form-control" type="text" ng-model="$ctrl.searchForm.productInfo" placeholder="商品名称/商品ID">
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-label">时间</label>
+            <select name="timeType" class="form-control" ng-model="$ctrl.searchForm.searchTimeType">
+              <option value="">--请选择--</option>
+              <option value="0">订单支付时间</option>
+              <option value="1">进入入账审核时间</option>
+              <option value="2">入账时间</option>
+            </select>
+            <input date-range-picker class="form-control date-picker pay-time" type="text" ng-model="$ctrl.payTime" placeholder="订单支付时间" ng-if="$ctrl.searchForm.searchTimeType !='' && $ctrl.searchForm.searchTimeType==0">
+            <input date-range-picker class="form-control date-picker" type="text" ng-model="$ctrl.auditTime" placeholder="进入入账审核时间" ng-if="$ctrl.searchForm.searchTimeType==1">
+            <input date-range-picker class="form-control date-picker" type="text" ng-model="$ctrl.recordTime" placeholder="入账时间" ng-if="$ctrl.searchForm.searchTimeType ==2">
+
+
+          </div>
+          <div class="form-group">
+            <label class="control-label">入账类型</label>
+            <select name="type" class="form-control" ng-model="$ctrl.searchForm.recordType">
+              <option value="0">所有</option>
+              <option value="1">直营</option>
+              <option value="2">供货</option>
+              <option value="3">分销</option>
+              <option value="4">充值</option>
+              <option value="5">平台服务款</option>
+              <option value="6">入账调整</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">入账状态</label>
+            <select name="type" class="form-control" ng-model="$ctrl.searchForm.recordStatus">
+              <option value="0">所有</option>
+              <option value="1">待入账</option>
+              <option value="2">入账审核</option>
+              <option value="3">已入账</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+          <button type="button" ng-click="$ctrl.resetSearch()" class="btn">重置</button>
+          <!-- <a class="btn btn-primary" target="_blank" ng-click="$ctrl.exportRecord()">批量导出</a> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel">
+  <div class="panel-content financial">
+    <see-tabset>
+      <see-tab heading="所有" type="0"></see-tab>
+      <see-tab heading="待入账" type="1" count="{{$ctrl.listData[1].count}}">
+      </see-tab>
+      <see-tab heading="入账审核中" type="2" count="{{$ctrl.listData[2].count}}">
+
+      </see-tab>
+      <see-tab heading="已入账" type="3" >
+
+      </see-tab>
+    </see-tabset>
+    <button type="button" class="btn btn-primary btn-tabright" ng-click="$ctrl.batchAcceptBill()" ng-if="$ctrl.status == 2">批量通过审核</button>
+
+    <div class="row">
+      <div class="col-sm-12 portlets">
+        <div class="clear-fix">
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th ng-if="$ctrl.status == 2"><input name="" type="checkbox" value="" ng-model="$ctrl.markAll" ng-change="$ctrl.markAllChange()"/> </th>
+                  <th>时间</th>
+                  <th>交易号<i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long" uib-tooltip-template="'tipTmpl.html'"></i>
+                    <script type="text/ng-template" id="tipTmpl.html">
+                      <div>
+                        <p class="m-b-0">
+                          大订单号：即用户下单时的支付单号，一个大订单下有多个中订单，eg. BIGxxxx
+                        </p>
+                        <p class="m-b-0">
+                          中订单号：即为发货包裹单号，平台会根据供货商及物流路线的不同，将大订单拆分为中订单，eg. MIDxxxx
+                        </p>
+                        <p class="m-b-0">
+                          小订单号：中订单下同一个SKU商品将作为一个小订单，退款、退货、入账均将以小订单为单位，eg. LITxxxx
+                        </p>
+                        <p class="m-b-0">
+                          入账单号：小订单完成交易后将生成入账单号，计算至可用余额，eg. RZxxxx
+                        </p>
+                        <p class="m-b-0">
+                          提现账单号：即申请提现时生成的账单号，eg. TXZDxxxx
+                        </p>
+                      </div>
+                    </script>
+                  </th>
+                  <th>名称</th>
+                  <th>交易方</th>
+                  <th>入账方</th>
+                  <th>入账类型</th>
+                  <th style="max-width: 90px;">入账金额</th>
+                  <th width="90px">入账状态</th>
+                  <th ng-if="$ctrl.status==2">审核点</th>
+                  <th ng-if="$ctrl.status==3">说明</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.listData[$ctrl.status].list" >
+                  <td ng-if="$ctrl.status==2"><input name="" type="checkbox" value="" ng-model="$ctrl.markedAudit[item.billId]"/></td>
+                  <td>
+                    <p ng-if="item.billType != 6">支付：{{item.payTime | date: 'yyyy-MM-dd'}} </p>
+                    <p ng-if="$ctrl.status>1 && item.billType != 6">
+                      进入入账审核：{{item.auditBillTime | date: 'yyyy-MM-dd'}}
+                    </p>
+                    <p ng-if="$ctrl.status>2 || item.billType == 6">
+                      入账：{{item.finishBillTime | date: 'yyyy-MM-dd'}}
+                    </p>
+                  </td>
+                  <td>
+                    <span ng-if="item.billType == 6">{{item.billId}} <br/></span>
+                    <span ng-if="item.billType != 6">
+                      {{item.billId}} <br/>
+                      {{item.litOrderId}} <br/>
+                      <a target="_blank" href="/order/detail/{{item.midOrderId}}">{{item.midOrderId}}</a> <br/>
+                      {{item.bigOrderId}}<br/>
+                    </span>
+                  </td>
+                  <td>
+                    <span ng-if="item.billType < 4">商品ID:{{item.itemId}}</span> <br/>
+                    {{item.itemName}} <br/>
+                    <span ng-if="item.billType < 4">x {{item.fmsBillDetailVO.quantity}}</span><br/>
+                    <span ng-if="item.billType < 4">规格：{{item.spec}}</span>
+                  </td>
+                  <td ng-switch on="item.billType">
+                    <span ng-if="item.billType != 6">
+                      买家：
+                    </span>{{item.buyerName}}
+                    <br/>
+                    <span ng-switch-when="2">
+                      分销商：{{ item.distributorName}}
+                    </span>
+                    <span ng-switch-when="3">
+                      供货商：{{ item.supplierName}}
+                    </span>
+                  </td>
+                  <td ng-bind="item.accountName"></td>
+                  <td ng-switch on="item.billType">
+                    <span ng-switch-when="1">直营</span>
+                    <span ng-switch-when="2">供货</span>
+                    <span ng-switch-when="3">分销</span>
+                    <span ng-switch-when="4">充值</span>
+                    <span ng-switch-when="5">平台服务款</span>
+                    <span ng-switch-when="6">入账调整</span>
+                  </td>
+                  <td style="text-align:center">
+                    <span style="white-space: nowrap">{{item.billAmount ? item.billAmount : 0 | currency: '￥'}}</span> <br/>
+                    <span ng-init="$ctrl.popoverOpened[$index]=false" ng-mouseover="$ctrl.popoverOpened[$index]=true" ng-mouseleave="$ctrl.popoverOpened[$index]=false">
+                      <a href="" uib-popover-template="$ctrl.popover" popover-placement="bottom" popover-trigger="none" popover-is-open="$ctrl.popoverOpened[$index]" popover-class="popover-auto">明细</a>
+                      <script type="text/ng-template" id="mingxiPopover.html">
+                        <table class="table table-striped">
+                          <thead ng-if="item.billType != 6"><tr><th width="120px">名称</th><th width="120px">金额</th><th>说明</th></tr></thead>
+                          <thead ng-if="item.billType == 6">
+                            <tr>
+                              <td>关联订单号</td>
+                            </tr>
+                          </thead>
+                          <tbody ng-if="item.billType == 6">
+                            <tr ng-if="!item.fmsBillDetailVO.litteOrderIdList">
+                              <td>无</td>
+                            </tr>
+                            <tr ng-repeat="id in item.fmsBillDetailVO.litteOrderIdList">
+                              <td>{{id}}</td>
+                            </tr>
+                          </tbody>
+                          <tbody ng-if="item.billType != 6">
+                            <tr ng-if="item.billType != 2">
+                              <td>下单实付</td>
+                              <td>{{item.fmsBillDetailVO.actualAmount | RMBmoney}}</td>
+                              <td ng-if="item.billType >= 4">用户支付金额</td>
+                              <td ng-if="item.billType < 4">{{item.fmsBillDetailVO.deviceType | deviceType}}订单<span ng-if="item.fmsBillDetailVO.deviceType >='201'">，主体为{{item.fmsBillDetailVO.body}}</span></td>
+                            </tr>
+                            <tr ng-if="item.billType != 2">
+                              <td>交易手续费</td>
+                              <td>{{item.fmsBillDetailVO.transactionFee | currency:'￥'}}</td>
+                              <td>由微信支付、支付宝等第三方支付平台，按实付金额的0.6%收取</td>
+                            </tr>
+                            <tr ng-if="item.billType != 2 && item.billType < 4">
+                              <td>售价*数量</td>
+                              <td>{{item.fmsBillDetailVO.price  | RMBmoney}} * {{item.fmsBillDetailVO.quantity}}</td>
+                              <td>
+                                {{ item.orderType === 1 ? '秒杀价' : '' }}
+                                {{item.fmsBillDetailVO.groupon ? '拼团价': ''}}
+                              </td>
+                            </tr>
+                            <tr ng-if="item.billType == 3 && item.billType < 4">
+                              <td>供货价</td>
+                              <td>{{item.fmsBillDetailVO.supplyPrice | RMBmoney}}</td>
+                              <td ng-bind="item.orderType === 1 ? '促销供货价' : ''"></td>
+                            </tr>
+                            <tr ng-if="item.billGenerateReason !=2 && item.billType == 2 && !item.fmsBillDetailVO.dispatchPrice && item.itemName != '充值'">
+                              <td>成本价*数量</td>
+                              <td>{{item.fmsBillDetailVO.costPrice | RMBmoney}}* {{item.fmsBillDetailVO.quantity}}</td>
+                              <td></td>
+                            </tr>
+                            <tr ng-if="item.billType ==2 && item.fmsBillDetailVO.dispatchPrice">
+                              <td>派单金额</td>
+                              <td>{{item.fmsBillDetailVO.dispatchPrice | RMBmoney}}</td>
+                              <td></td>
+                            </tr>
+                            <tr ng-if="item.billGenerateReason !=2 && !item.fmsBillDetailVO.dispatchPrice && item.billType < 4">
+                              <td>运费</td>
+                              <td>{{item.fmsBillDetailVO.shipFee | RMBmoney}}</td>
+                              <td>{{item.fmsBillDetailVO.logisticsName || '无'}}</td>
+                            </tr>
+                            <tr ng-if="item.fmsBillDetailVO.taxFee">
+                              <td>税费</td>
+                              <td>{{item.fmsBillDetailVO.taxFee | RMBmoney}}</td>
+                              <td>{{item.fmsBillDetailVO.taxType | taxType}}</td>
+                            </tr>
+                            <tr ng-if="item.billType !=2 && item.fmsBillDetailVO.couponFee">
+                              <td>优惠券</td>
+                              <td>{{item.fmsBillDetailVO.couponFee | RMBmoney}}</td>
+                              <td>{{item.fmsBillDetailVO.moneyPayer | moneyPayer}}</td>
+                            </tr>
+                            <tr ng-if="item.billType !=2 && item.fmsBillDetailVO.fullOffFee">
+                              <td>满减</td>
+                              <td>{{item.fmsBillDetailVO.fullOffFee | RMBmoney}}</td>
+                              <td>{{item.fmsBillDetailVO.thresholdType === 0 ? "满额减," : item.fmsBillDetailVO.thresholdType === 1 ? "满件折," : ''}}{{item.fmsBillDetailVO.fullOffCostBearer == 0 ? "平台优惠" : "店铺优惠"}}</td>
+                            </tr>
+                            <tr ng-if="item.billType ==2 && item.fmsBillDetailVO.deductFee != null">
+                              <td>用户退货扣款</td>
+                              <td>{{item.fmsBillDetailVO.deductFee | RMBmoney}}</td>
+                              <td>{{item.fmsBillDetailVO.refundType | refundType}}</td>
+                            </tr>
+                            <tr ng-if="item.billType !=2 && item.fmsBillDetailVO.refundFee != null">
+                              <td>退款金额</td>
+                              <td>{{item.fmsBillDetailVO.refundFee | RMBmoney}}</td>
+                              <td>{{item.fmsBillDetailVO.refundType | refundType}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </script>
+                    </span>
+                  </td>
+                  <td ng-switch on="item.status">
+                    <span ng-switch-when="1">待入账</span>
+                    <span ng-switch-when="2">入账审核中</span>
+                    <span ng-switch-when="3">已入账</span>
+                    <span ng-switch-when="4">拒绝入账</span>
+                  </td>
+                  <td ng-if="$ctrl.status==2">{{item.billWord}}</td>
+                  <td ng-if="$ctrl.status==3">{{item.billComment}}</td>
+                  <td>
+                    <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.acceptBill(item.billId)" ng-if="$ctrl.status==2">通过审核</a>
+                    <a target="_blank" class="btn btn-primary btn-sm" href="/order/detail/{{item.midOrderId}}" ng-if="item.billType < 4">查看详情</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel-content my-shop-empty" ng-if="$ctrl.listData[$ctrl.status].list.length == 0">
+            <div class="row">
+              <div class="col-xs-12">
+                <h1 class="m-b-10"><i class="icon si si-emoji-sad"></i>没有符合条件的入账订单</h1>
+                <div class="text-center">
+                  <!-- <h1 class="second-text">内容电商和小电铺搭配，效果更佳哦~快来尝试吧</h1>
+                       <button class="btn btn-primary" type="button" ng-click="$ctrl.importArticleNew()">添加我的第一篇文章</button> -->
+                </div>
+
+              </div>
+              <div class="panel-content my-shop-empty" ng-if="$ctrl.listData[$ctrl.status].list.length == 0">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h1 class="m-b-10"><i class="icon si si-emoji-sad"></i>没有符合条件的入账订单</h1>
+                    <div class="text-center">
+                      <!-- <h1 class="second-text">内容电商和小电铺搭配，效果更佳哦~快来尝试吧</h1>
+                           <button class="btn btn-primary" type="button" ng-click="$ctrl.importArticleNew()">添加我的第一篇文章</button> -->
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <pagination total-items="$ctrl.total_items" items-per-page="50"></pagination>
+            </div>
+          </div>
+          <pagination total-items="$ctrl.total_items" items-per-page="50"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

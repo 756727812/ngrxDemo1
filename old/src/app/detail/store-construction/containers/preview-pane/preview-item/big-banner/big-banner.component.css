@@ -1,0 +1,28 @@
+.big-banner {
+  img {
+    width: 100%;
+  }
+  .placeholder {
+    width: 100%;
+    height: 271px;
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > img {
+      width: 30%;
+    }
+  }
+}
+
+.preview-item {
+  width: 414px;
+  /* border: 2px solid #ccc; */
+  border: 2px solid #fff;
+  &:hover {
+    border: 2px solid #ccc;
+  }
+  &.active {
+    border: 2px solid #5958d2;
+  }
+}

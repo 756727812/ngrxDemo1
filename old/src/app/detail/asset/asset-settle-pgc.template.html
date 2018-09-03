@@ -1,0 +1,149 @@
+<div class="header">
+  <h2><strong>所有账单</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">资产管理</a></li>
+      <li class="active">所有账单</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row m-t-10">
+            <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <div class="widget-info">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-rmb bg-green"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number countup" ng-bind="BillStats[3] | currency: '￥'"></p>
+                            <p class="text">总收入</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <div class="panel-content widget-info">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-rmb bg-blue"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number countup" ng-bind="BillStats[0] | currency: '￥'"></p>
+                            <p class="text">待提现金额</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <div class="widget-info">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-rmb bg-purple"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number countup" ng-bind="BillStats[1] | currency: '￥'"></p>
+                            <p class="text">已申请提现金额</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <div class="widget-info">
+                    <div class="row">
+                        <div class="left">
+                            <i class="fa fa-rmb bg-purple"></i>
+                        </div>
+                        <div class="right">
+                            <p class="number countup" ng-bind="BillStats[2] | currency: '￥'"></p>
+                            <p class="text">已打款金额</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>待提现账单</h4>
+        <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>结算期</th>
+                        <th>结算金额</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in NeedWithdrawList.list">
+                        <td ng-bind="item.settle_date"></td>
+                        <td ng-bind="item.adjust_pgc_money | currency: '￥'"></td>
+                        <td ng-bind="item.status_str"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" ng-href="/asset/withdrawDetailTopic/{{item.settle_date}}">查看详情</a>
+                            <button type="button" class="btn btn-sm btn-primary" ng-click="withDraw(item.settle_date)">提现</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p ng-show="NeedWithdrawList.count==='0'">没有可提现的账单</p>
+        </div>
+
+        <h4>已申请提现账单</h4>
+        <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>结算期</th>
+                        <th>结算金额</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in HasWithdrawList.list">
+                        <td ng-bind="item.settle_date"></td>
+                        <td ng-bind="item.adjust_pgc_money | currency: '￥'"></td>
+                        <td ng-bind="item.status_str"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" ng-href="/asset/withdrawDetailTopic/{{item.settle_date}}">查看详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4>已打款账单</h4>
+        <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>结算期</th>
+                        <th>结算金额</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in HasRemitList.list">
+                        <td ng-bind="item.settle_date"></td>
+                        <td ng-bind="item.adjust_pgc_money | currency: '￥'"></td>
+                        <td ng-bind="item.status_str"></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" ng-href="/asset/withdrawDetailTopic/{{item.settle_date}}">查看详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <uib-pagination total-items="totalRecords" ng-model="page" items-per-page="20" boundary-link="true"
+                            rotate="false" previous-text="上一页" next-text="下一页" ng-change="pageChange()"></uib-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

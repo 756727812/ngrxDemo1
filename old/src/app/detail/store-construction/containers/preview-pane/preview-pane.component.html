@@ -1,0 +1,31 @@
+<div class="preview-wrap">
+  <div class="scroll-wrap">
+    <div class="preview-pane">
+      <div class="innerwrap">
+        <ul class="preview-list">
+          <ng-container *ngFor="let elem of (elems$ | async);trackBy: trackByElem">
+            <li [class]="'preview-item-wrap-'+elem.data.type">
+              <div class="preview-item"
+                   [ngClass]="{'active': !!(focusElemVid$ | async) && elem.vid === (focusElemVid$ | async)}">
+                <app-preview-item-outlet [class]="'preview-item-outlet-'+elem.vid"
+                                         [elem]="elem"
+                                         [active]="elem.vid === (focusElemVid$ | async)"
+                                         (elemClick)="handleClickElem(elem)"></app-preview-item-outlet>
+              </div>
+              <span class="init-warn"
+                    *ngIf="isConfigEmpty(elem.data.config)"
+                    [innerHTML]="getInitialWarning(elem.data.type)"></span>
+            </li>
+          </ng-container>
+          <img alt=""
+               src="../../../../../images/see-support.png"
+               style="width: 100%" />
+          <img alt=""
+               src="../../../../../images/buttom-bar.png"
+               style="width: 100%" />
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>

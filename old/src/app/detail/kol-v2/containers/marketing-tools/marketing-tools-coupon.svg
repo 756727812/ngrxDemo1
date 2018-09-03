@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="86" height="60" viewBox="0 0 86 60">
+    <g fill="none" fill-rule="evenodd">
+        <path stroke="#5971E8" stroke-width="2" d="M6 7h73v46H6zM65 53l13-11"/>
+        <text fill="#5971E8" font-family="HiraginoSansGB-W6, Hiragino Sans GB" font-size="18" font-weight="500">
+            <tspan x="27" y="38">VIP</tspan>
+        </text>
+        <path stroke="#5971E8" stroke-width="2" d="M6 18L19 7"/>
+    </g>
+</svg>

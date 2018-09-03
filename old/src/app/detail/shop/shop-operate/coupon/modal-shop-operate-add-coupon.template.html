@@ -1,0 +1,74 @@
+<div class="modal-shop-operate-add-coupon">
+  <div class="modal-header bg-primary">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">优惠券列表</h3>
+  </div>
+  <div class="modal-body">
+    <p class="col border-right-979797 p-l-0 p-r-5 line-height-1"><a href="/event/couponv2/add?close=1" target="_blank" class="text-primary click">创建优惠券</a></p>
+    <p class="col p-l-5 line-height-1"><a href="" class="text-primary click" ng-click="$ctrl.getCouponList($ctrl.items.page)">刷新列表</a></p>
+    <form class="form-inline clear-fix" name="addExplosiveGoodsForm" ng-submit="$ctrl.getCouponList()">
+      <div class="form-group">
+        <label class="control-label">
+          <select name="status" class="form-control" ng-model="$ctrl.formData.status" ng-change="$ctrl.getCouponList()">
+            <option value="" selected>所有状态</option>
+            <option ng-value="3">发放中</option>
+            <option ng-value="4">已领完</option>
+          </select>
+        </label>
+      </div>
+      <!-- <div class="form-group">
+        <label class="control-label">
+          <select name="type" class="form-control" ng-model="$ctrl.formData.type" ng-change="$ctrl.getCouponList()">
+            <option value="" selected>所有领取资格</option>
+            <option ng-value="1">全体用户</option>
+            <option ng-value="2">仅限新用户</option>
+          </select>
+        </label>
+      </div> -->
+      <div class="form-group">
+        <label class"control-label">
+        <input type="search" class="form-control" placeholder="请输入优惠券名称" ng-model="$ctrl.formData.name">
+        </label>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+      </div>
+    </form>
+    <div class="table-scrollable">
+      <table class="table table-hover table-center">
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>面额&amp;门槛</th>
+            <th>有效期</th>
+            <th>状态</th>
+            <!-- <th>领取资格</th> -->
+            <th>限领/人</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in $ctrl.items.list track by item.id">
+          <td ng-bind="item.name"></td>
+          <td>{{item.couponPrice | currency: '￥'}}&amp;{{item.limitMoney | currency: '￥'}}</td>
+          <td>{{item.avaliableTimeStart | date: 'yyyy-MM-dd HH:mm'}}-<br />{{item.avaliableTimeEnd | date: 'yyyy-MM-dd HH:mm'}}</td>
+          <td ng-bind="item.status | couponStatus"></td>
+          <!-- <td ng-bind="item.type === 1 ? '全体用户' : '仅限新用户'"></td> -->
+          <td ng-bind="item.limitPer"></td>
+          <td>
+            <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.addCouponItem(item)" ng-show="!item.configed">添加</button>
+            <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeCouponItem(item.id)" ng-show="item.configed">移除</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul uib-pagination ng-if="$ctrl.items.count / 10 > 1" total-items="$ctrl.items.count" items-per-page="10" ng-model="$ctrl.items.page" ng-change="$ctrl.getCouponList($ctrl.items.page)"
+      max-size="5" class="pagination-sm m-t-0" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-link-numbers="true">
+    </ul>
+    <div class="empty-coupon-list-container" ng-if="$ctrl.items.count === 0">
+      <p>没有符合当前条件的优惠券</p>
+      <a ng-href="/event/couponv2/add?kolId={{ $ctrl.resolve.kolId }}" target="_blank" class="text-primary click" ng-click="$ctrl.cancel()">去创建</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+.custom-error {
+  font-size: 12px;
+  margin-left: 10px;
+
+  i.si {
+    color: #ff6b6b;
+    position: static;
+    width: 18px;
+  }
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+
+  .title-wrapper {
+    width: 250px;
+  }
+}
+
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .ant-form-item-control {
+    line-height: 36px !important;
+  }
+
+  .ant-form-item-label {
+    text-align: right !important;
+    padding-right: 24px !important;
+    line-height: 36px !important;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .ant-form-item {
+    margin-top: 15px;
+    margin-bottom:0
+  }
+}
+
+.template-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.template-form {
+  padding-top: 10px;
+
+  .btn-footer {
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .submit-btn {
+      margin-left: 26px;
+    }
+  }
+}
+
+.tmpl-panel {
+  width: 900px;
+
+  .tmpl-panel-content {
+    padding-left: 100px;
+    padding-right: 100px;
+
+    a {
+      margin: 0 10px;
+    }
+
+    .content-textarea {
+      position: relative;
+    }
+
+    .jump-address nz-tag {
+      position: relative;
+      left: 14px;
+    }
+  }
+}
+
+.content-length-tips {
+  position: absolute;
+  bottom: 0;
+  right: 20px
+}

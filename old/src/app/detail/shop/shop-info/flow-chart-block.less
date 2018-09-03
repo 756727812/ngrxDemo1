@@ -1,0 +1,129 @@
+@import "../../../../styles/var";
+
+#shop-info {
+  .flow-chart-block {
+    .panel-content {
+      padding-top: 27px;
+      padding-bottom: 31px;
+    }
+
+    .echart-ct {
+      width: 100%;
+    }
+
+    .chart-header {
+      padding-left: 33px;
+      padding-right: 19px;
+      display: flex;
+      justify-content: space-between;
+
+      ul.tags {
+        user-select: none;
+        display: inline-flex;
+
+        > li {
+          height: 24px;
+          line-height: 24px;
+          display: inline-block;
+
+          &.active {
+            .tag {
+              color: white;
+            }
+          }
+          @disabled-tag-color: #ccc;
+
+          &.disabled {
+            pointer-events: initial;
+            cursor: not-allowed;
+
+            .tag {
+              pointer-events: none;
+              background: @disabled-tag-color !important;
+              opacity: 0.8;
+              border-color: @disabled-tag-color !important;
+            }
+          }
+
+          > .tag {
+            cursor: pointer;
+            text-align: center;
+            width: 62px;
+            display: inline-block;
+          }
+
+          & + li {
+            margin-left: 4px;
+          }
+        }
+      }
+
+      ul.channel-tags {
+        margin-right: 53px;
+
+        li {
+          &.active {
+            .tag {
+              background: @primary-color;
+            }
+          }
+        }
+
+        .tag {
+          color: @primary-color;
+          border: solid 2px @primary-color;
+        }
+      }
+      @app-tag-color: #ff6b6b;
+
+      ul.app-tags {
+        li {
+          &.active {
+            .tag {
+              background: @app-tag-color;
+            }
+          }
+        }
+
+        .tag {
+          color: @app-tag-color;
+          border: solid 2px @app-tag-color;
+        }
+      }
+    }
+
+    .chart-tooltip {
+      min-width: 120px;
+
+      li {
+        height: 14px;
+        line-height: 14px;
+      }
+
+      .date {
+        font-family: @font-family-SFUIText;
+        opacity: 0.51;
+        font-weight: 500;
+      }
+
+      .date,
+      .text {
+        font-size: 12px;
+        transform: scale(0.9);
+        transform-origin: left;
+        display: inline-block;
+      }
+
+      .text {
+        font-family: @font-family-PingFangSC;
+      }
+
+      .color-circle {
+        width: 8px;
+        height: 8px;
+        border-radius: 100%;
+        display: inline-block;
+      }
+    }
+  }
+}

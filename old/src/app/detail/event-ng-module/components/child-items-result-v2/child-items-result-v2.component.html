@@ -1,0 +1,129 @@
+<!-- <div class="progress-container" nz-row [nzType]="'flex'" [nzJustify]="'center'" [nzAlign]="middle">
+  <div nz-col>
+    <nz-progress [ngModel]="progress" [nzType]="'circle'"></nz-progress>
+  </div>
+</div> -->
+<div class="progress-container-line" *ngIf="showProgress" [hidden]="isView && hasComplete">
+  <nz-progress [ngModel]="progress"></nz-progress>
+</div>
+<nz-spin [nzSpinning]="_isSpinning">
+  <div class="scroll-container">
+    <nz-table #nzTable
+              [nzDataSource]="childItemsResult"
+              [nzIsPagination]="false">
+      <thead nz-thead>
+        <tr>
+          <th nz-th>
+            <span>模板商品ID</span>
+          </th>
+          <th nz-th>
+            <span>模板商品名</span>
+          </th>
+          <th nz-th>
+            <span>子商品生成状态</span>
+          </th>
+          <th nz-th>
+            <span>失败原因</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr
+            *ngFor="let item of nzTable.data">
+          <td nz-td>{{item.parentItemId}}</td>
+          <td nz-td style="max-width: 300px;">
+            <ellipsis lines="2">
+              {{item.parentItemName}}
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <div *ngIf="item.generateResult === 1" class="status-col">
+              <nz-spin [nzSize]="'small'" class="small-spin"></nz-spin>等待中
+            </div>
+            <div *ngIf="item.generateResult === 2" class="status-col">
+              <nz-spin [nzSize]="'small'" class="small-spin"></nz-spin>进行中
+            </div>
+            <div *ngIf="item.generateResult === 3" class="status-col">
+              <div class="little-circle success"></div>成功
+            </div>
+            <div *ngIf="item.generateResult === 4" class="status-col">
+              <div class="little-circle fail"></div>失败
+            </div>
+            <div *ngIf="item.generateResult === 5" class="status-col">
+              <div class="little-circle fail"></div>部分失败
+            </div>
+          </td>
+          <td nz-td>{{item.generateResult === 4 || item.generateResult === 5 ? item.failedReason : '无'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <div nz-row [nzGutter]="8" [nzType]="'flex'" [nzJustify]="'end'" class="bottom-btn">
+    <div nz-col *ngIf="exitBtn.show">
+      <button nz-button
+        (click)="exit()"
+        [nzType]="exitBtn.type"
+        [nzSize]="'default'">
+        <span>退出</span>
+      </button>
+    </div>
+    <div nz-col *ngIf="exportBtn.show">
+      <button nz-button
+        (click)="exportFailItems()"
+        [nzType]="exportBtn.type"
+        [nzSize]="'default'">
+        <span>导出问题母商品</span>
+      </button>
+    </div>
+    <div nz-col *ngIf="assignBtn.show">
+      <button nz-button
+        (click)="batchAssignActivities()"
+        [nzType]="assignBtn.type"
+        [nzSize]="'default'">
+        <span>批量指派</span>
+      </button>
+    </div>
+  </div>
+</nz-spin>
+<!-- 隐藏table，用于导出excel -->
+<nz-table #nzTable2 id="child-items-table" class="child-items-table"
+          [nzDataSource]="failChildItems"
+          [nzIsPagination]="false">
+  <thead nz-thead>
+    <tr>
+      <th nz-th>
+        <span>模板商品ID</span>
+      </th>
+      <th nz-th>
+        <span>模板商品名</span>
+      </th>
+      <th nz-th>
+        <span>子商品生成状态</span>
+      </th>
+      <th nz-th>
+        <span>失败原因</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody nz-tbody>
+    <tr nz-tbody-tr
+        *ngFor="let item of nzTable2.data">
+      <td nz-td>{{item.parentItemId}}</td>
+      <td nz-td class="name">
+        <ellipsis lines="2"
+                  style="max-width: 200px;">
+          {{item.parentItemName}}
+        </ellipsis>
+      </td>
+      <td nz-td>
+        <div *ngIf="item.generateResult === 4" class="status-col">
+          <div class="little-circle fail"></div>失败
+        </div>
+        <div *ngIf="item.generateResult === 5" class="status-col">
+          <div class="little-circle fail"></div>部分失败
+        </div>
+      </td>
+      <td nz-td>{{item.failedReason}}</td>
+    </tr>
+  </tbody>
+</nz-table>

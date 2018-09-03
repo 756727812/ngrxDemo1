@@ -1,0 +1,26 @@
+<div class="modal-goods-theme-msg">
+  <div class="modal-body">
+    <p class="title">更新成功</h2>
+      <div class="lines">
+        <table>
+          <tbody>
+            <tr>
+              <td>新添加</td>
+              <td class="num">{{$ctrl.resolve.newCount}}</td>
+              <td>件</td>
+            </tr>
+            <tr>
+              <td>重复</td>
+              <td class="num">{{$ctrl.resolve.duplicateCount}}</td>
+              <td>件</td>
+            </tr>
+            <tr ng-if="$ctrl.hasUnMatch()">
+              <td>不匹配</td>
+              <td class="num warn">{{$ctrl.resolve.unMatchCount}}</td>
+              <td>件</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>

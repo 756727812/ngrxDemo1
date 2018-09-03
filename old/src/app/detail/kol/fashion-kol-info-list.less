@@ -1,0 +1,334 @@
+.top-panel {
+  padding-bottom: 20px;
+}
+
+th {
+  border-bottom: 1px solid #e9e9e9 !important;
+}
+
+.second-text {
+  color: #666 !important;
+  font-size: 15px !important;
+}
+
+.my-shop-empty {
+  padding: 100px !important;
+
+  h1.m-b-15 {
+    margin-bottom: 10px;
+  }
+
+  .second-text {
+    padding: 20px 0 30px;
+    line-height: 1.4;
+  }
+}
+
+.top-panel {
+  padding: 20px 35px 20px 30px !important;
+}
+
+.kol-basic {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.kol-basic-left {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: flex-start;
+
+  img,
+  h3 {
+    float: left;
+  }
+
+  h3 {
+    padding-left: 10px;
+  }
+}
+
+.kol-basic-right {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: flex-end;
+
+  p,
+  a {
+    float: left;
+    margin: 0;
+  }
+
+  a {
+    margin-left: 10px;
+  }
+}
+
+.search-content {
+  text-align: right;
+  width: 100%;
+
+  select {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-radius: 2px;
+    padding-top: 7px;
+    height: 34px;
+  }
+
+  .date-picker,
+  select {
+    border-color: #5971e8;
+    background-color: #5971e8;
+    cursor: pointer;
+    float: left;
+    color: #fff;
+    padding-right: 35px;
+  }
+
+  .date-picker:focus,
+  select,
+  select:focus {
+    background-color: #5971e8 !important;
+  }
+
+  .date-picker::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .form-group {
+    padding: 5px 0;
+    position: relative;
+  }
+
+  i.tail-icon {
+    font-size: 12px;
+    position: absolute;
+    color: #fff;
+    top: 9px;
+    right: 10px;
+  }
+
+  .search-right-group {
+    margin-right: 0;
+    float: right;
+    bottom: 0;
+  }
+}
+
+.btn-max-w {
+  font-size: 13px;
+  max-width: 200px;
+  overflow: hidden;
+  padding: 8px 10px;
+  line-height: 19px;
+  text-overflow: ellipsis;
+}
+
+table.fashion-kol-info {
+  th,
+  td {
+    text-align: center;
+
+    .text-btn {
+      margin-right: 10px;
+      cursor: pointer !important;
+    }
+  }
+}
+
+#modal-edit-wechatid {
+  .note {
+    width: 300px;
+    margin: 20px auto 30px;
+    font-size: 13px;
+    color: #999;
+  }
+}
+
+#fashion-kol-info-list-header {
+  .topbar-innerwrap {
+    display: flex;
+    align-items: center;
+    // height: 66px;
+  }
+
+  .right-of-avatar {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    &.article {
+      .desc-block {
+        flex: 1;
+      }
+    }
+  }
+
+  .v-btns {
+    min-width: 160px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-around;
+    align-items: flex-end;
+
+    a {
+      cursor: pointer;
+    }
+
+    a.how-sell {
+      i {
+        color: #cdcdcd;
+      }
+
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-edit {
+      height: 28px;
+      line-height: 28px;
+      border-radius: 2px;
+      background-color: #5971e8;
+      color: white;
+      padding: 0 18px;
+      cursor: pointer;
+    }
+  }
+
+  .btn {
+    margin: 0;
+  }
+
+  .article-title {
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+
+.word-btn {
+  cursor: pointer;
+}
+
+// .article-detail-form-bar 本身不要设置影响高度的，模板太乱了
+.article-detail-form-bar {
+  .innerwrap {
+    height: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .btn-go-back {
+      background: white;
+      padding: 11px 18px;
+      border: solid 1px #e5e5e5;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .right-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .button {
+      color: white;
+      cursor: pointer;
+      padding: 11px 18px;
+      outline: none;
+      appearance: none;
+      height: 36px;
+      border-radius: 2px;
+      background-color: #5971e8;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.btn-preview-tpl-article {
+        margin-right: 13px;
+      }
+    }
+  }
+}
+
+.fashion-kon-info-list {
+  > .panel-content {
+    padding-top: 0 !important;
+  }
+
+  .table-scrollable {
+    margin-top: 0 !important;
+
+    th {
+      padding-top: 17px;
+      padding-bottom: 17px;
+    }
+  }
+
+  td.item-name {
+    overflow: hidden;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td.class-name {
+    overflow: hidden;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td.brand-name {
+    overflow: hidden;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td.item-img {
+    padding: 15px;
+  }
+
+  select.select-filter-article {
+    max-width: 180px;
+  }
+
+  .tool-bar{
+    display: flex;
+    padding: 5px 0;
+  }
+  .profit_rate{
+    position: relative;
+    .mark{
+      position: absolute;
+      top:10px;
+      left: 120px;
+      background: transparent;
+    }
+  }
+}

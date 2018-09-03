@@ -1,0 +1,53 @@
+<div class="header">
+  <h2><strong>KOL合作管理</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <!--<li><a href="/kol">KOL管理</a></li>-->
+      <li class="active">总榜</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+
+            <div>
+                <div><span><center><h1>{{$ctrl.key}}&nbsp;&nbsp;&nbsp;&nbsp;</h1><br /></center>
+                <div class="table-scrollabel">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+
+                        <th>KOL</th>
+                        <th ng-if="$ctrl.type === '1' && $ctrl.category === '1'">品牌关联度</th>
+                        <th ng-if="$ctrl.type === '1' && $ctrl.category === '2'">品类关联度</th>
+                        <th ng-if="$ctrl.type === '2'">频次</th>
+                        <th>KQI</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in $ctrl.list_detail track by $index">
+                        <td><a  href="/kol/kol-cooperation-management/0?wechat_id={{item.wechat_id}}#3" class=""><span style="color:black;">{{item.wechat_name}}</span></a></td>
+                        <th ng-if="$ctrl.type === '1' && $ctrl.category === '1'">
+                          {{item.score}}</th>
+                        <th ng-if="$ctrl.type === '1' && $ctrl.category === '2'">
+                          {{item.score}}</th>
+                        <th ng-if="$ctrl.type === '2'">{{item.num}}</th>
+                        <td>{{item.kqi}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+          </div>
+
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

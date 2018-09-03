@@ -1,0 +1,64 @@
+
+.centerInMain(@selector, @itemOuterWidth, @listCtInnerGap, @dashboardMainInnerGap, @i:10) when (@i > 0) {
+  .centerInMain(@selector, @itemOuterWidth, @listCtInnerGap, @dashboardMainInnerGap, (@i - 1));
+  @listOuterWidth: @itemOuterWidth * @i + @listCtInnerGap;
+  @nextListOuterWidth: @itemOuterWidth * (@i + 1) + @listCtInnerGap;
+
+  @dashboardMainWidth: @listOuterWidth + @dashboardMainInnerGap;
+  @nextDashboardMainWidth: @nextListOuterWidth + @dashboardMainInnerGap;
+
+  @widthBesideListWhenCollapsed: @sidebar-collapsed-width + @dashboardMainInnerGap;
+  @widthBesideListWhenExpand: @navBarWidth + @dashboardMainInnerGap;
+
+  @viewportAllWidthCollapsed: @listOuterWidth + @widthBesideListWhenCollapsed;
+  @nextViewportAllWidthCollapsed: @nextListOuterWidth + @widthBesideListWhenCollapsed;
+
+  @viewportAllWidthExpand: @listOuterWidth + @widthBesideListWhenExpand;
+  @nextViewportAllWidthExpand: @nextListOuterWidth + @widthBesideListWhenExpand;
+
+  body {
+    @{selector} {
+      margin: 0 auto;
+      & when (@dashboardMainWidth < 1024px) {
+        @media (min-width: (@dashboardMainWidth)) {
+          width: @listOuterWidth;
+        }
+      }
+      & when (@dashboardMainWidth < 1024px) and (@nextDashboardMainWidth >= 1024px) {
+        @media (min-width: (@dashboardMainWidth)) and (max-width: 1024px) {
+          width: @dashboardMainWidth;
+        }
+      }
+    }
+
+    &.sidebar-collapsed {
+      @{selector} {
+        & when (@viewportAllWidthCollapsed <= 1024px) and (@nextViewportAllWidthCollapsed > 1024px) {
+          @media (min-width: (1024px + 1px)) and (max-width: (@nextViewportAllWidthCollapsed - 1px)) {
+            width: @listOuterWidth;
+          }
+        }
+        & when (@viewportAllWidthCollapsed > 1024px) {
+          @media (min-width: (@viewportAllWidthCollapsed)) {
+            width: @listOuterWidth;
+          }
+        }
+      }
+    }
+
+    &:not(.sidebar-collapsed) {
+      @{selector} {
+        & when (@viewportAllWidthExpand <= 1024px) and (@nextViewportAllWidthExpand > 1024px) {
+          @media (min-width: (1024px + 1px)) and (max-width: (@nextViewportAllWidthExpand - 1px)) {
+            width: @listOuterWidth;
+          }
+        }
+        & when (@viewportAllWidthExpand > 1024px) {
+          @media (min-width: (@viewportAllWidthExpand)) {
+            width: @listOuterWidth;
+          }
+        }
+      }
+    }
+  }
+}

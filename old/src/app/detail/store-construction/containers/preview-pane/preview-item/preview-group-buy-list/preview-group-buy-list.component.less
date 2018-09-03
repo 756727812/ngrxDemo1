@@ -1,0 +1,203 @@
+.list-title {
+  margin-bottom: 29px;
+}
+
+.goods-info-wrap {
+  margin-top: 20px;
+}
+
+.preview-group {
+  &-lottery-list {
+    .groupon-price {
+      i {
+        font-size: 23px;
+      }
+    }
+
+    .price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+
+      > img {
+        height: 22px;
+      }
+    }
+
+    .main-img {
+      background-color: #fff;
+      border: 1px solid #eee;
+      width: 100%;
+      height: 209px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      /* img { */
+      /*   width: 100%; */
+      /*   height: 100%; */
+      /* } */
+    }
+
+    .buy-btn {
+      background-color: red;
+      height: 44px;
+      width: 336px;
+      margin: 0 auto;
+      line-height: 44px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .load-more {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .triangle {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-top: 6px solid transparent;
+      border-left: 8px solid #000;
+      border-bottom: 6px solid transparent;
+    }
+  }
+
+  &-buy-list {
+    .item {
+      position: relative;
+      padding: 10px 8px 30px;
+
+      .group-tip {
+        background-color: #ff3b30;
+        display: inline-block;
+        position: absolute;
+        padding: 1px 8px;
+        color: #fff;
+        top: 0;
+        left: 19px;
+        font-weight: bold;
+
+        &::after {
+          content: '';
+          width: 0;
+          height: 0;
+          position: absolute;
+          top: 0;
+          left: -5px;
+          border-style: solid;
+          border-width: 0 0 10px 5px;
+          border-color: transparent transparent #c42f27 transparent;
+        }
+      }
+    }
+
+    .item-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .price {
+        flex-grow: 1;
+      }
+
+      img {
+        margin-right: 10px;
+      }
+
+      .price-tip {
+        display: inline-block;
+        background-color: #a58c8c;
+        color: #fff;
+        font-size: 11px;
+        padding: 0 2px;
+        line-height: 1.9;
+        margin-bottom: 3px;
+      }
+
+      .buy-btn {
+        background-color: red;
+        height: 36px;
+        width: 81px;
+        line-height: 36px;
+        text-align: center;
+        font-size: 15px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #fff;
+      }
+    }
+  }
+
+  &-buy-list,
+  &-lottery-list {
+    .placeholder {
+      div,
+      span {
+        width: 96%;
+        display: block;
+        background: #f3f3f3;
+        height: 20px;
+        margin: 10px auto;
+      }
+
+      .price {
+        width: 60%;
+        margin: 10px;
+      }
+
+      .image {
+        height: 300px;
+      }
+    }
+
+    .main-img {
+      background-color: #fff;
+      border: 1px solid #eee;
+      width: 100%;
+      height: 209px;
+      text-align: center;
+
+      img {
+        width: auto;
+        max-width: 100%;
+        height: 100%;
+      }
+    }
+
+    .item {
+      padding: 8px;
+    }
+
+    .activity-name {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .activity-desc {
+      font-size: 12px;
+      text-align: left;
+      color: #999;
+    }
+
+    .groupon-price {
+      font-size: 23px;
+      color: red;
+      font-weight: bold;
+
+      > i {
+        color: red;
+      }
+    }
+
+    .daily-price {
+      color: #999;
+      text-decoration: line-through;
+    }
+  }
+}

@@ -1,0 +1,341 @@
+<div class="header">
+  <h2><strong>{{ isEdit ? '编辑属性项' : '新建属性项' }}</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">{{ isEdit ? '编辑属性项' : '新建属性项' }}</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+<div class="container">
+    <form class="form-horizontal w5c-form" role="form" novalidate w5c-form-validate name="attrForm">
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">属性项名称</label>
+            <div class="col-sm-8 col-md-7 ">
+                <input id="attr_name" type="text" class="form-control" name="attr_name" required ng-model="formData.attr_name" ng-blur="checkAttrName()"
+                    placeholder="请填写属性项名称" uib-tooltip="不可创建同名的属性项" tooltip-trigger="focus" tooltip-placement="bottom">
+                <!--<p class="w5c-error" ng-show="isExist">该属性项名已存在</p>-->
+            </div>
+        </div>
+        <div class="form-group" ng-hide="formData.attr_type == '6' || formData.attr_type == '5'">
+            <label class="col-sm-2 control-label">展示名称</label>
+            <div class="col-sm-8 col-md-7 ">
+                <input type="text" class="form-control" ng-model="formData.display_name" placeholder="默认为空时将展示属性项名称" uib-tooltip="默认为空时将展示属性项名称"
+                    tooltip-trigger="focus" tooltip-placement="bottom">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">填写提示</label>
+            <div class="col-sm-8 col-md-7 ">
+                <input type="text" class="form-control" ng-model="formData.tips" placeholder="将显示在发布导航中该属性项旁，用于提示商户/买手如何填写属性值，eg: 单位cm" uib-tooltip="将显示在发布导航中该属性项旁，用于提示商户/买手如何填写属性值"
+                    tooltip-trigger="focus" tooltip-placement="bottom">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">属性项备注</label>
+            <div class="col-sm-8 col-md-7 ">
+                <textarea name="" rows="5" class="form-control" ng-model="formData.remark" placeholder="仅See内部工作人员可见，便于标识属性项相关信息
+eg.近期新增属性值太空面料
+eg.原名鞋面主材，已更名" uib-tooltip="仅See内部工作人员可见，便于标识属性项相关信息；eg.近期新增属性值太空面料；eg.原名鞋面主材，已更名" tooltip-trigger="focus" tooltip-placement="bottom"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">添加到属性库</label>
+            <div class="col-sm-8 col-md-7 ">
+                <label class="checkbox-inline" ng-repeat="label in labels"><input type="checkbox" name="checkbox" ng-model="onelvlClass[label.id]">{{label.title}}</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label required">属性项类型</label>
+            <div class="col-sm-6">
+                <select name="type" class="form-control" style="width:auto;" ng-model="formData.attr_type" ng-disabled="isEdit" required>
+                    <option value="" selected>-- 请选择类型 --</option>
+                    <option value="1">单选</option>
+                    <option value="2">多选</option>
+                    <option value="3">数值</option>
+                    <option value="4">文本</option>
+                    <option value="5">非互斥分组多选</option>
+                    <option value="6">互斥分组多选</option>
+                </select>
+                <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;top: 5px;"
+                    uib-tooltip="互斥分组多选：所有属性值将分组呈现，商户在添加属性值时仅支持添加某一个分组下的多个选项，例如：尺码，仅支持添加某一个码制下的n个码数
+非互斥分组多选：所有属性值将分组呈现，商户在添加属性值时将支持跨组添加多个选项，例如：颜色，支持跨色系添加多个颜色" tooltip-placement="top"><i class="fa fa-question text-primary"></i></button>
+            </div>
+        </div>
+        <!--新建-->
+        <div ng-if="!isEdit">
+            <div class="form-group">
+                <label class="control-label col-sm-2 required">属性值</label>
+                <div class="col-sm-8 col-md-7 ">
+                    <!--单选/多选类型-->
+                    <table class="table table-bordered table-hover" ng-show="formData.attr_type == 1 || formData.attr_type == 2">
+                        <thead>
+                            <tr>
+                                <th>选项文字</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="attr in attrs[1] track by $index">
+                                <td>
+                                    <input type="text" class="form-control" ng-model="attrs[1][$index]">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[1], $index, $index-1)"><i class="fa fa-arrow-up"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[1], $index, $index+1)"><i class="fa fa-arrow-down"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[1].splice($index, 1)"><i class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[1].push('')"><i class="fa fa-plus"></i>添加选项</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--数值/文本类型-->
+                    <label class="control-label m-t-5" ng-show="formData.attr_type == 3 || formData.attr_type == 4">商户自填</label>
+                    <!--互斥/非互斥分组多选类型分组多选类型-->
+                    <div ng-show="formData.attr_type == 5 || formData.attr_type == 6">
+                        <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[5].push({name: '',values: []})"><i class="fa fa-plus"></i>添加组</button>
+                        <div class="well" ng-repeat="attrGroup in attrs[5]">
+                            <table class="table table-bordered table-hover bg-white">
+                                <tbody>
+                                    <tr>
+                                        <td align="right">组名</td>
+                                        <td><input type="text" class="form-control" ng-model="attrs[5][$index].name"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" ng-click="swapArrEle(attrs[5], $index, $index-1)"><i class="fa fa-arrow-up"></i></button>
+                                            <button type="button" class="btn btn-primary" ng-click="swapArrEle(attrs[5], $index, $index+1)"><i class="fa fa-arrow-down"></i></button>
+                                            <button type="button" class="btn btn-primary" ng-click="attrs[5].splice($index, 1)"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="attr in attrGroup.values track by $index">
+                                        <td align="right">
+                                            <p class="text-right" ng-if="$index === 0">组内选项</p>
+                                        </td>
+                                        <td><input type="text" class="form-control" ng-model="attrs[5][$parent.$index].values[$index]"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[5][$parent.$index].values, $index, $index-1)"><i class="fa fa-arrow-up"></i></button>
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[5][$parent.$index].values, $index, $index+1)"><i class="fa fa-arrow-down"></i></button>
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[5][$parent.$index].values.splice($index, 1)"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[5][$index].values.push('')"><i class="fa fa-plus"></i>添加选项</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--END 新建-->
+
+        <!--编辑-->
+        <div ng-if="isEdit">
+            <div class="form-group">
+                <label class="control-label col-sm-2 required">属性值</label>
+                <div class="col-sm-8 col-md-7 ">
+                    <!--单选/多选类型-->
+                    <table class="table table-bordered table-hover" ng-show="formData.attr_type == 1 || formData.attr_type == 2">
+                        <thead>
+                            <tr>
+                                <th>选项文字</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="attr in attrs[1] track by $index">
+                                <td>
+                                    <input type="text" class="form-control" ng-model="attr.value">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[1], $index, $index-1)"><i class="fa fa-arrow-up"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[1], $index, $index+1)"><i class="fa fa-arrow-down"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="delAttr(attrs[1], attr.id, $index)"><i class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[1].push({id: '-1', value: ''})"><i class="fa fa-plus"></i>添加选项</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--数值/文本类型-->
+                    <label class="control-label m-t-5" ng-show="formData.attr_type == 3 || formData.attr_type == 4">商户自填</label>
+                    <!--互斥/非互斥分组多选类型分组多选类型-->
+                    <div ng-show="formData.attr_type == 5 || formData.attr_type == 6">
+                        <button type="button" class="btn btn-sm btn-primary" ng-click="attrs[5].push({id: '-1', name: '',values: []})"><i class="fa fa-plus"></i>添加组</button>
+                        <div class="well" ng-repeat="attrGroup in attrs[5] track by $index">
+                            <table class="table table-bordered table-hover bg-white">
+                                <tbody>
+                                    <tr>
+                                        <td align="right">组名</td>
+                                        <td><input type="text" class="form-control" ng-model="attrGroup.name"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" ng-click="swapArrEle(attrs[5], $index, $index-1)"><i class="fa fa-arrow-up"></i></button>
+                                            <button type="button" class="btn btn-primary" ng-click="swapArrEle(attrs[5], $index, $index+1)"><i class="fa fa-arrow-down"></i></button>
+                                            <button type="button" class="btn btn-primary" ng-click="delAttr(attrs[5], attrGroup.id, $index)"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="attr in attrGroup.values track by $index">
+                                        <td align="right">
+                                            <p class="text-right" ng-if="$index === 0">组内选项</p>
+                                        </td>
+                                        <td><input type="text" class="form-control" ng-model="attr.value"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[5][$parent.$index].values, $index, $index-1)"><i class="fa fa-arrow-up"></i></button>
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="swapArrEle(attrs[5][$parent.$index].values, $index, $index+1)"><i class="fa fa-arrow-down"></i></button>
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="delAttrSub(attrs[5][$parent.$index].values, attr.id, $index, attrGroup.id)"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="attrGroup.values.push({id: '-1', value: ''})"><i class="fa fa-plus"></i>添加选项</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--END 编辑-->
+
+        <div class="form-group" ng-hide="formData.attr_type == 3 || formData.attr_type == 4 || formData.type == 3 || formData.type == 4">
+            <label for="" class="control-label col-sm-2 required">支持新增自定义选项</label>
+            <div class="col-sm-8 col-md-7 ">
+                <label class="radio-inline">
+                    <input type="radio" name='isCustom' ng-model="formData.customizable" value='1'>是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name='isCustom' ng-model="formData.customizable" value='0'>否
+                </label>
+                <p class="text-primary" ng-show="formData.customizable == 1 && (formData.attr_type == 1 || formData.type == 1)">单选类型需有一个选项值为"其他"，才能显示自定义输入框</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">效果预览</label>
+            <div class="col-sm-8 col-md-7 ">
+                <!--单选类型-->
+                <div class="well" ng-show="formData.attr_type == 1">
+                    <label for="_type1Show" class="control-label">
+                        <select id="_type1Show" ng-show="!isEdit" class="form-control form-white" ng-model="type1Show" ng-options="attr for attr in attrs[1]">
+                            <option value="" selected>-- 请选择 --</option>
+                        </select>
+                        <select id="_type1Show" ng-show="isEdit" class="form-control form-white" ng-model="type1Show" ng-options="attr.value for attr in attrs[1]">
+                            <option value="" selected>-- 请选择 --</option>
+                        </select>
+                    </label>
+                    <input type="text" class="form-control form-white" ng-show="formData.customizable === '1' && type1Show === '其他'" placeholder="自定义属性值">
+                </div>
+                <!--多选类型-->
+                <div class="well" ng-show="formData.attr_type == 2">
+                    <label ng-show="!isEdit" class="checkbox-inline" ng-repeat="attr in attrs[1]">
+                        <input type="checkbox">{{attr}}
+                    </label>
+                    <label ng-show="!isEdit" class="checkbox-inline" ng-repeat="attr in attrType2CustomArr">
+                        <input type="checkbox">{{attr}}
+                    </label>
+                    <label ng-show="isEdit" class="checkbox-inline" ng-repeat="attr in attrs[1]">
+                        <input type="checkbox">{{attr.value}}
+                    </label>
+                    <div ng-show="formData.customizable == 1">
+                      <input type="text" class="form-control form-white" style="width:110px;" placeholder="自定义属性值" ng-model="attrType2CustomValue">
+                      <button type="button" class="btn btn-primary" ng-click="attrType2CustomArr.push(attrType2CustomValue);attrType2CustomValue=null;">添加</button>
+                    </div>
+                </div>
+                <!--数值类型-->
+                <div class="well" ng-show="formData.attr_type == 3">
+                    <label>属性项名称
+                        <input type="number" class="form-control form-white" style="width: 80px;">
+                    </label>
+                </div>
+                <!--文本类型-->
+                <div class="well" ng-show="formData.attr_type == 4">
+                    <label>属性项名称
+                        <input type="text" class="form-control form-white" style="width: 80px;">
+                    </label>
+                </div>
+                <!--非互斥分组多选类型-->
+                <div class="well" ng-show="formData.attr_type == 5">
+                  <div class="m-b-5" ng-repeat="attr in attrType6ValueArr">
+                      <input type="checkbox">
+                      <ui-select ng-model="attr.selected" theme="select2"
+                                  style="min-width: 300px;"
+                                  title="">
+                          <ui-select-match placeholder="">{{$select.selected.value}}</ui-select-match>
+                          <ui-select-choices group-by="'name'"
+                                              repeat="attr in getAttrType5Value | propsFilter: {value: $select.search}">
+                              <div ng-bind-html="attr.value | highlight: $select.search"></div>
+                          </ui-select-choices>
+                      </ui-select>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-primary m-0" ng-click="attrType6ValueArr.push({selected: {}})"><i class="fa fa-plus"></i></button>
+                  <div>
+                    <label class="checkbox-inline" ng-repeat="attr in attrType5CustomArr">
+                        <input type="checkbox">{{attr}}
+                    </label>
+                  </div>
+
+                  <div ng-show="formData.customizable == 1">
+                    <input type="text" class="form-control form-white" style="width:110px;" placeholder="自定义属性值" ng-model="attrType5CustomValue">
+                    <button type="button" class="btn btn-primary" ng-click="attrType5CustomArr.push(attrType5CustomValue);attrType5CustomValue=null;">添加</button>
+                  </div>
+                </div>
+                <!--互斥分组多选类型-->
+                <div class="well" ng-show="formData.attr_type == 6">
+                    <p class="text-info">属性项名称</p>
+                    <label class="radio-inline" ng-repeat="attrGroup in attrs[5]">
+                        <input type="radio" name="type5" ng-model="type5Show.radio" ng-value="attrGroup">{{attrGroup.name}}
+                    </label>
+                    <div class="well bg-white" ng-show="type5Show.radio">
+                        <label class="checkbox-inline" ng-repeat="attr in type5Show.radio.values">
+                            <input type="checkbox">{{attr.value}}
+                        </label>
+                        <label class="checkbox-inline" ng-repeat="attr in attrType6CustomArr">
+                            <input type="checkbox">{{attr}}
+                        </label>
+                        <div ng-show="formData.customizable == 1">
+                          <input type="text" class="form-control" style="width:110px;" placeholder="自定义属性值" ng-model="attrType6CustomValue">
+                          <button type="button" class="btn btn-primary" ng-click="attrType6CustomArr.push(attrType6CustomValue);attrType6CustomValue=null;">添加</button>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/ng-template" id="popover.html">
+                    <tabset class="tab-fade-in tab_left" vertical="true">
+                        <tab ng-repeat="attr in attrs[5]" heading="{{attr.name}}">
+                            <button type="button" class="btn btn-sm btn-default" ng-repeat="op in attr.options" ng-click="setResult(op.name, $index)">{{op.name}}</button>
+                        </tab>
+                    </tabset>
+                </script>
+            </div>
+        </div>
+        <div class="form-group" ng-show="formError.length > 0">
+            <ul class="col-sm-offset-2 col-sm-8 col-md-7">
+                <li class="alert alert-danger" ng-repeat="err in formError track by $index" ng-bind="err"></li>
+            </ul>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8 col-md-7 ">
+                <button type="button" w5c-form-submit="saveNewAttr($event)" class="btn btn-primary" ng-bind="isEdit ? '更新' : '保存'"></button>
+            </div>
+        </div>
+    </form>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+

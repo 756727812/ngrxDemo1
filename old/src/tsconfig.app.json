@@ -1,0 +1,31 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "types": [
+      "@types/jquery"
+    ],
+    "paths": {
+      "@shared": [ "app/shared" ],
+      "@shared/*": [ "app/shared/*" ],
+      "@utils": [ "app/utils/" ],
+      "@utils/*": [ "app/utils/*" ],
+      "@env": [ "environments/" ],
+      "@env/*": [ "environments/*" ],
+      "@store": [ "app/store" ],
+      "@store/*": [ "app/store/*" ]
+    },
+    "sourceMap": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "test.ts",
+    "fonts/**/*",
+    "styles/**/*",
+    "**/*.spec.ts"
+  ]
+}

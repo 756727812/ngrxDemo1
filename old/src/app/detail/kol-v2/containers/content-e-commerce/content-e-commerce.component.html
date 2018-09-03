@@ -1,0 +1,161 @@
+<nz-card [nzBordered]="false">
+  <div class="row" id="fashion-kol-info-list-header"
+    *ngIf="wechat_id !== '' &&seller_privilege==='30'">
+    <div class="col-sm-12 portlets">
+      <div class="panel" style="margin-bottom: 10px;">
+        <div class="panel-content" style="padding: 24px;">
+          <div class="topbar-innerwrap">
+            <!-- 文章详情不显示 -->
+            <div >
+              <div class="text-center">
+                <img [seeSrc]="getAvatarUrl()" width="65" height="65" alt="{{ wechat_name }}" class="img-circle" />
+              </div>
+            </div>
+            <div class="right-of-avatar" >
+              <div class="desc-block">
+                <h3 class="font-bold"></h3>
+                <p class="m-b-0">微信名称：{{ wechat_name }}</p>
+                <p class="">微信号：{{ wechat_id }}</p>
+              </div>
+              <div class="v-btns">
+                <a (click)="showSteps()" class="how-sell">
+                  如何玩转内容电商2.0
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-card>
+
+<nz-card [nzBordered]="false">
+  <div class="text-center emptyDescription" *ngIf="!_table_show  && _loading===false;">
+    <img src="../../../../../images/modal-link-empty.png" alt="">
+    <p class="text-center">在公众号推文中插入商品链接，售卖商品</p>
+    <div class="text-center">
+      <button nz-button [nzType]="'primary'" (click)="showGoodsLink()">
+        <span>获取商品链接</span>
+      </button>
+    </div>
+    <div class="text-center refreshLink">
+      <a (click)="refreshData(true)">刷新列表</a>
+    </div>
+  </div>
+  <div *ngIf="_table_show">
+    <button nz-button nzType="primary" [nzSize]="'large'" (click)="refreshData()">刷新列表</button>
+    <form class="pull-right" nz-form [nzLayout]="'inline'" (ngSubmit)="submitSearch()">
+      <div nz-form-item>
+        <div nz-form-control>
+          <nz-input [(ngModel)]="search" [ngModelOptions]="{standalone: true}" [nzPlaceHolder]="'文章名'" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'">搜索</button>
+    </form>
+
+    <nz-table #nzTable [nzAjaxData]="article_list" [nzIsPagination]="'true'"
+      nzShowSizeChanger="true"
+      nzShowQuickJumper="true"
+      nzShowTotal="true"
+      [nzLoading]="_loading"
+      [nzTotal]="total_items"
+      [(nzPageIndex)]="page"
+      (nzPageIndexChange)="refreshData()"
+      [(nzPageSize)]="_pageSize"
+      (nzPageSizeChange)="refreshData(true)"
+    >
+      <thead nz-thead>
+        <tr>
+          <th nz-td class="col-sm-2">
+            <span>文章名</span>
+          </th>
+          <th nz-td>
+            <span>上线时间</span>
+          </th>
+          <th nz-td>
+            <span>楼层</span>
+          </th>
+          <th nz-td>
+            <span>文章阅读数</span>
+          </th>
+          <th nz-td>
+            <span>文内商品浏览量</span>
+          </th>
+          <th nz-td>
+            <span>文内商品访客量</span>
+          </th>
+          <th nz-td>
+            <span>文内商品总订单量</span>
+          </th>
+          <th nz-td>
+            <span>文内商品总成交额</span>
+          </th>
+
+          <th nz-td>
+            <span>操作</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of nzTable.data;trackBy:item?.id;">
+          <td nz-td title="{{item.title}}">
+            <a (click)="showGoodsList(item)">{{item.title}}</a>
+          </td>
+          <td nz-td>
+            <span>{{item.public_date | date: 'yyyy-MM-dd'}}</span>
+          </td>
+          <td nz-td>
+            <span>{{item.idx}}</span>
+          </td>
+          <td nz-td>
+            <span>{{item.read_num}}</span>
+          </td>
+          <td nz-td>
+            <span>{{item.pv}}</span>
+          </td>
+          <td nz-td>
+            <span>{{item.uv}}</span>
+          </td>
+          <!-- <td nz-td >
+            <span [seeAccess]="'KOL'">实物商品: {{item.gmv_info.kol.order}}/￥{{item.gmv_info.kol.gmv}}
+            <br />虚拟商品: {{item.virtual_order_num}}/￥{{item.virtual_order_gmv}}</span>
+          </td> -->
+          <td nz-td ><span>{{item.order_num}}</span>
+          </td>
+          <td nz-td ><span>￥{{item.gmv}}</span>
+          </td>
+
+          <td nz-td>
+            <span class="edit">
+              <a (click)="showGoodsList(item)">查看文中商品</a>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</nz-card>
+
+<nz-modal [nzWrapClassName]="'vertical-center-modal'"
+  [nzContent]="stepModalContent"
+  [nzVisible]="isVisibleMiddle"
+  [nzTitle]="'如何在内容电商2.0中售卖商品'"
+  [nzFooter]="modalFooter"
+  [nzWidth]="740"
+  (nzOnCancel)="handleCancelMiddle($event)"
+  (nzOnOk)="handleOkMiddle($event)">
+    <ng-template #stepModalContent>
+      <div class="step-content">
+        <div class="text-center" *ngFor="let m of stepData">
+          <div class="text-center step_step">{{m.step}}</div>
+          <div class="text-center step_title">{{m.title}}</div>
+          <div class="text-center step_description">{{m.description}}</div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #modalFooter>
+
+    </ng-template>
+</nz-modal>

@@ -1,0 +1,233 @@
+<div class="header">
+  <h2><strong>佣金账单</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">佣金账单</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <see-tabset>
+            <see-tab type="bill" heading="账单汇总">
+                <div class="row m-t-10">
+                    <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="widget-info">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-rmb bg-red"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-bind="bill_summary.all || 0 | currency: '￥'"></p>
+                                    <p class="text">总金额</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="widget-info">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-rmb bg-purple"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-bind="bill_summary.invalid || 0 | currency: '￥'"></p>
+                                    <p class="text">已失效金额</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="widget-info">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-rmb bg-orange"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-bind="bill_summary.freeze || 0 | currency: '￥'"></p>
+                                    <p class="text">冻结中金额</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="widget-info">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-rmb bg-yellow"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-bind="bill_summary.wait_withdraw || 0 | currency: '￥'"></p>
+                                    <p class="text">待提现金额</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="widget-info">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-rmb bg-green"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number" ng-bind="bill_summary.withdrawing || 0 | currency: '￥'"></p>
+                                    <p class="text">已申请提现金额</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xlg-2 col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="widget-info">
+                            <div class="row">
+                                <div class="left">
+                                    <i class="fa fa-rmb bg-blue"></i>
+                                </div>
+                                <div class="right">
+                                    <p class="number countup" ng-bind="bill_summary.withdrawed || 0 | currency: '￥'"></p>
+                                    <p class="text">已打款金额</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>待提现账单</h4>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>结算期</th>
+                                <th>佣金结算金额</th>
+                                <th>佣金状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="!show_wait_withdraw">
+                                <td colspan="4">没有数据~</td>
+                            </tr>
+                            <tr ng-show="show_wait_withdraw">
+                                <td>{{wait_withdraw.start_time | date: 'yyyy-MM-dd'}} - 至今</td>
+                                <td ng-bind="wait_withdraw.wait_withdraw | currency: '￥'"></td>
+                                <td>待提现</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-if="+wait_withdraw.wait_withdraw > 0" ng-click="applyWithdraw()">申请提现</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p ng-show="NeedWithdrawList.count==='0'">没有可提现的账单</p>
+                </div>
+
+                <h4>提现中账单</h4>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>结算期</th>
+                                <th>佣金结算金额</th>
+                                <th>佣金状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="withdraw_list.length === 0">
+                                <td colspan="4">没有数据~</td>
+                            </tr>
+                            <tr ng-repeat="item in withdraw_list">
+                                <td>{{item.start_time | date: 'yyyy-MM-dd'}} - {{item.end_time | date: 'yyyy-MM-dd'}}</td>
+                                <td ng-bind="item.commission | currency: '￥'"></td>
+                                <td ng-bind="item.status"></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="finishPay(item.id)">完成打款</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </see-tab>
+            <see-tab type="detail" heading="佣金详情">
+                <div class="btn-group" uib-dropdown>
+                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                            {{filterText || '佣金状态'}} <span class="caret"></span>
+                        </button>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem"><a href="" ng-click="billFilter(0)">全部</a></li>
+                        <li role="menuitem"><a href="" ng-click="billFilter(1)">冻结中</a></li>
+                        <li role="menuitem"><a href="" ng-click="billFilter(2)">已失效</a></li>
+                        <li role="menuitem"><a href="" ng-click="billFilter(3)">待提现</a></li>
+                        <li role="menuitem"><a href="" ng-click="billFilter(4)">提现中</a></li>
+                        <li role="menuitem"><a href="" ng-click="billFilter(5)">已打款</a></li>
+                    </ul>
+                </div>
+                <div class="table-scrollable" see-viewer>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>订单信息</th>
+                                <th>单价数量</th>
+                                <th>优惠总额</th>
+                                <th>实付金额</th>
+                                <th>下单时间</th>
+                                <th>付款账号</th>
+                                <th>佣金金额</th>
+                                <th>佣金状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="orderList.length === 0">
+                                <td colspan="9">没有数据~</td>
+                            </tr>
+                            <tr ng-repeat="order in orderList">
+                                <td>
+                                    <p>中订单号：<span ng-bind="order.mid_order_id"></span></p>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <img see-src="order.item_imgurl" style="width: 100px;" class="img-viewer" alt="">
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <p ng-bind="order.name"></p>
+                                            <p>商品ID：<span ng-bind="order.sku_id"></span></p>
+                                            <p>货号：<span ng-bind="order.sku_mark"></span></p>
+                                            <p>规格：<span ng-bind="order.attr_value"></span></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p ng-bind="order.unit_price | currency: '￥'"></p>
+                                    <p ng-bind="order.quantity"></p>
+                                </td>
+                                <td>
+                                    <p>优惠总额：{{order.total_full_off_price | currency: '¥'}}</p>
+                                    <p>优惠券：{{order.coupon_price | currency: '¥'}}</p>
+                                    <p>满减活动：{{order.full_off_price | currency: '¥'}}</p>
+                                </td>
+                                <td ng-bind="order.coupon_price | currency: '￥'"></td>
+                                <td ng-bind="order.total_fee | currency: '￥'"></td>
+                                <td ng-bind="order.buy_time"></td>
+                                <td>
+                                    <p ng-bind="order.u_username"></p>
+                                    <span class="label-primary" ng-show="order.is_first_order === '1'">首单</span>
+                                </td>
+                                <td ng-bind="order.commission | currency: '￥'"></td>
+                                <td ng-bind="order.status"></td>
+                                <td>
+                                    <a ng-href="/order/detail/{{order.mid_order_id}}" class="btn btn-sm btn-primary">查看订单</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pagination total-items="total_items"></pagination>
+            </see-tab>
+        </see-tabset>
+      </div>
+    </div>
+  </div>
+</div>
+

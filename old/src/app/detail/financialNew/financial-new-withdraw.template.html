@@ -1,0 +1,140 @@
+<div class="header">
+  <h2><strong>财务管理提现管理</strong></h2>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline m-b-10">
+          <div class="form-group">
+            <label class="control-label">交易号</label>
+            <input class="form-control" type="text" ng-model="$ctrl.searchForm.withdrawalId" placeholder="提现账单号">
+          </div>
+          <div class="form-group">
+            <label class="control-label">提现者
+              <input class="form-control" type="text" ng-model="$ctrl.searchForm.condition" placeholder="小电铺名称/手机号/邮箱">
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-label">时间
+              <input date-range-picker class="form-control date-picker apply-time" type="text" ng-model="$ctrl.dateTime" placeholder="申请提现时间">
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-label">提现状态</label>
+            <select name="type" class="form-control" ng-model="$ctrl.searchForm.status">
+              <option value="">全部</option>
+              <option value="1">申请提现中</option>
+              <option value="2">提现中</option>
+              <option value="3">提现成功</option>
+              <option value="5">提现失败</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+          <button type="button" ng-click="$ctrl.resetSearch()" class="btn">重置</button>
+          <!-- <a class="btn btn-primary" target="_blank" ng-click="$ctrl.exportWithdrawals()">批量导出</a> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel">
+  <div class="panel-content">
+    <see-tabset>
+      <see-tab heading="全部" type="0" count="{{$ctrl.countData[0]}}">
+      </see-tab>
+      <see-tab heading="申请提现中" type="1" count="{{$ctrl.countData[1]}}">
+      </see-tab>
+      <see-tab heading="提现中" type="2" count="{{$ctrl.countData[2]}}">
+      </see-tab>
+      <see-tab heading="提现成功" type="3" count="{{$ctrl.countData[3]}}">
+      </see-tab>
+      <see-tab heading="提现失败" type="5" count="{{$ctrl.countData[5]}}">
+      </see-tab>
+    </see-tabset>
+    <button type="button" class="btn btn-primary btn-tabright" ng-click="$ctrl.batchAcceptBill()" ng-if="$ctrl.status == 11">批量通过审核</button>
+
+    <div class="row">
+      <div class="col-sm-12 portlets">
+            <div class="clear-fix">
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th ng-if="$ctrl.status == 11"><input name="" type="checkbox" value="" ng-model="$ctrl.markAll" ng-change="$ctrl.markAllChange()"/> 全选</th>
+                      <th>时间</th>
+                      <th>交易号<i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long" uib-tooltip-template="'tipTmpl.html'"></i>
+                        <script type="text/ng-template" id="tipTmpl.html">
+                          <div>
+                            <p class="m-b-0">
+                              大订单号：即用户下单时的支付单号，一个大订单下有多个中订单，eg. BIGxxxx
+                            </p>
+                            <p class="m-b-0">
+                              中订单号：即为发货包裹单号，平台会根据供货商及物流路线的不同，将大订单拆分为中订单，eg. MIDxxxx
+                            </p>
+                            <p class="m-b-0">
+                              小订单号：中订单下同一个SKU商品将作为一个小订单，退款、退货、入账均将以小订单为单位，eg. LITxxxx
+                            </p>
+                            <p class="m-b-0">
+                              入账单号：小订单完成交易后将生成入账单号，计算至可用余额，eg. RZxxxx
+                            </p>
+                            <p class="m-b-0">
+                              提现账单号：即申请提现时生成的账单号，eg. TXZDxxxx
+                            </p>
+                          </div>
+                        </script>
+                      </th>
+                      <th>申请者</th>
+                      <th>提现金额</th>
+                      <th>提现方式</th>
+                      <th>提现状态</th>
+                      <th>说明</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in $ctrl.list" >
+                      <td ng-if="$ctrl.status==11"><input name="" type="checkbox" value="" ng-model="$ctrl.markedAudit[item.billId]"/></td>
+                      <td ng-bind="item.createTime | date: 'yyyy-MM-dd'"></td>
+                      <td>
+                        {{item.withdrawalId}} <br/>
+                        <span ng-if="$ctrl.status == 3">支付宝流水号:<br/>{{item.serialNumber}}</span>
+                      </td>
+                      <td>
+                        {{item.sellerName}} <br/>
+                        {{item.sellerEmail}}
+                      </td>
+                      <td>
+                        {{item.withdrawalsAmount}}
+                      </td>
+                      <td ng-switch on="item.withdrawalType">
+                        <span ng-switch-when="1">支付宝</span>
+                        <span ng-switch-when="2">微信</span>
+                        <span>{{item.withdrawalAccountSnap}}</span>
+                      </td>
+                      <td ng-switch on="item.status">
+                        <span ng-switch-when="1">申请提现中</span>
+                        <span ng-switch-when="2">提现中</span>
+                        <span ng-switch-when="3">提现成功</span>
+                        <span ng-switch-when="4">提现中</span>
+                        <span ng-switch-when="5">提现失败</span>
+                      </td>
+                      <td>{{item.withdrawalsComment}}{{item.status == 5 ?'，可重新发起提现':''}}</td>
+                      <td>
+                        <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.withdrawalsReview(item.withdrawalId, 'pass')" ng-if="item.status==1">通过 <br/></a>
+                        <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.withdrawalsReview(item.withdrawalId, 'forcesuccess', true)" ng-if="item.status==2 || item.status==4">强制转账 <br/></a>
+                        <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.withdrawalsReview(item.withdrawalId, 'refuse')" ng-if="item.status==1">拒绝 <br/></a>
+                        <a target="_blank" class="btn btn-primary btn-sm" ng-href="/financialNew/recorded?accountInfo={{item.sellerEmail}}#0">入账记录</a>
+                        <a target="_blank" class="btn btn-primary btn-sm" href="financialNew/withdraw?condition={{item.sellerName}}">提现记录</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+

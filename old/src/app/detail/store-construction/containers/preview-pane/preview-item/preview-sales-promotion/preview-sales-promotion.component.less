@@ -1,0 +1,64 @@
+.double-col-goods-list {
+  .nav-bar {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    font-size: 13px;
+
+    > li {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+
+      > span {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 2.7;
+        padding: 0 10px;
+      }
+
+      &.active {
+        color: #d55231;
+        font-weight: bold;
+        > span {
+          border-bottom: 2px solid #fb0106;
+        }
+      }
+    }
+  }
+
+  .items-container {
+    text-align: center;
+
+    div.item {
+      float: left;
+      display: inline-block;
+      width: 50%;
+      padding: 8px;
+
+      .item-name {
+        margin-top: 5px;
+        line-height: 1.4;
+      }
+
+      .item-image img {
+        width: 165px;
+        height: 165px;
+        margin: auto;
+      }
+
+      .daily-price {
+        font-weight: bold;
+        font-size: 15px;
+      }
+
+      .ori-price {
+        font-size: 12px;
+        color: #999;
+        text-decoration: line-through;
+      }
+    }
+  }
+}

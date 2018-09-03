@@ -1,0 +1,122 @@
+<div class="header">
+  <h2><strong>待审核退款</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/financial">财务中心</a></li>
+      <li class="active">待审核退款</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div id="orderImages" class="table-scrollable">
+      <table class="table font-size-12">
+        <thead>
+          <tr class="bg-f1f4f7">
+            <th></th>
+            <th>商品</th>
+            <th>单价数量</th>
+            <th>优惠总额</th>
+            <th>实付金额</th>
+            <th>下单时间</th>
+            <th>更新时间</th>
+            <th>商户账号</th>
+            <th>税费和实付运费</th>
+            <th>状态</th>
+            <th>派发信息</th>
+            <th>囤货出库状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-f1f4f7 tdbtn" ng-repeat-start="order in $ctrl.refund_order_list">
+            <td colspan="8">
+              <p>小订单号：{{order.order_list[0].order_id}}，&nbsp;中订单号：{{order.summary_info.mid_order_id}}</p>
+              <p ng-show="order.summary_info.big_order_id">对账编号：{{order.summary_info.big_order_id}}</p>
+              <p class="ellipsis">收货信息：{{order.summary_info.recv_addr}}</p>
+            </td>
+            <td>
+              <p ng-class="{'text-primary': +order.summary_info.tax > 0}">被税：{{order.summary_info.tax | currency: '￥'}}</p>
+            </td>
+            <td> {{order.summary_info.status_str}}</td>
+            <td></td>
+            <td></td>
+            <td>
+              <a ng-href="/order/detail/{{order.summary_info.order_id}}" class="m-l-10 m-r-10">查看详情</a>
+            </td>
+          </tr>
+          <tr class="bg-f1f4f7" ng-repeat-start="smallOrder in order.order_list">
+            <td colspan="10">
+              备注:<a href="" id="{{smallOrder.order_id}}" data-type="textarea" data-pk="{{smallOrder.order_id}}" data-url="/api/order/addOrderComments"
+                data-placeholder="备注信息" data-original-title="输入备注信息" class="editable editable-pre-wrapped editable-click" style="display: inline; background-color: rgba(0, 0, 0, 0);"
+                see-editable>{{smallOrder.comments}}</a>
+            </td>
+            <td></td>
+            <td colspan="2"></td>
+          </tr>
+          <tr class="bg-f1f4f7" ng-repeat-end>
+            <td>
+              <div class="img-container">
+                <img see-src="smallOrder.f_imgurl" see-viewer class="img-viewer" alt="{{smallOrder.item_name}}">
+              </div>
+            </td>
+            <td>
+              <p>{{smallOrder.subject}}</p>
+              <p>货号：{{smallOrder.item_mark}}</p>
+              <p>规格:{{smallOrder.attr_value}}</p>
+            </td>
+            <td>
+              <p>{{smallOrder.buy_price | currency: '¥'}}</p>
+              <p>{{smallOrder.quantity}}件</p>
+            </td>
+            <td>
+              <p>优惠总额：{{smallOrder.total_full_off_price | currency: '¥'}}</p>
+              <p>优惠券：{{smallOrder.coupon_price | currency: '¥'}}</p>
+              <p>满减活动：{{smallOrder.full_off_price | currency: '¥'}}</p>
+            </td>
+            <td>
+              {{smallOrder.total_fee | currency: '¥'}}
+            </td>
+            <td>
+              {{smallOrder.buy_time | date:'yyyy-MM-dd HH:mm:ss'}}
+            </td>
+            <td>
+              {{smallOrder.update_time | date:'yyyy-MM-dd HH:mm:ss'}}
+            </td>
+            <td>
+              <p>后台账号：{{smallOrder.daren_seller_name}}</p>
+              <p>圈主名称：{{smallOrder.daren_name}}</p>
+            </td>
+            <td>
+              <p>运费：{{smallOrder.freight_cost | currency: '¥'}}</p>
+              <p ng-class="{'text-primary': +smallOrder.tax > 0}">税费：{{smallOrder.tax | currency: '¥'}}</p>
+            </td>
+            <td>
+              {{smallOrder.status_str}}
+            </td>
+            <td ng-class="{'border-left-right': smallOrder.dispatch_seller_id != '0'}">
+              <div ng-if="smallOrder.dispatch_seller_id != '0'">
+                <p>已派发</p>
+                <p>派发商户</p>
+                <p>{{smallOrder.dispatch_seller_account}}</p>
+                <p>金额{{smallOrder.dispatch_price | currency: '¥'}}</p>
+              </div>
+            </td>
+            <td>{{smallOrder.store_msg.msg}}</td>
+            <td>
+              <button type="button" class="btn btn-sm btn-primary" ng-show="smallOrder.status === '20004' || smallOrder.status === '20008'" ng-click="$ctrl.reviewRefund(smallOrder.order_id, smallOrder.refund_fee, order.summary_info.is_withdraw);">审核退款申请</button>
+            </td>
+          </tr>
+          <tr ng-repeat-end>
+            <td style="height: 30px;border-top: none;"></td>
+          </tr>
+        </tbody>
+      </table>
+      <p ng-if="!$ctrl.total_items">还没有订单数据哦~</p>
+    </div>
+    <pagination total-items="$ctrl.total_items"></pagination>
+  </div>
+</div>
+

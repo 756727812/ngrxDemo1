@@ -1,0 +1,52 @@
+<div class="explore-col-goods">
+  <form nz-form [formGroup]="formGroup" [nzLayout]="'vertical'" class="ctrl-widget-form" (ngSubmit)="emitSave()">
+
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>添加方式</label>
+      </div>
+      <div nz-form-control>
+        <nz-radio-group formControlName="method" (click)="emitSave($event)">
+          <label nz-radio [nzValue]="0">
+            <span>手动添加</span>
+          </label>
+          <label nz-radio [nzValue]="1">
+            <span>自动添加</span>
+          </label>
+        </nz-radio-group>
+        <div nz-form-explain *ngIf="formErrors.method">{{formErrors.method}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="formGroup.value.method===0">
+      <div nz-form-label class="">
+        <label>添加活动 (
+          <span>{{formGroup.value.targets.length || 0}}</span>/1)</label>
+      </div>
+      <div nz-form-control>
+        <app-sales-benefit formControlName="targets" (change)="emitSave($event)" [type]="MODAL_TYPE.SALES_PROMOTION"></app-sales-benefit>
+        <div nz-form-explain *ngIf="formErrors.targets">{{formErrors.targets}}</div>
+      </div>
+    </div>
+    <!--<div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>首页商品展示数</label>
+        <i class="anticon anticon-exclamation-circle" nz-tooltip="当满减不是页面最后一个模块时，超过该数的商品将折叠为查看更多。否则该数不生效"></i>
+      </div>
+      <div class="nz-form-control">
+        <nz-input-number formControlName="showCount" [nzParser]="parserInt" (nzBlur)="emitSave($event)" [nzMin]="0" [nzMax]="16"></nz-input-number>个
+        <div nz-form-explain *ngIf="formErrors.showCount">{{formErrors.showCount}}</div>
+      </div>
+    </div>-->
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>显示时间</label>
+        <p class="title-explain" style="margin-top: 4px">让该模块在指定的时间内显示在小电铺，点击发布后生效</p>
+      </div>
+      <div nz-form-control>
+        <app-show-time formControlName="showTime" (change)="emitSave($event)"></app-show-time>
+        <div nz-form-explain *ngIf="formErrors.showTime">{{formErrors.showTime}}</div>
+      </div>
+    </div>
+    <button hidden></button>
+  </form>
+</div>

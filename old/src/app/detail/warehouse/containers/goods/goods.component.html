@@ -1,0 +1,193 @@
+<pro-header [title]="'仓库商品'" [paths]="paths"></pro-header>
+<nz-card [nzBordered]="false">
+  <form nz-form [formGroup]="form" [nzLayout]="'inline'" (ngSubmit)="submitSearch(form)">
+    <standard-form-row [title]="'一级品类'">
+      <div nz-form-item>
+        <div nz-form-control>
+          <tag-select>
+            <nz-checkable-tag *ngFor="let i of goodsCategoryLevelOne; let idx = index" [nzChecked]="i.value" (nzChange)="changeCategory($event, idx, 1)">
+              {{i.text}}
+            </nz-checkable-tag>
+          </tag-select>
+        </div>
+      </div>
+    </standard-form-row>
+    <standard-form-row [title]="'二级品类'" [class.d-none]="goodsCategoryLevelTwo.length === 0">
+      <div nz-form-item>
+        <div nz-form-control>
+          <tag-select>
+            <nz-checkable-tag *ngFor="let i of goodsCategoryLevelTwo; let idx = index" [nzChecked]="i.value" (nzChange)="changeCategory($event, idx, 2)">
+              {{i.text}}
+            </nz-checkable-tag>
+          </tag-select>
+        </div>
+      </div>
+    </standard-form-row>
+    <standard-form-row [title]="'三级品类'" style="padding-bottom: 11px" [class.d-none]="goodsCategoryLevelThree.length === 0">
+      <div nz-form-item>
+        <div nz-form-control>
+          <tag-select>
+            <nz-checkable-tag *ngFor="let i of goodsCategoryLevelThree; let idx = index" [nzChecked]="i.value" (nzChange)="changeCategory($event, idx, 3)">
+              {{i.text}}
+            </nz-checkable-tag>
+          </tag-select>
+        </div>
+      </div>
+    </standard-form-row>
+    <standard-form-row grid last>
+      <div nz-row [nzGutter]="8">
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+          <div nz-form-item class="d-flex">
+            <div nz-form-label>
+              <label>商品信息</label>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-input nzType="text" formControlName="itemNo" [nzPlaceHolder]="'货号'"></nz-input>
+            </div>
+            <div nz-form-control class="flex-1 m-l-10">
+              <nz-input nzType="text" formControlName="itemName" [nzPlaceHolder]="'商品名'"></nz-input>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+          <div nz-form-item class="d-flex">
+            <div nz-form-label>
+              <label>在仓库存量</label>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-input nzType="number" formControlName="warehouseStockFrom"></nz-input>
+            </div>
+            <div nz-form-split>
+              <p nz-form-split>~</p>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-input nzType="number" formControlName="warehouseStockTo"></nz-input>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+          <div nz-form-item class="d-flex">
+            <div nz-form-label>
+              <label>最近入库时间</label>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-rangepicker formControlName="dateRange" [nzPlaceholder]="['开始时间', '结束时间']"></nz-rangepicker>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+          <div nz-form-item class="d-flex">
+            <div nz-form-label>
+              <label>小电铺商品关联</label>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-select formControlName="type">
+                <nz-option
+                  *ngFor="let option of typeOptions"
+                  [nzLabel]="option.label"
+                  [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+            </div>
+          </div>
+        </div>
+        <div nz-col [nzOffset]="8" nzXs="16" nzSm="16" nzMd="8" class="mb-md text-right">
+          <button nz-button type="submit" [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="loading">
+            <span>查询</span>
+          </button>
+          <button nz-button type="reset" [nzSize]="'large'" (click)="resetForm()">
+            <span>重置</span>
+          </button>
+        </div>
+      </div>
+    </standard-form-row>
+  </form>
+  <div class="mb-md">
+    <a href="/warehouse/goods/new" target="_blank" nz-button [nzType]="'primary'" [nzSize]="'large'">
+        <i class="anticon anticon-plus"></i><span>新建</span>
+    </a>
+  </div>
+  <div class="mb-md">
+    <nz-alert [nzType]="'info'">
+      <span alert-body>
+        共 <strong class="text-primary">{{ goodsData.count }}</strong> 个SKU
+      </span>
+    </nz-alert>
+  </div>
+  <nz-table #nzTable
+    nzShowSizeChanger
+    nzShowQuickJumper
+    [nzAjaxData]="goodsData.list"
+    [nzLoading]="loading"
+    [nzTotal]="goodsData.count"
+    [(nzPageSize)]="pageSize"
+    (nzPageSizeChange)="changePage()"
+    [(nzPageIndex)]="page"
+    (nzPageIndexChange)="changePage()">
+    <thead nz-thead>
+      <tr>
+        <th nz-th>
+          <span>编号</span>
+        </th>
+        <th nz-th>
+          <span>商品</span>
+        </th>
+        <th nz-th>
+          <span>规格</span>
+        </th>
+        <th nz-th>
+          <span>创建时间</span>
+        </th>
+        <th nz-th>
+          <span>库存</span>
+          <nz-table-sort [(nzValue)]="sortMap.stock" (nzValueChange)="sort('stock', $event)"></nz-table-sort>
+        </th>
+        <th nz-th>
+          <span>最近入库</span>
+        </th>
+        <th nz-th>
+          <span>操作</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of nzTable.data; index as index">
+        <td nz-td>
+          <p>SEE仓ID：{{ item.id }}</p>
+          <ellipsis lines="1" style="max-width: 200px">
+            <span>货号：{{ item.itemNo }}</span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="2" style="max-width: 200px">
+            <span [title]="item.itemName" [innerText]="item.itemName"></span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          {{ item.specificationName }}
+        </td>
+        <td nz-td>
+          {{ item.createTime | date:'yyyy-MM-dd HH:mm:ss' }}
+        </td>
+        <td nz-td>
+          <p>在仓库存：{{ item.warehouseStock }}</p>
+          <p>在途库存：{{ item.transportationStock }}</p>
+          <p>可售库存：{{ item.sellableStock }}</p>
+        </td>
+        <td nz-td>
+          <p>时间：{{ item.lastWarehouseTime ? (item.lastWarehouseTime | date:'yyyy-MM-dd HH:mm:ss') : '尚无' }}</p>
+          <p>数量：{{ item.lastWarehouseQuantity || '尚无' }}</p>
+        </td>
+        <td nz-td>
+          <a [routerLink]="['./', item.id]">查看详情</a>
+          <span nz-table-divider></span>
+          <ng-template *ngIf="item.itemId">
+            <a href="/goods/posted/{{ item.classId3 }}/{{ item.itemId }}">查看小电铺商品</a>
+            <span nz-table-divider></span>
+          </ng-template>
+          <a [routerLink]="['/warehouse/warehouseOrder']" [queryParams]="{ itemNo: item.itemNo }">入库记录</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

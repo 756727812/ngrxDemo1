@@ -1,0 +1,145 @@
+@left-part-width: 160px;
+@center-h-gap:20px;
+@link-width: 274px;
+@xcx-card-img-width: 197px;
+@xcx-card-img-height: round(197px*0.8, 2);
+
+@primary-color:#5971e8;
+@btnColor:#e5e8f5;
+
+.modal-link-container{
+  min-height: 200px;
+
+  .main-container{
+    display: flex;
+    width: 100%;
+
+    &-side{
+      padding-right: 16px;
+      border-right: 1px #ddd solid;
+
+      .side-list{
+        &-item{
+          height: 40px;
+          line-height: 40px;
+          margin-bottom: 20px;
+          font-size: 16px;
+          cursor: pointer;
+
+          &:hover{
+            color: @primary-color;
+          }
+
+          &.active{
+            color: @primary-color;
+            border-bottom: 2px @primary-color solid;
+          }
+        }
+      }
+    }
+
+    &-content{
+      flex: 1;
+
+      .empty-info{
+        font-size: 18px;
+        line-height: 40px;
+        text-align: center;
+
+        > p{
+          text-align: center;
+          margin-bottom: 34px;
+        }
+
+        .empty-img{
+          margin:10px auto 30px auto;
+        }
+      }
+
+      .content-info{
+        padding: 10px;
+
+        &.center{
+          margin-left: -35px;
+        }
+
+        &-row{
+          line-height: 50px;
+          margin-bottom: 30px;
+
+          > div:first-child{
+            text-align: right;
+          }
+
+          &.img-row{
+            line-height: 180px;
+          }
+        }
+
+        .xiaochengxu-code{
+          height: 180px;
+          border: 1px #e5e5e5 solid;
+        }
+
+        .xiaochengxu-img{
+          max-width: 100%;
+          height: 180px;
+        }
+
+        .info-btn{
+          background: @btnColor;
+          padding: 2px 14px;
+          border-radius: 2px;
+        }
+
+        .how-to {
+          display: flex;
+          line-height: 60px;
+          align-items: center;
+          justify-content: flex-start;
+          padding-left: 25%;
+
+          .yellow-q {
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            font-size: 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            background-color: #fffac5;
+            border: 1px solid #ffb000;
+            color: #f6a623;
+            margin-right: 7px;
+          }
+
+          a {
+            text-decoration: underline;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+
+  }
+
+  .no-kol-container{
+    flex: 1;
+
+    p {
+      text-align: center;
+    }
+
+    .fail-text{
+      margin: 40px auto;
+      font-size: 18px;
+    }
+
+    .empty-img{
+      display: block;
+      margin: 40px auto;
+    }
+  }
+}

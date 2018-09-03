@@ -1,0 +1,974 @@
+<div class="header">
+  <h2><strong>发布商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">发布商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row goods-basic-info-container">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <label ng-if="$ctrl.block_update_msg !== ''"><h3><font color="red">{{$ctrl.block_update_msg}}</font></h3></label>
+        <form class="form-horizontal w5c-form" name="goodsForm" novalidate w5c-form-validate>
+          <div class="goods-basic-info-form-groups">
+            <h4>商品基本信息</h4>
+            <div class="form-group" see-hide="C2C-Seller New-Brand">
+              <label class="col-sm-2 control-label required">商户账号</label>
+              <div class="col-sm-8">
+                <input type="text" placeholder="请输入搜索关键字" class="form-control"
+                  ng-model="$ctrl.formData.item_info.seller_id"
+                  ng-disabled="$ctrl.is_edit"
+                  ng-change="$ctrl.changeLogistic()"
+                  uib-typeahead="item as item.seller_name for item in $ctrl.getSellerList($viewValue)"
+                  typeahead-no-results="$ctrl.noResults"
+                  typeahead-template-url="typeaheadTemplate.html"
+                  typeahead-select-on-blur="true"
+                  typeahead-select-on-exact="true"
+                >
+                <div ng-show="$ctrl.noResults">
+                  <span class="custom-error"><i class="si si-danger"></i>&nbsp;没有符合搜索的商户</span>
+                </div>
+                <p ng-if="$ctrl.errorsMap.seller_id"><i class="si si-danger invalid"></i>&nbsp;{{$ctrl.errorsMap.seller_id}}</p>
+              </div>
+              <script type="text/ng-template" id="typeaheadTemplate.html">
+                <a>
+                  <h5 ng-bind-html="match.label | uibTypeaheadHighlight:query" style="font-weight: normal"></h5>
+                  <small>
+                    id: {{match.model.seller_id}}
+                    email: <span ng-bind-html="match.model.seller_email | uibTypeaheadHighlight:query"></span>
+                  </small>
+                </a>
+              </script>
+            </div>
+            <!-- 仅超管、电商管理员发布商品时，有权限选择“是”；其他角色发布商品时，隐藏该项，且一律选择“否” -->
+            <div class="form-group" ng-if="$ctrl.is_admin">
+              <label class="col-sm-2 control-label required">是否入SEE仓</label>
+              <div class="col-sm-8">
+                <label class="radio-inline">
+                  <input type="radio" name="in_warehouse" value="1"
+                    ng-model="$ctrl.formData.item_info.in_warehouse"
+                    ng-change="$ctrl.changeWareHoust()"
+                    ng-disabled="$ctrl.isInWarehouseNotDisabled">&nbsp;是</label>
+                <label class="radio-inline">
+                  <input type="radio" name="in_warehouse" value="0"
+                    ng-model="$ctrl.formData.item_info.in_warehouse"
+                    ng-change="$ctrl.changeWareHoust()"
+                    ng-disabled="$ctrl.isInWarehouseNotDisabled">&nbsp;否</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">商品名称</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" name="item_name" ng-model="$ctrl.formData.item_info.item_name" required>
+                <p class="text-info m-0">格式：品牌名+元素（材质，流行色）+风格（复古，甜美等）+品类（连衣裙，卫衣等）例如： FEWMODA抹胸侧系带优雅礼服裙</p>
+              </div>
+            </div>
+            <div ng-if="$ctrl.isQuhaodian" class="form-group">
+                <label class="col-sm-2 control-label required">标记礼包</label>
+                <div class="col-sm-8">
+                    <select class="form-control form-white" ng-model="$ctrl.formData.item_info.dealer_package_type" required>
+                      <!-- <option value="" selected>-- 请选择 --</option> -->
+                      <option ng-repeat="item in  $ctrl.dealerPackageList" ng-value="item.id" ng-bind="item.name"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">商品原链接</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="url" name="item_ori_url" ng-model="$ctrl.formData.item_info.item_ori_url">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">品牌</label>
+              <div class="col-sm-8">
+                <input name="item_brand" type="text" class="form-control" ng-model="$ctrl.formData.item_brand" autocomplete="off" required
+                       uib-typeahead="brandItem as brandItem.brand_name for brandItem in $ctrl.searchBrands($viewValue) | limitTo:8"
+                />
+                <p ng-show="$ctrl.isNewBrand">没有你要的品牌？点击<a href="" ng-click="$ctrl.addNewBrandModal()" class="text-primary">这里</a></p>
+                <p ng-if="$ctrl.errorsMap.item_brand"><i class="si si-danger invalid"></i>&nbsp;{{$ctrl.errorsMap.item_brand}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">商品卖点</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" name="sell_point" ng-trim="true" ng-model="$ctrl.formData.item_info.sell_point"
+                  required>
+                <p class="text-info m-0">例如: 年会必备的手拿包 、霉霉最爱的帆布鞋</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">商品重量</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="number" name="item_real_weight" placeholder="单位：克（g）" required ng-model="$ctrl.formData.item_info.item_real_weight"
+                  min="0" ng-blur="$ctrl.changeLogistic()" uib-tooltip="注意：用户应付运费的计算将基于你在此处填写的商品重量" tooltip-placement="top-center"
+                  tooltip-trigger="'mouseenter focus'">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">商品主图</label>
+              <div class="col-sm-10">
+                <button class="btn btn-sm btn-primary pull-left m-r-20" type="button" ng-click="$ctrl.uploadMain()">添加图片</button>
+                <p class="text-info">尺寸不得低于640*640，要求正方形清晰照，图片优势：摆拍图>场景图>白底图，5张上限</p>
+                <div class="clear-fix">
+                  <div style="display: flex;flex-wrap: wrap;">
+                    <div class="img-preview detailImages" see-viewer ng-repeat="img in $ctrl.formData.item_info.item_main_img_list track by $index"
+                      ng-show="$ctrl.formData.item_info.item_main_img_list[$index]">
+                      <img width="100" class="img-viewer" see-src="$ctrl.formData.item_info.item_main_img_list[$index]" alt="" >
+                      <a href="" class="img-del-btn" ng-click="$ctrl.delImage('item_main_img_list',$index)"></a>
+                      <div class="img-action">
+                        <a href="" class="left-action" ng-click="$ctrl.changeOrder($index, $index-1, 'item_main_img')"><i class="fa fa-arrow-left"></i></a>
+                        <a href="" class="right-action" ng-click="$ctrl.changeOrder($index, $index+1, 'item_main_img')"><i class="fa fa-arrow-right"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">尺码图</label>
+              <div class="col-sm-8">
+                <button class="btn btn-sm btn-primary pull-left m-r-20" type="button" ng-click="$ctrl.uploadSizeImg()">添加图片</button>
+                <div class="img-preview size_table_imgurl" ng-show="$ctrl.formData.item_info.size_table_imgurl">
+                  <img width="250" class="img-viewer" see-viewer see-src="$ctrl.formData.item_info.size_table_imgurl" alt="">
+                  <a href="" class="img-del-btn" ng-show="$ctrl.formData.item_info.size_table_imgurl" ng-click="$ctrl.delImage('size_table_imgurl')"></a>
+                </div>
+                <p class="text-info">图片宽度要求在600px-1000px之间，要求至少含有欧码或中国码，尺码表如果是外文，必须翻译为中文</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <!-- 占位符 -->
+              <label class="col-sm-2 control-label"></label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" placeholder="尺码额外说明" ng-model="$ctrl.formData.item_info.size_explain">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">服务说明</label>
+              <div class="col-sm-8">
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-disabled="$ctrl.seven_days_refundDisabled" class="seven_days_refund" ng-model="$ctrl.surport_seven_days_refund" ng-change="$ctrl.change_seven_days_refund($event,'')"/>
+                  7天无理由退货
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-disabled="$ctrl.seven_days_refundDisabled" class="seven_days_refund" ng-model="$ctrl.unsurport_seven_days_refund" ng-change="$ctrl.change_seven_days_refund($event,'un')"/>
+                  不支持7天无理由退货
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">商品保障证书</label>
+              <div class="col-sm-8">
+                <label class="radio-inline">
+                  <input type="radio" name="guarantee_cert_type" value="1" ng-model="$ctrl.formData.item_info.guarantee_cert_type"/>
+                  使用小电铺保障证书
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <!-- 占位符 -->
+              <label class="col-sm-2 control-label"></label>
+              <div class="col-sm-8">
+                <label class="radio-inline">
+                  <input type="radio" name="guarantee_cert_type" value="2" ng-model="$ctrl.formData.item_info.guarantee_cert_type"/>
+                  上传商品保障证书
+                </label>
+                <div class="inline-block" ng-show="$ctrl.formData.item_info.guarantee_cert_type == 2">
+                  <button type="button" class="btn btn-sm btn-primary pull-left m-l-10" accept="image/jpg, image/jpeg, image/png"
+                    ng-disabled="$ctrl.formData.item_info.guarantee_cert_image.length > 1"
+                    ngf-select="$ctrl.uploadCertificateImg($file)">上传图片</button>
+                  <p class="text-info radio-inline" style="cursor: default;margin-left:-10px">图片尺寸为 550px * 810px，要求清晰照，2张上限</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-show="$ctrl.formData.item_info.guarantee_cert_type == 2">
+              <label class="col-sm-2 control-label"></label>
+              <div class="col-sm-8">
+                <div style="display: flex;flex-wrap: wrap;">
+                  <div class="img-preview detailImages" see-viewer ng-repeat="img in $ctrl.formData.item_info.guarantee_cert_image track by $index"
+                    ng-show="$ctrl.formData.item_info.guarantee_cert_image[$index]">
+                    <img width="100" height="100" class="img-viewer" see-src="$ctrl.formData.item_info.guarantee_cert_image[$index]" alt="" >
+                    <a href="" class="img-del-btn" ng-click="$ctrl.delImage('guarantee_cert_image',$index)"></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">商品描述</label>
+              <div class="col-sm-8">
+                <div class="ueditor" config="$ctrl.ueditor.config" ready="$ctrl.ueditor.ready" ng-model="$ctrl.formData.item_info.item_desc"
+                  style="min-height: 256px"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">自动下架时间</label>
+              <div class="col-sm-8">
+                <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="$ctrl.formData.item_info.expire_time">
+                    <a href="" class="datetime-clear" ng-click="$ctrl.formData.item_info.expire_time = undefined"><i class="fa fa-times"></i></a>
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="$ctrl.formData.item_info.expire_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"
+                    />
+                  </ul>
+                </div>
+                <span ng-show="$ctrl.formData.item_info.old_expire_time">原来的下架时间:{{$ctrl.formData.item_info.old_expire_time}}</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">商品文案</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" name="word_link" ng-model="$ctrl.formData.item_info.word_link">
+              </div>
+            </div>
+          </div>
+          <div class="goods-class-property-form-groups">
+            <h4 class="m-t-50">商品品类与属性</h4>
+            <div class="form-group">
+              <label class="control-label col-sm-2">已选择商品品类</label>
+              <div class="col-sm-2">
+                <select name="category_one" class="form-control" ng-model="$ctrl.category.one" ng-options="v.class_id as v.class_name for (k, v) in $ctrl.class_tree"
+                  disabled>
+                  <option value="" selected>-- 请选择 --</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <select name="category_one" class="form-control" ng-model="$ctrl.category.two" ng-options="v.class_id as v.class_name for (k, v) in $ctrl.class_tree[$ctrl.category.one].children"
+                  disabled>
+                  <option value="" selected>-- 请选择 --</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <select name="category_one" class="form-control" ng-model="$ctrl.category.three" ng-options="v.class_id as v.class_name for (k, v) in $ctrl.class_tree[$ctrl.category.one].children[$ctrl.category.two].children"
+                  disabled>
+                  <option value="" selected>-- 请选择 --</option>
+                </select>
+              </div>
+            </div>
+            <!--非销售属性-->
+            <div class="form-group" ng-repeat="comAttr in $ctrl.attrList.common">
+              <label class="control-label col-sm-2" ng-bind="comAttr.display_name || comAttr.attr_name" ng-class="{ 'required': comAttr.is_required === '1'}"></label>
+              <!--单选类型-->
+              <div class="col-sm-6 col-md-4 col-lg-3" ng-if="comAttr.attr_type === '1'">
+                <select w5c-dynamic-name="'commonAttr' + comAttr.attr_id" w5c-dynamic-element class="form-control" ng-required="comAttr.is_required === '1'"
+                  ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].attr_value_id" ng-change="$ctrl.formData.spu_attr[comAttr.attr_id].attr_value = null"
+                  ng-options="k as v.attr_value for (k,v) in comAttr.option_values">
+                  <option value="" selected>-- 请选择 --</option>
+                </select>
+                <input type="text" class="form-control m-t-10" w5c-dynamic-name="'attr1_' + comAttr.attr_id" w5c-dynamic-element ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].attr_value"
+                  ng-required="comAttr.customizable === '1' && (comAttr.option_values[$ctrl.formData.spu_attr[comAttr.attr_id].attr_value_id].attr_value === '其他')"
+                  ng-if="comAttr.customizable === '1' && (comAttr.option_values[$ctrl.formData.spu_attr[comAttr.attr_id].attr_value_id].attr_value === '其他')"
+                  placeholder="自定义属性值">
+              </div>
+              <!--多选类型-->
+              <div class="col-sm-8" ng-if="comAttr.attr_type === '2'">
+                <label class="checkbox-inline opt-label" ng-repeat="(key, opt) in comAttr.option_values">
+                  <input type="checkbox" ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].value[key].is_checked" ng-change="$ctrl.setAttrType2Value(comAttr.attr_id, key, opt.attr_value, comAttr.is_sell_property)">{{opt.attr_value}}
+                </label>
+                <div ng-show="comAttr.customizable === '1'">
+                  <label class="checkbox-inline opt-label" ng-repeat="custom in $ctrl.formData.spu_attr[comAttr.attr_id].custom">
+                    <input type="checkbox" ng-model="custom.is_checked">{{custom.attr_value}}
+                  </label>
+                  <div>
+                    <input class="form-control w-110" name="addAttr2CustomValue" type="text" placeholder="自定义属性值" ng-model="$ctrl.formData.addAttr2CustomValue[comAttr.attr_id]">
+                    <button type="button" class="btn btn-primary btn-sm m-0" ng-click="$ctrl.addAttrType2Custom(comAttr.attr_id, comAttr.is_sell_property)">添加
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--数值类型-->
+              <div class="col-sm-8" ng-if="comAttr.attr_type === '3'">
+                <input w5c-dynamic-name="'attr3_'+comAttr.attr_id" w5c-dynamic-element type="number" class="form-control w-110" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"
+                  style="ime-mode:Disabled" ng-required="comAttr.is_required === '1'" min="0" ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].attr_value">&nbsp;{{comAttr.tips}}
+              </div>
+              <!--文本类型-->
+              <div class="col-sm-8" ng-if="comAttr.attr_type === '4'">
+                <input w5c-dynamic-name="'attr4_'+comAttr.attr_id" w5c-dynamic-element type="text" class="form-control w-110" ng-required="comAttr.is_required === '1'"
+                  ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].attr_value">&nbsp;{{comAttr.tips}}
+              </div>
+              <!--非互斥分组多选类型-->
+              <div class="col-sm-8" ng-if="comAttr.attr_type === '5'">
+                <div class="m-b-5 flex" ng-repeat="value in $ctrl.formData.spu_attr[comAttr.attr_id].value">
+                  <input class="m-r-10 m-t-10" type="checkbox" ng-model="value.is_checked">
+                  <goods-select-colors attrs="comAttr.groups" value="value.selected"
+                    on-select="$ctrl.onSelectColors(key, $index, comAttr)"></goods-select-colors>
+                </div>
+                <div ng-show="comAttr.customizable === '1'">
+                  <label class="checkbox-inline" ng-repeat="custom in $ctrl.formData.spu_attr[comAttr.attr_id].custom">
+                    <input type="checkbox" ng-model="custom.is_checked">{{custom.attr_value}}
+                  </label>
+                  <div>
+                    <input class="form-control w-110" name="addAttr5CustomValue" type="text" placeholder="自定义属性值" ng-model="$ctrl.formData.addAttr5CustomValue[comAttr.attr_id]">
+                    <button type="button" class="btn btn-primary btn-sm m-0" ng-click="$ctrl.addAttrType5(comAttr.attr_id, 'custom', comAttr.is_sell_property)">添加
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--互斥分组多选类型-->
+              <div class="col-sm-8" ng-if="comAttr.attr_type === '6'">
+                <label class="radio-inline" ng-repeat="(grpK, grpV) in comAttr.ways">
+                  <input type="radio" name="comtype6" ng-disabled="$ctrl.formData.spu_attr[comAttr.attr_id].group_id" ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].group_id" ng-value="grpK" ng-change="$ctrl.clearAttrType6(comAttr.attr_id, comAttr.is_sell_property)">{{grpV.display_name}}
+                </label>
+                <div class="well">
+                  <label class="checkbox-inline opt-label" ng-repeat="(key, val) in comAttr.ways[$ctrl.formData.spu_attr[comAttr.attr_id].group_id].values">
+                    <input type="checkbox" ng-model="$ctrl.formData.spu_attr[comAttr.attr_id].value[key].is_checked" ng-change="$ctrl.setAttrType6Value(comAttr.attr_id, key, val.attr_value, comAttr.is_sell_property)">{{val.attr_value}}
+                  </label>
+                  <div ng-show="comAttr.customizable === '1' && $ctrl.formData.spu_attr[comAttr.attr_id].group_id">
+                    <label class="checkbox-inline opt-label" ng-repeat="custom in $ctrl.formData.spu_attr[comAttr.attr_id].custom">
+                      <input type="checkbox" ng-model="custom.is_checked">{{custom.attr_value}}
+                    </label>
+                    <div>
+                      <input class="form-control form-white w-110" name="addAttr6CustomValue" type="text" placeholder="自定义属性值" ng-model="$ctrl.formData.addAttr6CustomValue[comAttr.attr_id]">
+                      <button type="button" class="btn btn-primary btn-sm m-0" ng-click="$ctrl.addAttrType6Custom(comAttr.attr_id, comAttr.is_sell_property)">添加
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="goods-standard-price-form-groups">
+            <h4 class="m-t-50">商品规格与报价</h4>
+            <!--销售属性-->
+            <div class="form-group" ng-repeat="sellAttr in $ctrl.attrList.sell | orderBy:'order_weight'">
+              <label class="control-label col-sm-2 required" ng-bind="sellAttr.display_name || sellAttr.attr_name"></label>
+              <div class="col-sm-8">
+                <!--多选类型-->
+                <div class="{{sellAttr.attr_id}}" ng-if="sellAttr.attr_type === '2'">
+                  <div ng-if="sellAttr.is_support_add_image === '0'">
+                    <label class="checkbox-inline opt-label" ng-repeat="(key, opt) in sellAttr.option_values">
+                      <!-- 不支持配图 -->
+                      <input type="checkbox" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-model="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].is_checked" ng-change="$ctrl.setAttrType2Value(sellAttr.attr_id, key, opt.attr_value, sellAttr.is_sell_property)">{{opt.attr_value}}
+                    </label>
+                    <label class="checkbox-inline opt-label" ng-repeat="custom in $ctrl.formData.sku_attr[sellAttr.attr_id].custom">
+                      <input type="checkbox" ng-model="custom.is_checked" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">{{custom.attr_value}}
+                    </label>
+                  </div>
+                  <div ng-if="sellAttr.is_support_add_image === '1'">
+                    <div class="clear-fix well" ng-repeat="(key, opt) in sellAttr.option_values">
+                      <!-- 支持配图 -->
+                      <div class="checkbox col-sm-4">
+                        <label>
+                          <input type="checkbox"
+                            ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                            ng-model="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].is_checked"
+                            ng-change="$ctrl.setAttrType2Value(sellAttr.attr_id, key, opt.attr_value, sellAttr.is_sell_property)">{{opt.attr_value}}
+                        </label>
+                      </div>
+                      <div class="col-sm-8">
+                        <button type="button" class="btn btn-sm btn-primary pull-left m-r-20"
+                          accept="image/jpg, image/jpeg, image/png"
+                          ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                          ngf-select="$ctrl.uploadSkuImg($file, sellAttr.attr_type, sellAttr.attr_id, key, 'value')">上传图片</button>
+                        <div class="img-preview" ng-show="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].sku_imgurl">
+                          <img width="100" class="img-viewer" see-viewer see-src="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].sku_imgurl"
+                            alt="">
+                          <a href="" class="img-del-btn" ng-show="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].sku_imgurl"
+                            ng-hide="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                            ng-click="$ctrl.deleteSkuImg(sellAttr.attr_type, sellAttr.attr_id, key, 'value')"></a>
+                        </div>
+                        <p class="clear-fix text-info">添加对应规格的图片，用户下单选择不同规格时会切换显示</p>
+                      </div>
+                    </div>
+                    <div ng-show="sellAttr.customizable === '1'">
+                      <div class="clear-fix well" ng-repeat="custom in $ctrl.formData.sku_attr[sellAttr.attr_id].custom">
+                        <div class="checkbox col-sm-4">
+                          <label>
+                            <input type="checkbox"
+                              ng-model="custom.is_checked"
+                              ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">{{custom.attr_value}}
+                          </label>
+                        </div>
+                        <div class="col-sm-8">
+                          <button type="button" class="btn btn-sm btn-primary pull-left m-r-20"
+                            accept="image/jpg, image/jpeg, image/png"
+                            ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                            ngf-select="$ctrl.uploadSkuImg($file, sellAttr.attr_type, sellAttr.attr_id, $index, 'custom')">上传图片</button>
+                          <div class="img-preview" ng-show="custom.sku_imgurl">
+                            <img width="100" class="img-viewer" see-viewer see-src="custom.sku_imgurl" alt="">
+                            <a href="" class="img-del-btn" ng-show="custom.sku_imgurl" ng-hide="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-click="$ctrl.deleteSkuImg(sellAttr.attr_type, sellAttr.attr_id, $index, 'custom')"></a>
+                          </div>
+                          <p class="clear-fix text-info">添加对应规格的图片，用户下单选择不同规格时会切换显示</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-show="sellAttr.customizable === '1'">
+                    <input class="form-control w-110" name="addAttr2CustomValue" type="text" placeholder="自定义属性值" ng-model="$ctrl.formData.addAttr2CustomValue[sellAttr.attr_id]"
+                      ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">
+                    <button type="button" class="btn btn-primary btn-sm m-0" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-click="$ctrl.addAttrType2Custom(sellAttr.attr_id, sellAttr.is_sell_property)">添加
+                    </button>
+                  </div>
+                </div>
+                <!--非互斥分组多选类型-->
+                <div class="{{sellAttr.attr_id}}" ng-if="sellAttr.attr_type === '5'">
+                  <div class="m-b-5 flex" ng-repeat="value in $ctrl.formData.sku_attr[sellAttr.attr_id].value track by $index" ng-class="{'well': sellAttr.is_support_add_image === '1'}">
+                    <input type="checkbox" class="m-r-10 m-t-10"
+                      ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                      ng-model="value.is_checked">
+                    <goods-select-colors attrs="sellAttr.groups" value="value.selected"
+                      disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                      on-select="$ctrl.onSelectColors(key, $index, sellAttr)"></goods-select-colors>
+                    <div class="m-l-10 inline-block" ng-if="sellAttr.is_support_add_image === '1'">
+                      <!-- 支持配图 -->
+                      <button type="button" class="btn btn-sm btn-primary pull-left m-t-5 m-r-20"
+                        accept="image/jpg, image/jpeg, image/png"
+                        ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                        ngf-select="$ctrl.uploadSkuImg($file, sellAttr.attr_type, sellAttr.attr_id, $index, 'value')">上传图片</button>
+                      <div class="img-preview" ng-show="value.sku_imgurl">
+                        <img width="100" class="img-viewer" see-viewer see-src="value.sku_imgurl" alt="">
+                        <a href="" class="img-del-btn" ng-show="value.sku_imgurl"
+                          ng-hide="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                          ng-click="$ctrl.deleteSkuImg(sellAttr.attr_type, sellAttr.attr_id, $index, 'value')"></a>
+                      </div>
+                      <p class="clear-fix text-info">添加对应规格的图片，用户下单选择不同规格时会切换显示</p>
+                    </div>
+                  </div>
+                  <div ng-show="sellAttr.customizable === '1'">
+                    <label class="checkbox-inline" ng-repeat="custom in $ctrl.formData.sku_attr[sellAttr.attr_id].custom" ng-if="sellAttr.is_support_add_image === '0'">
+                      <!-- 不支持配图 -->
+                      <input type="checkbox" ng-model="custom.is_checked" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">{{custom.attr_value}}
+                    </label>
+                    <div class="clear-fix well" ng-repeat="custom in $ctrl.formData.sku_attr[sellAttr.attr_id].custom" ng-if="sellAttr.is_support_add_image === '1'">
+                      <!-- 支持配图 -->
+                      <div class="checkbox col-sm-4">
+                        <label>
+                          <input type="checkbox" ng-model="custom.is_checked" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">{{custom.attr_value}}
+                        </label>
+                      </div>
+                      <div class="col-sm-8">
+                        <button type="button" class="btn btn-sm btn-primary pull-left m-r-20"
+                          accept="image/jpg, image/jpeg, image/png" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                          ngf-select="$ctrl.uploadSkuImg($file, sellAttr.attr_type, sellAttr.attr_id, $index, 'custom')">上传图片</button>
+                        <div class="img-preview" ng-show="custom.sku_imgurl">
+                          <img width="100" class="img-viewer" see-viewer see-src="custom.sku_imgurl" alt="">
+                          <a href="" class="img-del-btn" ng-show="custom.sku_imgurl" ng-hide="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-click="$ctrl.deleteSkuImg(sellAttr.attr_type, sellAttr.attr_id, $index, 'custom')"></a>
+                        </div>
+                        <p class="clear-fix text-info">添加对应规格的图片，用户下单选择不同规格时会切换显示</p>
+                      </div>
+                    </div>
+                    <div>
+                      <input class="form-control w-110" name="addAttr5CustomValue" type="text" placeholder="自定义属性值" ng-model="$ctrl.formData.addAttr5CustomValue[sellAttr.attr_id]"
+                        ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">
+                      <button type="button" ng-click="$ctrl.addAttrType5(sellAttr.attr_id, 'custom', sellAttr.is_sell_property)" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                        class="btn btn-primary btn-sm m-0">添加
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!--互斥分组多选类型-->
+                <div class="{{sellAttr.attr_id}}" ng-if="sellAttr.attr_type === '6'">
+                  <label class="radio-inline" ng-repeat="(grpK, grpV) in sellAttr.ways">
+                    <input type="radio" name="selltype6" ng-disabled="$ctrl.isInGroupon || $ctrl.is_have_sku && ($ctrl.formData.spu_attr[comAttr.attr_id].group_id || $ctrl.is_sku_disabled || $ctrl.is_edit)" ng-model="$ctrl.formData.sku_attr[sellAttr.attr_id].group_id" ng-value="grpK" ng-change="$ctrl.clearAttrType6(sellAttr.attr_id, sellAttr.is_sell_property)">{{grpV.display_name}}
+                  </label>
+                  <div class="well" ng-if="sellAttr.is_support_add_image === '0'">
+                    <!-- 不支持配图 -->
+                    <label class="checkbox-inline opt-label" ng-repeat="(key, val) in sellAttr.ways[$ctrl.formData.sku_attr[sellAttr.attr_id].group_id].values">
+                      <input type="checkbox" ng-disabled="$ctrl.isInGroupon || $ctrl.is_sku_disabled" ng-model="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].is_checked" ng-change="$ctrl.setAttrType6Value(sellAttr.attr_id, key, val.attr_value, sellAttr.is_sell_property)">{{val.attr_value}}
+                    </label>
+                    <div ng-show="sellAttr.customizable === '1' && $ctrl.formData.sku_attr[sellAttr.attr_id].group_id">
+                      <label class="checkbox-inline opt-label" ng-repeat="custom in $ctrl.formData.sku_attr[sellAttr.attr_id].custom track by custom.attr_value">
+                        <input type="checkbox" ng-model="custom.is_checked" ng-disabled="$ctrl.isInGroupon || $ctrl.is_sku_disabled">{{custom.attr_value}}
+                      </label>
+                      <div>
+                        <input class="form-control form-white w-110" name="addAttr6CustomValue" type="text" placeholder="自定义属性值" ng-model="$ctrl.formData.addAttr6CustomValue[sellAttr.attr_id]"
+                          ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon">
+                        <button type="button" class="btn btn-primary btn-sm m-0" ng-disabled="$ctrl.isInGroupon || $ctrl.is_sku_disabled" ng-click="$ctrl.addAttrType6Custom(sellAttr.attr_id, sellAttr.is_sell_property)">添加
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear-fix well" ng-repeat="(key, val) in sellAttr.ways[$ctrl.formData.sku_attr[sellAttr.attr_id].group_id].values"
+                    ng-if="sellAttr.is_support_add_image === '1'">
+                    <!-- 支持配图 -->
+                    <div class="checkbox col-sm-4">
+                      <label>
+                        <input type="checkbox" ng-model="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].is_checked" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-change="$ctrl.setAttrType6Value(sellAttr.attr_id, key, val.attr_value, sellAttr.is_sell_property)">{{val.attr_value}}
+                      </label>
+                    </div>
+                    <div class="col-sm-8">
+                      <button type="button" class="btn btn-sm btn-primary pull-left m-r-20"
+                        accept="image/jpg, image/jpeg, image/png"
+                        ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                        ngf-select="$ctrl.uploadSkuImg($file, sellAttr.attr_type, sellAttr.attr_id, key, 'value')">上传图片</button>
+                      <div class="img-preview" ng-show="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].sku_imgurl">
+                        <img width="100" class="img-viewer" see-viewer see-src="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].sku_imgurl"
+                          alt="">
+                        <a href="" class="img-del-btn" ng-show="$ctrl.formData.sku_attr[sellAttr.attr_id].value[key].sku_imgurl"
+                          ng-hide="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                          ng-click="$ctrl.deleteSkuImg(sellAttr.attr_type, sellAttr.attr_id, key, 'value')"></a>
+                      </div>
+                      <p class="clear-fix text-info">添加对应规格的图片，用户下单选择不同规格时会切换显示</p>
+                    </div>
+                    <div ng-show="sellAttr.customizable === '1' && $ctrl.formData.sku_attr[sellAttr.attr_id].group_id">
+                      <!-- 支持自定义 -->
+                      <div class="clear-fix well" ng-repeat="custom in $ctrl.formData.sku_attr[sellAttr.attr_id].custom" ng-if="sellAttr.is_support_add_image === '1'">
+                        <!-- 支持配图 -->
+                        <div class="checkbox col-sm-4">
+                          <label>
+                            <input type="checkbox" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-model="custom.is_checked">{{custom.attr_value}}
+                          </label>
+                        </div>
+                        <div class="col-sm-8">
+                          <button type="button" class="btn btn-sm btn-primary pull-left m-r-20"
+                            accept="image/jpg, image/jpeg, image/png" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                            ngf-select="$ctrl.uploadSkuImg($file, sellAttr.attr_type, sellAttr.attr_id, $index, 'custom')">上传图片</button>
+                          <div class="img-preview" ng-show="$ctrl.formData.sku_attr[sellAttr.attr_id].custom[$index].sku_imgurl">
+                            <img width="100" class="img-viewer" see-viewer see-src="$ctrl.formData.sku_attr[sellAttr.attr_id].custom[$index].sku_imgurl"
+                              alt="">
+                            <a href="" class="img-del-btn" ng-show="$ctrl.formData.sku_attr[sellAttr.attr_id].custom[$index].sku_imgurl"
+                              ng-hide="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                              ng-click="$ctrl.deleteSkuImg(sellAttr.attr_type, sellAttr.attr_id, $index, 'custom')"></a>
+                          </div>
+                          <p class="clear-fix text-info">添加对应规格的图片，用户下单选择不同规格时会切换显示</p>
+                        </div>
+                      </div>
+                      <div>
+                        <input class="form-control w-110" name="addAttr6CustomValue" type="text" placeholder="自定义属性值"
+                          ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon"
+                          ng-model="$ctrl.formData.addAttr6CustomValue[sellAttr.attr_id]">
+                        <button type="button" class="btn btn-primary m-0" ng-disabled="$ctrl.is_sku_disabled || $ctrl.isInGroupon" ng-click="$ctrl.addAttrType6Custom(sellAttr.attr_id, sellAttr.is_sell_property)">添加
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2 required" see-access="C2C-Seller New-Brand">规格表</label>
+              <label class="control-label col-sm-2 required" see-access="Super-Admin Elect-Admin">价格设置</label>
+              <div class="col-sm-10">
+                <table class="table table-bordered table-center table-hover" style="background-color: #fff;">
+                  <thead>
+                    <tr class="title">
+                      <th ng-if="$ctrl.is_edit">SKU ID</th>
+                      <th>货号<span ng-if="$ctrl.in_warehouse == 0">（选填）</span>
+                        <!-- <br /><input ng-if="$ctrl.in_warehouse == 0" name="sku_mark" class="form-control form-white w-80" type="text" ng-model="$ctrl.sameTriger.sku_mark"
+                          ng-change="$ctrl.setSame('sku_mark')" /> -->
+                      </th>
+                      <th ng-repeat="attr in $ctrl.formData.sku_attr_list" ng-bind="attr.attr_name"></th>
+                      <!-- <th ng-if="$ctrl.is_1688 == 1"><label class="required">1688-规格</label></th> -->
+                      <th ng-if="$ctrl.is_edit && $ctrl.is_admin && !($ctrl.in_warehouse == 0 && !$ctrl.isInDistribution)">
+                        {{$ctrl.is_new_brand || $ctrl.is_super_admin ? '' : '&ast;'}}成本价
+                        <i class="fa fa-info-circle invalid" ng-if="$ctrl.is_new_brand" uib-tooltip="若您需供货该商品至热门单品库，并给分销商进行销售，需要填写成本价，SEE需要对您的供货商品进行审核"></i>
+                        <!-- <br/>
+                        <input ng-if="$ctrl.in_warehouse == 0" name="supply_price" class="form-control form-white w-80" type="number" min="0" w5c-dynamic-element
+                          ng-model="$ctrl.sameTriger.supply_price"
+                          ng-change="$ctrl.setSame('supply_price');$ctrl.handleSkuError()"
+                          ng-disabled="$ctrl.isInGroupon"
+                        /> -->
+                      </th>
+                      <th ng-if="!$ctrl.is_admin && $ctrl.is_edit && $ctrl.in_warehouse == 1">新成本价
+                      </th>
+                      <th ng-if="$ctrl.is_admin && $ctrl.is_edit && $ctrl.isInDistribution">默认供货价
+                        <!-- <br />
+                        <input name="cost_price" class="form-control form-white w-80" type="number" min="0"
+                               w5c-dynamic-element
+                               ng-model="$ctrl.sameTriger.cost_price"
+                               ng-change="$ctrl.setSame('cost_price');$ctrl.handleSkuError()"
+                               ng-disabled="$ctrl.hasChildProductInGroupon"
+                        /> -->
+                      </th>
+                      <th ng-if="$ctrl.is_admin && $ctrl.is_edit && $ctrl.isInDistribution">建议零售价</th>
+                      <th>日常售价</th>
+                      <th>市场价</th>
+                        <!-- <input name="sku_price" class="form-control form-white w-80" type="number" min="0"
+                               ng-model="$ctrl.sameTriger.sku_price"
+                               ng-change="$ctrl.setSame('sku_price');$ctrl.handleSkuError()"
+                               ng-disabled="$ctrl.isInGroupon || $ctrl.isInSeckill"
+                        />&nbsp;&sol;&nbsp;
+                        <input name="sku_ori_price" class="form-control form-white w-80" type="number" min="0"
+                               ng-model="$ctrl.sameTriger.sku_ori_price"
+                               ng-change="$ctrl.setSame('sku_ori_price');$ctrl.handleSkuError()"
+                               ng-disabled="$ctrl.isInGroupon"
+                        /> -->
+                      <!-- <th ng-if="false" see-access="Super-Admin Elect-Admin">促销售价<br />
+                        <input name="promotion_price" class="form-control form-white w-80" type="number" min="0" w5c-dynamic-element ng-model="$ctrl.sameTriger.promotion_price"
+                               ng-change="$ctrl.setSame('promotion_price');$ctrl.handleSkuError()" />
+                      </th> -->
+                      <th class="text-center" ng-if="$ctrl.is_admin && $ctrl.is_edit">{{ $ctrl.in_warehouse == 1 ? '可售库存' : '当前库存' }}</th>
+                      <th ng-if="($ctrl.is_admin && (!$ctrl.is_edit && $ctrl.in_warehouse == 1 || $ctrl.in_warehouse == 0)) || $ctrl.is_c2c">
+                        {{ $ctrl.is_admin ? $ctrl.is_edit ? '新库存' : '可售库存' : '&ast;库存' }}
+                        <!-- <br /><input name="sku_stock" class="form-control form-white w-80" type="number" min="0" ng-disabled="$ctrl.is_disabled_sku_new"
+                               ng-if="$ctrl.in_warehouse == 0 && (!$ctrl.is_edit || ($ctrl.is_edit && $ctrl.formData.item_info.is_stored === '0') )"
+                               ng-model="$ctrl.sameTriger.sku_stock" ng-change="$ctrl.setSame('sku_stock');$ctrl.handleSkuError()"
+                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                        /> -->
+                      </th>
+                      <th see-access="Super-Admin Elect-Admin" ng-if="$ctrl.is_edit">子商品同步勾选售卖 <i class="fa fa-info-circle" uib-tooltip="点击按钮将对所有子商品的该SKU同步勾选售卖。请确保该SKU的成本价、供货价、最低建议零售价/最高建议零售价、日常售价、市场价填写完整，新增SKU需先提交生效后，再进行同步勾选操作"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="sku in $ctrl.formData.sku_list track by $index">
+                      <td ng-if="$ctrl.is_edit">
+                        <span ng-if="+sku.sku_id > 0" ng-bind="sku.sku_id"></span>
+                      </td>
+                      <td>
+                        <div class="text-center" ng-if="$ctrl.is_admin && $ctrl.in_warehouse == 1">
+                          <a class="click" ng-click="$ctrl.openSelectSkuMark($index)">{{ sku.sku_mark ? sku.sku_mark : '选择' }}<i ng-if="sku.sku_mark" class="anticon anticon-edit"></i></a>
+                        </div>
+                        <input ng-if="!$ctrl.is_admin && $ctrl.in_warehouse == 1" type="text" class="form-control w-80" ng-model="sku.sku_mark" ng-change="$ctrl.handleSkuError()"
+                               w5c-dynamic-name="'sku_mark'+ $index" required w5c-dynamic-element>
+                        <input ng-if="$ctrl.in_warehouse == 0" type="text" class="form-control w-80" ng-model="sku.sku_mark" w5c-dynamic-element>
+                      </td>
+                      <td ng-repeat="attr in sku.display_value track by $index" ng-bind="attr"></td>
+                      <!-- <td ng-if="$ctrl.is_1688 > 0">
+                        <select class="form-control form-white" ng-change="$ctrl.changeSkuCloud1688(sku)" ng-model="sku.cloud_sku_id">
+                          <option value="0" selected>-- 请选择规格 --</option>
+                          <option ng-repeat="cloud in $ctrl.cloud_sku_list" value="{{cloud.id}}" ng-bind="cloud.label" ></option>
+                        </select>
+                      </td> -->
+                      <!-- 成本价 -->
+                      <td ng-if="$ctrl.is_edit && $ctrl.is_admin && !($ctrl.in_warehouse == 0 && !$ctrl.isInDistribution)">
+                        <!-- <input type="number" min="0" w5c-dynamic-name="'supply_price'+ $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80"
+                               ng-if="$ctrl.in_warehouse == 0"
+                               ng-model="sku.supply_price"
+                               ng-change="$ctrl.handleSkuError('supply_price')"
+                               ng-required="!$ctrl.is_new_brand && !$ctrl.is_super_admin"
+                               ng-disabled="$ctrl.isInGroupon"
+                        >
+                        <span ng-if="$ctrl.in_warehouse == 1">
+                          {{sku.supply_price}}
+                        </span> -->
+                        {{ sku.supply_price }}
+                      </td>
+                      <!-- 新成本价 -->
+                      <td ng-if="!$ctrl.is_admin && $ctrl.is_edit && $ctrl.in_warehouse == 1">
+                        <span ng-if="sku.sku_set_type == 1">
+                          {{sku.sku_set_supply_price}}
+                        </span>
+                      </td>
+                      <!-- 默认供货价 -->
+                      <td ng-if="$ctrl.is_admin && $ctrl.is_edit && $ctrl.isInDistribution">
+                        {{ sku.cost_price }}
+                        <!-- <input w5c-dynamic-name="'cost_price'+ $index" w5c-dynamic-element type="number" min="0" class="form-control w5c-error-not-show"
+                               ng-model="sku.cost_price"
+                               ng-change="$ctrl.handleSkuError()"
+                               ng-disabled="$ctrl.hasChildProductInGroupon"> -->
+                      </td>
+                      <!-- 建议零售价 -->
+                      <td class="text-center" ng-if="$ctrl.is_admin && $ctrl.is_edit && $ctrl.isInDistribution">
+                        <span ng-if="sku.suggested_retail_price_from">{{ sku.suggested_retail_price_from | currency:''}}</span>
+                        <span ng-if="sku.suggested_retail_price_from && sku.suggested_retail_price_to">-</span>
+                        <span ng-if="sku.suggested_retail_price_to">{{ sku.suggested_retail_price_to | currency:'' }}</span>
+
+                        <!-- <input w5c-dynamic-name="'suggestedRetailPriceFrom' + $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80" type="number" min="0" ng-model="sku.suggested_retail_price_from" ng-change="$ctrl.handleSkuError()" />
+                        &nbsp;&sol;&nbsp;
+                        <input w5c-dynamic-name="'suggestedRetailPriceTo' + $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80" type="number" min="0" ng-model="sku.suggested_retail_price_to" ng-change="$ctrl.handleSkuError()" /> -->
+                      </td>
+                      <!-- 日常售价 -->
+                      <td class="text-center">
+                        <input type="number" min="0" w5c-dynamic-name="'sku_price'+ $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80"
+                          ng-model="sku.sku_price"
+                          ng-change="$ctrl.handleSkuError()"
+                          ng-disabled="$ctrl.isInGroupon || $ctrl.isInSeckill"
+                          ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+                          required>
+                      </td>
+                      <!-- 市场价 -->
+                      <td>
+                        <input type="number" min="0" w5c-dynamic-name="'sku_ori_price'+ $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80"
+                          ng-model="sku.sku_ori_price"
+                          ng-change="$ctrl.handleSkuError()"
+                          ng-disabled="$ctrl.isInGroupon"
+                          ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+                          required>
+                      </td>
+                      <!-- <td ng-if="false" see-access="Super-Admin Elect-Admin">
+                        <input type="number" min="0" w5c-dynamic-name="'promotion_price'+ $index" w5c-dynamic-element class="form-control" ng-model="sku.promotion_price"
+                          ng-change="$ctrl.handleSkuError()">
+                      </td> -->
+                      <!-- 库存 -->
+                      <td class="text-center" ng-if="$ctrl.is_admin && $ctrl.is_edit">
+                        总{{sku.stock_sum.locked_stock + sku.stock_sum.free_stock}}<br>（锁{{sku.stock_sum.locked_stock}}，闲置{{sku.stock_sum.free_stock}}）
+                      </td>
+                      <td class="text-center" ng-if="($ctrl.is_admin && (!$ctrl.is_edit && $ctrl.in_warehouse == 1 || $ctrl.in_warehouse == 0)) || $ctrl.is_c2c">
+                        <div class="text-center" ng-if="$ctrl.is_admin">
+                          <input w5c-dynamic-name="'sku_stock'+ $index" type="number" min="0" class="form-control w5c-error-not-show w-80" w5c-dynamic-element
+                            required
+                            ng-change="$ctrl.handleSkuError()"
+                            ng-if="$ctrl.in_warehouse == 0"
+                            ng-model="sku.sku_stock"
+                            input-mask="NON_NEGATIVE_INT">
+                          <span ng-if="!$ctrl.is_edit && $ctrl.in_warehouse == 1">{{ sku.sku_stock }}</span>
+                        </div>
+                        <div class="text-center" ng-if="!$ctrl.is_admin">
+                          <input w5c-dynamic-name="'sku_stock'+ $index" type="number" min="0" class="form-control w5c-error-not-show w-80" w5c-dynamic-element
+                            required
+                            ng-disabled="$ctrl.is_disabled_sku_new"
+                            ng-change="$ctrl.handleSkuError()"
+                            ng-if="$ctrl.in_warehouse == 0 && (sku.sku_id === -1 || ($ctrl.is_edit && $ctrl.formData.item_info.is_stored === '0') )"
+                            ng-model="sku.sku_stock"
+                            input-mask="NON_NEGATIVE_INT"
+                          >
+                          <span ng-if="$ctrl.in_warehouse == 1 && !$ctrl.is_edit">{{sku.sku_stock}}</span>
+                          <div ng-if="$ctrl.formData.item_info.is_stored === '1' && $ctrl.is_edit && sku.sku_id > -1">
+                            <span>{{sku.sku_stock}}</span>
+                            <button class="btn btn-sm btn-primary" ng-click="$ctrl.selectStoreId(sku.sku_id)">选择</button>
+                          </div>
+                        </div>
+                      </td>
+                      <td see-access="Super-Admin Elect-Admin" ng-if="$ctrl.is_edit">
+                        <button type="button" class="btn btn-primary btn-sm m-l-0 ng-binding" see-hide="New-Brand" ng-click="$ctrl.syncChildSkuConfirm(sku.sku_id)" ng-if="sku.sku_ori_price && sku.sku_price && sku.cost_price && sku.supply_price && sku.suggested_retail_price_from && sku.suggested_retail_price_from">同步勾选</button>
+                        <button type="button" class="btn disabled btn-sm m-l-0 ng-binding" see-hide="New-Brand" ng-if="!(sku.sku_ori_price && sku.sku_price && sku.cost_price && sku.supply_price && sku.suggested_retail_price_from && sku.suggested_retail_price_from)">同步勾选</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="m-t-10 form-group">
+                  <label class="col control-label p-r-0" style="width: 75px;">
+                    批量设置：
+                  </label>
+                  <div class="col-xs-2" ng-if="$ctrl.in_warehouse == 0">
+                    <input type="text" name="sku_mark" class="form-control" placeholder="货号" ng-model="$ctrl.sameTriger.sku_mark" />
+                  </div>
+                  <div class="col-xs-2">
+                    <input type="number" name="sku_price" class="form-control" placeholder="日常售价" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="$ctrl.sameTriger.sku_price" />
+                  </div>
+                  <div class="col-xs-2">
+                    <input type="number" name="sku_ori_price" class="form-control" placeholder="市场价" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="$ctrl.sameTriger.sku_ori_price" />
+                  </div>
+                  <div class="col-xs-2" ng-if="$ctrl.in_warehouse == 0">
+                    <input type="number" name="sku_stock" class="form-control" placeholder="{{ $ctrl.is_edit ? '新库存' : '可售库存' }}" input-mask="POSITIVE_INTEGER" ng-model="$ctrl.sameTriger.sku_stock" />
+                  </div>
+                  <div class="col control-label p-l-0">
+                    <a href="" class="text-primary click" ng-click="$ctrl.setSame()">确定</a>
+                  </div>
+                </div>
+                <div class="m-t-10 row" ng-if="$ctrl.is_admin && $ctrl.is_edit && $ctrl.isInDistribution">
+                  <p class="col" style="margin-left: 75px;">默认供货价、建议零售价请在供销管理进行修改</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-show="$ctrl.skuError.length > 0">
+              <!-- 占位符 -->
+              <label class="col-sm-2 control-label"></label>
+              <div class="col-sm-8">
+                <p ng-if="$ctrl.submitType == 1" ng-repeat="err in $ctrl.skuError track by $index"><i class="si si-danger invalid"></i>&nbsp;{{err}}</p>
+                <p ng-if="$ctrl.submitType == 1" ng-repeat="err in $ctrl.skuPriceError track by $index"><i class="si si-danger invalid"></i>&nbsp;{{err}}</p>
+              </div>
+            </div>
+
+            <!-- <div ng-if="$ctrl.is_1688 == 0 && $ctrl.is_edit" class="form-group" see-access="Super-Admin Elect-Admin">
+              <label class="control-label col-sm-2 required">库存设置</label>
+              <div class="col-sm-10">
+                <a ng-if="$ctrl.in_warehouse == 1" class="btn btn-primary" href="/wms/stock-detail?productId={{$ctrl.formData.item_info.item_id}}"
+                target="_blank">查看库存详情</a>
+              </div>
+              <div class="col-sm-10 col-sm-offset-2" style="max-width: 1000px">
+                <table class="table table-bordered table-align-center table-hover" style="background-color: #fff;">
+                  <thead>
+                    <tr>
+                      <th>SKU ID</th>
+                      <th ng-if="$ctrl.in_warehouse == 1">货号/条码</th>
+                      <th ng-repeat="attr in $ctrl.formData.sku_attr_list" ng-bind="attr.attr_name"></th>
+                      <th>{{$ctrl.in_warehouse == 1 ? '当前可售库存': '当前库存'}}</th>
+                      <th>{{$ctrl.in_warehouse == 1 ? '修改库存': '新库存'}}</th>
+                      <th ng-if="$ctrl.in_warehouse == 1">
+                        库存修改量
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="sku in $ctrl.formData.sku_list track by $index">
+                      <td ng-bind="sku.sku_id"></td>
+                      <td ng-if="$ctrl.in_warehouse == 1" ng-bind="sku.sku_mark"></td>
+                      <td ng-repeat="attr in sku.display_value track by $index" ng-bind="attr"></td>
+                      <td>
+                        总{{sku.stock_sum.locked_stock + sku.stock_sum.free_stock}}（锁{{sku.stock_sum.locked_stock}}，闲置{{sku.stock_sum.free_stock}}）
+                      </td>
+                      <td>
+                        <div ng-if="$ctrl.in_warehouse == 0">
+                          <input type="number" min="0" class="form-control"
+                            ng-disabled="$ctrl.is_sku_disabled"
+                            ng-model="sku.sku_stock"
+                            ng-change="$ctrl.handleSkuError()"
+                            onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                        </div>
+
+                        <div ng-if="$ctrl.in_warehouse == 1">
+                          <button type="button" class="btn btn-sm btn-primary" style="width:35px;height:35px;" ng-click="$ctrl.funcSkuSet(sku,1)"><i class="fa fa-plus"></i></button>
+
+                          <button type="button" class="btn btn-sm btn-default" style="width:35px;height:35px;" ng-click="$ctrl.funcSkuSet(sku,2)"><i class="fa fa-minus"></i></button>
+                        </div>
+                      </td>
+                      <th ng-if="$ctrl.in_warehouse == 1">
+                        {{sku.str_change_stock}}
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> -->
+
+            <!-- <div ng-if="$ctrl.is_1688 == 1 && $ctrl.is_edit" class="form-group" see-access="Super-Admin Elect-Admin">
+              <label class="control-label col-sm-2 required">库存设置</label>
+              <div class="col-sm-10 col-sm-offset-2">
+                <table class="table table-bordered table-align-center table-hover" style="background-color: #fff;">
+                  <thead>
+                    <tr>
+                      <th>SKU ID</th>
+                      <th ng-repeat="attr in $ctrl.formData.sku_attr_list" ng-bind="attr.attr_name"></th>
+                      <th>1688-规格</th>
+                      <th>1688库存</th>
+                      <th>库存换算倍数<button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;margin: 0;"
+                          uib-tooltip="因1688货源商品的计量单位与See不相符，需设置库存换算倍数进行库存量换算，例：50（1688库存量）×2（库存换算倍数）=100（库存）">
+                        <i class="fa fa-question text-primary"></i></button>
+                        <br />
+                        <input type="number" required min="1" class="form-control" style="height: 34px;width: 100px;" ng-change="$ctrl.changeUnitSize()"
+                          ng-model="$ctrl.unit_size">
+                      </th>
+                      <th>库存<br />
+                        <label class="text-muted" style="font-size:12px;font-color:gray">
+                          库存=1688库存量x库存换算倍数
+                        </label>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="sku in $ctrl.formData.sku_list track by $index">
+                      <td ng-bind="sku.sku_id"></td>
+                      <td ng-repeat="attr in sku.display_value track by $index" ng-bind="attr"></td>
+                      <td>
+                        {{sku.cloud_info.label}}
+                      </td>
+                      <td>
+                        {{sku.cloud_info.stock}}{{sku.cloud_info.unit}}
+
+                      </td>
+                      <td>
+                        <label ng-if="sku.cloud_sku_id > 0">
+                          x{{$ctrl.unit_size}}
+                        </label>
+                      </td>
+                      <td>
+                        <label ng-if="sku.cloud_sku_id > 0">
+                          {{sku.sku_stock}}
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> -->
+
+            <!--新位置调整-->
+            <div class="form-group">
+              <!-- 占位符 -->
+              <label class="col-sm-2 control-label"></label>
+              <div class="col-sm-10">
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-model="$ctrl.formData.item_info.is_stock_not_stable" ng-true-value="'1'" ng-false-value="'0'">库存状态不稳定（勾选后，用户将在下单时看到该商品库存不稳定的提示）
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="goods-express-tariff">
+            <h4 class="m-t-50">物流与关税信息</h4>
+            <div class="form-group">
+              <label class="control-label col-sm-2 required">发货地</label>
+              <div class="col-sm-3">
+                <select name="ship_country" class="form-control" required ng-model="$ctrl.formData.item_info.ship_country" ng-change="$ctrl.changeLogistic()"
+                  ng-options="country.location as country.location for country in $ctrl.countryList">
+                  <option value="" selected>-- 请选择国家 --</option>
+                </select>
+              </div>
+              <!-- 省 -->
+              <div class="col-sm-3" ng-if="$ctrl.showProvList.length > 0">
+                <select name="province" class="form-control" required ng-model="$ctrl.ship_province" ng-change="$ctrl.changeArea()" ng-options="area_item.value as area_item.value for area_item in $ctrl.showProvList">
+                  <option value="" selected>-- 请选择省份 --</option>
+                </select>
+              </div>
+              <!-- 市 -->
+              <div class="col-sm-3" ng-if="$ctrl.showCityList.length > 0">
+                <select name="city" class="form-control" required ng-model="$ctrl.ship_city" ng-change="$ctrl.changeArea()" ng-options="area_item.value as area_item.value for area_item in $ctrl.showCityList">
+                  <option value="" selected>-- 请选择城市 --</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" ng-show="$ctrl.areaError.length > 0">
+              <p ng-repeat="err in $ctrl.areaError track by err"><i class="si si-danger invalid"></i>&nbsp;{{err}}</p>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" ng-class="{ required: !$ctrl.is_edit && $ctrl.in_warehouse == 0 }">运费模板</label>
+              <div class="col-sm-8">
+                <div class="well">
+                  <p class="p-l-15" ng-show="$ctrl.express_list.length === 0">你需要先完善商品的价格、发货地信息、商品重量{{ !$ctrl.is_c2c ? '，且指定商户账号' : '' }}才能进行运费模版的添加</p>
+                  <div class="clear-fix m-t-10">
+                    <div class="col-sm-12">
+                      <ui-select ng-model="$ctrl.formData.item_info.ex_id_list[0]" ng-change="$ctrl.getExpressDesc()" ng-required="!$ctrl.is_edit && $ctrl.in_warehouse == 0" theme="select2" style="min-width: 300px;" title="选择小电铺用户" >
+                        <ui-select-match  placeholder="请选择路线">{{$select.selected.expressName}}</ui-select-match>
+                        <ui-select-choices  repeat="item.expressId as item in $ctrl.express_list | propsFilter: { expressName: $select.search }">
+                          <div ng-bind-html="item.expressName | highlight: $select.search"></div>
+                        </ui-select-choices>
+                      </ui-select>
+                      <pre class="alert bg-info m-t-5 pre-block" ng-show="$ctrl.formData.item_info.ex_id_list[0]" ng-bind-html="$ctrl.express_desc">
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+                <div class="clear-fix">
+                  <a  target="_blank" href="/goods/logistics/new/?page_from={{$ctrl.page_url}}" class="btn btn-sm btn-primary">创建运费模板</a>
+                  <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.changeLogistic(true)">刷新模板</button>
+                </div>
+                <p ng-if="$ctrl.errorsMap.ex_id_list"><i class="si si-danger invalid"></i>&nbsp;{{$ctrl.errorsMap.ex_id_list}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">预计发货时长</label>
+              <div class="col-sm-8">
+                <input type="number" w5c-dynamic-element name="ship_send_time1" class="form-control w-80" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"
+                  style="ime-mode:Disabled" ng-model="$ctrl.formData.item_info.ship_send_time[0]" required min="1" max="{{$ctrl.formData.item_info.ship_send_time[1]}}">&nbsp;至
+                <input type="number" w5c-dynamic-element name="ship_send_time2" class="form-control w-80" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"
+                  style="ime-mode:Disabled" ng-model="$ctrl.formData.item_info.ship_send_time[1]" required min="{{$ctrl.formData.item_info.ship_send_time[0]}}"
+                  max="{{$ctrl.formData.item_info.is_apply_not_support_refund === '0' ? 7 : 999}}">&nbsp;天
+              </div>
+            </div>
+            <div see-hide="Fin-Admin" class="form-group" style="text-align:center;">
+              <!-- 上架、提交 -->
+              <div class="submit-btn-group" ng-if="$ctrl.block_update_msg === ''">
+                <button type="button" w5c-form-submit="$ctrl.save()" class="btn btn-primary m-l-0" see-hide="New-Brand" ng-click="$ctrl.clickSubmit(1)">上架</button>
+                <button type="button" w5c-form-submit="$ctrl.save()" class="btn btn-primary m-l-0" see-access="New-Brand" ng-click="$ctrl.clickSubmit(1)">上架至小电铺</button>
+                <button type="button" ng-click="$ctrl.save(true)" class="btn btn-primary m-l-0" see-access="New-Brand">添加到仓库</button>
+                <button type="button" w5c-form-submit="$ctrl.save(true)" ng-click="$ctrl.clickSubmit(2)" class="btn btn-primary m-l-0" see-hide="New-Brand" ng-if="$ctrl.formData.item_info.child_item_num > 0">保存至下架商品</button><!-- 有子商品 -->
+                <button type="button" ng-click="$ctrl.save(true)" class="btn btn-primary m-l-0" see-hide="New-Brand" ng-if="($ctrl.formData.item_info.child_item_num == 0 || !$ctrl.is_edit)">保存至下架商品</button><!-- 没有子商品 -->
+                <!-- 上架错误信息 -->
+                <div class="error-1" ng-if="$ctrl.submitType == 1">
+                  <div class="block" ng-show="(goodsForm.$errors.length > 0 || $ctrl.errors.length > 0) ">
+                    <p><i class="si si-danger invalid"></i>&nbsp;请检查错误信息</p>
+                    <p ng-if="goodsForm.$errors.length > 0">{{ goodsForm.$errors | json }}</p>
+                    <p ng-if="$ctrl.errors.length > 0">{{ $ctrl.errors | json }}</p>
+                  </div>
+                </div>
+                <!-- 下架错误信息 -->
+                <div class="error-2" ng-if="$ctrl.submitType == 2">
+                  <div class="inline-block" ng-show="(goodsForm.$errors.length > 0 || $ctrl.errors.length > 0)">
+                    <p><i class="si si-danger invalid"></i>&nbsp;当前有商户正在分销此商品，请检查必填信息再进行下架操作</p>
+                    <p ng-if="goodsForm.$errors.length > 0">{{ goodsForm.$errors | json }}</p>
+                    <p ng-if="$ctrl.errors.length > 0">{{ $ctrl.errors | json }}</p>
+                  </div>
+                  <div class="inline-block" ng-if="$ctrl.is_admin && (!$ctrl.formData.item_info.seller_id || !$ctrl.formData.item_info.seller_id.seller_id)">
+                    <p><i class="si si-danger invalid"></i>&nbsp;请指派一个商户</p>
+                  </div>
+                  <div class="block" ng-show="$ctrl.formChecked && goodsForm.item_name.$error.required">
+                    <p><i class="si si-danger invalid"></i>&nbsp;商品名不能为空</p>
+                  </div>
+                  <div class="inline-block" ng-show="$ctrl.errors.length > 0 ">
+                    <p ng-repeat="err in $ctrl.errors track by $index"><i class="si si-danger invalid"></i>&nbsp;{{err}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<div style="padding-left:16px;">
+  <div class="collage-tbar">
+    <nz-select [(ngModel)]="_activityType" style="width: 120px;margin-right: 10px;" [nzPlaceHolder]="'请选择对应模块'" nzAllowClear (ngModelChange)="searchClick()">
+      <nz-option *ngFor="let option of activityTypes" [nzLabel]="option.label" [nzValue]="option.value">
+      </nz-option>
+    </nz-select>
+    <nz-select [(ngModel)]="_activityStatus" style="width: 120px;margin-right: 10px;" [nzPlaceHolder]="'活动状态'" nzAllowClear (ngModelChange)="searchClick()">
+      <nz-option *ngFor="let option of activityStatuss" [nzLabel]="option.label" [nzValue]="option.value">
+      </nz-option>
+    </nz-select>
+    <form class="search-form" nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="searchClick($event,validateForm.value)">
+      <div nz-form-item nz-form-control style="width: 190px;">
+        <nz-rangepicker id="cluster_dataRange" [(ngModel)]="_dateRange" formControlName="dataRange" (ngModelChange)="searchClick()"></nz-rangepicker>
+      </div>
+      <div nz-form-item nz-form-control>
+        <nz-input class="keyword" [(ngModel)]="_keywordName" formControlName="keywordName" [nzPlaceHolder]="'KOL名称、创建人'"></nz-input>
+      </div>
+      <div nz-form-item nz-form-control>
+        <nz-input class="keyword" [(ngModel)]="_keywordParent" formControlName="keywordParent" [nzPlaceHolder]="'母商品ID多个用逗号分隔'"></nz-input>
+        <div nz-form-explain *ngIf="getFormControl('keywordParent').dirty&&getFormControl('keywordParent').hasError('list')">商品ID只能输入数字和英文逗号，且每组商品ID长度不超9位！</div>
+      </div>
+      <div nz-form-item nz-form-control>
+        <nz-input class="keyword" [(ngModel)]="_keywordChild" formControlName="keywordChild" [nzPlaceHolder]="'子商品ID多个用逗号分隔'"></nz-input>
+        <div nz-form-explain *ngIf="getFormControl('keywordChild').dirty&&getFormControl('keywordChild').hasError('list')">商品ID只能输入数字和英文逗号，且每组商品ID长度不超9位！</div>
+      </div>
+      <div nz-form-item>
+        <button nz-button [nzType]="'primary'" (click)="searchClick()" [disabled]="!validateForm.valid">
+          <i class="anticon anticon-search"></i>
+          <span>搜索</span>
+        </button>
+      </div>
+    </form>
+    <div class="controllBtn">
+      <button nz-button [nzType]="'primary'" [disabled]="_disabledButton" (click)="batchCoercion($event)">
+        <span>批量结束</span>
+      </button>
+    </div>
+  </div>
+
+  <app-event-table-alert [selectedCount]="selectedCount" [hasSelectedAll]="hasSelectedAll" (checkedAll)="checkedAll()" (clearChecked)="clearChecked()">
+  </app-event-table-alert>
+
+  <nz-table #tableRef nzShowSizeChanger [nzAjaxData]="data" [nzLoading]="loading" nzShowTotal="true" [nzTotal]="total" [nzShowQuickJumper]="'true'"
+    [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="getCollageData()" (nzPageSizeChange)="getCollageData(true)"
+    (nzDataChange)="_displayDataChange($event)">
+    <thead nz-thead>
+      <tr>
+        <th nz-th nzCheckbox>
+          <label nz-checkbox [nzDisabled]="dataDisabled" [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+          </label>
+        </th>
+        <th nz-th [nzWidth]="'120px'" *ngIf="tabIndex!==2">商品图片</th>
+        <th nz-th [nzWidth]="'80px'" *ngIf="tabIndex!==2">母商品ID</th>
+        <th nz-th [nzWidth]="'80px'" *ngIf="tabIndex!==2">子商品ID</th>
+        <th nz-th [nzWidth]="'100px'" *ngIf="tabIndex!==2">商品名称</th>
+        <th nz-th [nzWidth]="'100px'" *ngIf="tabIndex===0||tabIndex===1">活动名称</th>
+        <th nz-th [nzWidth]="'100px'" *ngIf="tabIndex===0||tabIndex===1">活动类型</th>
+        <th nz-th [nzWidth]="'80px'" *ngIf="tabIndex===0||tabIndex===1">活动状态</th>
+        <th nz-th [nzWidth]="'120px'" *ngIf="tabIndex===0||tabIndex===1">
+            <span>活动时间</span>
+        </th>
+        <th nz-th *ngIf="tabIndex===2">活动名称</th>
+        <th nz-th *ngIf="tabIndex===2">活动类型</th>
+        <th nz-th *ngIf="tabIndex===2">活动状态</th>
+        <th nz-th *ngIf="tabIndex===2">
+          <span>活动时间</span>
+          <!-- <nz-table-sort [(nzValue)]="sortType" (nzValueChange)="sortByTime($event)"></nz-table-sort> -->
+        </th>
+        <th nz-th [nzWidth]="'120px'" *ngIf="tabIndex===0||tabIndex===1">KOL名称</th>
+        <th nz-th *ngIf="tabIndex===2">KOL名称</th>
+        <th nz-th [nzWidth]="'80px'" *ngIf="tabIndex===0||tabIndex===1">创建人员</th>
+        <th nz-th *ngIf="tabIndex===2">创建人员</th>
+        <th nz-th [nzWidth]="'120px'" *ngIf="tabIndex===0||tabIndex===1">操作</th>
+        <th nz-th *ngIf="tabIndex===2">操作</th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr *ngFor="let item of tableRef.data;let i = index;">
+        <td nz-td nzCheckbox>
+          <label nz-checkbox [nzDisabled]="item.activityStatus==='3'||item.activityStatus==='4'" [(ngModel)]="checkedMap[i]" (ngModelChange)="_refreshStatus($event)">
+          </label>
+        </td>
+        <td nz-td class="item-img" *ngIf="tabIndex!==2">
+          <img  width="120px" height='120px' [seeSrc]="item.itemImgurl" alt="">
+        </td>
+        <td nz-td class="item-name" *ngIf="tabIndex!==2">
+          {{item.motherId}}
+        </td>
+        <td nz-td class="item-name" *ngIf="tabIndex!==2">
+          {{item.childId}}
+        </td>
+        <td nz-td class="item-name" *ngIf="tabIndex!==2">
+          <ellipsis lines="2" style="max-width: 200px;">
+            <span title="{{item.itemName}}">{{item.itemName}}</span>
+          </ellipsis>
+        </td>
+        <td nz-td class="item-name">
+            <ellipsis lines="2" style="max-width: 380px;">
+              <span title="{{item.activityName}}">{{item.activityName}}</span>
+            </ellipsis>
+        </td>
+        <td nz-td class="item-name">
+          <span *ngIf="tabIndex===0">{{(item.activityType==="1"&&'普通团')||(item.activityType==="2"&&'新人团')||(item.activityType==="3"&&'抽奖团')||(item.activityType==="4"&&'超级团')||(item.activityType==="5"&&'拉新福利团')||""}}</span>
+          <span *ngIf="tabIndex===1">秒杀</span>
+          <span *ngIf="tabIndex===2">{{(item.thresholdType==="0"&&'满额减')||(item.thresholdType==="1"&&'满件折')}}</span>
+        </td>
+        <td nz-td>
+          <span>{{(item.activityStatus==="1"&&'待开始')||(item.activityStatus==="2"&&'进行中')||(item.activityStatus==="3"&&'已结束')||(item.activityStatus==="4"&&'强制结束')||""}}</span>
+        </td>
+        <td nz-td *ngIf="tabIndex===0||tabIndex===1">
+          {{item.startTime | date:'yyyy-MM-dd HH:mm'}}
+          <br/> ~
+          <br/> {{item.endTime | date:'yyyy-MM-dd HH:mm'}}
+        </td>
+        <td nz-td *ngIf="tabIndex===2">
+          {{item.startTime | date:'yyyy-MM-dd HH:mm'}} ~
+          {{item.endTime | date:'yyyy-MM-dd HH:mm'}}
+        </td>
+        <td nz-td>{{item.kolName}}<br/>{{item.kolAccount}}</td>
+        <td nz-td>
+          <span *ngIf="item.createAccount">{{item.createName}}<br/>{{item.createAccount}}</span>
+          <span *ngIf="!item.createAccount">系统</span>
+        </td>
+        <td nz-td>
+          <span style="margin-right: 10px;color: rgb(168, 168, 168);" *ngIf="item.activityStatus==='3'||item.activityStatus==='4'">已结束</span>
+          <a style="margin-right: 10px;" *ngIf="item.activityStatus!=='3'&&item.activityStatus!=='4'" (click)="coercion(item)">强制结束</a>
+          <span *ngIf="tabIndex===0">
+            <a target="blank" [routerLink]="['/event/group/'+ item.activityId + '/view']" [queryParams]="{kolId: item.kolId, wechat_id: item.weixinId||0}">查看</a>
+          </span>
+          <span *ngIf="tabIndex===1">
+            <a target="blank" [routerLink]="['/event/seckill/'+item.activityId+'/view']" [queryParams]="{kolId: item.kolId, xpdId: item.xiaodianpuId}">查看</a>
+          </span>
+          <span *ngIf="tabIndex===2">
+            <a target="blank" [routerLink]="['/kol-benefit/v2/'+item.kolId+'/'+(item.wechatId||0)+'/'+item.xiaodianpuId+'/benefit-detail']" [queryParams]="{id: item.activityId, xpdId: item.xiaodianpuId}">查看</a>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

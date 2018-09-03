@@ -1,0 +1,16 @@
+<div class="data-crawling-container">
+  <div class="panel-content">
+    <form name="form" class="crawling-form w5c-form" novalidate w5c-form-validate>
+      <div class="form-group">
+        <label class="control-label">手动数据爬取</label>
+        <div class="control-value">
+          <textarea type="text" ng-trim name="dataCrawlingUrls" class="form-control text-area-content" placeholder="请输入链接，每个链接用英文逗号区分，不超过10000字" ng-model="$ctrl.dataCrawlingUrls"  ng-keyup="$ctrl.handleValueChange($event)"  required ></textarea>
+          <span class="counter">{{$ctrl.dataCrawlingUrls.length || 0}}/{{$ctrl.MAX_LENGTH}}</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="button" w5c-form-submit="$ctrl.submit()">开始爬取</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="layout-magic">
+  <div nz-form-item nz-row>
+    <div nz-form-label class="cube-title">
+      <label>布局</label>
+      <p class="title-explain">点击起点与终点方块，框定区域，再配置每个区域的图片与跳转</p>
+    </div>
+    <div class="cube-con" (mouseleave)="mouseleave()">
+      <div class="spin-wrap" [hidden]="!uploading">
+        <nz-spin class="spin" [nzSize]="'large'"></nz-spin>
+      </div>
+      <div class="cube-con_cube">
+        <a *ngFor='let cubes of cubeArray;let i = index' [style.height.px]="(344-size)/size" [style.width.%]="100/size" [style.lineHeight.px]="(344-size)/size"
+          [style.borderRight]="(i+1)%size === 0 && 'none'" [style.borderBottom]=" (cubeArray.length - i - 1 < size)&&'none'"
+          (mousedown)="mousedown(cubes)" (mouseenter)="mouseenter(cubes)">+</a>
+      </div>
+      <!-- <ul (mousedown)="">
+      <li *ngFor='let cubes of cubeArray'>
+        <a *ngFor='let cube of cubes' [style.height.px]="(344-size)/size" [style.width.%]="100/size" [style.lineHeight.px]="(344-size)/size">
+          +
+        </a>
+      </li>
+    </ul> -->
+      <div *ngIf="selectedArray.length">
+        <div *ngFor="let select of selectedArray;let i = index" class="cube-con_cover {{select.selected&&'selected'}}" [ngStyle]="selectedStyles[i]"
+          (click)="selectedCover(i)">
+          <i *ngIf="select?.selected" class="si si-close2 close" (click)="removeCover(i)"></i>
+          <label *ngIf="!select?.imgUrl">{{selectedStyles[i].rw}}x{{selectedStyles[i].rh}}像素
+            <br> 或同等比例</label>
+          <img *ngIf="select?.imgUrl" [seeSrc]="select?.imgUrl" thumbnail="!{{selectedStyles[i].cw}}x{{selectedStyles[i].ch}}r/gravity/center/crop/{{selectedStyles[i].cw}}x{{selectedStyles[i].ch}}"
+            alt="">
+          <div class="cover"></div>
+        </div>
+      </div>
+      <div *ngIf=" hoverArray.length ">
+        <div class="cube-con_hover " [ngStyle]="hoverStyles " (click)="clickHover() ">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div nz-form-item nz-row *ngIf="showUpload ">
+    <app-common-len-form-label label="添加图片 " [limit]="false "></app-common-len-form-label>
+    <div nz-form-control>
+      <app-link-img-upload [isMagic]="true" [multiple]="true " [standaloneTime]="false " [sIndex]="selectedIndex " [(ngModel)]="configs" (valueChange)="getConfigs()"
+        (onLoading)="getLoadingStatus($event)"></app-link-img-upload>
+    </div>
+  </div>
+</div>

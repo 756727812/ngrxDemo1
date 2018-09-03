@@ -1,0 +1,85 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">公告设置</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+         
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">标题（建议15字以内）</label>
+            <div class="col-sm-7">
+              <input name="title" type="text" class="form-control" ng-model="vm.notice_info.title" placeholder="标题" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">内容（建议300字以内）</label>
+            <div class="col-sm-7">
+              <textarea required class="form-control" rows="8" ng-model="vm.notice_info.content" ></textarea><!-- 剩{{vm.remain_count}}字 -->
+            </div>
+        </div>   
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">开始时间</label>
+            <div class="col-sm-7">
+              <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                      <input type="text" name="start_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="vm.notice_info.start_time" required>
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker data-ng-model="vm.notice_info.start_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" />
+                  </ul>
+              </div>
+            </div>
+        </div>
+ 
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">结束时间</label>
+            <label ng-if="vm.tips_error !== ''" class="text-primary">{{vm.tips_error}}</label>
+            <div class="col-sm-7">
+              <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                      <input type="text" name="end_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="vm.notice_info.end_time" required>
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker data-ng-model="vm.notice_info.end_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }" />
+                  </ul>
+              </div>
+            </div>
+        </div>
+       
+       <div class="form-group">
+            <label class="control-label col-sm-4">指定商户 </label>
+            <div class="col-sm-7">
+                <ui-select multiple ng-model="vm.selected_list" theme="bootstrap" close-on-select="false" title="选择商户" on-remove="vm.deleteC2C($item.seller_id, $model.seller_id)" on-select="vm.formSelectC2C()">
+                    <ui-select-match placeholder="选择商户...">{{$item.seller_name}}</ui-select-match>
+                    <ui-select-choices repeat="item in vm.list_c2c | propsFilter: {seller_name: $select.search}">
+                        <div ng-bind-html="item.seller_name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+                <p>已选中 <i class="text-primary">{{vm.total_items}}</i>个商户,ID[{{vm.notice_info.limit_seller_id}}]</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4">发货地</label>
+            <div class="col-sm-7">
+                <select name="limit_location" class="form-control" ng-model="vm.notice_info.limit_location"  ng-options="country.location as country.location for country in vm.list_country">
+                    <option value="" selected>所有</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4">公告位置</label>
+            <div class="col-sm-7">
+              <select name="limit_device" class="form-control" ng-model="vm.notice_info.limit_device">
+                <option value="0" selected>全部</option>
+                <option value="1">App</option>
+                <option value="2">KOL</option>
+              </select>
+            </div>
+        </div> 
+        <div class="modal-footer">
+          <button ng-if="vm.notice_info.is_public === '1'" class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

@@ -1,0 +1,418 @@
+<nz-spin [nzSpinning]="_isSpinning">
+  <div id="fashion-hot-goods">
+    <div class="header">
+      <button nz-button [nzType]="'primary'" (click)="showFavorList()">
+        <span>商品收藏夹</span>
+      </button>
+    </div>
+    <div class="fashion">
+      <!-- <div class="row">
+        <div class="col-xs-12 portlets">
+          <div class="panel">
+            <div class="panel-content text-center" style="padding: 20px 20px 20px 20px;">
+              <div class="btn-group fashion-nav-bar">
+                <button type="button" [ngClass]="{'btn btn-default': true, 'btn-primary': searchForm.class_type === '0'}" (click)="classTypeFilter('0')">热门</button>
+                <button type="button" [ngClass]="{'btn btn-default': true, 'btn-primary': searchForm.class_type === '3'}" (click)="classTypeFilter('3')">家居</button>
+                <button type="button" [ngClass]="{'btn btn-default': true, 'btn-primary': searchForm.class_type === '2'}" (click)="classTypeFilter('2')">美妆</button>
+                <button type="button" [ngClass]="{'btn btn-default': true, 'btn-primary': searchForm.class_type === '4'}" (click)="classTypeFilter('4')">零食</button>
+                <button type="button" [ngClass]="{'btn btn-default': true, 'btn-primary': searchForm.class_type === '5'}" (click)="classTypeFilter('5')">时尚</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <nz-card [nzBordered]="false">
+        <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitSearch()">
+          <standard-form-row [title]="'一级品类'">
+            <div nz-form-item>
+              <div nz-form-control>
+                <tag-select>
+                  <nz-checkable-tag *ngFor="let i of goodsCategoryLevelOne; let idx = index" [nzChecked]="i.value" (nzChange)="changeCategory($event, idx, 1)">
+                      {{i.text}}
+                  </nz-checkable-tag>
+                </tag-select>
+              </div>
+            </div>
+          </standard-form-row>
+          <standard-form-row [title]="'二级品类'" [class.d-none]="goodsCategoryLevelTwo.length === 0">
+            <div nz-form-item>
+              <div nz-form-control>
+                <tag-select>
+                  <nz-checkable-tag *ngFor="let i of goodsCategoryLevelTwo; let idx = index" [nzChecked]="i.value" (nzChange)="changeCategory($event, idx, 2)">
+                      {{i.text}}
+                  </nz-checkable-tag>
+                </tag-select>
+              </div>
+            </div>
+          </standard-form-row>
+          <standard-form-row [title]="'三级品类'" style="padding-bottom: 11px" [class.d-none]="goodsCategoryLevelThree.length === 0">
+            <div nz-form-item>
+              <div nz-form-control>
+                <tag-select>
+                  <nz-checkable-tag *ngFor="let i of goodsCategoryLevelThree; let idx = index" [nzChecked]="i.value" (nzChange)="changeCategory($event, idx, 3)">
+                      {{i.text}}
+                  </nz-checkable-tag>
+                </tag-select>
+              </div>
+            </div>
+          </standard-form-row>
+          <standard-form-row grid last>
+            <div nz-row nz-form-item [nzGutter]="16">
+              <div nz-form-control nz-col nzXs="24" nzSm="24" nzMd="2">
+                <nz-dropdown>
+                  <a class="ant-dropdown-link" nz-dropdown>
+                    {{sortFlagString ? sortFlagString : '默认排序'}} <i class="anticon anticon-down"></i>
+                  </a>
+                  <ul nz-menu>
+                    <li nz-menu-item (click)="changeOrder($event, '0')">默认排序</li>
+                    <li nz-menu-item (click)="changeOrder($event, '1')" *seeHide="'KOL New-Brand'">按销量排序</li>
+                    <li nz-menu-item (click)="changeOrder($event, '2')" *seeHide="'KOL New-Brand'">按库存排序</li>
+                    <li nz-menu-item (click)="changeOrder($event, '3')">按利润排序</li>
+                    <li nz-menu-item (click)="changeOrder($event, '4')">按最新发布排序</li>
+                  </ul>
+                </nz-dropdown>
+              </div>
+              <div nz-form-control nz-col nzXs="24" nzSm="24" nzMd="11">
+                <nz-checkbox-group *seeHide="'KOL New-Brand'" [(ngModel)]="checkOptions" (ngModelChange)="changeCheckbox()" [ngModelOptions]="{standalone: true}"></nz-checkbox-group>
+              </div>
+              <!-- <div nz-form-control nz-col nzXs="24" nzSm="24" nzMd="6">
+                <div nz-row>
+                  <div nz-form-control nz-col [nzSpan]="11">
+                    <nz-input nzType="number" [(ngModel)]="searchForm.suggested_retail_price_from" name="suggested_retail_price_from" nzPlaceHolder="￥最低建议零售价"></nz-input>
+                  </div>
+                  <div nz-col [nzSpan]="1">
+                    <p nz-form-split>-</p>
+                  </div>
+                  <div nz-form-control nz-col [nzSpan]="11">
+                    <nz-input nzType="number" [(ngModel)]="searchForm.suggested_retail_price_to" name="suggested_retail_price_to" nzPlaceHolder="￥最高建议零售价"></nz-input>
+                  </div>
+                </div>
+              </div> -->
+              <div nz-form-control nz-col nzXs="24" nzSm="24" nzMd="5">
+                <div nz-row [ngClass]="{daily_price_invalid: dailyPriceInvalid}">
+                  <div nz-form-control nz-col [nzSpan]="11">
+                    <nz-input nzType="number"
+                              (ngModelChange)="dailyPriceInvalidFrom($event)"
+                              [(ngModel)]="searchForm.daily_price_from"
+                              name="daily_price_from"
+                              nzPlaceHolder="￥最低日常售价">
+                    </nz-input>
+                  </div>
+                  <div nz-col [nzSpan]="1">
+                    <p nz-form-split>-</p>
+                  </div>
+                  <div nz-form-control nz-col [nzSpan]="11">
+                    <nz-input nzType="number"
+                              (ngModelChange)="dailyPriceInvalidTo($event)"
+                              [(ngModel)]="searchForm.daily_price_to"
+                              name="daily_price_to"
+                              nzPlaceHolder="￥最高日常售价">
+                    </nz-input>
+                  </div>
+                </div>
+              </div>
+              <div nz-form-control nz-col nzXs="24" nzSm="12" nzMd="4">
+                <nz-input nzType="search" [(ngModel)]="searchForm.keyword" name="keyword" [nzPlaceHolder]="isKolOrNewBand ? '请输入商品名或品牌名' : '商品名/品牌/商品ID/商户名'"></nz-input>
+              </div>
+              <div nz-form-control nz-col nzXs="24" nzSm="12" nzMd="2">
+                <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading"><span>搜索</span></button>
+              </div>
+            </div>
+          </standard-form-row>
+        </form>
+      </nz-card>
+      <div nz-row [nzGutter]="16">
+          <div nz-col [nzMd]="24" [ngClass]="{'no-select': !selectedCount}">
+              <nz-card>
+                <button nz-button [nzType]="'primary'" class="assign-btn" (click)="parentGoodsConfirm()">
+                  <span>批量指派</span>
+                </button>
+                <button nz-button [nzType]="'primary'" class="favor-btn" (click)="batchFavor(true)">
+                  <span>批量收藏</span>
+                </button>
+                <button nz-button [nzType]="'primary'" class="favor-btn" (click)="batchFavor(false)">
+                  <span>取消收藏</span>
+                </button>
+                <app-event-table-alert-v2 [selectedCount]="selectedCount" (clearChecked)="clearChecked()">
+                </app-event-table-alert-v2>
+                <nz-table #nzTable
+                    [nzAjaxData]="hotgoods_list"
+                    [nzLoading]="loading"
+                    [nzTotal]="total_items"
+                    [(nzPageIndex)]="page"
+                    (nzPageIndexChangeClick)="searchNextPage($event)"
+                    nzShowSizeChanger
+                    [(nzPageSize)]="pageSize"
+                    (nzPageSizeChange)="searchNewPageSize()"
+                    [nzPageSizeSelectorValues]="[10, 20, 30]"
+                    (nzDataChange)="_displayDataChange($event)">
+                    <thead nz-thead>
+                      <tr>
+                        <th nz-th nzCheckbox>
+                          <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                          </label>
+                        </th>
+                        <th nz-th [nzWidth]="'100px'"><span>商品图</span></th>
+                        <th nz-th><span>商品名</span></th>
+                        <th nz-th *seeHide="'KOL New-Brand'" [nzWidth]="'70px'"><span>商品ID</span></th>
+                        <th nz-th><span>品类</span></th>
+                        <th nz-th [nzWidth]="'80px'"><span>品牌</span></th>
+                        <!-- <th nz-th><span>发货地</span></th> -->
+                        <!-- <th nz-th><span>可供规格</span></th> -->
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'65px'"><span>供货价</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"><span>日常售价区间</span></th>
+                        <!-- <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"><span>建议零售价</span></th> -->
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'55px'"><span>利润率</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'55px'"><span>销量</span></th>
+                        <th nz-th *seeHide="'KOL New-Brand'" [nzWidth]="'55px'"><span>库存</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'80px'"><span>创建时间</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"><span>商品文案</span></th>
+                        <th nz-th><span>操作</span></th>
+                      </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let item of nzTable.data; index as index" (click)="selectMaterialItem($event,item.item_id)">
+                            <td nz-td nzCheckbox>
+                              <label nz-checkbox
+                                [(ngModel)]="checkedMap[item.item_id]" (ngModelChange)="_refreshStatus($event)">
+                              </label>
+                            </td>
+                            <td nz-td>
+                              <div class="img-container w-100 h-100">
+                                <img [seeSrc]="item.item_imgurl" seeViewer [alt]="item.item_name">
+                              </div>
+                            </td>
+                            <td nz-td>
+                              <ellipsis lines="3" style="max-width: 140px">
+                                <span [title]="item.item_name" [innerHtml]="item.item_name"></span>
+                              </ellipsis>
+                            </td>
+                            <td nz-td *seeHide="'KOL New-Brand'">
+                              <span [innerHtml]="item.item_id"></span>
+                            </td>
+                            <td nz-td>
+                              <ellipsis lines="4" style="max-width: 60px">
+                                <span [title]="item.class_name" [innerHtml]="item.class_name"></span>
+                              </ellipsis>
+                            </td>
+                            <td nz-td>
+                              <span [innerHtml]="item.brand_name"></span>
+                            </td>
+                            <!-- <td nz-td>
+                              <ellipsis lines="1" style="max-width: 200px">
+                                <span [title]="item.ship_country" [innerHtml]="item.ship_country"></span>
+                              </ellipsis>
+                            </td> -->
+                            <!-- <td nz-td>
+                              <ellipsis lines="1" style="max-width: 200px">
+                                <span [title]="item.sku_detail_str" [innerHtml]="item.sku_detail_str"></span>
+                              </ellipsis>
+                            </td> -->
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span *ngIf="item.supply_price_start">￥{{item.supply_price_start ? item.supply_price_start.toFixed(2) : ''}}</span>
+                              <span *ngIf="item.supply_price_start && item.supply_price_end">&nbsp;~&nbsp;</span>
+                              <span *ngIf="item.supply_price_end">￥{{item.supply_price_end ? item.supply_price_end.toFixed(2) : ''}}</span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span>{{item.sku_price_start ? item.sku_price_start.toFixed(2) : ''}}~{{item.sku_price_end ? item.sku_price_end.toFixed(2) : ''}}</span>
+                            </td>
+                            <!-- <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span *ngIf="item.suggested_retail_price_from != item.suggested_retail_price_to">{{item.suggested_retail_price_from}}~{{item.suggested_retail_price_to}}</span>
+                              <span *ngIf="item.suggested_retail_price_from == item.suggested_retail_price_to">{{item.suggested_retail_price_from}}</span>
+                            </td> -->
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span>{{ item.profit_price_end * 100 | number: '1.0-2' }}%</span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span [innerHtml]="item.order_num | number"></span>
+                            </td>
+                            <td nz-td *seeHide="'KOL New-Brand'">
+                              <span [innerHtml]="item.stock"></span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span>{{item.item_created_at.split(' ')[0]}}</span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <ellipsis lines="1" style="max-width: 200px">
+                                <span [title]="item.word_link" [innerHtml]="item.word_link"></span>
+                              </ellipsis>
+                            </td>
+                            <td nz-td>
+                                <!-- <a (click)="showMsg('Edit')">Edit</a>
+                                <span nz-table-divider></span>
+                                <nz-popconfirm [nzTitle]="'Are you sure？'" [nzOkText]="'ok'" [nzCancelText]="'cancel'" (nzOnConfirm)="showMsg('has deleted')" (nzOnCancel)="showMsg('cancel delete')">
+                                    <a nz-popconfirm>Delete</a>
+                                </nz-popconfirm> -->
+
+                                <a [href]="item.buyurl" target="_blank">商品详情</a>
+                                <span nz-table-divider></span>
+                                <a *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" (click)="materialSync($event, item.item_id)">移出单品库</a>
+                                <span nz-table-divider></span>
+                                <a *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"
+                                  (click)="materialTop($event, item.item_id, item.top_flag)">{{ item.top_flag === 0 ? '置顶' : '取消置顶' }}</a>
+                                <div class="m-b-5">
+                                  <nz-switch [ngModel]="item.goods_status === 0" (click)="changeGoodsStatus($event, index, item.goods_status === 1 ? 0 : 1)"></nz-switch>库存充足
+                                </div>
+                                <div class="m-b-5">
+                                  <nz-switch [ngModel]="item.kol_flag === 1" (click)="hideGoods($event, index, item.kol_flag === 1 ? 1: 0)"></nz-switch>KOL可见
+                                </div>
+                                <div>
+                                  <nz-switch [ngModel]="item.is_favor" (ngModelChange)="changeFavor($event, item.item_id)"></nz-switch>收藏
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <app-event-quick-jumper *ngIf="showPaginaton"
+                                        [maxPage]="max_page"
+                                        (quickJumperFun)="quickJumperFun($event)">
+                </app-event-quick-jumper>
+              </nz-card>
+          </div>
+      </div>
+      <!-- <div class="filter-bar m-b-10">
+        <form (ngSubmit)="submitSearch()" class="form-inline">
+          <div class="form-group m-b-8">
+            <nz-dropdown>
+              <a class="ant-dropdown-link" nz-dropdown>
+                排序 <i class="anticon anticon-down"></i>
+              </a>
+              <ul nz-menu>
+                <li nz-menu-item *seeHide="'KOL New-Brand'">
+                  <a href="" (click)="changeOrder($event, '1')">按销量排序</a>
+                </li>
+                <li nz-menu-item *seeHide="'KOL New-Brand'">
+                  <a href="" (click)="changeOrder($event, '2')">按库存排序</a>
+                </li>
+                <li nz-menu-item>
+                  <a href="" (click)="changeOrder($event, '3')">按利润排序</a>
+                </li>
+                <li nz-menu-item>
+                  <a href="" (click)="changeOrder($event, '4')">按最新发布排序</a>
+                </li>
+              </ul>
+            </nz-dropdown>
+            <div class="d-inline-block" *seeAccess="'KOL New-Brand'">
+              <input type="number" min="0" name="filter_price_start" class="form-control form-white" style="width:120px;" placeholder="￥最低供货价"
+                [(ngModel)]="searchForm.filter_price_start"  (focus)="changeInputPrice()" (blur)="lostInput()">&nbsp;&nbsp;-&nbsp;
+              <input type="number" min="{{searchForm.filter_price_start}}" name="filter_price_end" class="form-control form-white" style="width:120px;"
+                placeholder="￥最高供货价" [(ngModel)]="searchForm.filter_price_end"  (focus)="changeInputPrice()" (blur)="lostInput()">
+            </div>
+            <div class="d-inline-block" *seeHide="'KOL New-Brand'">
+              <input type="number" min="0" name="suggested_retail_price_from" class="form-control form-white" style="width:120px;" placeholder="￥最低建议零售价"
+                [(ngModel)]="searchForm.suggested_retail_price_from"  (focus)="changeInputPrice()" (blur)="lostInput()">&nbsp;&nbsp;-&nbsp;
+              <input type="number" min="{{searchForm.suggested_retail_price_from}}" name="suggested_retail_price_to" class="form-control form-white" style="width:120px;"
+                placeholder="￥最高建议零售价" [(ngModel)]="searchForm.suggested_retail_price_to"  (focus)="changeInputPrice()" (blur)="lostInput()">
+            </div>
+            <button [hidden]="show_btn === 0" type="submit" class="btn btn-primary" *seeHide="'New-Brand'">确定</button>
+          </div>
+        </form>
+        <form (ngSubmit)="submitSearch()" class="form-inline searchForm">
+          <button type="submit" class="btn btn-primary m-b-2 searchButton"><i class="fa fa-search"></i></button>
+          <div class="form-group m-b-2" style="margin-right: 0;">
+            <label class="control-label search">
+              <input type="search" class="form-control form-white" name="keyword" [(ngModel)]="searchForm.keyword" [placeholder]="isKolOrNewBand ? '请输入商品名或品牌名' : '商品名/品牌/商品ID/备注'">
+            </label>
+          </div>
+        </form>
+      </div> -->
+      <!-- <div class="goods-list-block">
+        <div class="panel">
+          <div class="panel-content">
+            <div id="hotgoodsList" class="table-scrollable materialList" *ngIf="show_type === 'table'">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>商品图</th>
+                    <th>商品名</th>
+                    <th *seeHide="'KOL New-Brand'">商品ID</th>
+                    <th>品类</th>
+                    <th>品牌</th>
+                    <th>发货地</th>
+
+                    <th *seeHide="'KOL New-Brand'">库存</th>
+                    <th>可供规格</th>
+
+                    <th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">供货价</th>
+                    <th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">建议零售价</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of hotgoods_list">
+                    <td>
+                      <img [seeSrc]="item.item_imgurl" seeViewer width="100" [alt]="item.item_name">
+                    </td>
+                    <td>
+                      <span class="one-line max-width-200" [title]="item.item_name" [innerHtml]="item.item_name"></span>
+                    </td>
+                    <td  *seeHide="'KOL New-Brand'" [innerHtml]="item.item_id"></td>
+                    <td>
+                      <span class="one-line max-width-200" [title]="item.class_name" [innerHtml]="item.class_name"></span>
+                    </td>
+                    <td>
+                      <span class="one-line max-width-200" [title]="item.brand_name" [innerHtml]="item.brand_name"></span>
+                    </td>
+                    <td>
+                      <span class="one-line max-width-200" [title]="item.ship_country" [innerHtml]="item.ship_country"></span>
+                    </td>
+
+                    <td *seeHide="'KOL New-Brand'" [innerHtml]="item.stock"></td>
+                    <td>
+                      <span class="one-line max-width-200" [title]="item.sku_detail_str" [innerHtml]="item.sku_detail_str"></span>
+                    </td>
+
+                    <td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                      <span *ngIf="item.supply_price_start">{{item.supply_price_start | currency: '￥'}}</span>
+                      <span *ngIf="item.supply_price_start && item.supply_price_end">&nbsp;~&nbsp;</span>
+                      <span *ngIf="item.supply_price_end">{{item.supply_price_end | currency: '￥'}}</span>
+                    </td>
+
+                    <td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" >
+                      <span *ngIf="item.suggested_retail_price_from != item.suggested_retail_price_to">{{item.suggested_retail_price_from}}~{{item.suggested_retail_price_to}}</span>
+                      <span *ngIf="item.suggested_retail_price_from == item.suggested_retail_price_to">{{item.suggested_retail_price_from}}</span>
+                    </td>
+                    <td>
+                      <a class="text-primary d-block m-b-5" [href]="item.buyurl" target="_blank">商品详情</a>
+                      <a class="text-primary d-block m-b-5" href="" *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" (click)="materialSync($event, item.item_id)">移出单品库</a>
+                      <a class="text-primary d-block m-b-5" href="" *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"
+                        (click)="materialTop($event, item.item_id, item.top_flag)">{{ item.top_flag === 0 ? '置顶' : '取消置顶' }}</a>
+
+                      <a class="temp-detail-switch" href *ngIf="item.goods_status === 1" (click)="changeGoodsStatus($event, item.item_id,0)">
+                          <div id="div1" class="close1">
+                              <div id="div2" class="close2"></div>
+                          </div>
+                          <span>库存充足</span>
+                      </a>
+                      <a class="temp-detail-switch" href *ngIf="item.goods_status === 0" (click)="changeGoodsStatus($event, item.item_id,1)">
+                          <div id="div1" class="open1">
+                              <div id="div2" class="open2"></div>
+                          </div>
+                          <span>库存充足</span>
+                      </a>
+
+                      <a class="temp-detail-switch" href *ngIf="item.kol_flag === 0" (click)="hideGoods($event, item.item_id,0)">
+                          <div id="div1" class="close1">
+                              <div id="div2" class="close2"></div>
+                          </div>
+                          <span>KOL可见</span>
+                      </a>
+                      <a class="temp-detail-switch" href *ngIf="item.kol_flag === 1" (click)="hideGoods($event, item.item_id, 1)">
+                          <div id="div1" class="open1">
+                              <div id="div2" class="open2"></div>
+                          </div>
+                          <span>KOL可见</span>
+                      </a>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <nz-pagination [(nzPageIndex)]="page" [nzTotal]="total_items" [nzPageSize]="pageSize" [nzSize]="'large'" (nzPageIndexChange)="searchNextPage()"></nz-pagination>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</nz-spin>

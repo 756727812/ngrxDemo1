@@ -1,0 +1,109 @@
+<div class="row event-group-list">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content template-msg-list-content">
+        <div class="tbar">
+          <div class="l">
+            <button nz-button
+                    [nzType]="'primary'"
+                    (click)="addTemplate($event)">
+              <i class="anticon anticon-plus"></i>
+              <span>新建模板消息</span>
+            </button>
+            <a href="javascript: void(0)" (click)="getTemplateList()" style="margin-left: 20px;">刷新列表</a>
+          </div>
+          <div class="topbar-right">
+            <nz-input class="keyword" style="width: 250px; margin: 0 10px;"
+                      [(ngModel)]="_keyword"
+                      [nzType]="'search'"
+                      (nzOnSearch)="searchClick($event)"
+                      [nzPlaceHolder]="'KOL名称，标题，内容'"></nz-input>
+            <button nz-button
+                    [nzType]="'primary'"
+                    (click)="searchClick()">
+              <i class="anticon anticon-search"></i>
+              <span>搜索</span>
+            </button>
+          </div>
+        </div>
+
+        <nz-table #tableRef
+                  [nzAjaxData]="templateData.list"
+                  [nzLoading]="loading"
+                  [nzTotal]="templateData.count"
+                  [(nzPageIndex)]="page"
+                  (nzPageIndexChange)="getTemplateList()"
+                  nzShowSizeChanger
+                  [(nzPageSize)]="pageSize"
+                  (nzPageSizeChange)="getTemplateList(true)">
+          <thead nz-thead>
+            <tr>
+              <th nz-th [nzWidth]="'160px'">操作人员</th>
+              <th nz-th [nzWidth]="'200px'">发送店铺</th>
+              <th nz-th [nzWidth]="'120px'">标题</th>
+              <th nz-th [nzWidth]="'200px'">内容</th>
+              <th nz-th>跳转地址</th>
+              <th nz-th [nzWidth]="'150px'">发送时间</th>
+              <th nz-th [nzWidth]="'100px'">发送状态</th>
+              <th nz-th>发送消息数</th>
+              <th nz-th>点击数</th>
+              <th nz-th>点击率</th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr *ngFor="let item of tableRef.data;let i = index;">
+              <td nz-td>
+                {{item.operateUser}}
+              </td>
+              <td nz-td [title]="getKolNameHover(item.kolName)">
+                <ellipsis lines="2"
+                          style="width: 200px;">
+                  {{item.kolName}}
+                </ellipsis>
+              </td>
+              <td nz-td>
+                {{item.title}}
+              </td>
+              <td nz-td [title]="item.content">
+                <ellipsis lines="2"
+                          style="width: 200px;">
+                  {{item.content}}
+                </ellipsis>
+              </td>
+              <td nz-td>
+                {{item.redirectContent}}
+              </td>
+              <td nz-td>
+                {{item.addTime | date: 'yyyy-MM-dd HH:mm'}}
+              </td>
+              <td nz-td>
+                <div *ngIf="item.status === 0" class="status-col">
+                  <div class="little-circle fail"></div>发送中
+                </div>
+                <div *ngIf="item.status === 1" class="status-col">
+                  <div class="little-circle success"></div>发送结束
+                </div>
+                <div *ngIf="item.status === 2" class="status-col">
+                  <div class="little-circle fail"></div>发送失败
+                </div>
+              </td>
+              <td nz-td>
+                {{item.sendCount}}
+              </td>
+              <td nz-td>
+                {{item.clickNum ? item.clickNum : 0}}
+              </td>
+              <td nz-td>
+                {{item.clickRate ? +item.clickRate * 100 : 0}}%
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <see-quick-jumper *ngIf="showPaginaton"
+                          [maxPage]="max_page"
+                          (quickJumperFun)="quickJumperFun($event)">
+        </see-quick-jumper>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<nz-layout>
+  <div nz-row>
+    <h3 nz-col [nzSpan]="8">
+      抽奖福袋列表
+    </h3>
+    <div nz-col [nzSpan]="8" [nzOffset]="8" class="text-right">
+      <a nz-button [nzType]="'primary'" [href]="'event/dailywelfare/add'">
+        <span>创建抽奖福袋</span>
+      </a>
+    </div>
+  </div>
+  <nz-content>
+    <nz-table #nzTable [nzAjaxData]="data" [nzSize]="'middle'" [nzPageSize]="pageSize" [nzLoading]="loading" [nzTotal]="total"
+      [(nzPageIndex)]="page" (nzPageIndexChange)="searchNextPage()">
+      <thead nz-thead>
+        <tr>
+          <th nz-th>
+            <span>活动名称</span>
+          </th>
+          <th nz-th>
+            <span>活动时间</span>
+          </th>
+          <th nz-th>
+            <span>操作</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+          <td nz-td>
+            <a [href]="'/event/dailywelfare/view/'+data.id">{{data.productName}}</a>
+          </td>
+          <td nz-td>{{data.beginTime}}一{{data.endTime}}</td>
+          <td nz-td>
+            <span>
+              <a [href]="'/event/dailywelfare/view/'+data.id">查看</a>
+              <span nz-table-divider *ngIf="!data.isDiscarded"></span>
+              <a href="#" (click)="discard(data.id)" *ngIf="!data.isDiscarded">废弃</a>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-content>
+</nz-layout>

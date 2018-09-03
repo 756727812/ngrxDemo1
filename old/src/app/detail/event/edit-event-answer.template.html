@@ -1,0 +1,92 @@
+<div class="header">
+  <h2><strong>回答seego商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">回答seego商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="event-container group">
+          <form ng-submit="editAnswer(formData)">
+            <table class="create-circle-table">
+              <tr>
+                <td><label>商品链接：</label></td>
+                <td>
+                  <!-- <input type="text" ng-model="formData.f_buyurl" ng-if="!item"> -->
+                  <a ng-href="/wanted/themeList/selectGoods?fid={{fid}}&ori=editAnswer" class="a-comm" see-access="C2C-Seller New-Brand C2C-Service B2C-Service Part-time Fin-Admin Oper Super-Admin See-Admin">从商品库中选择</a>
+                </td>
+              </tr>
+              <input type="hidden" ng-model="formData.item_id" ng-readonly="!item"/>
+              </tr>
+              <tr>
+                <td>商品图片：</td>
+                <td>
+                  <div class="item-img">
+                    <img see-src="formData.f_imgurl" alt="">
+                  </div>
+                  <div style="position:relative">
+                    <label for="image-upload" class="white-btn">
+                      上传图片
+                    </label>
+                    <input id="image-upload" style="display:none" type="file" see-file-select="upload">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><label>价格：</label></td>
+                <td>
+                  <input type="text" ng-model="formData.f_price" ng-readonly="item" required/>
+                </td>
+              </tr>
+              <tr>
+                <td><label>品牌：</label></td>
+                <td>
+                  <input type="text" ng-model="formData.f_brand" ng-readonly="item"/>
+                </td>
+              </tr>
+              <tr>
+                <td><label>选择一个圈主：</label></td>
+                <td>
+                  <select  ng-options="user.u_id as user.u_username for user in users" ng-model="formData.u_id">
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><label for="add_comment">添加评论</label></td>
+                <td>
+                  <div class="mat-comment">
+                    <div class="textarea-box">
+                      <textarea id="add_comment" ng-model="formData.f_comment" class="ng-pristine ng-valid ng-touched" required></textarea>
+                    </div>
+                    <div class="btn_group">
+                </td>
+              </tr>
+            </table>
+            <div class="mat-comment">
+              <div class="btn_group">
+                <input class="btn-comm" type="submit" value="确 定" style="margin-right:40px">
+                <input class="btn-comm btn-cancel" type="button" ng-click="cancel" value="取 消" >
+              </div>
+            </div>
+          </form>
+          <div class="item_info">
+            <h5>商品的参考信息</h5>
+            <img class="item_img" alt="" see-src="{{item.item_imgurl}}" />
+            <ul>
+              <li>原链接：{{item.item_ori_url}}</li>
+              <li>品牌：{{item.brand_info.brand_name}}</li>
+              <li>价格：{{item.price}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,35 @@
+<div class="panel">
+    <div class="panel-content">
+      <h1 class="text-left">营销活动聚合</h1>
+      <!-- <nz-tabset [nzTabPosition]="'left'" [nzType]="'line'" [nzShowPagination]="false" [nzSelectedIndex]="currentTab"
+      (nzSelectedIndexChange)="tabChange($event, index)" (nzSelectChange)="selectChange($event)">
+          <nz-tab *ngFor="let tab of tabs">
+            <ng-template #nzTabHeading>
+              {{tab.title}}
+            </ng-template>
+            <div *ngIf='tab.index===1'>
+                <app-collage [tabIndex]="currentTab">Content of tab {{tab.index}}</app-collage>
+            </div>
+            <div *ngIf='tab.index===2'>
+                <app-marketing-seckill [tabIndex]="currentTab">Content of tab {{tab.index}}</app-marketing-seckill>
+            </div>
+            <div *ngIf='tab.index===3'>
+                <app-marketing-full-subtraction [tabIndex]="currentTab">Content of tab {{tab.index}}</app-marketing-full-subtraction>
+            </div>
+          </nz-tab>
+        </nz-tabset> -->
+
+        <nz-layout style="background-color: #ffffff;">
+                <nz-sider style="background-color: #ffffff;border-right:1px solid #e9e9e9;" [nzWidth]="80">
+                <ul nz-menu [nzMode]="'inline'" [nzMode]="'horizontal'" style="line-height: 64px;border-right:none;">
+                    <li nz-menu-item [routerLinkActive]="'ant-menu-item-selected'" *ngFor="let item of tabs">
+                        <a class="nav-text" [routerLink]="[item.routeLink]" [queryParams]="">{{item.title}}</a>
+                    </li>
+                </ul>
+                </nz-sider>
+                <nz-content class="content">
+                    <router-outlet></router-outlet>
+                </nz-content>
+            </nz-layout>
+    </div>
+  </div>

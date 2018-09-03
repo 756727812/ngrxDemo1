@@ -1,0 +1,16 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+	<h3 class="modal-title">选择活动</h3>
+</div>
+<div class="modal-body text-center">
+	 <select class="form-control" name="set_id" id="set_id"
+            ng-model="event_id"
+            required  ng-options="e.id as e.event_name for e in events"
+    >
+        <option value="" selected>-- 请选择 --</option>
+    </select>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+	<button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

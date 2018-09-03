@@ -1,0 +1,228 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.dismiss()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">商品链接</h3>
+</div>
+<div class="modal-body clearfix"
+     loading-mask="!$ctrl.ready">
+  <div ng-if="$ctrl.ready"
+       class="body-innerwrap full">
+    <ul class="h-tabs">
+      <li ng-repeat="item in $ctrl.hTabs"
+          ng-class="{active: $ctrl.isTopTabActive(item)}"
+          ng-click="$ctrl.switchGroup(item)">
+        <div class="innerwrap">
+          {{item.txt}}
+          <div ng-if="item.recommend"
+               class="recommend h">
+            <span class="txt">推荐</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="main">
+      <ul class="v-tabs">
+        <li ng-repeat="item in $ctrl.vTabs"
+            ng-show="$ctrl.shouldVTabShow(item)"
+            ng-class="{active: $ctrl.isVTabActive(item)}"
+            ng-click="$ctrl.switchVTab(item)">
+          <div class="tab-title">
+            {{item.txt}}
+            <div ng-if="item.recommend"
+                 class="recommend v">
+              <span class="txt">推荐</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+
+      <script type="text/ng-template"
+              id="goods_link_no_xdp.html">
+        <div class="txt">
+          你的小程序目前还没有上线<br/> 请前往小电铺首页查看目前进度
+        </div>
+        <a target="_self"
+           href="/dashboard/dashboard">前往</a>
+      </script>
+
+      <div class="content">
+        <!--  如果复杂就酌情组件 或者 ng-include -->
+
+        <!-- 小程序，基础版 -->
+        <div ng-if="$ctrl.curGroup===1 && !$ctrl.hasXDPVersion()"
+             class="full">
+          <!-- 没有小电铺 -->
+          <div class="nav-tips">
+            <div class="txt">
+              扫描下方二维码，联系业务人员升级小电铺套餐
+              <br/> 使用商品点击率更高的小程序在文章中售卖商品
+            </div>
+            <img src="/api/xiaodianpu/headingHelpImg"
+                 style="width:160px" />
+          </div>
+        </div>
+
+        <!-- 小程序，没有有小电铺（审核中？） -->
+        <div ng-if="$ctrl.curGroup===1 && $ctrl.hasXDPVersion() &&!$ctrl.hasXDP"
+             class="full">
+          <!-- 没有小电铺 -->
+          <div class="comp">
+            <div class="nav-tips"
+                 ng-include="'goods_link_no_xdp.html'">
+            </div>
+          </div>
+        </div>
+
+        <!-- 小程序，有小电铺 -->
+        <div ng-if="$ctrl.curGroup===1 && $ctrl.hasXDPVersion() && $ctrl.hasXDP">
+
+          <!-- 「小程序」「小程序卡片」 -->
+          <div ng-if="$ctrl.compVal==='1-1'"
+               class="comp has-link xcx-card">
+            <div class="top-title">
+              将商品以小程序卡片的形式，放入文章中售卖
+            </div>
+            <div class="comp-main">
+              <div class="left">小程序路径</div>
+              <div class="center-wrap">
+                <input type="text"
+                       readonly
+                       value="{{$ctrl.xcxInfo.xiaochengxuPath}}"
+                       class="link" />
+              </div>
+              <div class="right">
+                <a class="btn-download"
+                   ngclipboard
+                   data-clipboard-text="{{$ctrl.xcxInfo.xiaochengxuPath}}"
+                   ng-click="$ctrl.onCopySuccess()">复制</a>
+              </div>
+            </div>
+            <div class="comp-main">
+              <!-- TODO小程序卡片配图：将第一张商品主图放大至1080*1080，然后上下各裁108-->
+              <div class="left">小程序卡片配图</div>
+              <div class="center-wrap xcx-card-img-wrap">
+                <img ng-src="{{$ctrl.getXCXCardImg()}}"
+                     alt="">
+              </div>
+              <div class="right">
+                <a class="btn-download"
+                   href="{{$ctrl.getXCXCardImg()}}"
+                   target="_blank"
+                   download="商品二维码">下载</a>
+              </div>
+            </div>
+            <div class="how-to">
+              <span class="yellow-q">?</span>
+              <faq-link name="how-to-put-xcx-in-article">如何将小程序卡片放入文章</faq-link>
+            </div>
+          </div>
+
+
+
+          <!-- 「小程序」「小程序码」 -->
+          <div ng-if="$ctrl.compVal==='1-2'"
+               class="comp">
+            <div class="top-title">
+              将商品以小程序码的形式，放入文章中售卖
+            </div>
+            <div class="comp-main">
+              <div class="left">小程序路径</div>
+              <div class="center-wrap">
+                <img see-src="$ctrl.xcxInfo.xiaochengxuCodeImgUrl"
+                     alt="">
+                <div class="note">微信扫码预览商品</div>
+              </div>
+              <div class="right">
+                <a class="btn-download"
+                   href="{{$ctrl.xcxInfo.xiaochengxuCodeImgUrl}}"
+                   target="_blank"
+                   download="商品二维码">下载</a>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- 「小程序」「小程序二维」 -->
+          <div ng-if="$ctrl.compVal==='1-3'"
+               class="comp">
+            <div class="top-title">
+              将商品以小程序二维码的形式，放入文章中售卖
+            </div>
+            <div class="comp-main">
+              <div class="left">小程序路径</div>
+              <div class="center-wrap">
+                <img see-src="$ctrl.xcxInfo.qrCodeImgUrl"
+                     alt="">
+                <div class="note">微信扫码预览商品</div>
+              </div>
+              <div class="right">
+                <a class="btn-download"
+                   href="{{$ctrl.xcxInfo.qrCodeImgUrl}}"
+                   target="_blank"
+                   download="商品二维码">下载</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div ng-if="$ctrl.curGroup===2"
+             class="full">
+          <!-- 「网页」 - 「商品二维码」 -->
+          <div ng-if="$ctrl.compVal==='2-1'"
+               class="comp">
+            <div class="top-title">
+              将商品以网页链接的形式，放入文章中售卖
+            </div>
+            <div class="comp-main">
+              <div class="left">商品二维码</div>
+              <div class="center-wrap">
+                <img see-src="$ctrl.item.url_qrc"
+                     alt="">
+                <div class="note">微信扫码预览商品</div>
+              </div>
+              <div class="right">
+                <a class="btn-download"
+                   href="{{$ctrl.item.url_qrc}}"
+                   target="_blank"
+                   download="商品二维码">下载</a>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- 「网页」 - 「商品链接」 -->
+          <div ng-if="$ctrl.compVal==='2-2'"
+               class="comp">
+            <div class="top-title">
+              将商品以网页链接的形式，放入文章中售卖
+            </div>
+            <div class="comp-main">
+              <div class="left">商品链接</div>
+              <div class="center-wrap">
+                <input type="text"
+                       readonly
+                       value="{{$ctrl.item.url_item}}"
+                       class="link" />
+                <div class="note"></div>
+              </div>
+              <div class="right">
+                <a class="btn-download"
+                   ngclipboard
+                   data-clipboard-text="{{$ctrl.item.url_item}}"
+                   ng-click="$ctrl.onCopySuccess()">复制</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

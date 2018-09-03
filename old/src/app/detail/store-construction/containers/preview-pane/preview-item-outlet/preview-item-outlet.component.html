@@ -1,0 +1,74 @@
+<div class="preview-item-widget"
+     [ngClass]="elem.data.type+'-preview-item-widget'"
+     [class.active]="active">
+  <div class="click-trigger"
+       (click)="handleClickElem()">
+    <ndc-dynamic [ndcDynamicComponent]="compClass"
+                 [ndcDynamicInputs]="{itemData:elem}"></ndc-dynamic>
+  </div>
+  <!-- TODO SideWidget -->
+  <div class="side-widget">
+    <div class="bar-wrap">
+      <div class="sorter-bar"
+           [hidden]="forCtrlVid !== elem.vid">
+        <i [class.disabled]="!canUp"
+           (click)="handleClickUp($event)"
+           class="fa fa-angle-up"></i>
+
+        <i [class.disabled]="!canDown"
+           (click)="handleClickDown($event)"
+           class="fa fa-angle-down"></i>
+
+        <i [class.disabled]="!removable"
+           (click)="handleClickRemove()"
+           class="fa fa-trash-o"></i>
+      </div>
+      <div class="name-bar"
+           [class.edit-mode]="editMode"
+           [hidden]="forCtrlVid === elem.vid">
+        <div class="name-value"
+             [hidden]="editMode">{{elem.data?.name}}</div>
+        <div class="input-wrap"
+             [hidden]="!editMode">
+          <textarea maxlength="6"
+                    (ngModelChange)="handleNameInputModelChange($event)"
+                    (blur)="handleNameInputBlur($event)"
+                    [ngModel]="nameValue"
+                    class="name-textarea"
+                    (keypress)="handleNameInputKeypress($event)"
+                    rows="6"></textarea>
+          <!--
+          <nz-input #nameInput
+                    (ngModelChange)="handleNameInputModelChange($event)"
+                    (nzBlur)="handleNameInputBlur($event)"
+                    [hidden]="!editMode"
+                    [ngModel]="nameValue"
+                    [nzType]="'textarea'"
+                    [nzRows]="'6'"
+                    class="name-nz-input"
+                    (keypress)="handleNameInputKeypressEnter($event)"
+                    [nzPlaceHolder]="''"></nz-input>
+                     -->
+        </div>
+        <i (click)="editMode=true"
+           [hidden]="editMode"
+           class="si si-14-edit-cover edit-icon"></i>
+      </div>
+    </div>
+
+    <div class="status-wrap">
+      <div class="status is-visible"
+           [hidden]="!userVisible">已显示</div>
+      <div class="status is-hidden"
+           [hidden]="userVisible">已隐藏</div>
+    </div>
+  </div>
+
+
+  <app-ctrl-widget-outlet [type]="elem.data.type"
+                          class="app-ctrl-widget-outlet"
+                          [elem]="elem.vid !== (forVid$ | async) ? {} : elem"
+                          (configSave)="handleSave($event)"
+                          (configChange)="handleChange($event)"
+                          [hidden]="!(forVid$ | async) || elem.vid !== (forVid$ | async)"></app-ctrl-widget-outlet>
+</div>

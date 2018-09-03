@@ -1,0 +1,28 @@
+<div class="see-tree-select-wrap" [ngClass]="{show: showSelectArea}">
+  <div class="input-area flex-fill" [ngClass]="{'line-feed': searchLineFeed}">
+    <nz-tag *ngFor="let option of selectTags" [nzClosable]="!disabledEdit && !getCheckBox(option.id).disabled" (nzClose)="closeTag(option.id)">{{option.label}}</nz-tag>
+    <nz-input [nzSize]="'large'" [nzDisabled]="disabledEdit" [(ngModel)]="searchText" [nzPlaceHolder]="placeHolderText" (ngModelChange)="searchResult($event)"
+      (nzFocus)="inputFocus($event)" (keydown)="onSearchKeyDown($event)"></nz-input>
+    <i *ngIf="!disabledEdit" class="anticon anticon-close-circle" (click)="clearInput()"></i>
+  </div>
+  <div class="select-area-wrap">
+    <div class="select-area">
+      <ul>
+        <ng-container *ngFor="let chk of checkBoxList">
+          <li *ngIf="chk.visible">
+            <span [ngClass]="['ant-tree-switcher', chk.expand ? 'ant-tree-switcher_open' : 'ant-tree-switcher_close', chk.isLeaf ? 'has-no-sons' : '']"
+                  [style.marginLeft]="(chk.id.split('-').length - 1) * 30 + 'px'"
+                  (click)="clickExpand(chk.id)"></span>
+            <label nz-checkbox [ngModel]="chk.checked" (ngModelChange)="clickCheckbox(chk.id, $event)"
+                  [nzIndeterminate]="chk.indeterminate" [nzDisabled]="chk.disabled">
+              <span *ngIf="!matchInfo[chk.id]">{{chk.label}}</span>
+              <ng-container *ngIf="matchInfo[chk.id]">
+                <span>{{matchInfo[chk.id][0]}}</span><span class="font-highlight">{{matchInfo[chk.id][1]}}</span><span>{{matchInfo[chk.id][2]}}</span>
+              </ng-container>
+            </label>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</div>

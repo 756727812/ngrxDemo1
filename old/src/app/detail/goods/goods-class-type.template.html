@@ -1,0 +1,71 @@
+<div class="header">
+  <h2><strong>发布商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">发布商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row" id="goods-class-type">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4>选择商品品类</h4>
+        <div style="display: flex;" ng-if="$ctrl.goodsType === 'WaitPost'">
+          <div>
+            <img width="150" class="img-thumbnail" see-src="$ctrl.item_img_url" alt="{{::$ctrl.item_name}}">
+          </div>
+          <h4 ng-bind="$ctrl.item_name"></h4>
+        </div>
+        <p class="edit-post-font" ng-if="$ctrl.editClassType">品类：<span ng-bind="$ctrl.editClassType"></span></p>
+        <div class="select-address form-inline m-t-10">
+          <div class="select-address-container well">
+            <ul class="row">
+              <li class="col-xs-12 col-md-4 p-t-10">
+                <span class="item-title"
+                  ng-repeat="listItem in $ctrl.classList"
+                  ng-click="$ctrl.selectType($index,0);$ctrl.setList($index,1);$ctrl.setClass(listItem.class_id);$ctrl.checkLast(listItem.childs);"
+                  ng-class="{'label label-primary': $ctrl.select_f[0] === $index}">
+                    {{listItem.class_name}}
+                </span>
+              </li>
+
+              <li class="col-xs-12 col-md-4 p-t-10" ng-show="$ctrl.show2">
+                <span class="item-title"
+                  ng-repeat="listItem in $ctrl.classList[$ctrl.classSelect[1]].childs"
+                  ng-click="$ctrl.selectType($index,1);$ctrl.setList($index,2);$ctrl.setClass(listItem.class_id);$ctrl.checkLast(listItem.childs);"
+                  ng-class="{'label label-primary': $ctrl.select_f[1] === $index}">
+                    {{listItem.class_name}}
+                </span>
+              </li>
+
+              <li class="col-xs-12 col-md-4 p-t-10" ng-show="$ctrl.show3">
+                <span class="item-title"
+                  ng-repeat="listItem in $ctrl.classList[$ctrl.classSelect[1]].childs[$ctrl.classSelect[2]].childs"
+                  ng-click="$ctrl.selectType($index,2);$ctrl.setList($index,3);$ctrl.setClass(listItem.class_id);$ctrl.checkLast(listItem.childs);"
+                  ng-class="{'label label-primary': $ctrl.select_f[2] === $index}">
+                    {{listItem.class_name}}
+                </span>
+                <h5 ng-show="!$ctrl.classList[$ctrl.classSelect[1]].childs[$ctrl.classSelect[2]].childs.length" class="text-muted text-center">没有更多了</h5>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p class="selected-result">你当前选择的是：<span class="text-primary" ng-bind="$ctrl.classList[$ctrl.classSelect[1]].class_name"></span>
+          <i ng-show="$ctrl.classList[$ctrl.classSelect[1]].childs[$ctrl.classSelect[2]].class_name">&gt;</i>
+          <span class="text-primary" ng-bind="$ctrl.classList[$ctrl.classSelect[1]].childs[$ctrl.classSelect[2]].class_name"></span>
+          <i ng-show="$ctrl.classList[$ctrl.classSelect[1]].childs[$ctrl.classSelect[2]].childs[$ctrl.classSelect[3]].class_name">&gt;</i>
+          <span class="text-primary" ng-bind="$ctrl.classList[$ctrl.classSelect[1]].childs[$ctrl.classSelect[2]].childs[$ctrl.classSelect[3]].class_name"></span>
+        </p>
+
+        <div class="text-center">
+          <a ng-if="$ctrl.goodsType === 'publish'" class="btn btn-lg btn-primary" ng-disabled="!$ctrl.isclassLast"
+            ng-href="/goods/publish/{{$ctrl.selectClass}}">确认</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,408 @@
+<div class="header">
+  <h2>
+    <strong>账号信息</strong>
+  </h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Seego后台</a>
+      </li>
+      <li>
+        <a href="/">个人信息</a>
+      </li>
+      <li class="active">账号信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row index-account">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-12">
+            <see-tabset>
+              <see-tab heading="登录信息" select="$ctrl.selectTab()" type="1">
+                <form class="form-horizontal login-form" name="userForm" ng-submit="">
+                  <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+                    <label class="col-sm-3 control-label">昵称</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control form-white" name="seller_name" ng-model="login_info.seller_name" disabled />
+                    </div>
+                    <!-- <a ng-href="/personalInfo/account/modifyinfo-login?id={{seller_info.seller_id}}" class="btn btn-primary" style="margin-left: 10px; margin-bottom: 0px;">修改</a> -->
+                    <!-- <a  href="" ng-click="changeName()" class="btn btn-primary" style="margin-left: 10px; margin-bottom: 0px;">修改</a> -->
+                  </div>
+                  <!-- <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+                       <label class="col-sm-3 control-label">登录邮箱</label>
+                       <div class="col-sm-4">
+                       <input type="text" class="form-control form-white" name="seller_email" ng-model="login_info.seller_email" disabled />
+                       </div>
+                       </div> -->
+                  <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+                    <label class="col-sm-3 control-label">登录手机</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control form-white" name="seller_mobile" ng-model="login_info.seller_mobile" disabled />
+                    </div>
+                    <a ng-href="/personalInfo/account/modifypwd?id={{seller_info.seller_id}}" class="btn btn-primary" style="margin-left: 10px; margin-bottom: 0px;">修改密码</a>
+                  </div>
+                  <!-- <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+                       <label class="col-sm-3 control-label">绑定微信号</label>
+                       <div class="col-sm-4">
+                       <input type="text" class="form-control form-white" name="seller_mobile" ng-model="login_info.seller_mobile" disabled />
+                       </div>
+                       </div> -->
+                </form>
+              </see-tab>
+
+              <see-tab heading="账号信息" select="$ctrl.selectTab()" type="2">
+                <form class="form-horizontal" name="userForm" ng-submit="submitAccountForm()" novalidate w5c-form-validate>
+                  <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+                    <label class="col-sm-3 control-label">账号类型</label>
+                    <div class="col-sm-7 m-t-5">
+                      <label>
+                        <input name="" type="radio" value="3" ng-model="account_info.seller_type" icheck data-skin="iradio_square-blue" /> 品牌</label>
+                      <label class="m-l-30">
+                        <input name="" type="radio" value="4" ng-model="account_info.seller_type" icheck data-skin="iradio_square-blue" /> 自媒体</label>
+                    </div>
+                  </div>
+                  <div ng-show="account_info.seller_type == 3">
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">公司名称</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.seller_company" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">联系人名称</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.brand_contact_name" />
+                      </div>
+                      <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+                        <p class="help-block">请填写联系人名称</p>
+                      </div>
+                    </div>
+                    <div class="form-group" ng-hide="true" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">公众号名称</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.wx_official_name" />
+                      </div>
+                      <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+                        <p class="help-block">请填写公众号名称</p>
+                      </div>
+                    </div>
+                    <div class="form-group" ng-hide="true" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">公众号微信号
+
+                      </label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.wx_official_account" />
+                        <div class="pop-tips-info-content">
+                          <i class="icon-info"></i>
+                          <div class="pop-content">
+                            <div class="inner clearfix">
+                              <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+                        <p class="help-block">请填写公众号微信号</p>
+                      </div>
+                    </div>
+                    <div class="form-group" ng-hide="true" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">公司类型</label>
+                      <div class="col-sm-4 m-t-5">
+                        <label>
+                          <input name="" type="radio" value="0" ng-model="account_info.brand_company_type" icheck data-skin="iradio_square-blue" /> 品牌方</label>
+                        <label class="m-l-30 m-r-30">
+                          <input name="" type="radio" value="1" ng-model="account_info.brand_company_type" icheck data-skin="iradio_square-blue" /> 代理方</label>
+                        <label>
+                          <input name="" type="radio" value="2" ng-model="account_info.brand_company_type" icheck data-skin="iradio_square-blue" /> 综合型供应链公司</label>
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">品牌适合人群</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.brand_suitable_crowd" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">品牌平均售价</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.brand_avg_price" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">品牌消费人群</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.brand_consume_crowd" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">品牌毛利空间</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.brand_gross_profit" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">经营类目</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="seller_addr" ng-model="account_info.brand_business_category" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-hide="true" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                      <label class="col-sm-3 control-label">是否与自媒体账号合作过</label>
+                      <div class="col-sm-4 m-t-5">
+                        <label>
+                          <input name="" type="radio" value="0" ng-model="account_info.brand_we_media_flag" icheck data-skin="iradio_square-blue" /> 有</label>
+                        <label class="m-l-30 m-r-30">
+                          <input name="" type="radio" value="1" ng-model="account_info.brand_we_media_flag" icheck data-skin="iradio_square-blue" /> 没有</label>
+                        <label>
+                          <input name="" type="radio" value="2" ng-model="account_info.brand_we_media_flag" icheck data-skin="iradio_square-blue" /> 合作过</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-show="account_info.seller_type == 4">
+                    <div class="form-group" ng-class="{'has-error': userForm.account_name.$touched && userForm.account_name.$invalid}">
+                      <label class="col-sm-3 control-label">公众号名称</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="account_name" ng-model="account_info.platform_info[0].account_name"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.account_id.$touched && userForm.account_id.$invalid}">
+                      <label class="col-sm-3 control-label">公众号ID(微信号)
+
+                      </label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="account_id" ng-model="account_info.platform_info[0].account_id"
+                        />
+                        <div class="pop-tips-info-content">
+                          <i class="icon-info"></i>
+                          <div class="pop-content">
+                            <div class="inner clearfix">
+                              <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.company_name.$touched && userForm.company_name.$invalid}">
+                      <label class="col-sm-3 control-label">公司名称</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="company_name" ng-model="account_info.company_name" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.linkman_name.$touched && userForm.linkman_name.$invalid}">
+                      <label class="col-sm-3 control-label">联系人姓名</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="linkman_name" ng-model="account_info.linkman_name" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.linkman_mobile.$touched && userForm.linkman_mobile.$invalid}">
+                      <label class="col-sm-3 control-label">联系人电话</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="linkman_mobile" ng-model="account_info.linkman_mobile" />
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.fans_count.$touched && userForm.fans_count.$invalid}">
+                      <label class="col-sm-3 control-label">当前粉丝数</label>
+                      <div class="col-sm-4">
+                        <input ng-disabled="true" type="text" class="form-control form-white" name="fans_count" ng-model="account_info.platform_info[0].fans_count"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">账号类型</label>
+                      <div class="col-sm-4">
+                        <select name="type_list" class="form-control form-white m-b-10" ng-model="account_info.account_type" ng-options="t.id as t.name for t in account_type"
+                          w5c-dynamic-element required>
+                          <option value="" selected>-- 账号类型 --</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': userForm.connection_man_name.$touched && userForm.connection_man_name.$invalid}">
+                      <label class="col-sm-3 control-label">市场对接人</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control form-white" name="connection_man_name" ng-model="account_info.connection_man_name"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-3">
+                      <button class="shop-btn shop-btn-lg" type="submit">保存</button>
+                    </div>
+                  </div>
+                </form>
+              </see-tab>
+
+              <see-tab heading="公众号信息" select="$ctrl.selectTab()" type="6" ng-if="false">
+                <form novalidate class="form-horizontal login-form" name="userForm" ng-submit="submitWeixinInfo()">
+                  <div class="form-group" ng-class="{'has-error': userForm.wx_official_name.$touched && userForm.wx_official_name.$invalid}">
+                    <label class="col-sm-3 control-label">公众号名称</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control form-white" name="wx_official_name" ng-model="account_info.wx_official_name" placeholder="暂时没有可填0"
+                        required />
+                    </div>
+                    <div class="col-sm-3 help-see" ng-show="userForm.wx_official_name.$touched && userForm.wx_official_name.$invalid">
+                      <p class="help-block">请填写公众号名称</p>
+                    </div>
+                  </div>
+                  <div class="form-group" ng-class="{'has-error': userForm.wx_official_account.$touched && userForm.wx_official_account.$invalid}">
+                    <label class="col-sm-3 control-label">公众号ID(微信号)
+
+                    </label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control form-white" name="wx_official_account" ng-model="account_info.wx_official_account"
+                        placeholder="暂时没有可填0" required />
+                      <div class="pop-tips-info-content">
+                        <i class="icon-info"></i>
+                        <div class="pop-content">
+                          <div class="inner clearfix">
+                            <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3 help-see" ng-show="userForm.wx_official_account.$touched && userForm.wx_official_account.$invalid">
+                      <p class="help-block">请填写公众号微信号</p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-3">
+                      <button class="shop-btn shop-btn-lg" type="submit">保存</button>
+                    </div>
+                  </div>
+                </form>
+              </see-tab>
+
+              <see-tab heading="小电铺信息" select="$ctrl.selectTab()" type="3">
+                <div class=" table-scrollable">
+                  <table class="table info-table">
+                    <tbody ng-repeat="xdp in xiaodianpu_info">
+                      <tr>
+                        <td align="right" width="25%">
+                          小电铺名称：
+                        </td>
+                        <td>{{xdp.xdp_name}}</td>
+                      </tr>
+                      <!-- <tr>
+                        <td align="right" >
+                          小电铺服务：
+                        </td>
+                        <td>{{xdp.xdp_type}}</td>
+                      </tr>
+                      <tr>
+                        <td align="right" >
+                          小电铺主体：
+                        </td>
+                        <td>{{xdp.xdp_principal}}</td>
+                      </tr> -->
+                      <tr>
+                        <td align="right">
+                          小电铺状态：
+                        </td>
+                        <td>{{xdp.xdp_status}}</td>
+                      </tr>
+
+                      <tr ng-if="xdp.str_debt_group !== '' || xdp.str_is_pay !== ''">
+                        <td align="right">
+                          欠款额度：
+                        </td>
+                        <td>{{xdp.str_debt_group}}</td>
+                      </tr>
+
+                      <tr ng-if="xdp.str_debt_group !== '' || xdp.str_is_pay !== ''">
+                        <td align="right">
+                          保证金：
+                        </td>
+                        <td>{{xdp.str_is_pay}}</td>
+                      </tr>
+
+                      <tr>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </see-tab>
+              <see-tab heading="认证信息" type="4">
+                <!-- {{toApply}} -->
+                <div class="row" ng-if="hasShop">
+                  <div class="col-xs-12 verification-result" ng-if="!toApply">
+                    <div class="row m-b-10 m-t-20">
+                      <div class="col-xs-4 text-right">认证状态：</div>
+                      <div class="col-xs-6">
+                        <span ng-bind="auth_info.statusStr"></span>
+                        <span ng-if="auth_info.status == 4" class="c-gray p-l-10 f-12" ng-bind="auth_info.rejectReason"></span>
+                      </div>
+                    </div>
+                    <div class="row m-b-10">
+                      <div class="col-xs-4 text-right">认证类型：</div>
+                      <div class="col-xs-6" ng-bind="auth_info.authType || '无'"></div>
+                    </div>
+                    <div class="row m-b-10">
+                      <div class="col-xs-4 text-right">认证主体：</div>
+                      <div class="col-xs-6" ng-bind="auth_info.authTarget || '无'"></div>
+                    </div>
+                    <div class="row m-b-10 m-t-20 btns-group">
+                      <div class="col-xs-6 col-xs-offset-4">
+                        <a  href="" ng-if="auth_info.status == 1" class="btn btn-primary" ng-click="toApplyShop()">小电铺认证</a>
+                        <a  href="" ng-if="auth_info.status == 3" class="btn btn-sm btn-primary" ng-click="editorApply()">修改认证</a>
+                        <a  href="" ng-if="auth_info.status == 4" class="btn btn-sm btn-primary" ng-click="toApplyShop()">重新认证</a>
+                        <a ng-if="auth_info.status == 3 || auth_info.status == 4" class="btn btn-sm btn-default" ng-click="toViewShop()">查看</a>
+                        <div class="pop" ng-if="isShowPop">
+                          <div class="inner clearfix">
+                            <p class="text-center">修改认证信息
+                              <br/>请联系运营人员</p>
+                            <img src="/api/xiaodianpu/headingHelpImg" width="120">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 verification-list" ng-if="toApply">
+                    <verification-list apply-type="toApply" on-log="getApplyStatus" is-readonly="isReadonly" apply-status="auth_info.status"></verification-list>
+                  </div>
+                </div>
+                <div class="row" style="padding:100px 0" ng-if="!hasShop">
+                  <p class="text-center m-t-20 f-14 c-gray">请先创建小电铺，再对小电铺进行认证</p>
+                  <p class="text-center">
+                    <a href="/shop/create" class="btn btn-primary">创建小电铺</a>
+                  </p>
+                </div>
+                <!-- <div class="row" ng-if="hasShop && !isProShop">
+                  <p class="text-center m-t-20 f-20 c-gray"><i class="icon si si-emoji-happy f-20"></i>当前小电铺无需认证</p>
+                </div> -->
+              </see-tab>
+              <see-tab heading="提现方式" select="$ctrl.selectTab()" type="5">
+                <table class="table info-table">
+                  <tbody>
+                    <tr ng-if="applyData.account">
+                      <td align="right" width="25%">
+                        提现方式：
+                      </td>
+                      <td>{{applyData.account}} {{applyData.withdrawalType}}
+                        <a class="btn btn-primary btn-sm" href="" ng-click="withdrawalWarning ()">修改</a>
+                      </td>
+                    </tr>
+                    <tr ng-if="!applyData.account">
+                      <td align="right" width="25%">
+                        提现方式：
+                      </td>
+                      <td>
+                        <a class="btn btn-primary btn-sm" href="" ng-click="withdrawalWarning ()">添加</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </see-tab>
+            </see-tabset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

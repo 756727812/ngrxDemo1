@@ -1,0 +1,135 @@
+@import "../../../../styles/var";
+
+@form-control-margin-left: 88px;
+
+.shop-operate {
+  .banner-form {
+    ul.error-msgs {
+      margin-bottom: 51px;
+      padding-left: @form-control-margin-left !important;
+
+      li {
+        height: 18px;
+        font-size: 12px;
+        line-height: 1.33;
+        color: #787c92;
+
+        & + li {
+          margin-top: 8px;
+        }
+
+        i {
+          color: #ff6b6b;
+          font-size: 20px;
+        }
+      }
+    }
+
+    shop-operate-img-uploader { /* stylelint-disable-line selector-type-no-unknown */
+      vertical-align: middle;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+
+      &.skip_addr_url {
+        .href-title {
+          max-width: 160px;
+          margin-right: 20px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
+        a {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+
+      &.banner_imgurl {
+        .input-tips {
+          align-self: flex-start;
+        }
+      }
+
+      > * {
+        display: inline-block;
+      }
+      @label-star-width: 6px;
+
+      .label {
+        color: #000;
+        font-weight: normal;
+        max-width: 62px;
+        text-align: right;
+        margin-bottom: 0;
+        margin-right: 26px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      &.required {
+        .label {
+          &::before {
+            content: '*';
+            color: @warning-color;
+            width: @label-star-width;
+            display: inline-block;
+          }
+        }
+      }
+
+      .input-tips {
+        width: 171px;
+        margin-left: 11px;
+
+        p {
+          white-space: normal;
+          line-height: 1.33;
+          color: #787c92;
+          font-size: 12px;
+          margin-bottom: 0;
+
+          & + p {
+            margin-top: 10px;
+          }
+        }
+      }
+
+      &.show_time {
+        .input-tips {
+          vertical-align: middle;
+        }
+
+        input[name="show_time"] {
+          cursor: pointer;
+          width: 215px;
+          height: 40px;
+          border: solid 1px #e5e5e5;
+          color: #999;
+          text-align: center;
+        }
+      }
+    }
+
+    .btn-submit {
+      padding: 0;
+      margin-left: @form-control-margin-left;
+      outline: none;
+      text-decoration: none;
+      color: #fafafa;
+      border: none;
+      text-align: center;
+      font-weight: bold;
+      width: 112px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 2px;
+      background-color: #5971e8;
+    }
+  }
+}

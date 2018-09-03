@@ -1,0 +1,20 @@
+<form nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form)">
+  <div nz-form-item nz-row>
+    <div nz-col nzXs="24" nzSm="7" nz-form-label>
+      <label>页面名称</label>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+      <nz-input formControlName="name" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'请输入页面名称'">
+      </nz-input>
+      <div nz-form-explain *ngIf="isFormControlHasError('name', 'required')">请输入页面名称</div>
+    </div>
+  </div>
+  <div class="customize-footer">
+    <button type="submit" nz-button [nzType]="'primary'" [nzSize]="'large'">
+      确定
+    </button>
+    <button type="button" nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+      取消
+    </button>
+  </div>
+</form>

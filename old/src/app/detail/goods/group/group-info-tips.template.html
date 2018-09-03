@@ -1,0 +1,26 @@
+<div class="group-info-view">
+  <table>
+    <tbody>
+    <tr ng-if="$ctrl.isRuleMatch($ctrl.RULE_VAL.CATEGORY)">
+      <td>品类：</td>
+      <td>{{$ctrl.fmtCategoryList()}}</td>
+    </tr>
+    <tr ng-if="$ctrl.isRuleMatch($ctrl.RULE_VAL.BRAND)">
+      <td>品牌：</td>
+      <td>{{$ctrl.fmtBrandList()}}</td>
+    </tr>
+    <tr ng-if="$ctrl.isRuleMatch($ctrl.RULE_VAL.PRICE)">
+      <td>售价区间 (元)：</td>
+      <td>{{$ctrl.fmtPrice()}}</td>
+    </tr>
+    <tr ng-if="$ctrl.isRuleMatch($ctrl.RULE_VAL.DATE)">
+      <td>创建时间区间：</td>
+      <td>{{$ctrl.fmtRangeDate()}}</td>
+    </tr>
+    <tr>
+      <td>商品排序：</td>
+      <td>{{$ctrl.fmtOrderType()}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

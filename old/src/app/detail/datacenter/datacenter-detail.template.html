@@ -1,0 +1,47 @@
+<div class="header">
+    <h2><strong>商品详情</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/">Seego后台</a></li>
+            <li><a href="/datacenter">数据中心</a></li>
+            <li class="active">商品详情</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>商品ID</th>
+                                <th>商品主图</th>
+                                <th>商品名称</th>
+                                <th>品牌</th>
+                                <th>PV</th>
+                                <th>UV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $ctrl.item_list track by $index">
+                                <td>{{item.itemId}}</td>
+                                <td>
+                                    <div class="img-container">
+                                        <img ng-src="{{item.itemImgurl}}" see-viewer alt="{{item.itemName}}">
+                                    </div>
+                                </td>
+                                <td>{{item.itemName}}</td>
+                                <td>{{item.brandName}}</td>
+                                <td>{{item.itemPv}}</td>
+                                <td>{{item.itemUv}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

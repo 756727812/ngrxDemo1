@@ -1,0 +1,141 @@
+<div class="headepr">
+  <h2><strong>修改个人信息</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">修改个人信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal" name="userForm" ng-submit="submitForm()" novalidate w5c-form-validate>
+          <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+            <label class="col-sm-3 control-label">我是</label>
+            <div class="col-sm-7 m-t-5">
+              <label><input name="" type="radio" value="3" ng-model="account_info.seller_type" icheck/> 品牌</label>
+              <label><input name="" type="radio" value="4" ng-model="account_info.seller_type" icheck/> 自媒体</label>
+            </div>
+          </div>
+          <div ng-show="account_info.seller_type == 3">
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">公司名称</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.seller_company"/>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">联系人名称</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.brand_contact_name"  />
+              </div>
+              <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+                <p class="help-block">请填写联系人名称</p>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">微信公众号ID</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.wx_official_account"  />
+              </div>
+              <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+                <p class="help-block">请填写微信公众号ID</p>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">公司类型</label>
+              <div class="col-sm-4 m-t-5">
+                <label><input name="" type="radio" value="0" ng-model="account_info.brand_company_type" icheck/> 品牌方</label>
+                <label><input name="" type="radio" value="1" ng-model="account_info.brand_company_type" icheck/> 代理方</label>
+                <label><input name="" type="radio" value="2" ng-model="account_info.brand_company_type" icheck/> 综合型供应链公司</label>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">品牌适合人群</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.brand_suitable_crowd"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">品牌平均售价</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.brand_avg_price"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">品牌消费人群</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.brand_consume_crowd"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">品牌毛利空间</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.brand_gross_profit"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">经营类目</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.brand_business_category"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">是否与自媒体账号合作过</label>
+              <div class="col-sm-4 m-t-5">
+                <label><input name="" type="radio" value="0" ng-model="account_info.brand_we_media_flag" icheck/> 有</label>
+                <label><input name="" type="radio" value="1" ng-model="account_info.brand_we_media_flag" icheck/> 没有</label>
+                <label><input name="" type="radio" value="2" ng-model="account_info.brand_we_media_flag" icheck/> 合作过</label>
+              </div>
+            </div>
+          </div>
+          <div ng-show="account_info.seller_type == 4">
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">公众号名称</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.platform_info[0].account_name"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">公众号微信号</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.platform_info[0].account_id"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">当前粉丝数</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="seller_addr" ng-model="account_info.platform_info[0].fans_count"  />
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+              <label class="col-sm-3 control-label">常用社交平台</label>
+              <div class="col-sm-5">
+                <label class="checkbox-inline w-120 p-l-0" ng-class="{'m-l-10': $index === 0}" ng-repeat="item in platform_info">
+                  <input icheck type="checkbox" ng-model="item.is_checked" value="{{item.id}}" ng-disabled="item.is_set" >&nbsp;{{item.name}}
+                </label>
+              </div>
+            </div>
+            <div class="form-group" ng-repeat="item in platform_info" ng-show="item.is_checked">
+              <label class="col-sm-3 control-label">{{item.name}}信息</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control form-white" placeholder="{{item.placeholder}}" ng-required="item.is_checked"
+                       ng-model="item.account_name"  w5c-dynamic-name="'account_name' + item.id" w5c-dynamic-element>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-3">
+              <button class="shop-btn shop-btn-lg" type="submit">保存信息</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

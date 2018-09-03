@@ -1,0 +1,77 @@
+
+@link-width: 274px;
+@left-part-width: 160px;
+@center-h-gap:20px;
+
+:host(.comp-main) {
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  display: flex;
+
+  .left {
+    width: @left-part-width;
+    text-align: right;
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    height: 36px;
+    line-height: 36px;
+  }
+
+  .center-wrap {
+    margin: 0 @center-h-gap;
+
+    img {
+      width: 177px;
+      min-height: 177px;
+      background-color: #fff;
+      border: solid 1px #e5e5e5;
+      display: block;
+    }
+
+    .link {
+      padding: 11px 12px;
+      width: @link-width;
+      font-size: 14px;
+      color: #999;
+      height: 36px;
+      background-color: #fbfbfb;
+      border: solid 1px #e5e5e5;
+    }
+  }
+
+  .note {
+    font-size: 12px;
+    line-height: 1.42;
+    color: #999;
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .right {
+    height: 36px;
+    line-height: 36px;
+  }
+}
+
+.btn-download {
+  display: inline-block;
+
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 60px;
+  padding: 0 17px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 2px;
+  background-color: #e5e8f5;
+  font-size: 12px;
+}

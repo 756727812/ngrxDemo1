@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "./node_modules/prettier-stylelint/config.js"
+  ],
+  "rules": {
+    "selector-pseudo-element-no-unknown": null,
+    "selector-type-no-unknown": null,
+    "no-descending-specificity": null,
+    "no-empty-source":null
+  }
+}

@@ -1,0 +1,352 @@
+<div class="shop-info">
+  <div class="header">
+    <h2><strong>概况</strong></h2>
+    <div class="breadcrumb-wrapper">
+      <ol class="breadcrumb">
+        <li><a href="/">Seego后台</a></li>
+        <li class="active">概况</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row shop-info-header" ng-if="$ctrl.xiaodianpuList.length && $ctrl.b_get_data && $ctrl.b_get_header">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-6">
+              <h3>
+                <img see-src="$ctrl.header.img" width="64"  height="64" alt="" class="img-circle m-r-10">
+                <strong ng-bind="$ctrl.header.app_title"></strong>
+              </h3>
+            </div>
+            <div class="col-sm-2" ng-if="$ctrl.is_open_todo">
+              <h3><strong>待办事项</strong>&nbsp;<span class="badge badge-see" ng-bind="$ctrl.header.todo_list_num"></span></h3>
+            </div>
+            <div class="col-sm-2" ng-if="$ctrl.is_open_todo">
+              <h3><a href="/order/needfinish?filter_type=1">待完成订单&nbsp;<span class="color-ff6b6b" ng-bind="$ctrl.header.needsend_order_num"></span></a></h3>
+            </div>
+            <div class="col-sm-2" ng-if="$ctrl.is_open_todo">
+              <h3><a href="/order/after-sale?filter_type=1">售后订单&nbsp;<span class="color-5971e8" ng-bind="$ctrl.header.selled_order_num"></span></a></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-shop" ng-if="$ctrl.xiaodianpuList.length">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white" ng-if="$ctrl.xiaodianpuList.length > 1">
+          <h3><strong>我的小电铺</strong></h3>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <!--<div class="col-sm-4 col-md-4 col-lg-3" ng-repeat="item in $ctrl.xiaodianpuList">-->
+            <div class="shop-item-wrap" ng-repeat="item in $ctrl.xiaodianpuList">
+              <div class="shop-item">
+                <div class="shop-item-title">
+                  <div class="shop-item-title-img">
+                    <img ng-if="item.app_icon" see-src="item.app_icon" width="38" alt="" class="img-circle">
+                    <img ng-if="!item.app_icon" src="//static.seecsee.com/seego_plus/images/icons/logo.png" width="38" alt="" class="img-circle filter-gray">
+                  </div>
+                  <div class="shop-item-title-detail">
+                    <h2 ng-bind="item.xiaodianpu_info.name"></h2>
+                    <span class="badge badge-primary-deep" ng-bind="item.type_name"></span>
+                  </div>
+                </div>
+                <p ng-class="{'primary-color':item.xiaodianpu_info.status==80}" class="shop-item-status text-center clear-fix p-t-10" ng-bind="item.str_status"></p>
+                <p class="shop-item-date text-center">申请时间：{{item.apply_time*1000 | date: 'yyyy-MM-dd'}}</p>
+                <img ng-if="item.is_active === 1" src="//static.seecsee.com/seego_plus/images/pin-fill-sharp-circle.png" alt="" class="current-shop-pin"
+                  uib-popover="当前后台使用中" popover-trigger="'mouseenter'" popover-placement="top-right">
+                <div class="shop-item-btn-group" ng-if="item.xiaodianpu_info.status !== 60 && item.xiaodianpu_info.status !== 70">
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 10">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.cancelApply(item.id)">取消申请</button>
+                  </div>
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 20">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.delApply(item.id)">删除</button>
+                  </div>
+                  <!--
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 20">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.reApply(item.id)">重新申请</button>
+                  </div>
+                -->
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 30 && item.type != 1 ">
+                    <a href="/shop/create/{{item.id}}" class="btn btn-primary">去授权</a>
+                  </div>
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 40">
+                    <a href="/shop/create/{{item.id}}" class="btn btn-primary">去授权</a>
+                  </div>
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 50">
+                    <a href="/shop/create/{{item.id}}" class="btn btn-primary">去完善</a>
+                  </div>
+                  <div class="shop-item-btn-item" ng-if="item.xiaodianpu_info.status === 80">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.openShopAccessInfo()">获取链接</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--<div class="col-sm-4 col-md-4 col-lg-3">-->
+            <div class="shop-item-wrap">
+              <div class="text-center shop-item shop-item-add">
+                <div class="add-shop"><a style="cursor:pointer" ng-click="$ctrl.gotoCreateXdp()" title="添加小电铺">+</a></div>
+                <a style="cursor:pointer" ng-click="$ctrl.gotoCreateXdp()" title="添加小电铺"><p class="text-center">添加小电铺</p></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-shop" ng-if="!$ctrl.xiaodianpuList.length && $ctrl.b_get_data && $ctrl.b_get_header">
+    <div class="col-sm-12">
+      <div class="panel" id="lead_dashboard">
+        <div class="panel-header bg-white">
+          <h3><strong>我的小电铺</strong><!--<a href="">&nbsp;<i class="fa fa-link"></i></a>--></h3>
+        </div>
+        <!-- TODO 与 shop-guipexx 还有 indicator-block 重复，重构复用-->
+        <div class="panel-content my-shop-empty">
+          <div class="row">
+            <div class="col-xs-12">
+              <h1><i class="icon si si-emoji-happy"></i><span class="text-title-sm">快来开启 SEE 小电铺之旅吧</span></h1>
+              <center>
+                <span class="text-desc-sm">小电铺通过电商服务连接自媒体与品牌，为自媒体提供变现服务，
+                  <br />帮助品牌和零售商在微信生态实现品效合一，
+                  <br />让我们一同开启新营销和新零售之路吧！</span></center>
+              <div class="text-center">
+                <!--<a href="" class="btn btn-default">查看更多介绍</a>-->
+                <a href="/shop/create" class="btn btn-primary">开通小电铺</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row data">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>最新数据</strong></h3>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-yen"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">今日流量</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.flow.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.newData.flow.num | number"></span>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-profile-round"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">今日用户数</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.user.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.newData.user.num | number"></span>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-stats"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">今日订单数</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.order.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.newData.order.num | number"></span>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-shopping-cart"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">今日交易额</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.gmv.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.newData.gmv.num | currency: '￥'"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-xs-12 profit">
+          <div class="panel">
+            <div class="panel-header bg-white">
+              <h3 class="pull-left"><strong>资产收益</strong></h3>
+               <div class="pull-right p-t-3">
+                <!-- <a href="" class="btn btn-primary m-b-0">充值</a> -->
+                <a report="'PAGE_ASSET_OVERVIEW.BTN_WITHDRAW_CASH'"
+                 href="" class="btn btn-default m-b-0" ng-click="$ctrl.applyWithdrawals()">提现</a>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+            <div class="panel-content">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="data-icon-beyond-title">
+                    <i class="icon si si-yen"></i>
+                  </div>
+                  <div class="data-item">
+                    <span class="data-item-title">可提现余额</span>
+                    <span class="data-item-detail" ng-bind="$ctrl.data.availableAmount || 0 | currency: '￥'"></span>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="data-icon-beyond-title">
+                    <i class="icon si si-profile-round"></i>
+                  </div>
+                  <div class="data-item">
+                    <span class="data-item-title">7日收益</span>
+                    <span class="data-item-detail" ng-bind="$ctrl.data.weekIncome || 0 | currency: '￥'"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="profit-noty see-blur"><span>资产管理即将上线，敬请期待=￣ω￣=</span></div> -->
+        </div>
+        <div class="col-xs-12" ng-if="$ctrl.is_open_todo">
+          <dashboard-last-update last-updated="$ctrl.lastUpdated"></dashboard-last-update>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 trade-data"  ng-if="$ctrl.is_open_todo">
+      <div class="panel p-b-25">
+        <div class="panel-header bg-white">
+          <h3><strong>30日交易分布</strong></h3>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-12 m-l-10">
+              <button class="btn btn-sm btn-square btn-primary m-0" ng-class="{'btn-transparent': $ctrl.currentChartType !== 'user_info'}" type="button" ng-click="$ctrl.setEchartOption('user_info')">购买用户</button>
+              <button class="btn btn-sm btn-square btn-primary m-0" ng-class="{'btn-transparent': $ctrl.currentChartType !== 'order_info'}" type="button" ng-click="$ctrl.setEchartOption('order_info')">订单</button>
+              <button class="btn btn-sm btn-square btn-primary m-0" ng-class="{'btn-transparent': $ctrl.currentChartType !== 'gmv_info'}" type="button" ng-click="$ctrl.setEchartOption('gmv_info')">GMV</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="trade-data-container m-t-50 m-l-10">
+                <div class="pull-left">
+                  <p class="trade-data-title">自营</p>
+                </div>
+                <div class="pull-right">
+                  <p class="trade-data-number" ng-if="$ctrl.currentChartType === 'gmv_info'" ng-bind="$ctrl.setGetProgressBarWidth('self_support_num').value | currency: '￥'"></p>
+                  <p class="trade-data-number" ng-if="$ctrl.currentChartType !== 'gmv_info'" ng-bind="$ctrl.setGetProgressBarWidth('self_support_num').value"></p>
+                </div>
+                <div class="progress clear-fix">
+                  <div class="progress-bar progress-bar-primary bg-primary" ng-style="{width: $ctrl.setGetProgressBarWidth('self_support_num').width}"></div>
+                </div>
+              </div>
+              <div class="trade-data-container m-l-10">
+                <div class="pull-left">
+                  <p class="trade-data-title">供货</p>
+                </div>
+                <div class="pull-right">
+                  <p class="trade-data-number" ng-if="$ctrl.currentChartType === 'gmv_info'" ng-bind="$ctrl.setGetProgressBarWidth('supply_num').value | currency: '￥'"></p>
+                  <p class="trade-data-number" ng-if="$ctrl.currentChartType !== 'gmv_info'" ng-bind="$ctrl.setGetProgressBarWidth('supply_num').value"></p>
+                </div>
+                <div class="progress clear-fix">
+                  <div class="progress-bar progress-bar-primary bg-76ddfb" ng-style="{width: $ctrl.setGetProgressBarWidth('supply_num').width}"></div>
+                </div>
+              </div>
+              <div class="trade-data-container m-l-10">
+                <div class="pull-left">
+                  <p class="trade-data-title">分销</p>
+                </div>
+                <div class="pull-right">
+                  <p class="trade-data-number" ng-if="$ctrl.currentChartType === 'gmv_info'" ng-bind="$ctrl.setGetProgressBarWidth('dispatch_num').value | currency: '￥'"></p>
+                  <p class="trade-data-number" ng-if="$ctrl.currentChartType !== 'gmv_info'" ng-bind="$ctrl.setGetProgressBarWidth('dispatch_num').value"></p>
+                </div>
+                <div class="progress clear-fix">
+                  <div class="progress-bar progress-bar-primary bg-dbecf8" ng-style="{width: $ctrl.setGetProgressBarWidth('dispatch_num').width}"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div echarts="$ctrl.chartInstance" class="echart-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6" ng-if="!$ctrl.is_open_todo">
+      <dashboard-last-update last-updated="$ctrl.lastUpdated"></dashboard-last-update>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>常用功能</strong></h3>
+        </div>
+        <div class="panel-content">
+          <a href="/goods/publish" class="btn btn-default">发布商品</a>
+          <a href="/fashion/hot-goods-v2?page=1" class="btn btn-default">我要选品</a>
+          <!-- <a href="/kol/kol-cooperation-management/{{$ctrl.header.xdp_info.kol_id}}?wechat_id={{kol_info.weixin_id}}#1" class="btn btn-default">内容电商</a> -->
+          <a href="/goods/all" class="btn btn-default">商品管理</a>
+          <!-- <a href="/event/couponv1/apply-new-coupon" class="btn btn-default">优惠券</a> -->
+          <a href="/shop/operate" class="btn btn-default">小电铺装修</a>
+          <!-- <a href="/financialNew/withdraw" class="btn btn-default">收入/提现</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row help">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>使用教程</strong></h3>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="help-info-block">
+              <div class="help-container">
+                <div class="help-container-icon">
+                  <i class="icon si si-file-missing"></i>
+                </div>
+                <p>如何创建小电铺？</p>
+                <faq-link class="help-container-href" folder-name="create-shop"></faq-link>
+              </div>
+            </div>
+            <div class="help-info-block">
+              <div class="help-container">
+                <div class="help-container-icon">
+                  <i class="icon si si-object-connection"></i>
+                </div>
+                <p>如何分销商品？</p>
+                <faq-link class="help-container-href" name="how-to-distribute-comimdity"></faq-link>
+              </div>
+            </div>
+            <div class="help-info-block">
+              <div class="help-container">
+                <div class="help-container-icon">
+                  <i class="icon si si-cart-plus-round"></i>
+                </div>
+                <p>如何上架商品？</p>
+                <faq-link class="help-container-href" name="how-to-hit-store"></faq-link>
+              </div>
+            </div>
+            <div class="help-info-block">
+              <div class="help-container">
+                <div class="help-container-icon">
+                  <i class="icon si si-whitewash"></i>
+                </div>
+                <p>如何装修小电铺？</p>
+                <faq-link class="help-container-href" name="how-to-decorate-shop"></faq-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="group-config-panel">
+  <h2>商品分组配置</h2>
+  <div class="btn-wrap">
+    <span class="button button-add" ng-click="$ctrl.toAddGroup()">添加分组</span>
+  </div>
+  <!--
+  <div class="name-line">
+    <span class="labe">标题名称</span>
+    <input type="text" class="see-input-text" ng-model="$ctrl.formData.name" ng-blur="$ctrl.onNameInputBlur()">
+    <span class="tips">当商品列表只包含一个分组时，
+前端不显示分类，需自定义标题名称</span>
+  </div>
+  -->
+  <div class="empty-tips" ng-if="$ctrl.ready && $ctrl.groupList.length === 0">
+    <div>
+      <p>小电铺分类名为商品分组名，请尽量将分组名控制在4字之内</p>
+      <p>前端没有配置分组商品时，默认显示小电铺所有商品</p>
+    </div>
+  </div>
+  <div ng-if="$ctrl.ready && $ctrl.groupList.length">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>分组名称</th>
+        <th class="order">排序</th>
+        <th class="op">操作</th>
+        </th>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in $ctrl.groupList track by $index">
+        <td class="name"><span title="{{item.categoryName}}"
+                               class="name-text">{{item.categoryName}}</span></td>
+        <td class="order">
+          <ul class="op-btns">
+            <li>
+              <i ng-click="$ctrl.moveUp(item)" class="up fa fa-chevron-up"
+                 ng-class="{disabled: $index === 0}"></i>
+            </li>
+            <li>
+              <i ng-click="$ctrl.moveDown(item)" class="down fa fa-chevron-down"
+                 ng-class="{disabled: $index === $ctrl.groupList.length - 1}"></i>
+            </li>
+          </ul>
+        </td>
+        <td class="op">
+          <a class="button btn-view-goods" target="_blank" ng-href="{{$ctrl.getViewHref(item)}}">查看</a>
+          <span class="button btn-remove" ng-click="$ctrl.remove(item)">移除</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

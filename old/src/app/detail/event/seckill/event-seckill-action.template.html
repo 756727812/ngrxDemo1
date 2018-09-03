@@ -1,0 +1,345 @@
+<div class="row event-group-action">
+    <div class="col-xs-12 portlets">
+      <div class="panel">
+        <div class="panel-header">
+          <p class="p-10"><a href="" ng-click="$ctrl.backToSeckillList(seckillForm)" class="text-primary"><i class="fa fa-chevron-left"></i>返回秒杀活动列表</a></p>
+        </div>
+        <div class="panel-header">
+          <h2 class="p-l-10" style="color: rgb(102, 102, 102);font-size: 18px;font-weight: bolder;">{{ $ctrl.title }}秒杀</h2>
+          <!-- <p class="p-10"><a ng-href="{{$ctrl.seckillListPath}}" class="text-primary"><i class="fa fa-chevron-left"></i>返回秒杀活动列表</a></p> -->
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12" ng-class="{ 'col-md-8 col-lg-8': $ctrl.isNewBrand }">
+              <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="seckillForm">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label required">商品</label>
+                  <div class="col-sm-8"
+                    ng-class="{ 'has-custom-error': seckillForm.$submitted && !$ctrl.product }"
+                  >
+                    <div class="img-container">
+                      <div ng-show="$ctrl.product" class="position-relative">
+                        <img see-src="$ctrl.product.itemImgurl" thumbnail="150x150" see-viewer ng-cloak alt="">
+                        <a href="" class="img-del-btn" ng-click="$ctrl.resetProduct()" ng-hide="$ctrl.formDisabled"></a>
+                      </div>
+                      <div ng-hide="$ctrl.product" class="add-button img-pointer" ng-cloak ng-click="$ctrl.addProduct(seckillForm)">
+                        <i class="fa fa-plus"></i>
+                      </div>
+                    </div>
+                    <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.product"><i class="si si-danger"></i>&nbsp;请选择活动商品</span>
+                  </div>
+                </div>
+                <div ng-show="$ctrl.product">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">商品名称</label>
+                    <label class="col-sm-8 control-label text-left font-weight-normal" ng-bind="$ctrl.product.itemName"></label>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">商品类型</label>
+                    <label class="col-sm-8 control-label text-left font-weight-normal" ng-bind="$ctrl.product.distribution === 0 ? '自营' : '分销'"></label>
+                  </div>
+                </div>
+                <div class="form-group" ng-if="$ctrl.product">
+                  <label class="col-sm-2 control-label required">价格与库存</label>
+                  <div class="col-sm-8">
+                    <table class="table table-bordered table-center table-condensed">
+                      <thead>
+                      <tr>
+                        <th ng-if="!$ctrl.formDisabled">
+                          <!-- <input type="checkbox" name="allcheck"> -->
+                          <nz-checkbox ng-model="$ctrl.allChecked" ng-change="$ctrl.updateAllChecked()" [nz-indeterminate]="$ctrl.indeterminate">
+                          </nz-checkbox>
+                        </th>
+                        <th ng-repeat="(key, val) in $ctrl.product.sku[0].skuSpec track by key" ng-bind="key"></th>
+                        <th>{{ $ctrl.product.distribution ? $ctrl.isNewBrand ? '日常供货价/' : '成本价/日常供货价/' : '成本价/'}}日常售价</th>
+                        <th>{{ $ctrl.product.distribution ? '促销供货价/' : '' }}秒杀价<br />
+                          <!-- <input name="promotionSupplyPrice"
+                            class="form-control form-white w-80"
+                            type="number"
+                            w5c-dynamic-element
+                            ng-if="$ctrl.product.distribution"
+                            ng-model="$ctrl.sameTriger.promotionSupplyPrice"
+                            ng-change="$ctrl.setSame('promotionSupplyPrice')"
+                            ng-disabled="$ctrl.formDisabled || $ctrl.isNewBrand"
+                          />
+                          <input name="price"
+                            class="form-control form-white w-80"
+                            type="number"
+                            w5c-dynamic-element
+                            ng-model="$ctrl.sameTriger.price"
+                            ng-change="$ctrl.setSame('price')"
+                            ng-disabled="$ctrl.formDisabled"
+                          /> -->
+                        </th>
+                        <th>库存<br>（可参与促销活动）</th>
+                        <th ng-if="$ctrl.isAdmin || $ctrl.isNewBrand && !$ctrl.product.distribution">秒杀库存
+                          <!-- <input name="totalStock"
+                            class="form-control form-white w-80"
+                            type="number"
+                            w5c-dynamic-element
+                            ng-model="$ctrl.sameTriger.totalStock"
+                            ng-change="$ctrl.setSame('totalStock')"
+                            ng-disabled="$ctrl.formDisabled"
+                            onkeyup="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                            onafterpaste="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                          /> -->
+                        </th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="item in $ctrl.product.sku track by item.skuId">
+                          <td ng-if="!$ctrl.formDisabled">
+                            <!-- <input type="checkbox" w5c-dynamic-name="'check'+ item.skuId" w5c-dynamic-element ng-model="item.checked"> -->
+                            <nz-checkbox ng-model="item.checked" ng-change="$ctrl.updateSingleChecked()">
+                            </nz-checkbox>
+                          </td>
+                          <td ng-repeat="(key, val) in item.skuSpec track by key" ng-bind="val"></td>
+                          <td>
+                            <span ng-if="$ctrl.product.distribution">
+                              <span ng-if="$ctrl.isAdmin">{{ item.costPrice | currency: '￥' }}/</span>
+                              {{item.supplyPrice | currency: '￥'}}/
+                            </span>
+                            <span ng-if="!$ctrl.product.distribution">{{ item.costPrice > 0 ? (item.costPrice | currency: '￥') : '暂未加入供销' }}/</span>
+                            {{item.skuPrice | currency: '￥'}}
+                          </td>
+                          <td>
+                            <input type="number" class="form-control w-100 w5c-error-not-show"
+                              w5c-dynamic-name="'promotionSupplyPrice'+ item.skuId"
+                              w5c-dynamic-element ng-required="item.status !== 3"
+                              ng-if="$ctrl.product.distribution"
+                              ng-model="item.promotionSupplyPrice"
+                              ng-disabled="$ctrl.formDisabled || $ctrl.isNewBrand"
+                              ng-change="$ctrl.formatPrice($index, 'promotionSupplyPrice')"
+                              ng-class="{ error: seckillForm.$submitted && $ctrl.verifySKURequired() && !$ctrl.verifySKUItemPrice(item)}"
+                            >
+                            <input type="number" class="form-control w-100 w5c-error-not-show"
+                              w5c-dynamic-name="'price'+ item.skuId"
+                              w5c-dynamic-element ng-required="item.status !== 3"
+                              ng-model="item.price"
+                              ng-disabled="$ctrl.formDisabled"
+                              ng-change="$ctrl.formatPrice($index, 'price')"
+                              ng-class="{ error: seckillForm.$submitted && $ctrl.verifySKURequired() && !$ctrl.verifySKUItemPrice(item)}"
+                            >
+                          </td>
+                          <td ng-bind="item.stock"></td>
+                          <td ng-if="$ctrl.isAdmin || $ctrl.isNewBrand && !$ctrl.product.distribution">
+                            <select class="form-control"
+                              w5c-dynamic-name="'totalStock'+ item.skuId"
+                              w5c-dynamic-element required
+                              ng-model="item.status"
+                              ng-options="option.value as option.label for option in $ctrl.stockOptions"
+                              ng-class="{ error: seckillForm.$submitted && !item.status }"
+                              ng-disabled="$ctrl.formDisabled"
+                            >
+                            </select>
+                            <input type="number" class="form-control w-100 w5c-error-not-show"
+                              w5c-dynamic-name="'totalStock'+ item.skuId"
+                              w5c-dynamic-element
+                              ng-show="item.status === 1"
+                              ng-required="item.status === 1"
+                              ng-model="item.totalStock"
+                              ng-disabled="$ctrl.formDisabled"
+                              ng-class="{ error: seckillForm.$submitted && $ctrl.verifySKURequired() && (item.totalStock < 0 || item.totalStock > item.stock)}"
+                              ng-pattern="/^[0-9]*[0-9][0-9]*$/"
+                              onkeyup="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                              onafterpaste="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                            >
+                          </td>
+                        </tr>
+                        <tr ng-if="!$ctrl.formDisabled">
+                          <td colspan="{{ 5 + $ctrl.skuSpecKeys.length }}">
+                            <p>
+                              批量设置：
+                              <a href="" ng-show="$ctrl.isAdmin && $ctrl.product.distribution"
+                                uib-popover-template="'promotionSupplyPriceTmp.html'"
+                                popover-placement="auto bottom"
+                                popover-is-open="$ctrl.isPromotionSupplyPriceTmpOpen"
+                              >促销供货价</a>
+                              <a href="" uib-popover-template="'seckillPriceTmp.html'"
+                                popover-placement="auto bottom"
+                                popover-is-open="$ctrl.isSeckillPriceTmpOpen"
+                              >秒杀价</a>
+                              <a href="" ng-show="$ctrl.isAdmin || $ctrl.isNewBrand && !$ctrl.product.distribution"
+                                uib-popover-template="'seckillStockTmp.html'"
+                                popover-placement="auto bottom"
+                                popover-is-open="$ctrl.isSeckillStockTmpOpen"
+                              >秒杀库存</a>
+                            </p>
+                            <script type="text/ng-template" id="promotionSupplyPriceTmp.html">
+                              <div class="p-10">
+                                <div class="d-inline-block w-100">
+                                  <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.promotionSupplyPrice">
+                                </div>
+                                <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSamePromotionSupplyPrice()">保存</a>
+                                <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isPromotionSupplyPriceTmpOpen = false;">取消</a>
+                              </div>
+                            </script>
+                            <script type="text/ng-template" id="seckillPriceTmp.html">
+                              <div class="p-10">
+                                <div class="d-inline-block w-100">
+                                  <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.price">
+                                </div>
+                                <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSamePrice()">保存</a>
+                                <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isSeckillPriceTmpOpen = false;">取消</a>
+                              </div>
+                            </script>
+                            <script type="text/ng-template" id="seckillStockTmp.html">
+                              <div class="p-10">
+                                <div class="d-inline-block">
+                                  <select class="form-control"
+                                    name="seckillStockPopover"
+                                    ng-model="$ctrl.sameTriger.status"
+                                    ng-options="option.value as option.label for option in $ctrl.stockOptions"
+                                  >
+                                  </select>
+                                </div>
+                                <div class="d-inline-block w-100" ng-show="$ctrl.sameTriger.status === 1">
+                                  <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.totalStock">
+                                </div>
+                                <div class="text-right m-t-5">
+                                  <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSameTotalStock()">保存</a>
+                                  <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isSeckillStockTmpOpen = false;">取消</a>
+                                </div>
+                              </div>
+                            </script>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p class="text-info">用户以秒杀价购买时，商品将一律包邮包税，请注意价格设置</p>
+                  </div>
+                  <div class="col-sm-offset-2 col-sm-8">
+                    <span class="custom-error block" ng-show="seckillForm.$submitted && !$ctrl.verifySKURequired()"><i class="si si-danger"></i>&nbsp;请填写参与秒杀的规格对应的促销价格与库存</span>
+                    <span class="custom-error block" ng-show="seckillForm.$submitted && $ctrl.verifySKURequired() && $ctrl.product.distribution && !$ctrl.verifySKUCompare()"><i class="si si-danger"></i>&nbsp;请检查促销价格的填写，需满足促销供货价＜秒杀价＜日常售价</span>
+                    <span class="custom-error block" ng-show="seckillForm.$submitted && $ctrl.verifySKURequired() && !$ctrl.product.distribution && !$ctrl.verifySKUCompare()"><i class="si si-danger"></i>&nbsp;请检查促销价格的填写，需满足0＜秒杀价＜日常售价</span>
+                    <span class="custom-error block" ng-show="seckillForm.$submitted && $ctrl.verifySKURequired() && !$ctrl.verifySKUStockCompare()"><i class="si si-danger"></i>&nbsp;请检查促销库存的填写，需满足0≤秒杀库存≤该规格原库存</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label required">活动名称</label>
+                  <div class="col w-20p">
+                    <div class="input-group">
+                      <input type="text" class="form-control w5c-error-not-show" name="activityName" ng-model="$ctrl.formData.activityName" required
+                        ng-disabled="$ctrl.formDisabled"
+                        ng-change="$ctrl.formatInputName(0, 30, 'activityName')"
+                      >
+                      <span class="input-group-addon">{{$ctrl.verifyLength(0, 30, 'activityName').number}}/15</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-sm-offset-2">
+                    <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.formData.activityName"><i class="si si-danger"></i>&nbsp;请输入活动名称</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label required">活动标签</label>
+                  <div class="col w-20p">
+                    <div class="input-group">
+                      <input type="text" class="form-control w5c-error-not-show" name="activityLabel" required
+                        ng-model="$ctrl.formData.activityLabel"
+                        ng-disabled="$ctrl.formDisabled"
+                        ng-change="$ctrl.formatInputName(0, 10, 'activityLabel')"
+                      >
+                      <span class="input-group-addon">{{$ctrl.verifyLength(0, 10, 'activityLabel').number}}/5</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-sm-offset-2 p-t-10">
+                    <span style="color: rgb(153, 153, 153);">标签文字将展示于商品详情的秒杀信息处，2至5字</span>
+                  </div>
+                  <div class="col-sm-8 col-sm-offset-2">
+                    <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.formData.activityLabel"><i class="si si-danger"></i>&nbsp;请输入活动标签</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <style>
+                    .seckill-date-range{min-width: 332px}
+                    .seckill-date-range .ant-input{height: 32px;padding:0;}
+                    .seckill-date-range .ant-calendar-range-picker-separator{line-height: 32px}
+                  </style>
+                  <label class="col-sm-2 control-label required">活动时间</label>
+                  <div class="col-sm-3 seckill-date-range">
+                    <nz-rangepicker
+                      formControlName="rangeTime"
+                      ng-model="$ctrl.formData.dateRange"
+                      required
+                      [nz-show-time]="true"
+                      [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                      [nz-disabled-date]="$ctrl.disabledStartDate"
+                      [nz-disabled]="$ctrl.formDisabled">
+                    </nz-rangepicker>
+                    <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.formData.dateRange[0]"><i class="si si-danger"></i>&nbsp;请选择活动时间</span>
+                  </div>
+                </div>
+                 <!-- <div class="form-group">
+                  <label class="col-sm-2 control-label required">活动时间</label>
+                  <div class="col-sm-10">
+                    <div class="row">
+                      <div class="col w-20p">
+                        <nz-datepicker class="full-width"
+                          ng-class="{ disabled: $ctrl.formDisabled }"
+                          ng-change="$ctrl.startValueChange()"
+                          ng-model="$ctrl.formData.startTime"
+                          [nz-disabled-date]="$ctrl.disabledStartDate"
+                          [nz-show-time]="true"
+                          [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                          [nz-place-holder]="'请选择开始时间'"
+                        ></nz-datepicker>
+                        <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.formData.startTime"><i class="si si-danger"></i>&nbsp;请输入活动开始时间</span>
+                        <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.verifyStartNowTime()"><i class="si si-danger"></i>&nbsp;开始时间需晚于当前时间</span>
+                      </div>
+                      <div class="col w-20p">
+                        <nz-datepicker class="full-width"
+                          ng-class="{ disabled: $ctrl.formDisabled }"
+                          ng-change="$ctrl.endValueChange()"
+                          ng-model="$ctrl.formData.endTime"
+                          [nz-disabled-date]="$ctrl.disabledEndDate"
+                          [nz-show-time]="$ctrl.endTime"
+                          [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                          [nz-place-holder]="'请选择结束时间'"
+                        ></nz-datepicker>
+                        <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.formData.endTime"><i class="si si-danger"></i>&nbsp;请输入活动结束时间</span>
+                        <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.verifyStartEndTime()"><i class="si si-danger"></i>&nbsp;结束时间需晚于开始时间</span>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">限购</label>
+                  <div class="col p-r-0" style="width: 105px;">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="isPurchase" ng-model="$ctrl.formData.isPurchase" ng-disabled="$ctrl.formDisabled"> 每人限购
+                    </label>
+                  </div>
+                  <div class="col p-l-0" style="width: 80px;">
+                    <input type="number" class="form-control w5c-error-not-show" name="saleCountLimit"
+                      ng-model="$ctrl.formData.saleCountLimit"
+                      ng-disabled="$ctrl.formDisabled"
+                      ng-pattern="/^[0-9]*[1-9][0-9]*$/"
+                      ng-focus="$ctrl.formData.isPurchase"
+                      onkeyup="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                      onafterpaste="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                    >
+                  </div>
+                  <p class="col form-text w-30">件</p>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-8 col-sm-offset-2">
+                    <button type="submit" w5c-form-submit="$ctrl.save()" class="btn btn-primary m-0" ng-disabled="$ctrl.formDisabled || $ctrl.isSubmitting">
+                      <i class="anticon anticon-spin anticon-loading" ng-show="$ctrl.isSubmitting"></i>确定</button>
+                    <button type="button" ng-click="$ctrl.backToSeckillList(seckillForm)" class="btn btn-default m-b-0 m-l-20">取消</button>
+                    <div class="inline-block" ng-show="seckillForm.$submitted && seckillForm.$invalid">
+                      <p><i class="si si-danger invalid"></i>&nbsp;请检查必填项或填写错误项</p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 aside-mobile-show" ng-if="$ctrl.isNewBrand">
+              <div class="aside-mobile-show-img">
+                <img see-src="'//static.seecsee.com/seego_plus/images/event-seckill-intro.jpg'" thumbnail="290x594" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

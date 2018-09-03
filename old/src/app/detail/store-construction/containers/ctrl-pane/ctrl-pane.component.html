@@ -1,0 +1,11 @@
+<div class="ctrl-pane">
+  <ul>
+    <li *ngFor="let elem of (elems$ | async); trackBy:trackByItem">
+      <app-ctrl-widget-outlet [type]="elem.data.type"
+                              [elem]="elem"
+                              (configSave)="handleSave($event)"
+                              (configChange)="handleChange($event)"
+                              [hidden]="!(forVid$ | async) || elem.vid !== (forVid$ | async)"></app-ctrl-widget-outlet>
+    </li>
+  </ul>
+</div>

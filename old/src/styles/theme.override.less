@@ -1,0 +1,459 @@
+@import "var";
+@import "font-override-auto-gen-dont-edit.less";
+@import "media-col-extend.less";
+
+@bacground-see: #f9f9f9;
+@top-bar-menu-trigger-size: 50px;
+
+.bg-see,
+.bg-see > section,
+.bg-see .main-content,
+.bg-see .main-content .page-content,
+.bg-see .sidebar-mailbox.sidebar .sidebar-inner .nav-sidebar > li.active > a,
+.bg-see .sidebar-mailbox.sidebar .nav-sidebar > li.active > a:hover,
+.bg-see .sidebar-mailbox.sidebar .nav-sidebar > li.active > a:focus {
+  background: @bacground-see;
+}
+
+.modal-backdrop.in {
+  position: fixed;
+}
+
+// 路由页面的 header
+.main-content > .page-content .header .breadcrumb-wrapper {
+  display: none;
+}
+
+.main-content > .page-content::after,
+.main-content > .page-content .header {
+  background: white;
+  position: fixed;
+  top: 0;
+  height: @top-bar-menu-trigger-size !important;
+  z-index: 301;
+}
+
+/*
+部分路由页面没有 header,导致空白，用 ::after 占位模拟
+*/
+.main-content > .page-content::after {
+  // z-index: 1;
+  content: ' ';
+  width: 100%;
+}
+// 发布商品编辑器工具栏需 fix 至页面顶部，上面的代码挡住了
+.main-content > .page-content.hide-after::after {
+  display: none;
+}
+// NOTE: 目前没有特别好的方式针对头部 header，可能（暂时没有）污染了别的 header
+.main-content > .page-content .header {
+  z-index: 302;
+  box-shadow: 0 2px 4px 0 rgba(232, 232, 232, 0.5);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 20px;
+}
+
+/*
+.main-content > .page-content .header
+设置为 fixed 之后，如果在 ng-route 的动画下，
+页面路由切换后，.header 会短暂卡顿之后才置顶，
+所以在动画期间先隐藏 .header，并且将 .topbar 宽度放开，
+从视觉上看不出差别
+*/
+.main-content > .page-content.ng-enter,
+.main-content > .page-content.ng-enter-active {
+  .header,
+  &::after {
+    display: none;
+  }
+
+  + .topbar {
+    width: auto;
+  }
+}
+
+/////////////////////////
+// Top Bar
+/////////////////////////
+.fixed-topbar .topbar {
+  left: @navBarWidth;
+  z-index: 301;
+  width: @top-bar-menu-trigger-size;
+  box-shadow: none;
+}
+
+.topbar .header-left .topnav .menu__handle {
+  left: 15px;
+}
+
+.main-content > .page-content {
+  z-index: 1;
+  padding-left: @dashboard-main-h-padding;
+  padding-right: @dashboard-main-h-padding;
+}
+
+// 选择 tab 有个下划线动效，干掉
+.nav-tabs > li > a::before {
+  // background: transparent;
+}
+
+@modal-radius-size: 2px;
+// modal 弹窗阴影
+.modal-content {
+  // box-shadow: 1px 10px 15px 0 rgba(209, 209, 209, 0.5);
+  box-shadow: none !important;
+  border-radius: @modal-radius-size;
+}
+
+.modal-header {
+  border-top-left-radius: @modal-radius-size;
+  border-top-right-radius: @modal-radius-size;
+  text-transform: none;
+}
+
+.form-control {
+  height: 34px;
+}
+
+// 蓝色的date-picker
+
+
+.date-picker-group {
+  position: relative;
+
+  input {
+    padding: 6px 12px;
+  }
+
+  i.cal-icon {
+    font-size: 13px;
+    line-height: 13px;
+    position: absolute;
+    color: #bfcbd9;
+    right: 6px;
+    padding: 10px 7px !important;
+    cursor: pointer;
+  }
+}
+
+.daterangepicker_input {
+  display: none;
+}
+
+.form-control.s-date-picker {
+  // border-color: #5971e8;
+  // background-color: #5971e8;
+  cursor: pointer;
+  float: left;
+  color: #000;
+  padding-right: 35px;
+}
+
+.form-control.s-date-picker::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  // color: #fff;
+  font-weight: bold;
+}
+
+.form-inline .form-group {
+  margin: 5px !important;
+}
+
+/*
+ivh的checkbox样式
+*/
+.glyphicon-chevron-down::before {
+  color: #787c92;
+}
+
+.glyphicon-chevron-right::before {
+  color: #787c92;
+}
+
+.ivh-treeview-twistie {
+  .glyphicon.glyphicon-chevron-down {
+    top: 2px;
+  }
+}
+
+.ivh-treeview-node-label {
+  margin-left: 3px;
+  font-weight: bold;
+}
+
+div[ivh-treeview-children] .ivh-treeview-node-label {
+  font-weight: normal;
+}
+
+.s-ivh-cb {
+  border-radius: 1px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+
+  &.s-cb-unselected {
+    border: 1px solid #d1d5e4;
+  }
+
+  &.s-cb-selected {
+    background-color: #787c92;
+  }
+
+  &.s-cb-indeterminate {
+    border: 1px solid #787c92;
+  }
+}
+
+.s-cb-selected::after {
+  box-sizing: border-box;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  display: table;
+  width: 4px;
+  height: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  color: #fff;
+  content: '';
+}
+
+/*
+mcustom_scrollbar.css
+ */
+.mCSB_container,
+.mCSB_container.mCS_no_scrollbar {
+  height: auto;
+}
+
+/*
+main-content.less
+ */
+// 主内容区域每块的阴影
+.main-content .page-content .panel {
+  box-shadow: 0 2px 4px 0 rgba(242, 242, 242, 0.5);
+}
+
+/*
+modal.less
+ */
+.modal-open .modal {
+  height: 100% !important;
+}
+
+.modal-header .modal-title {
+  line-height: 1;
+  font-size: 16px;
+}
+
+//modal 弹窗右上角关闭 icon
+.modal-header i.close {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  margin-top: 0;
+}
+
+// 移除 input[type="number"] 样式
+input[type=number] {
+  appearance: textfield;
+  margin: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/*
+modal 背景显示，对比官方的样式，我们的少了 bottom:0
+ */
+.modal-backdrop {
+  bottom: 0;
+}
+
+/*
+mcustom_scrollbar.css
+ */
+.mCSB_container,
+.mCSB_container.mCS_no_scrollbar {
+  height: auto;
+}
+
+.btn.btn-default {
+  &,
+  &[disabled] {
+    background-color: #e5e8f5;
+    color: #787c92;
+  }
+}
+
+.tooltip {
+  font-family: @font-family;
+
+  &.in {
+    opacity: 1;
+  }
+
+  &.top .tooltip-arrow {
+    border-top-color: #434655;
+  }
+
+  .tooltip-inner {
+    background-color: #434655;
+    text-align: left;
+  }
+}
+
+.has-error .checkbox,
+.has-error .checkbox-inline,
+.has-error .control-label,
+.has-error .help-block,
+.has-error .radio,
+.has-error .radio-inline,
+.has-error.checkbox label,
+.has-error.checkbox-inline label,
+.has-error.radio label,
+.has-error.radio-inline label {
+  color: @see-input-error-color;
+}
+
+.main-content .page-content .portlets.ui-sortable {
+  z-index: 300 !important;
+}
+
+.form-horizontal .control-label {
+  color: #3e484e;
+}
+
+.tooltip.s-tooltip {
+  z-index: 1000;
+  // box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  .tooltip-arrow {
+    // display: none
+  }
+
+  .tooltip-inner {
+    // color: #000;
+    // background-color: #fff;
+    max-width: 300px;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.tooltip.s-tooltip.s-tooltip-long .tooltip-inner {
+  max-width: 450px;
+}
+
+.popover-auto {
+  max-width: 500px !important;
+}
+
+.main-content .page-content .panel .panel-header {
+  padding: 6px 15px 6px 5px !important;
+}
+
+.data-item-detail {
+  line-height: 100%;
+}
+
+.form-inline {
+  select.form-control {
+    position: relative;
+  }
+
+  button.btn {
+    position: relative;
+    top: -1px;
+  }
+
+  .input-group {
+    &-addon {
+      line-height: 15px;
+    }
+  }
+}
+
+// 进度条
+.circular.is-sm {
+  margin: 0;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+
+  circle {
+    stroke-width: 5px;
+  }
+}
+
+#noty_topRight_layout_container {
+  top: 40px !important;
+}
+
+#noty_topCenter_layout_container li:first-child,
+#noty_topLeft_layout_container li:first-child,
+#noty_topRight_layout_container li:first-child {
+  margin-top: 30px !important;
+}
+
+.input-group-addon {
+  background-color: #fff;
+  border-color: #e5e5e5;
+}
+
+.has-error .input-group-addon {
+  color: #555;
+  background-color: #fff;
+  border-color: #ff6b6b;
+}
+
+.input-group .form-control:first-child {
+  border-right: none;
+  transition: none;
+
+  &:focus + .input-group-addon {
+    border-color: #5971e8;
+    color: #000;
+    background-color: #e9ebef !important;
+  }
+
+  &.date-picker-blue:focus + .input-group-addon {
+    border-color: #a0bdda;
+  }
+}
+
+.alert.alert-info > p {
+  overflow-wrap: break-word;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.theme-see {
+  a.btn-primary {
+    color: #fff;
+  }
+
+  .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+    line-height: 0.35;
+  }
+}
+
+:not(button)[type="button"] {
+  -webkit-appearance: none !important;
+}
+
+label {
+  margin-bottom: 0;
+}

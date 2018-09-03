@@ -1,0 +1,244 @@
+<div class="table-scrollable">
+  <table class="table">
+    <thead>
+      <tr class="bg-f1f4f7">
+        <th width="120"></th>
+        <th>商品</th>
+        <th>单价数量</th>
+        <th>优惠总额</th>
+        <th>实付金额</th>
+        <th>下单时间/支付时间</th>
+        <th>更新时间</th>
+        <th see-access="Super-Admin Elect-Admin">交易方</th>
+        <th>税费和实付运费</th>
+        <th style="min-width: 63px;">状态</th>
+        <th see-access="B2C-Service Oper Super-Admin Elect-Admin" ng-if="$ctrl.is_show_dispatch_th">派发信息</th>
+        <!--needpay(1)、needdispatch(9)没有-->
+        <th>囤货出库状态</th>
+        <th width="100">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="bg-f1f4f7" ng-repeat-start="order in $ctrl.orderData.list track by order.summary_info.order_id">
+        <td colspan="7">
+          <p>中订单号：{{order.summary_info.order_id}}
+            <span see-access="Super-Admin Fin-Admin Elect-Admin" ng-if="order.summary_info.big_order_id">， 对账编号：{{order.summary_info.big_order_id}}</span>
+          </p>
+          <p class="ellipsis">收货信息：{{order.summary_info.recv_addr}}</p>
+        </td>
+        <td see-access="Super-Admin Elect-Admin"></td>
+        <td>
+          <p ng-class="{'text-primary': +order.summary_info.tax > 0}">被税：{{order.summary_info.tax | currency: '￥'}}</p>
+        </td>
+        <td>
+          <p>{{order.summary_info.status_str}}</p>
+          <p ng-if="order.status == '30001' || order.status == '30004'">{{order.summary_info.is_withdraw ? '已提现' : '未提现'}}</p>
+          <a see-hide="New-Brand" ng-href="/order/detail/{{order.summary_info.order_id}}/1" class="" ng-show="order.summary_info.status == 20002">查看物流</a>
+          <p ng-if="order.summary_info.sendgood_result" class="font-red-mint">发货失败
+            <button type="button" uib-popover="{{order.summary_info.sendgood_result}}" popover-trigger="focus" class="btn btn-sm btn-danger">失败原因</button>
+          </p>
+          <p ng-if="order.summary_info.group_status === 1">
+            拼团中
+            <br>
+            <span class="color-ff6b6b" ng-if="order.summary_info.group_owner_flag === 1">团主</span>
+          </p>
+          <p class="color-ff6b6b" ng-if="order.summary_info.group_status > 1">{{ order.summary_info.group_status | orderGrouponStatus }}{{order.summary_info.group_owner_flag == 1 ? '/团主' :
+            ''}}
+          </p>
+        </td>
+        <td see-access="B2C-Service Oper Super-Admin Elect-Admin" ng-if="$ctrl.is_show_dispatch_th"></td>
+        <td></td>
+        <td>
+          <a href="/order/detail/{{order.summary_info.order_id}}" class="btn btn-sm btn-default">查看详情</a>
+          <button see-access="Super-Admin C2C-Seller" class="btn btn-sm btn-primary" ng-click="$ctrl.contactUser(order.summary_info.order_id)"
+            ng-if="order.summary_info.status !== '40001'">联系用户</button>
+          <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="$ctrl.splitOrder(order.summary_info.order_id,order.summary_info.in_warehouse, order)"
+            ng-if="(order.summary_info.status == '20001' || order.summary_info.status == '20006') && order.order_list.length > 1">包裹拆分</button>
+          <!--代付款订单-->
+
+          <!--待派发订单-->
+          <a href="" class="btn btn-sm  btn-primary mt10" see-hide="C2C-Seller New-Brand" ng-click="$ctrl.dispatchOrder(order.summary_info.order_type, order.summary_info.order_id,order.summary_info.total_fee)"
+            ng-if="order.summary_info.status === '20006' && order.summary_info.seller_id === '1' && order.summary_info.dispatch_seller_id === '0'">派发订单</a>
+
+          <!--待备货订单-->
+          <!--完成备货-->
+          <a href="" class="btn btn-sm  btn-primary" ng-if="order.summary_info.status == 20006" ng-click="$ctrl.completeOrder(order.summary_info.order_type, order.summary_info.order_id, order.summary_info.ship_country,order.summary_info.in_warehouse, order);"
+            ng-if="order.is_show_btn">完成备货</a>
+
+          <!--已派发订单-->
+
+          <!--待发货订单-->
+          <a href="" class="btn btn-sm  btn-primary" ng-show="order.summary_info.order_type == 'old_order' && order.summary_info.status==20001"
+            ng-click="$ctrl.oldSendGoods(order.summary_info.order_id, order.summary_info.item_location, order.summary_info.ship_method,order.summary_info.in_warehouse, order)">发货</a>
+          <a href="" class="btn btn-sm  btn-primary" ng-show="order.summary_info.order_type == 'new_order' && !order.summary_info.action && order.summary_info.status==20001"
+            ng-click="$ctrl.OLD_sendGoods(order.summary_info.order_id, order.summary_info.item_location, order.summary_info.ship_method,order.summary_info.in_warehouse, order)">发货</a>
+          <a href="" class="btn btn-sm btn-primary" ng-show="order.summary_info.order_type == 'new_order' && ( (order.summary_info.logistics_type === 1 && order.summary_info.logistics_conf_id === '1') || (order.summary_info.logistics_type === 0 && (order.summary_info.action == 'online_buy')) ) && order.summary_info.status==20001"
+            ng-click="$ctrl.officialShip(order.summary_info.order_id, order.summary_info.item_location, order.summary_info.ship_method, order.summary_info.logistics_type,order.summary_info.in_warehouse, order)">官网发货</a>
+          <a href="" class="btn btn-sm btn-primary" ng-show="order.summary_info.order_type == 'new_order' && order.summary_info.status==20001 && ( (order.summary_info.logistics_type === 0 && order.summary_info.action == 'offline_buy') || (order.summary_info.logistics_type === 1 && order.summary_info.logistics_conf_id === '14') )"
+            ng-click="$ctrl.sendGoods(order.summary_info.order_id, order.summary_info.item_location, order.summary_info.ship_method, order.summary_info.action, order.summary_info.logistics_type, order.summary_info.logistics_conf_id,order.summary_info.in_warehouse, order)">供应商发货</a>
+          <a href="" class="btn btn-sm btn-primary" ng-show="order.summary_info.order_type == 'new_order' && order.summary_info.logistics_type === 0 && (order.summary_info.action == 'native_ship' ||  order.summary_info.action == 'native_ship_buy') && order.summary_info.status==20001"
+            ng-click="$ctrl.inlandShip(order.summary_info.order_id, order.summary_info.status, order.summary_info.action,order.summary_info.in_warehouse, order)">国内发货</a>
+          <a href="" class="btn btn-sm  btn-primary" see-access="B2C-Service Super-Admin Elect-Admin" ng-show="order.summary_info.seller_id == '1' && +order.summary_info.dispatch_seller_id > 1 && (order.summary_info.status == 20001 || order.summary_info.status == 20006)"
+            ng-click="$ctrl.cancelDispatch(order.summary_info.order_id)">撤销派发</a>
+
+          <!--已发货订单-->
+          <a href="" class="btn btn-sm  btn-primary" ng-if="+order.summary_info.tax_type === 0 && !+order.summary_info.tax && !order.summary_info.sendgood_result && order.summary_info.status==20002"
+            ng-click="$ctrl.payTax(order.summary_info)">缴纳关税</a>
+          <a href="" class="btn btn-sm btn-primary" ng-if="order.summary_info.status==20002 && ( (order.summary_info.logistics_type === 0 && order.summary_info.action == 'official_to_buyer') || (order.summary_info.logistics_type === 1 && order.summary_info.logistics_conf_id === '2') )"
+            ng-click="$ctrl.sendGoods(order.summary_info.order_id, order.summary_info.item_location, order.summary_info.ship_method, order.summary_info.action, order.summary_info.logistics_type, order.summary_info.logistics_conf_id,order.summary_info.in_warehouse, order)">供应商发货</a>
+          <a href="" class="btn btn-sm  btn-primary" ng-if="(order.summary_info.action == 'native_ship' || order.summary_info.action == 'official_to_storage_unseego_together') && order.summary_info.status==20002"
+            ng-click="$ctrl.inlandShip(order.summary_info.order_id, order.summary_info.status, order.summary_info.action, order.summary_info.finish_buy_action,order.summary_info.in_warehouse, order)">国内发货</a>
+          <a href="" class="btn btn-sm  btn-primary" ng-show="(order.summary_info.action == 'official_to_storage_unseego' || order.summary_info.action == 'direct_mail_unseego' || order.summary_info.action == 'together_mail_official' || order.summary_info.action == 'together_mail_offline') && order.summary_info.status==20002 && order.summary_info.logistics_type === 0"
+            ng-click="$ctrl.transferHopperShip(order.summary_info.order_id, order.summary_info.action,order.summary_info.in_warehouse, order)">转运仓发货</a>
+          <a href="" class="btn btn-sm btn-circle red-mint" ng-if="order.summary_info.sendgood_result && order.summary_info.status==20002"
+            ng-click="$ctrl.expressAgain(order.summary_info.order_id, order.summary_info.finish_buy_action, order.summary_info.item_location, order.summary_info.ship_method, order.summary_info.logistics_type, order.summary_info.logistics_conf_id,order.summary_info.in_warehouse, order)">重新发货</a>
+          <a href="" class="btn btn-sm  btn-primary" ng-show="order.summary_info.status == 20007 && (order.summary_info.action == 'direct_mail_seego' || order.summary_info.action == 'direct_mail_unseego_storage' || order.summary_info.action == 'native_ship' || order.summary_info.action == 'official_to_storage_unseego_direct')"
+            ng-click="$ctrl.finishTax(order.summary_info.order_id)">完成缴税</a>
+          <a href="" class="btn btn-sm btn-primary" ng-show="order.summary_info.status == 20002 && order.summary_info.logistics_type === 1 && (order.summary_info.logistics_conf_id === '43' || order.summary_info.logistics_conf_id === '44')"
+            ng-click="$ctrl.domesticPieceSecondaryDelivery(order.summary_info.order_id, order.summary_info.logistics_conf_id,order.summary_info.in_warehouse, order)">国内拼邮中转发货</a>
+          <!--已完成订单-->
+          <!--已关闭订单-->
+          <!--售后订单-->
+          <a href="" class="btn btn-sm btn-primary" ng-show="order.summary_info.status == 20010" ng-click="$ctrl.auditRefund(order.summary_info.mid_order_id, order.summary_info.refund_apply_time, order.summary_info.refund_reason, order.summary_info.in_warehouse, order);"
+            see-access="C2C-Seller New-Brand C2C-Service B2C-Service Oper Super-Admin Elect-Admin Fin_Admin">审核退款申请</a>
+        </td>
+      </tr>
+      <tr class="bg-f1f4f7" ng-repeat-start="smallOrder in order.order_list track by smallOrder.id">
+        <td colspan="9">
+          <!--订单号:{{smallOrder.order_id}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+          备注:
+          <a href="" id="{{smallOrder.order_id}}" data-type="textarea" data-pk="{{smallOrder.order_id}}" data-url="/api/order/addOrderComments"
+            data-placeholder="备注信息" data-original-title="输入备注信息" class="editable editable-pre-wrapped editable-click" style="display: inline; background-color: rgba(0, 0, 0, 0);"
+            see-editable>{{smallOrder.comments}}</a>
+        </td>
+        <td ng-if="$ctrl.is_show_dispatch_th"></td>
+        <td see-access="Super-Admin Elect-Admin"></td>
+        <td>
+          <div see-access="Super-Admin Elect-Admin" ng-if="order.summary_info.is_mark_star == 1" class="text-warning">
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+            <i class="icon-star"></i>
+          </div>
+        </td>
+        <td see-access="Super-Admin Elect-Admin">
+          <button class="btn btn-sm btn-primary" ng-click="$ctrl.markStar(order.summary_info.order_id,order.summary_info.is_mark_star == 0?1:0)">{{order.summary_info.is_mark_star == 0?'设为星标':'取消星标'}}</button>
+        </td>
+      </tr>
+      <tr class="bg-f1f4f7" ng-repeat-end>
+        <td>
+          <div class="img-container">
+            <img see-src="smallOrder.f_imgurl" thumbnail="150x150" see-viewer alt="{{smallOrder.item_name}}">
+          </div>
+        </td>
+        <td>
+          <p>{{smallOrder.subject}}</p>
+          <p ng-if="smallOrder.warehouse_item_id > 0">SEE仓商品ID：{{ smallOrder.warehouse_item_id }}</p>
+          <!--<p>SKU ID: {{smallOrder.sku_id}}</p>-->
+          <p>货号：{{smallOrder.sku_mark}}</p>
+          <p>规格:{{smallOrder.attr_value}}</p>
+          <div>
+            <a ng-if="smallOrder.item_ori_url" ng-href="{{smallOrder.item_ori_url}}" class="text-primary" target="_blank">
+              <i class="fa fa-external-link"></i>原官网链接</a>
+            <button ng-if="smallOrder.cloud_item_id > 0" class="btn btn-sm  btn-primary" style="padding-left:20px;">1688</button>
+          </div>
+        </td>
+        <td>
+          <p class="price">{{smallOrder.buy_price | currency: '¥'}}</p>
+          <p class="quantity">{{smallOrder.quantity}}件</p>
+        </td>
+
+        <td>
+          <p>优惠总额：{{smallOrder.total_full_off_price | currency: '¥'}}</p>
+          <p>优惠券：{{smallOrder.coupon_price | currency: '¥'}}</p>
+          <p>满减活动：{{smallOrder.full_off_price | currency: '¥'}}</p>
+        </td>
+        <td>
+          {{smallOrder.total_fee | currency: '¥'}}
+        </td>
+        <td>
+          <span>{{smallOrder.buy_time | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+          <span ng-if="smallOrder.pay_time > 0">&nbsp;&nbsp;/&nbsp;&nbsp;{{(smallOrder.pay_time*1000) | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        </td>
+        <td>
+          {{smallOrder.update_time | date:'yyyy-MM-dd HH:mm:ss'}}
+        </td>
+        <td see-access="Super-Admin Elect-Admin">
+          <p ng-bind-html="smallOrder.item_account.supply_str"></p>
+          <p ng-bind-html="smallOrder.item_account.sale_str"></p>
+        </td>
+        <td>
+          <p>运费：{{smallOrder.freight_cost | currency: '¥'}}</p>
+          <p ng-class="{'text-primary': +smallOrder.tax > 0}">税费：{{smallOrder.tax | currency: '¥'}}</p>
+        </td>
+        <td>
+          <p ng-bind="smallOrder.status_str"></p>
+          <p ng-if="order.summary_info.group_status === 1">
+            拼团中
+            <br>
+            <span class="color-ff6b6b" ng-if="order.summary_info.group_owner_flag === 1">团主</span>
+          </p>
+          <p class="color-ff6b6b" ng-if="order.summary_info.group_status > 1">{{ order.summary_info.group_status | orderGrouponStatus }}{{order.summary_info.group_owner_flag == 1 ? '/团主' :
+            ''}}
+          </p>
+        </td>
+        <td ng-class="{'border-left-right': smallOrder.dispatch_seller_id != '0'}" see-access="B2C-Service Oper Super-Admin Elect-Admin"
+          ng-if="$ctrl.is_show_dispatch_th">
+          <div ng-if="smallOrder.dispatch_seller_id != '0'">
+            <p>已派发</p>
+            <p>派发商户</p>
+            <p>{{smallOrder.dispatch_seller_account}}</p>
+            <p>金额{{smallOrder.dispatch_price | currency: '¥'}}</p>
+          </div>
+        </td>
+        <!--
+          <td>{{smallOrder.store_msg.msg}}</td>
+        -->
+        <td>{{order.summary_info.ex_warehouse_status_str}}</td>
+        <td>
+          <!--待付款订单-->
+          <!--<a href="" class="btn btn-sm btn-circle btn-outline btn-primary" ng-show="smallOrder.status == 10001"
+              ng-click="$ctrl.modifyPrice(smallOrder.order_id, smallOrder.total_fee)">修改</a>-->
+          <!--待下单订单-->
+          <a href="" class="btn btn-sm  btn-primary" ng-show="smallOrder.status==20006" ng-click="$ctrl.refund(smallOrder.order_id, order.summary_info.in_warehouse, order, smallOrder)">发起退款</a>
+          <!-- 2017年12月29日的 wms 需求中，金梦瑶要求屏蔽 修改规格 -->
+          <!-- <button see-access="Super-Admin Elect-Admin" ng-show="smallOrder.status==20006" class="btn btn-sm btn-primary" ng-click="$ctrl.modifySpec(smallOrder.order_id, smallOrder.item_id, smallOrder.attr_value, smallOrder.buy_price, smallOrder.sku_id, smallOrder.item_type, order.summary_info.in_warehouse, order)">修改规格</button> -->
+          <!--已派发订单-->
+          <!--待发货订单-->
+          <a href="" class="btn btn-sm  btn-primary" ng-show="smallOrder.status==20001" ng-click="$ctrl.refund(smallOrder.order_id, order.summary_info.in_warehouse, order, smallOrder)">发起退款</a>
+          <!--已发货订单-->
+
+          <!--已完成订单-->
+          <a href="" class="btn btn-sm  btn-primary" ng-show="smallOrder.status == 30001 || smallOrder.status == 30004" ng-click="$ctrl.startReturnGoods(smallOrder.order_id, order.summary_info.total_fee, order.summary_info.is_withdraw);">发起退货</a>
+          <!--已关闭订单-->
+          <!--售后订单-->
+          <a href="" class="btn btn-sm  btn-primary" ng-show="smallOrder.status == 20005" ng-click="$ctrl.addOrUpdateLogistics(smallOrder.order_id, smallOrder.exist);">{{ smallOrder.exist === 1 ? '查看' : '添加' }}退货物流</a>
+          <a href="" class="btn btn-sm  btn-primary" ng-show="smallOrder.status == 20005" ng-click="$ctrl.unreceivedReturn(smallOrder.order_id);">未收到退货</a>
+          <a href="" class="btn btn-sm  btn-primary" ng-show="smallOrder.status == 20005" ng-click="$ctrl.receivedReturn(smallOrder.order_id);">收到退货</a>
+          <div ng-show="smallOrder.status == 20008">
+            <i class="fa fa-info-circle" uib-tooltip="你可登录微信支付平台，通过搜索订单号找到支付订单并发起退款，用户收到退款后可点击该按钮流转订单状态至“退款成功”。注意：点击该按钮不会发起自动转账，仅会流转订单状态，因此你需要自行手动在支付平台完成退款"></i>
+            <a href="" class="btn btn-sm  btn-primary" ng-click="$ctrl.openFinishPayPopUp(smallOrder.order_id);">已完成人工退款</a>
+          </div>
+          <div ng-show="smallOrder.status == 20004">
+            <i class="fa fa-info-circle" uib-tooltip="你可登录微信支付平台，通过搜索订单号找到支付订单并发起退款，用户收到退款后可点击该按钮流转订单状态至“退款成功”。注意：点击该按钮不会发起自动转账，仅会流转订单状态，因此你需要自行手动在支付平台完成退款"></i>
+            <a href="" class="btn btn-sm  btn-primary" ng-click="$ctrl.openFinishRefundPopUp(smallOrder.order_id, order.summary_info.in_warehouse, order);">已完成人工退款</a>
+          </div>
+          <div ng-show="smallOrder.status == 20004">
+            <i class="fa fa-info-circle" uib-tooltip="自动退款失败时，需根据报错提示解决相关问题（eg., 给支付帐号进行充值，确保余额充足；上传退款证书，确保自动退款功能已生效），解决后可重试自动退款"></i>
+            <a href="" class="btn btn-sm  btn-primary" ng-click="$ctrl.autoRefund(smallOrder.order_id, smallOrder.total_fee)">重试自动退款</a>
+          </div>
+          <div ng-show="smallOrder.status == 20008">
+            <i class="fa fa-info-circle" uib-tooltip="自动退款失败时，需根据报错提示解决相关问题（eg., 给支付帐号进行充值，确保余额充足；上传退款证书，确保自动退款功能已生效），解决后可重试自动退款"></i>
+            <a href="" class="btn btn-sm  btn-primary" ng-click="$ctrl.autoRefund(smallOrder.order_id, smallOrder.refund_fee)">重试自动退款</a>
+          </div>
+          <div ng-show="smallOrder.refund_fail_reason && (smallOrder.status == 20008 || smallOrder.status == 20004)">
+            <label style="color:#D14">自动退款失败原因：</label>
+            <br/>{{smallOrder.refund_fail_reason}}
+          </div>
+        </td>
+      </tr>
+      <tr ng-repeat-end>
+        <td style="height: 20px;border-top: none;"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

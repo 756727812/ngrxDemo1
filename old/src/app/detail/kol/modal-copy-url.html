@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">{{vm.title}}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+      <div class="col-xs-12" style="padding: 0 25px;">
+        <div class="table-scrollable">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th width="20%">名称</th>
+                  <th width="65%">链接</th>
+                  <th width="15%">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in vm.list_url">
+                    <td width="20%">{{item.name}}</td>
+                    <td ng-if="item.is_png == 0" width="65%">{{item.url}}</td>
+                    <td ng-if="item.is_png == 1" width="65%">
+                        <img style="width: 120px;"  see-src="item.url"> （请使用右键另存为保存图片）
+                    </td>
+                    <td width="15%">
+                        <a  ng-if="item.is_png == 0 && item.block_view == 0"  class="btn btn-sm btn-primary" ng-href="{{item.url}}" target="_blank">
+                            <i class="icon-screen-smartphone"></i>预览
+                        </a>
+                        <button  ng-if="item.is_png == 0"  type="button" class="btn btn-sm btn-primary"  ngclipboard data-clipboard-text="{{item.url}}" ng-click="vm.copySuccess()"><i class="fa fa-cart-plus"></i>复制</button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+</div>

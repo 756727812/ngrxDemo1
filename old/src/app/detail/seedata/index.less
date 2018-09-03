@@ -1,0 +1,223 @@
+@import '../../../styles/var.less';
+
+#seedataInfo {
+  .label-vip {
+    padding: 5px 10px;
+    background: #ff7070;
+    color: white;
+    margin-right: 12px;
+    border-radius: 2px;
+    line-height: 14px;
+    font-size: 14px;
+    display: inline-block;
+  }
+
+  .buy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
+
+    h4 {
+      border-bottom: 1px solid #f6f6f6;
+      padding-bottom: 20px;
+      font-weight: bold;
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  li {
+    list-style: none;
+  }
+
+  .nowPrivilege {
+    .count {
+      padding-right: 10px;
+    }
+
+    h4 {
+      line-height: 42px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .vipPrivList {
+    li {
+      padding: 15px 43px 25px;
+      float: left;
+    }
+
+    h5 {
+      color: #666;
+    }
+
+    section {
+      font-weight: bold;
+      padding-top: 20px;
+      font-size: 24px;
+    }
+  }
+
+  ul.privList {
+    > li {
+      color: #666;
+      padding: 25px 10px;
+    }
+
+    .privName {
+      display: inline-block;
+      width: 65%;
+    }
+
+    .count {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .nowPrivilege,
+  .vipPrivilege {
+    padding: 20px 35px;
+    width: 370px;
+    height: 480px;
+    background-color: #fff;
+  }
+
+  div.vipPrivilege {
+    text-align: center;
+    position: relative;
+
+    p.limited {
+      font-weight: bold;
+      margin: 25px 0 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    li {
+      color: #666;
+      line-height: 230%;
+      text-align: center;
+    }
+
+    li:last-child {
+      color: #000;
+    }
+
+    h4 {
+      // margin-top: -15px;
+    }
+
+    .crown {
+      width: 30px;
+    }
+
+    .not-free {
+      text-align: center;
+    }
+
+    .free {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      >.btn {
+        margin-top: 15px;
+        line-height: 28px;
+        background-color: #ff7070;
+        width: 195px;
+        height: 43px;
+
+        &.disabled {
+          background-color: #999;
+        }
+      }
+
+      >div span {
+        display: inline-block;
+      }
+
+      .price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 20px;
+        font-weight: normal;
+      }
+
+      &-text {
+        font-weight: bold;
+        font-size: 20px;
+        color: #fa6969;
+      }
+    }
+
+    .price {
+      margin-top: 20px;
+      display: block;
+      font-weight: bold;
+      font-size: 15px;
+      color: @primary-color;
+      text-align: center;
+    }
+  }
+
+  .arrow {
+    padding: 0 10px;
+  }
+
+  .recharge-btn {
+    margin-top: 5px;
+  }
+
+  .arrow > .si {
+    font-size: 65px;
+    color: #e2e2e2;
+    margin: 0 10px;
+  }
+
+  .free-tip {
+    .triangle {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 67px 67px 0 0;
+      border-color: #ff7070 transparent transparent transparent;
+      padding: 0;
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      z-index: 2;
+    }
+
+    .shadow {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 67px 67px 0 0;
+      border-color: #ddd transparent transparent transparent;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .text {
+      color: #fff;
+      position: absolute;
+      top: 13px;
+      left: 10px;
+      transform: rotate(-45deg);
+      z-index: 3;
+    }
+
+  }
+}
+

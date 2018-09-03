@@ -1,0 +1,41 @@
+<div class="header">
+  <h2><strong>小电铺</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="#">小电铺</a></li>
+      <li class="active">小电铺管理</li>
+    </ol>
+  </div>
+</div>
+<div class="row shop">
+  <div class="col-sm-12">
+    <div class="panel">
+      <div class="panel-content shop-manage">
+        <div class="row text-right"><a href="/shop/create" class="btn btn-primary">创建小电铺</a></div>
+        <div class="row" ng-if="$ctrl.lists.length == 0">
+          <p class="text-center">暂时没有小电铺，点击<a href="/shop/create">创建小电铺</a></p>
+        </div>
+        <div class="row" ng-if="$ctrl.lists.length > 0">
+          <div class="col-sm-3" ng-repeat="list in $ctrl.lists">
+            <div class="shop-manage__cart text-center">
+              <div class="shop-manage__cart-tip"><span><label>{{list.type_name}}</label></span><span class="text-right">申请时间：{{list.xiaodianpu_info.apply_time}}</span></div>
+              <div class="shop-manage__cart-title text-center">{{list.xiaodianpu_info.name}}</div>
+              <div class="shop-manage__cart-status text-center">电铺状态：{{list.xiaodianpu_info.str_status}}</div>
+              <div class="shop-manage__cart-btn text-center">
+                <a  href="" ng-if="list.xiaodianpu_info.status == 10" ng-click="$ctrl.delApply(list.id)">取消申请</a>
+                <a  href="" ng-if="list.xiaodianpu_info.status == 20" ng-click="$ctrl.delApply(list.id)">删除</a>
+                <a href="/shop/manage" ng-if="list.xiaodianpu_info.status == 20">重新申请</a>
+                <a href="/shop/create/{{list.id}}" ng-if="list.xiaodianpu_info.status == 30 && list.type != 1">继续</a>
+                <a href="/shop/create/{{list.id}}" ng-if="list.xiaodianpu_info.status == 40">去授权</a>
+                <a href="/shop/create/{{list.id}}" ng-if="list.xiaodianpu_info.status == 50">去完善</a>
+                <a href="/shop/create/{{list.id}}" ng-if="list.xiaodianpu_info.status == 80">修改支付信息</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

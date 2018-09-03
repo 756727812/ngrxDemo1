@@ -1,0 +1,55 @@
+<div class="modal-header bg-primary">
+  <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">跳转地址</h3>
+</div>
+<div class="modal-body">
+  <form class="form-inline search-form" ng-submit="$ctrl.getPageData()">
+    <div class="form-group">
+      <input type="search" class="form-control" placeholder="商品分组名" ng-model="$ctrl.formData.keyword">
+      </label>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+    </div>
+  </form>
+  <div ng-if="!$ctrl.isPageDataEmpty()">
+    <div class="table-scrollable">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>商品分组名</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in $ctrl.pageData.list track by item.article_id">
+          <td ng-bind="item.title"></td>
+          <td>
+            <button class="btn btn-sm btn-primary"
+                    type="button"
+                    ng-click="$ctrl.select(item)">选择
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-wrap">
+      <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条</div>
+      <ul uib-pagination
+          ng-if="$ctrl.pageData.count"
+          total-items="$ctrl.pageData.count"
+          items-per-page="$ctrl.pageData.pageSize"
+          ng-model="$ctrl.pageData.page"
+          ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+          max-size="5"
+          previous-text="上一页"
+          next-text="下一页"
+          boundary-link-numbers="true">
+      </ul>
+    </div>
+  </div>
+  <div class="empty-block" ng-if="$ctrl.isPageDataEmpty()">
+    <p>您当前尚未创建内容商品组</p>
+  </div>
+</div>

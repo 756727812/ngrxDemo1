@@ -1,0 +1,15 @@
+<!-- 支付完成页资源位配置: 魔方 + 是否显示推荐商品 -->
+<div class="editor shop-construct-editor v-magic-cube-editor">
+  <div class="main">
+    <div class="busy-mask" [hidden]="!(busy$ | async) && !loading">
+      <nz-spin class="spin" [nzSize]="'large'"></nz-spin>
+    </div>
+    <app-preview-column #previewPane></app-preview-column>
+  </div>
+  <div class="row-wrap" style="padding-left:50px">
+    <button (click)="handleRelease()" class="w-80" nz-button [nzType]="'primary'" [nzSize]="'large'">
+      <span>发布</span>
+    </button>
+    <see-batch-assign-btn class="m-l-30 w-80" [nzType]="'primary'" [sourceIds]="[+micropageId]" [sourceKolId]="+kolId" [disabled]="disableBatch" (onBusyStatusChange)="loading = $event"></see-batch-assign-btn>
+  </div>
+</div>

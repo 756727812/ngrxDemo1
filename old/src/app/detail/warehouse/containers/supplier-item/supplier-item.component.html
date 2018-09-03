@@ -1,0 +1,14 @@
+<pro-header [title]="headerTitle" [paths]="paths">
+  <ng-template #action>
+    <button nz-button (click)="navigateToEdit()" [nzType]="'primary'" [nzSize]="'large'" *ngIf="(routeData$ | async).type === 'detail'">
+      <span>编辑</span>
+    </button>
+  </ng-template>
+</pro-header>
+<supplier-form
+  [type]="(routeData$ | async).type"
+  [supplier]="supplier$ | async"
+  [accessors]="accessors$ | async"
+  (create)="onCreate($event)"
+  (update)="onUpdate($event)"
+></supplier-form>

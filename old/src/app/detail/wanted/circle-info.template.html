@@ -1,0 +1,500 @@
+<div class="header">
+  <h2>
+    <strong>我的圈子</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">我的圈子</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4 ng-bind="circle.cir_name"></h4>
+        <div class="circle-container group">
+          <see-tabset cur-idex="0">
+            <see-tab heading="可见心愿列表" type="kejian" see-access="Super-Admin PGC-Service See-Admin Oper KOL">
+              <div class="table-scrollable" see-viewer>
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th width="120">图片</th>
+                      <th>描述</th>
+                      <th>期望价格</th>
+                      <th>发布时间</th>
+                      <th>品类</th>
+                      <th>状态</th>
+                      <th width="120">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="theme in themeList track by $index">
+                      <td ng-bind="theme.t_id"></td>
+                      <td><img alt="{{theme.t_title}}" width="100" class="img-thumbnail img-viewer" see-src="theme.t_imgurl"></td>
+                      <td ng-bind="theme.t_title"></td>
+                      <td ng-bind="theme.t_price"></td>
+                      <td ng-bind="theme.t_time"></td>
+                      <td ng-bind="theme.cy_name"></td>
+                      <td ng-bind="theme.is_answer"></td>
+                      <td>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-click="delThemeFromCircle(theme.t_id)">
+                          <i class="fa fa-cloud"></i>隐藏</a>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/themeList/theme-answer/{{theme.t_id}}">
+                          <i class="fa fa-eye"></i>查看答案</a>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/themeList/addAnswer?tid={{theme.t_id}}&cir_id={{cir_id}}" ng-show="theme.u_id!=cir_owner.u_id">
+                          <i class="fa fa-plus"></i>添加答案</a>
+                        <!--<a ng-href="/wanted/themeList/matchGoods/{{theme.t_id}}">匹配商品</a>-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <pagination total-items="total_items"></pagination>
+              </div>
+            </see-tab>
+            <see-tab heading="合集列表" type="collection" see-access="Super-Admin">
+              <a ng-href="/wanted/myCircle/createCollection?cir_id={{cir_id}}" class="btn btn-primary">创建合集</a>
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>编号</th>
+                      <th width="120">封面</th>
+                      <th>标题</th>
+                      <th>浏览数</th>
+                      <th>回复数</th>
+                      <th>创建时间</th>
+                      <th width="120">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="collection in collectionList">
+                      <td>{{collection.collection_id}}</td>
+                      <td><img alt="{{collection.name}}" class="img-thumbnail" width="100" height="100" see-src="collection.imgurl"
+                               /></td>
+                      <td>{{collection.name}}</td>
+                      <td>{{collection.readcount}}</td>
+                      <td>{{collection.replycount}}</td>
+                      <td>{{collection.create_time}}</td>
+                      <td class="operate">
+                        <a target="_blank" class="btn btn-sm btn-primary m-b-5" href="//seecsee.com/static/detail/collection.html?id={{collection.collection_id}}">
+                          <i class="fa fa-mobile"></i>预览</a>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/myCircle/editCollection?id={{collection.collection_id}}&cir_id={{cir_id}}">
+                          <i class="fa fa-edit"></i>编辑</a>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/myCircle/collectionItemList?id={{collection.collection_id}}">
+                          <i class="fa fa-eye"></i>查看商品</a>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-click="delCollectionFromCircle(collection.collection_id)">
+                          <i class="fa fa-trash"></i>删除</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </see-tab>
+
+            <see-tab heading="小合集列表" type="smallCollection" see-access="Super-Admin">
+              <a ng-href="/wanted/myCircle/createCollection?cir_id={{cir_id}}&from=mini_collection" class="btn btn-primary">创建小合集</a>
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>编号</th>
+                      <th>名称</th>
+                      <th>时间</th>
+                      <th>商品数</th>
+                      <th>浏览数</th>
+                      <th width="120">标签</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="collection in miniCollectionList">
+                      <td>{{collection.mcol_id}}</td>
+                      <td>{{collection.mcol_name}}</td>
+                      <td>{{collection.created_at * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                      <td>{{collection.goods_count}}</td>
+                      <td>{{collection.item_total_readcount}}</td>
+                      <td>
+                        <img width="100" class="img-thumbnail" see-src="collection.mcol_tag_imgurl" alt="{{collection.mcol_name}}">
+                      </td>
+                      <td>
+                        <!--<a target="_blank" href="//seecsee.com/static/detail/collection.html?id={{collection.collection_id}}">预览</a>-->
+                        <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/myCircle/editCollection?id={{collection.mcol_id}}&cir_id={{cir_id}}&from=mini_collection">
+                          <i class="fa fa-edit"></i>编辑合集</a>
+                        <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/myCircle/collectionItemList?mcol_id={{collection.mcol_id}}">
+                          <i class="fa fa-eye"></i>查看商品</a>
+                        <a href="" class="btn btn-sm btn-primary m-b-5" ng-click="delMiniCollection(collection.mcol_id)"> <i class="fa fa-trash"></i>删除</a>
+                        <!--<a class="btn btn-sm btn-outline btn-primary"
+                             ng-click="setMiniColPublic(collection.mcol_id, 1)"
+                             ng-show="collection.mcol_ispublic == '0'">
+                             <i class="fa fa-sun-o"></i>显示合集</a>
+                             <a class="btn btn-sm btn-outline btn-primary"
+                             ng-click="setMiniColPublic(collection.mcol_id, 0)"
+                             ng-show="collection.mcol_ispublic == '1'">
+                             <i class="fa fa-cloud"></i>隐藏合集</a>-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <pagination total-items="total_items"></pagination>
+              </div>
+            </see-tab>
+            <see-tab heading="专题列表" type="topic" see-access="PGC-Service See-Admin Oper Super-Admin PGC-Part KOL">
+              <div ng-controller="topicListController">
+                <div>
+                  <a target="_blank" ng-href="/wanted/topicList/createTopic?cir_id={{cir_id}}#topic" class="btn btn-primary m-b-0"
+                     ng-show="!circleList"
+                     see-access="PGC-Service See-Admin Oper Super-Admin PGC-Part KOL">
+                    创建专题
+                  </a>
+                  <div class="btn-group" uib-dropdown >
+                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                      选择专题类型 <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                      <li role="menuitem"><a href="" ng-click="searchTopicList(2)">我的草稿箱</a></li>
+                      <li role="menuitem"><a href="" ng-click="searchTopicList(3)">已发布专题</a></li>
+                    </ul>
+                  </div>
+
+                  <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                      <thead>
+                        <tr>
+                          <th>专题ID</th>
+                          <th width="100">专题banner</th>
+                          <th>专题名称</th>
+                          <th>状态</th>
+                          <th>浏览数</th>
+                          <th>回复数</th>
+                          <th>创建时间</th>
+                          <th width="120">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="topic in topicList track by $index">
+                          <td>{{topic.topic_id}}</td>
+                          <td>
+                            <img width="80" height="80" class="img-circle" alt="{{topic.title}}" see-src="topic.imgurl"/>
+                          </td>
+                          <td>{{topic.title}}</td>
+                          <td ng-class="{'text-danger': topic.status_text=='草稿', 'text-primary': topic.status_text=='启用'}">
+                            {{topic.status_text}}
+                          </td>
+                          <td>{{topic.readcount}}</td>
+                          <td>{{topic.replycount}}</td>
+                          <td>{{topic.create_time_text}}</td>
+                          <td>
+                            <a ng-show="use_falg" class="btn btn-sm btn-primary m-b-5" href="" see-hide="PGC-Part"
+                               ng-click="delTopic(topic.topic_id)">
+                              <i class="fa fa-trash"></i>删除
+                            </a>
+                            <a ng-show="draft_falg" class="btn btn-sm btn-primary m-b-5" href=""
+                               ng-click="updateTopic(topic.topic_id)">
+                              <i class="fa fa-share"></i>发布
+                            </a>
+                            <!--草稿箱里的编辑-->
+                            <a ng-show="draft_falg == true" class="btn btn-sm btn-primary m-b-5"
+                               ng-href="/wanted/topicList/editTopic/{{topic.topic_id}}/{{topic.cir_id}}#topic" target="_blank">
+                              <i class="fa fa-edit"></i>编辑
+                            </a>
+                            <!--草稿箱里的删除-->
+                            <a href="" ng-if="draft_falg === true" class="btn btn-sm btn-primary m-b-5" ng-click="delDraftTopic(topic.topic_id)"><i class="fa fa-trash"></i>删除</a>
+                            <!--已发布里的编辑-->
+                            <a ng-show="draft_falg == false" class="btn btn-sm btn-primary m-b-5"
+                               ng-href="/wanted/topicList/editTopicPublished/{{topic.topic_id}}/{{topic.cir_id}}#topic" target="_blank"
+                               see-access="See-Admin Oper PGC-Part Super-Admin">
+                              <i class="fa fa-edit"></i>编辑
+                            </a>
+                            <a class="btn btn-sm btn-primary m-b-5" href='{{api_url}}?id={{topic.topic_id}}'
+                               target="_blank">
+                              <i class="fa fa-mobile"></i>预览
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </see-tab>
+            <see-tab heading="我的心愿" type="myTheme" see-access="Super-Admin PGC-Service See-Admin Oper KOL">
+              <div>
+                <form class="form-inline" ng-submit="searchTheme()">
+                  <div class="form-group">
+                    <label class="control-label">搜索时间
+                      <input type="date" class="form-control" ng-model="searchData.from">到
+                      <input type="date" class="form-control" ng-model="searchData.to">
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">搜索品类
+                      <select class="form-control select2" ng-model="searchData.cy_id">
+                        <option value="" selected>&#45;&#45; 请选择 &#45;&#45;</option>
+                        <option ng-repeat="cy in categoryList" value="{{cy.cy_id}}">
+                          {{cy.cy_name}}
+                        </option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">搜索内容
+                      <input type="search" class="form-control" ng-model="searchData.keyword" placeholder="">
+                    </label>
+                  </div>
+                  <button type="submit" class="btn btn-primary">
+                    搜索
+                  </button>
+                  <a ng-href="/wanted/createTheme?cir_id={{cir_id}}" class="btn btn-primary" style="display: inline-block;" see-access="See-Admin Oper PGC-Service Super-Admin">创建心愿</a>
+
+                </form>
+                <div class="table-scrollable">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th width="120">图片</th>
+                        <th>描述</th>
+                        <th>期望价格</th>
+                        <th>发布时间</th>
+                        <th>品类</th>
+                        <th>标签</th>
+                        <th>回答数</th>
+                        <th see-hide="Hide-DD">真实同求数</th>
+                        <th width="120">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="theme in themeList track by $index">
+                        <td>{{theme.t_id}}</td>
+                        <td><img width="100" height="100" class="img-thumbnail" see-src="theme.t_imgurl"></td>
+                        <td>{{theme.t_title}}</td>
+                        <td>{{theme.t_price}}</td>
+                        <td>{{theme.t_time}}</td>
+                        <td>{{theme.cy_name}}</td>
+                        <td>{{theme.tab}}</td>
+                        <td>{{theme.t_findcount}}</td>
+                        <td see-hide="Hide-DD">{{theme.t_followcount}}</td>
+                        <td>
+                          <a class="btn btn-sm btn-primary m-b-5" ng-href="/wanted/themeList/theme-answer/{{theme.t_id}}">查看答案</a>
+                          <!-- <a ng-href="/wanted/themeList/addAnswer?tid={{theme.t_id}}">添加答案</a> -->
+                          <a class="btn btn-sm btn-primary m-b-5" ng-click="matchImgPop(theme.t_id,theme.t_imgurl,seller_id,host)" see-access="Super-Admin">匹配答案</a>
+                          <!--<a ng-href="/wanted/themeList/matchImg?t_imgurl={{theme.t_imgurl}}" see-access="Super-Admin">匹配答案</a>-->
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <pagination total-items="total_items"></pagination>
+              </div>
+            </see-tab>
+            <see-tab heading="圈子销售情况" type="sale" see-access="PGC-Service Super-Admin">
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <td>订单时间</td>
+                      <td>买家id</td>
+                      <td>内容类型</td>
+                      <td>内容id</td>
+                      <td width="120">商品图片</td>
+                      <td>商品价格</td>
+                      <!--<td>操作</td>-->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="order in orderList track by $index">
+                      <td>{{order.buy_time}}</td>
+                      <td>{{order.u_id}}</td>
+                      <td>{{order.content_type}}</td>
+                      <td>{{order.content_id}}</td>
+                      <td>
+                        <img width="100" height="100" class="img-thumbnail" see-src="order.item.item_imgurl" >
+                      </td>
+                      <td>{{order.item.sku_price | currency: '￥'}}</td>
+                      <!--<td></td>-->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </see-tab>
+            <see-tab heading="圈子信息" type="circle" see-access="Super-Admin PGC-Service See-Admin Oper KOL">
+              <div>
+                <form class="form-horizontal" ng-submit="editCircle()">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">圈子名称</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" ng-model="formData.cir_name" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">圈子Banner</label>
+                    <div class="col-sm-7">
+                      <img width="360" height="240" class="img-thumbnail" see-src="formData.cir_banner" alt="{{formData.cir_name}}" >
+                      <span>750 &times; 500 像素， jpg或png</span>
+                      <div>
+                        <label class="btn btn-outline btn-primary">
+                          修改Banner
+                          <input style="display:none" type="file" see-file-select="uploadBanner" size="750x500" accept="image/jpg, image/jpeg, image/png">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">圈子Logo</label>
+                    <div class="col-sm-7">
+                      <img width="150" class="img-thumbnail" see-src="formData.cir_logo" alt="{{formData.cir_name}}" >
+                      <div>
+                        <label class="btn btn-outline btn-primary">
+                          修改Logo
+                          <input style="display:none" type="file" see-file-select="uploadLogo" accept="image/jpg, image/jpeg, image/png">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">圈子简介</label>
+                    <div class="col-sm-7">
+                      <textarea class="form-control" rows="5" ng-model="formData.cir_description"></textarea>
+                    </div>
+                  </div>
+                  <div see-hide="C2C-Seller New-Brand C2C-Service">
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">微信号</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" ng-model="formData.cir_wx" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">微博号</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" ng-model="formData.cir_wb" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">官网</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" ng-model="formData.cir_web" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="col-sm-offset-2 btn btn-lg btn-primary">
+                    确认修改
+                  </button>
+                </form>
+              </div>
+            </see-tab>
+            <see-tab heading="本周专题销售情况" type="topicSale" see-access="Super-Admin See-Admin Oper KOL" ng-if="isBinded">
+              <div class="row m-t-10">
+                <div class="col-xlg-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                  <div class="widget-info">
+                    <div class="row">
+                      <div class="left">
+                        <i class="fa fa-rmb bg-green"></i>
+                      </div>
+                      <div class="right">
+                        <p class="number countup" ng-bind="cur_week_data.total_fee | currency: '￥'"></p>
+                        <p class="text">真实结算金额</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xlg-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                  <div class="widget-info">
+                    <div class="row">
+                      <div class="left">
+                        <i class="fa fa-rmb bg-blue"></i>
+                      </div>
+                      <div class="right">
+                        <p class="number countup" ng-bind="cur_week_data.adjust_total_fee | currency: '￥'"></p>
+                        <p class="text">调整结算金额</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>专题ID</th>
+                      <th style="min-width: 100px;">专题Banner</th>
+                      <th>专题名称</th>
+                      <th>创建时间</th>
+                      <th>真实结算金额</th>
+                      <th>调整结算金额</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="topic in topicList">
+                      <td ng-bind="topic.topic_id"></td>
+                      <td>
+                        <img alt="{{topic.topic_title}}" class="img-thumbnail" width="100" height="100" see-src="topic.topic_banner" />
+                      </td>
+                      <td ng-bind="topic.topic_title"></td>
+                      <td ng-bind="topic.create_time"></td>
+                      <td ng-bind="topic.pgc_money | currency: '￥'"></td>
+                      <td ng-bind="topic.adjust_pgc_money | currency: '￥'"></td>
+                      <td>
+                        <a ng-href="/wanted/pgcCircle/goodsSale/{{topic.topic_id}}?cir_id={{cir_id}}" class="btn btn-sm btn-primary">查看商品</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination total-items="total_items"></pagination>
+            </see-tab>
+            <see-tab heading="结算历史账单" type="billHistory" see-access="Super-Admin See-Admin Oper" ng-if="isBinded">
+              <div class="row m-t-10">
+                <div class="col-xlg-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                  <div class="widget-info">
+                    <div class="row">
+                      <div class="left">
+                        <i class="fa fa-rmb bg-green"></i>
+                      </div>
+                      <div class="right">
+                        <p class="number countup" ng-bind="history_data.adjust_total_fee | currency: '￥'"></p>
+                        <p class="text">历史结算金额总计</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>结算期</th>
+                      <th>结算金额</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="bill in billList track by $index">
+                      <td ng-bind="bill.settle_date"></td>
+                      <td ng-bind="bill.adjust_total_fee | currency: '￥'"></td>
+                      <td>
+                        <a ng-href="/asset/withdrawDetailTopic/{{bill.settle_date}}?cir_id={{cir_id}}" class="btn btn-sm btn-primary">查看详情</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination total-items="total_items"></pagination>
+            </see-tab>
+          </see-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+
+</footer>

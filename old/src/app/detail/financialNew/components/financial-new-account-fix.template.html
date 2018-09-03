@@ -1,0 +1,88 @@
+<nz-layout id="account-fix">
+  <nz-alert [nzType]="'warning'" [nzMessage]="'Warning'"
+            [nzDescription]="'人工创建入账单仅适用于对错误的入账金额进行对冲或调整的场景，请慎重使用！'" nzShowIcon></nz-alert>
+  <nz-content>
+    <form nz-form [nzType]="'horizontal'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="3">
+          <label nz-form-item-required>入账方</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-select
+            style="width: 200px;"
+            nzAllowClear
+            [nzPlaceHolder]="'搜索小电铺/入账方手机/账号'"
+            [nzFilter]="false"
+            formControlName="kol"
+            (nzSearchChange)="searchChange($event)"
+            [nzNotFoundContent]="'无法找到'"
+            [nzSize]="'large'"
+            nzShowSearch>
+            <nz-option
+              *ngFor="let xdp of searchedXdpList"
+              [nzLabel]="xdp.sellerName"
+              [nzValue]="xdp">
+              <ng-template #nzOptionTemplate>
+                <h5>{{xdp.appTitle || '无小电铺'}}</h5>
+                {{xdp.sellerName}}({{xdp.sellerEmail}})
+              </ng-template>
+            </nz-option>
+          </nz-select>
+          <div nz-form-explain *ngIf="getFormControl('kol').dirty&&getFormControl('kol').hasError('required')">请输入入账方</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="3">
+          <label nz-form-item-required>入账金额</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input-number formControlName="hedgingAmount" [nzStep]="1">
+          </nz-input-number>
+          <div nz-form-explain *ngIf="getFormControl('hedgingAmount').dirty&&getFormControl('hedgingAmount').hasError('required')">请输入入账金额!</div>
+          <div nz-form-explain *ngIf="getFormControl('hedgingAmount').dirty&&getFormControl('hedgingAmount').hasError('fraction')">最多两位小数!</div>
+          <div nz-form-explain *ngIf="getFormControl('hedgingAmount').dirty&&getFormControl('hedgingAmount').hasError('zero')">入账金额不能为0!</div>
+          <div nz-form-explain *ngIf="getFormControl('hedgingAmount').dirty&&getFormControl('hedgingAmount').pending">Validating...</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="3">
+          <label nz-form-item-required>入账类型</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-radio-group formControlName="hedgingType">
+            <label nz-radio [nzValue]="'1'" [nzDisabled]="true">
+              <span>入账调整</span>
+            </label>
+          </nz-radio-group>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="3">
+          <label>关联订单</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control nzHasFeedback>
+          <nz-input formControlName="littleOrderIdList" [nzType]="'textarea'" [nzSize]="'large'" [nzRows]="'4'" [nzPlaceHolder]="'请输入小订单号，英文逗号分隔'">
+          </nz-input>
+          <div nz-form-explain *ngIf="getFormControl('littleOrderIdList').dirty&&getFormControl('littleOrderIdList').hasError('required')">请输入关联账单!</div>
+          <div nz-form-explain *ngIf="orderErrorMsg">{{orderErrorMsg}}</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="3">
+          <label>入账说明</label>
+        </div>
+        <div nz-col [nzSpan]="12" nz-form-control>
+          <nz-input formControlName="hedgingComment" [nzType]="'textarea'" [nzPlaceHolder]="'可对该入账单做详细的背景说明'" [nzRows]="'4'"></nz-input>
+        </div>
+      </div>
+      <div class="form-errors">
+        <div nz-form-explain *ngFor="let err of formErrorsMsg">{{err}}</div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-col [nzOffset]="7" [nzSpan]="12" nz-form-control>
+          <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="!validateForm.valid">提交</button>
+        </div>
+      </div>
+    </form>
+  </nz-content>
+</nz-layout>

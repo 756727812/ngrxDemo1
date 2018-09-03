@@ -1,0 +1,18 @@
+<div class="show-time">
+  <div class="show-time--type">
+    <nz-radio-group class="radio-group" [(ngModel)]="showType" *ngIf="type!==0">
+      <label nz-radio [nzValue]="1">
+        <span>长期显示</span>
+      </label>
+      <label nz-radio [nzValue]="2">
+        <span>时间段显示</span>
+      </label>
+    </nz-radio-group>
+    <ng-container *ngIf="showType===2">
+      <nz-rangepicker class="picker" *ngIf="setDisabledDate;else elseBlock" [(ngModel)]="dateRange" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm'" [nzDisabledDate]="_disabledDate"></nz-rangepicker>
+      <ng-template #elseBlock>
+        <nz-rangepicker class="picker" [(ngModel)]="dateRange" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm'"></nz-rangepicker>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>

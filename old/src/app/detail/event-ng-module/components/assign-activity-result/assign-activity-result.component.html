@@ -1,0 +1,150 @@
+<nz-spin [nzTip]="_spinTip"
+         [nzSpinning]="_isSpinning"
+         class="loading-spin" [hidden]="_isLoading">
+  <div class="scroll-container">
+    <nz-table #nzTable
+              [nzDataSource]="assignActResult"
+              [nzLoading]="_loading"
+              [nzIsPagination]="false">
+      <thead nz-thead>
+        <tr>
+          <th nz-th nzExpand></th>
+          <th nz-th style="width:300px">
+            <span>KOL名称</span>
+          </th>
+          <th nz-th>
+            <span>指派状态</span>
+          </th>
+          <th nz-th>
+            <span>成功指派数</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <ng-template ngFor let-data let-index_1="index" [ngForOf]="nzTable.data">
+          <tr nz-tbody-tr>
+            <td nz-td nzExpand>
+              <nz-row-expand-icon [(nzExpand)]="data.expand"></nz-row-expand-icon>
+            </td>
+            <td nz-td class="name">{{data.kolName}}</td>
+            <td nz-td>
+              <div *ngIf="!data.generateResult">
+                <div class="little-circle success"></div>成功
+              </div>
+              <div *ngIf="data.generateResult">
+                <div class="little-circle fail"></div>部分失败
+              </div>
+            </td>
+            <td nz-td>{{data.generateSuccessCount}}/{{data.allGenerateCount}}</td>
+          </tr>
+
+          <tr nz-tbody-tr *ngIf="data.generateResultItemList && data.generateResultItemList.length && data.expand">
+            <td nz-td></td>
+            <td nz-td colspan="3" class="child-table-wrap">
+              <nz-table #nzTableInside
+                        [nzDataSource]="data.generateResultItemList"
+                        [nzIsPagination]="false">
+                <thead nz-thead>
+                  <tr>
+                    <!-- 使用nzWidth属性在chrome上正常显示，在firefox上表格右边会有空白表格被压缩 -->
+                    <!-- <th nz-th [nzWidth]="'300px'"> -->
+                    <th nz-th style="width:300px">
+                      <span>商品名</span>
+                    </th>
+                    <!-- <th nz-th [nzWidth]="'100px'"> -->
+                    <th nz-th style="width:100px">
+                      <span>指派状态</span>
+                    </th>
+                    <!-- <th nz-th [nzWidth]="'150px'"> -->
+                    <th nz-th style="width:150px">
+                      <span>失败原因</span>
+                    </th>
+                    <th nz-th>
+                      <span>活动时间
+                        <nz-rangepicker *ngIf="!isView && _dateRangeAll[index_1]"
+                        [(ngModel)]="_dateRangeAll[index_1]"
+                        (ngModelChange)="selectTime(index_1,-1,$event)"
+                        [nzFormat]="'YYYY-MM-DD HH:mm'"
+                        nzShowTime></nz-rangepicker>
+                      </span>
+                    </th>
+                    <th nz-th [hidden]="isView">
+                      <span>操作</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody nz-tbody>
+                  <ng-template ngFor let-item let-index_2="index" [ngForOf]="nzTableInside.data">
+                    <tr nz-tbody-tr>
+                      <td nz-td class="name">
+                        {{item.productName}}
+                      </td>
+                      <td nz-td>
+                        <div *ngIf="!item.generateResult">
+                          <div class="little-circle inside success"></div>成功
+                        </div>
+                        <div *ngIf="item.generateResult">
+                          <div class="little-circle inside fail"></div>失败
+                        </div>
+                      </td>
+                      <td nz-td>
+                        {{item.generateResult ? item.failedReason : '无'}}
+                      </td>
+                      <td nz-td *ngIf="isView || !item.edit">
+                        {{item.startTime | date:'yyyy-MM-dd HH:mm'}} ~ {{item.endTime | date:'yyyy-MM-dd HH:mm'}}
+                        <i *ngIf="!isView && !item.generateResult" class="anticon anticon-edit" (click)="item.edit=!item.edit"></i>
+                      </td>
+                      <td nz-td *ngIf="!isView && item.edit">
+                          <!-- <i class="anticon anticon-edit"></i> -->
+                        <nz-rangepicker
+                          [(ngModel)]="_dateRange[index_1 + '-' + index_2]"
+                          (ngModelChange)="selectTime(index_1,index_2,$event)"
+                          [nzFormat]="'YYYY-MM-DD HH:mm'"
+                          nzShowTime></nz-rangepicker>
+                      </td>
+                      <td nz-td [hidden]="isView">
+                        <span [hidden]="item.operationType === 0">
+                          <a [href]="getOperationInfo(item.operationType,index_1,index_2).link" target="_blank">{{getOperationInfo(item.operationType,index_1,index_2).name}}</a>
+                        </span>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </nz-table>
+            </td>
+          </tr>
+
+        </ng-template>
+      </tbody>
+    </nz-table>
+    <div nz-row [nzGutter]="8" [nzType]="'flex'" [nzJustify]="'end'" class="bottom-btn">
+      <div nz-col>
+        <button nz-button *ngIf="isView"
+          (click)="complete()"
+          [nzType]="'primary'"
+          [nzSize]="'default'">
+          <span>退出</span>
+        </button>
+        <button nz-button [hidden]="isView"
+          (click)="complete()"
+          [nzType]="'default'"
+          [nzSize]="'default'">
+          <span>完成</span>
+        </button>
+      </div>
+      <div nz-col *ngIf="!isView && assignOutput.failList.length">
+        <button nz-button
+          (click)="reAssignActivities()"
+          [nzType]="'primary'"
+          [nzSize]="'default'">
+          <span>批量指派</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nz-spin>
+<div *ngIf="_isLoading" class="progress-container" nz-row [nzType]="'flex'" [nzJustify]="'center'" [nzAlign]="middle">
+  <div nz-col>
+    <nz-progress [ngModel]="progress" [nzType]="'circle'"></nz-progress>
+  </div>
+</div>

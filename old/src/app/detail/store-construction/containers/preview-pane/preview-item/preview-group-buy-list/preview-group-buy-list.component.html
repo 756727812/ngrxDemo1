@@ -1,0 +1,103 @@
+<!-- 普通拼团 -->
+<div class="preview-group-buy-list" *ngIf="data.type===32">
+
+  <div [ngSwitch]="styleType">
+
+    <div class="list-title" [hidden]="!icon && !data.mainTitle && !data.subTitle">
+      <div class="icon" [hidden]="!icon">
+        <img [seeSrc]="icon" />
+      </div>
+      <div class="title">{{ data.mainTitle }}</div>
+      <div class="subtitle">{{ data.subTitle }} </div>
+    </div>
+    <div class="goods-info-wrap">
+      <!-- 双列 -->
+      <div *ngSwitchCase="3" class="double-list">
+        <app-preview-group-double-list [items]="config.targets"></app-preview-group-double-list>
+      </div>
+
+      <!-- 详细列表 -->
+      <div *ngSwitchCase="2">
+        <app-preview-group-detail-list [items]="config.targets"></app-preview-group-detail-list>
+      </div>
+
+      <!-- 单列大图 -->
+      <div *ngSwitchCase="1">
+
+        <div class="list-content">
+          <div class="placeholder" *ngIf="!config.targets || config.targets.length === 0">
+            <app-preview-placeholder-item [imgHeight]="207"></app-preview-placeholder-item>
+          </div>
+          <div class="item" *ngFor="let item of config.targets">
+            <span class="group-tip">N人团</span>
+            <div class="main-img">
+              <img alt="" [seeSrc]="item.mainImgUrl || item.bannerUrl" [thumbnail]="'353x207'" />
+            </div>
+            <div class="activity-name">
+              【限量N件】{{item.brandName}}
+            </div>
+            <div class="activity-desc">
+              {{item.sellPoint}}
+            </div>
+            <div class="item-bottom">
+              <small class="price-tip">{{item.type===5?"团长价":"拼团价"}}</small>
+              <div class="price">
+                <span class="groupon-price">￥{{item.grouponPrice || item.minGrouponPrice}}</span>
+                <span class="daily-price">￥{{item.dailyPrice || item.itemPrice}}</span>
+              </div>
+              <img alt="" src="../../../../../../../images/avatars.png" />
+              <div class="buy-btn">
+                去拼团
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+<!-- 抽奖团 -->
+<div class="preview-group-lottery-list" *ngIf="data.type===34">
+  <div class="list-title" [hidden]="!icon && !data.mainTitle && !data.subTitle">
+    <div class="icon" [hidden]="!icon">
+      <img [seeSrc]="icon" />
+    </div>
+    <div class="title">{{ data.mainTitle }}</div>
+    <div class="subtitle">{{ data.subTitle }} </div>
+  </div>
+
+  <div class="list-content">
+    <div class="placeholder" *ngIf="!config.targets || config.targets.length === 0">
+      <app-preview-placeholder-item [imgHeight]="207"></app-preview-placeholder-item>
+    </div>
+    <div class="item" *ngFor="let item of showItems">
+      <div class="main-img">
+        <img alt="" [seeSrc]="item.mainImgUrl" [thumbnail]="'353x207'" />
+      </div>
+      <div class="activity-name">
+        {{item.sellPoint}}
+      </div>
+      <div class="item-bottom">
+        <div class="price">
+          <div>
+            <span class="groupon-price">
+              <i class="si si-huo invalid"></i>￥{{item.grouponPrice}}</span>
+            <span class="daily-price">￥{{item.dailyPrice}}</span>
+          </div>
+          <img alt="" src="../../../../../../../images/avatars.png" />
+        </div>
+        <div class="buy-btn">
+          马上抢
+        </div>
+      </div>
+    </div>
+    <div class="load-more" *ngIf="targets.length > 0" (click)="showMore()">
+      查看更多
+      <div class="triangle"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="header">
+  <h2>
+    <strong>{{vm.title}}</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/goods">商品管理</a></li>
+      <li class="active">商品调价审核</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4 ng-bind="circle.cir_name"></h4>
+        <div class="circle-container group">
+          <see-tabset cur-idex="0">
+            <see-tab heading="待审核" type="needVerify" see-access="Super-Admin PGC-Service See-Admin Oper KOL"></see-tab>
+            <see-tab heading="已通过" type="approved" see-access="Super-Admin PGC-Service See-Admin Oper KOL New-Brand"></see-tab>
+            <see-tab heading="已拒绝" type="rejected" see-access="Super-Admin PGC-Service See-Admin Oper KOL New-Brand"></see-tab>
+          </see-tabset>
+          <div class="table-scrollable" see-viewer>
+            <table class="table price-adjust-table">
+              <thead>
+                <tr>
+                  <th rowspan="2" ng-if="vm.status_type==0"><input name="" type="checkbox" value="" ng-model="vm.markAll" ng-change="vm.markAllChange()"/> 全选</th>
+                  <th width="120" rowspan="2">申请信息/时间</th>
+
+                  <th rowspan="2">商品主图</th>
+                  <th rowspan="2">商品信息</th>
+                  <th rowspan="2">SKU</th>
+                  <th colspan="4">原价</th>
+                  <th colspan="4" style="background-color: #f5f5f5">调价申请</th>
+                  <th width="100" rowspan="2" ng-if="vm.status_type==0">子商品是否<br>自动调价 <input name="" type="checkbox" value="" ng-model="vm.markAllChildAdjust" ng-change="vm.markAllChildAdjustChange()" disabled/></th>
+                  <!-- <th width="100" rowspan="2" ng-if="vm.status_type==0">子商品是否<br>自动调价 <input name="" type="checkbox" value="" ng-model="vm.markAllChildAdjust" ng-change="vm.markAllChildAdjustChange()"/></th> -->
+                  <!-- <th rowspan="2" ng-if="vm.status_type==0">是否短信<br>通知KOL<input name="" type="checkbox" value="" ng-model="vm.markAllSmsInform" ng-change="vm.markAllSmsInformChange()" ng-disabled="!vm.markAllChildAdjust"/></th> -->
+                  <th rowspan="2" ng-if="vm.status_type==0">是否短信<br>通知KOL<input name="" type="checkbox" value="" ng-model="vm.markAllSmsInform" ng-change="vm.markAllSmsInformChange()" disabled/></th>
+                  <th rowspan="2" ng-if="vm.status_type!=0">审核时间</th>
+                  <th rowspan="2" ng-if="vm.status_type!=0">审核状态</th>
+                  <th rowspan="2" ng-if="vm.status_type==2">拒绝原因</th>
+                  <th width="120" rowspan="2" ng-if="vm.status_type==0">操作</th>
+                </tr>
+                <tr>
+                  <th>成本价</th>
+                  <th>日常售价</th>
+                  <th>市场价</th>
+                  <th>默认供货价</th>
+                  <th style="background-color: #f5f5f5"><label class="required">成本价</label></th>
+                  <th style="background-color: #f5f5f5"><label class="required">日常售价</label></th>
+                  <th style="background-color: #f5f5f5"><label class="required">市场价</label></th>
+                  <th style="background-color: #f5f5f5"><label class="required">默认供货价</label></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat-start="adjust in vm.priceAdjustList">
+                  <td rowspan="{{adjust.adjust_detail.length}}" ng-if="vm.status_type==0"><input name="" type="checkbox" value="" ng-model="vm.markedAdjust[adjust.id]"/></td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">
+                    {{adjust.backend_info.seller_name}}<br />{{adjust.backend_info.seller_email}}<br />
+                    {{adjust.apply_time  * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                  </td>
+                  <td rowspan="{{adjust.adjust_detail.length}}"><img alt="{{adjust.item_imgurl}}" class="img-thumbnail" width="100" height="100" see-src="adjust.item_imgurl"
+                                                                     /></td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">ID:{{adjust.item_id}}
+                    <br>名称:{{adjust.item_name}}
+                  </td>
+                  <td>{{adjust.adjust_detail[0].attr_value}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_supply_price}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_sku_price}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_sku_ori_price}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_cost_price}}</td>
+                  <td style="background-color: #f5f5f5"><input name="" type="number" ng-disabled="vm.status_type!=0" ng-model="adjust.adjust_detail[0].supply_price"/></td>
+                  <td style="background-color: #f5f5f5"><input name="" type="number" ng-disabled="vm.status_type!=0" ng-model="adjust.adjust_detail[0].sku_price"/></td>
+                  <td style="background-color: #f5f5f5"><input name="" type="number" ng-disabled="vm.status_type!=0" ng-model="adjust.adjust_detail[0].sku_ori_price"/></td>
+                  <td style="background-color: #f5f5f5"><input name="" type="number" ng-disabled="vm.status_type!=0" ng-model="adjust.adjust_detail[0].cost_price"/></td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">
+                    <span ng-if="vm.status_type!=0">{{adjust.dealt_time * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                    <!-- <input name="" type="checkbox"  ng-if="vm.status_type==0" ng-model="adjust.auto_adjust" ng-true-value="'1'" ng-false-value="'0'" ng-change="vm.autoAdjustChange(adjust)" /> -->
+                    <input name="" type="checkbox"  ng-if="vm.status_type==0" ng-model="adjust.auto_adjust" ng-true-value="'1'" ng-false-value="'0'" ng-change="vm.autoAdjustChange(adjust)" disabled />
+                  </td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">
+                    <span ng-if="vm.status_type!=0">{{adjust.status == 1 ? '已通过' : '已拒绝'}}</span>
+                    <!-- <input name="" type="checkbox" ng-if="vm.status_type==0" ng-model="adjust.sms_inform" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="adjust.auto_adjust=='0'"/> -->
+                    <input name="" type="checkbox" ng-if="vm.status_type==0" ng-model="adjust.sms_inform" ng-true-value="'1'" ng-false-value="'0'" disabled />
+                  </td>
+                  <td rowspan="{{adjust.adjust_detail.length}}" ng-if="vm.status_type!=0">
+                    <span ng-if="vm.status_type==2">{{adjust.reject_reason ? adjust.reject_reason : '无'}}</span>
+                  </td>
+                  <td rowspan="{{adjust.adjust_detail.length}}" ng-if="vm.status_type==0">
+                    <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="vm.approveApply(adjust.id)">通过</button>
+                    <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="vm.rejectApply(adjust.id)">拒绝</button>
+                  </td>
+                </tr>
+                <tr ng-repeat-end ng-repeat="detail in adjust.adjust_detail.slice(1)">
+                  <td>{{detail.attr_value}}</td>
+                  <td>{{detail.ori_supply_price}}</td>
+                  <td>{{detail.ori_sku_price}}</td>
+                  <td>{{detail.ori_sku_ori_price}}</td>
+                  <td>{{detail.ori_cost_price}}</td>
+                  <td style="background-color: #f5f5f5"><input required name="" type="number" ng-disabled="vm.status_type!=0" ng-model="detail.supply_price"/></td>
+                  <td style="background-color: #f5f5f5"><input required name="" type="number" ng-disabled="vm.status_type!=0" ng-model="detail.sku_price"/></td>
+                  <td style="background-color: #f5f5f5"><input required name="" type="number" ng-disabled="vm.status_type!=0" ng-model="detail.sku_ori_price"/></td>
+                  <td style="background-color: #f5f5f5"><input required name="" type="number" ng-disabled="vm.status_type!=0" ng-model="detail.cost_price"/></td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary" ng-click="vm.approveApplyBatch()" ng-if="vm.status_type==0">批量通过</button>
+            <button type="submit" class="btn btn-primary" ng-click="vm.rejectApplyBatch()" ng-if="vm.status_type==0">批量拒绝</button>
+            <pagination total-items="vm.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+
+</footer>

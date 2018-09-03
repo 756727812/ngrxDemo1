@@ -1,0 +1,70 @@
+<div class="modal-header">
+  <i type="button" class="si si-close close" ng-click="$ctrl.closeDialog()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">添加商品分组</h3>
+</div>
+<div class="modal-body">
+  <div>
+
+    <div class="content-wrap">
+      <div class="top-wrap">
+        <a
+          target="_blank"
+          class="btn-group-link"
+          ng-href="{{$ctrl.resolve.groupListHref}}">分组管理</a>
+
+        <form ng-submit="$ctrl.search()">
+          <div class="search-input-wrap">
+            <div class="input-wrap">
+              <input placeholder="请输入分组名" type="text" class="see-input-text" name="keyword"
+                     ng-model="$ctrl.keyword">
+              <i ng-click="$ctrl.resetSearch()" class="si si-close" ng-if="$ctrl.keyword"></i>
+            </div>
+            <button type="submit" class="btn-search"><i class="fa fa-search"></i></button>
+          </div>
+        </form>
+      </div>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th class="name">商品分组名</th>
+          <th>创建时间</th>
+          <th>类型</th>
+          <th>商品数</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in $ctrl.pageData.list track by $index">
+          <td class="name">{{item.categoryName}}</td>
+          <td>{{$ctrl.formatDate(item.createTime)}}</td>
+          <td>{{(item.isSystem || item.type === 1)? '自动' : '手动'}}</td>
+          <td>{{item.commodityCount}}</td>
+          <td class="op">
+            <span ng-if="item.hasRel" class="button btn-cancel" ng-click="$ctrl.removeGroup(item)">取消</span>
+            <span ng-if="!item.hasRel" class="button btn-add"
+                  ng-click="$ctrl.addGroup(item)">添加</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="see-pagination-wrap">
+      <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+      </div>
+      <ul uib-pagination
+          ng-if="$ctrl.pageData.count"
+          total-items="$ctrl.pageData.count"
+          items-per-page="$ctrl.pageData.pageSize"
+          ng-model="$ctrl.pageData.page"
+          ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+          max-size="5"
+          previous-text="上一页"
+          next-text="下一页"
+          boundary-link-numbers="true">
+      </ul>
+    </div>
+
+  </div>
+</div>

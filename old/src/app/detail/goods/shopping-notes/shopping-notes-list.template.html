@@ -1,0 +1,42 @@
+
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="pull-right">
+          <a href="/goods/shopping-notes/add" class="btn btn-primary"><i class="fa fa-plus"></i>创建购物须知</a>
+        </div>
+        <div class="table-scrollable">
+          <table class="table table-hover table-stripped">
+            <thead>
+              <tr>
+                <th>创建时间</th>
+                <th>模板名称</th>
+                <th>目前状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in $ctrl.items.list track by item.id">
+                <td ng-bind="item.createTime | date: 'yyyy-MM-dd'"></td>
+                <td ng-bind="item.name"></td>
+                <td ng-switch on="item.status">
+                  <span ng-switch-when="1" class="label label-success">已启用</span>
+                  <span ng-switch-when="0" class="label label-info">已下线</span>
+                </td>
+                <td>
+                  <a ng-href="/goods/shopping-notes/{{item.id}}" class="btn btn-sm btn-primary">编辑</a>
+                  <button type="button" class="btn btn-sm btn-primary"
+                    ng-click="$ctrl.switchStatus(item.id, item.status)"
+                    ng-bind="item.status === 1 ? '下线' : '启用'"
+                  ></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination total-items="$ctrl.items.count"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

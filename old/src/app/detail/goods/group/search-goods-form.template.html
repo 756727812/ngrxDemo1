@@ -1,0 +1,74 @@
+<form class="goods-group-search-goods-form form-inline search-form" ng-submit="$ctrl.submit()" name="$ctrl.form" novalidate>
+
+  <div class="line-wrap">
+    <span class="labe">商品类型</span>
+    <span class="val-wrap channel">
+      <ui-select class="see-select" ng-model="$ctrl.formData.channelOpt" search-enabled="false">
+        <ui-select-match class="ui-select-match" placeholder="">{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices class="ui-select-choices" repeat="item in $ctrl.CHANNEL_OPTIONS track by item.id">
+          <span ng-bind="item.name"></span>
+        </ui-select-choices>
+      </ui-select>
+    </span>
+
+    <span class="labe">品类</span>
+    <span class="val-wrap category">
+      <ui-select class="see-select" ng-model="$ctrl.formData.categoryOpt" search-enabled="false">
+        <ui-select-match class="ui-select-match" placeholder="">{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices class="ui-select-choices" repeat="item in $ctrl.categoryOptions track by item.id">
+          <span ng-bind="item.name" title="{{item.name}}"></span>
+        </ui-select-choices>
+      </ui-select>
+    </span>
+
+    <span class="labe">售卖状态</span>
+    <span class="val-wrap sale-status">
+      <ui-select class="see-select" ng-model="$ctrl.formData.saleStatusOpt" search-enabled="false">
+        <ui-select-match class="ui-select-match" placeholder="">{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices class="ui-select-choices" repeat="item in $ctrl.saleStatusOptions track by item.id">
+          <span ng-bind="item.name" title="{{item.name}}"></span>
+        </ui-select-choices>
+      </ui-select>
+    </span>
+    <span class="labe">是否隐藏</span>
+    <span class="val-wrap">
+      <ui-select class="see-select" ng-model="$ctrl.formData.isHiddenOpt" search-enabled="false">
+        <ui-select-match class="ui-select-match" placeholder="">{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices class="ui-select-choices" repeat="item in $ctrl.isHiddenOptions track by item.id">
+          <span ng-bind="item.name" title="{{item.name}}"></span>
+        </ui-select-choices>
+      </ui-select>
+    </span>
+
+    <span class="labe">关键字</span>
+    <span class="val-wrap keyword">
+      <input autocomplete="off" class="see-input-text" type="text" name="keyword" ng-model="$ctrl.formData.keyword" placeholder="商品名、品牌名">
+    </span>
+
+    <span class="labe">创建时间</span>
+    <span class="val-wrap date-range">
+      <input clearable="true" autocomplete="off" class="see-input-text" name="rangeDate" ng-model="$ctrl.rangeDate" type="text"
+        date-range-picker options="{locale: {format: 'YYYY/MM/DD'}}" readonly>
+    </span>
+
+    <span class="labe">价格区间 (元)</span>
+    <span class="val-wrap price-range">
+      <input input-mask="POSITIVE_INTEGER" autocomplete="off" class="see-input-text" type="number" name="priceFrom" ng-model="$ctrl.formData.priceFrom">
+      <span class="hyphen"></span>
+      <input input-mask="POSITIVE_INTEGER" autocomplete="off" min="{{$ctrl.formData.priceFrom}}" class="see-input-text" type="number"
+        name="priceTo" ng-model="$ctrl.formData.priceTo">
+    </span>
+
+    <button type="submit" class="btn-search">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+
+  <!-- 错误信息 -->
+  <ul class="see-form-errors" ng-if="$ctrl.form.$submitted && $ctrl.hasError()">
+    <li ng-repeat="item in $ctrl.form.$error.min track by $index">
+      <i class="si si-danger"></i>
+      <span ng-if="item.$name==='priceTo'">售价区间下限不能高于上限</span>
+    </li>
+  </ul>
+</form>

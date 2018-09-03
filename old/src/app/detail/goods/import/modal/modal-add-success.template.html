@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">友情提示</h3>
+</div>
+<div class="modal-body" ng-if="!vm.payload.isBatch">
+  <h4>铺货成功</h4>
+  <p>
+    该商品已铺货至小电铺，可在 “<a href="/goods/all?page=1#0" ng-click="vm.cancel()" target="_blank">所有商品 - 仓库中</a>” tab下查看。
+  </p>
+  <p>请注意：
+    <br> 1.商品需完善信息后方可上架
+    <br> 2.由于从有赞导入的运费模版暂不支持按不同区域设置邮费，你可<a  ng-href="/goods/logistics" target="_blank">点击此处</a>查看导入的运费模版，修改运费信息</p>
+</div>
+<div class="modal-body" ng-if="vm.payload.isBatch">
+  <h4>批量铺货完成</h4>
+  <p>
+    本次已铺货 {{vm.result[1] - vm.result[0]}} 个商品至小电铺，可在“所有商品 - 仓库中” tab下查看。
+  </p>
+  <p>
+    请注意：<br>
+    1.商品需完善信息后方可上架 <br>
+    2.由于从有赞导入的运费模版暂不支持按不同区域设置邮费，你可<a href="/goods/logistics" ng-click="vm.cancel()"  target="_blank">点击此处查看导入的运费模版</a>，修改运费信息 <br>
+  </p>
+  <p>
+    本次有 {{vm.result[0]}} 个商品铺货失败，可<a href="" ng-click="vm.jumpToFailed()">点击此处查看铺货失败的商品</a>
+  </p>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+</div>

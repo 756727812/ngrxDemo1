@@ -1,0 +1,219 @@
+<nz-layout>
+  <div nz-row>
+    <h3 nz-col [nzSpan]="8">
+      {{title}}抽奖福袋
+    </h3>
+  </div>
+  <nz-content>
+    <form *ngIf="type === 'add'" nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()" class="lucky-form">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="productName" nz-form-item-required>商品名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12" nzHasFeedback>
+          <nz-input formControlName="productName" [nzId]="'productName'"></nz-input>
+          <div [hidden]="true" nz-form-explain *ngIf="getFormControl('productName').dirty&&getFormControl('productName').hasError('required')">商品名称不能为空!</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="productPrice" nz-form-item-required>商品价格</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-input-number formControlName="productPrice" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1" [nzMin]="1"></nz-input-number>
+          <span>元</span>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="limitLabel" nz-form-item-required>限量标签</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-input-number formControlName="limitLabel" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1" [nzMin]="1"></nz-input-number>
+          <div nz-form-explain *ngIf="getFormControl('limitLabel').dirty&&getFormControl('limitLabel').hasError('required')">Please input your password!</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="beginBannerImgUrl" nz-form-item-required>开始活动图片</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <!-- [nzAccept]="'image/jpg, image/jpeg, image/png'" -->
+          <nz-upload class="avatar-uploader" [nzAction]="'/api/item/upload'" nzName="image" [nzAccept]="'image/jpg, image/jpeg, image/png'"
+            [nzShowUploadList]="false" (nzChange)="handleChange($event,1)">
+            <i *ngIf="!beginUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+            <img *ngIf="beginUrl" [seeSrc]="beginUrl" class="avatar">
+          </nz-upload>
+          <div style="font-size: 12px">(请上传656x328大小的图片)</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="endBannerImgUrl" nz-form-item-required>结束活动图片</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-upload class="avatar-uploader" [nzAction]="'/api/item/upload'" nzName="image" [nzAccept]="'image/jpg, image/jpeg, image/png'"
+            [nzShowUploadList]="false" (nzChange)="handleChange($event)">
+            <i *ngIf="!endUrl" class="anticon anticon-plus avatar-uploader-trigger"></i>
+            <img *ngIf="endUrl" [seeSrc]="endUrl" class="avatar">
+          </nz-upload>
+          <div style="font-size: 12px">(请上传656x328大小的图片)</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="imageList" nz-form-item-required>商品详情图</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-upload [nzAction]="'/api/item/upload'" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 9"
+            [nzPreview]="handlePreview" [nzAccept]="'image/jpg, image/jpeg, image/png'" nzName="image">
+            <i class="anticon anticon-plus avatar-uploader-trigger "></i>
+          </nz-upload>
+          <div style="font-size: 12px">(请上传656x328大小的图片)</div>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="cancelPreview($event)">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+            </ng-template>
+          </nz-modal>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="date" nz-form-item-required>活动时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <!-- <nz-rangepicker formControlName="dateRange" [nzPlaceholder]="['开始时间', '结束时间']"></nz-rangepicker>
+          <div nz-form-explain *ngIf="getFormControl('dateRange').dirty&&getFormControl('dateRange').hasError('required')">Please input your password!</div> -->
+          <nz-datepicker style="width: 48%;" (ngModelChange)="_startDate=$event;_startValueChange()" formControlName="beginTime" [nzDisabledDate]="_disabledStartDate"
+            nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'开始时间'"></nz-datepicker>
+          <nz-datepicker style="width: 48%;" (ngModelChange)="_endDate=$event;_endValueChange()" formControlName="endTime" [nzDisabledDate]="_disabledEndDate"
+            [nzShowTime]="_endDate" [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'结束时间'"></nz-datepicker>
+          <div nz-form-explain *ngIf="getFormControl('beginTime').dirty&&getFormControl('beginTime').hasError('required')&&getFormControl('endTime').dirty&&getFormControl('endTime').hasError('required')">开始和结束时间不能为空!</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="friendNum" nz-form-item-required>分享人数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-input-number formControlName="friendNum" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1" [nzMin]="1"
+            [nzMax]="5"></nz-input-number>
+          <div nz-form-explain *ngIf="getFormControl('friendNum').dirty&&getFormControl('friendNum').hasError('required')">分享人数不能为空</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="winningIntervalNum" nz-form-item-required>中奖间隔人数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-input-number formControlName="winningIntervalNum" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1" [nzMin]="1"></nz-input-number>
+          <div nz-form-explain *ngIf="getFormControl('winningIntervalNum').dirty&&getFormControl('winningIntervalNum').hasError('required')">Please input your password!</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="luckyBagLimitNum" nz-form-item-required>福袋限量份数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-input-number formControlName="luckyBagLimitNum" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1" [nzMin]="1"></nz-input-number>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="friendOpenLimitNum" nz-form-item-required>好友拆福袋限制次数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <nz-input-number formControlName="friendOpenLimitNum" [nzFormatter]="formatterInt" [nzParser]="parserInt" [nzStep]="1" [nzMin]="1"></nz-input-number>
+        </div>
+      </div>
+      <div nz-form-item nz-row style="margin-bottom:8px;">
+        <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+          <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid">确定</button>
+          <button nz-button (click)="resetForm()">取消</button>
+        </div>
+      </div>
+    </form>
+    <form *ngIf="type === 'view'" nz-form class="lucky-form">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="productName" nz-form-item-required>商品名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.productName}}</div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="productPrice" nz-form-item-required>商品价格</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.productPrice}}元
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="limitLabel" nz-form-item-required>限量标签</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.limitLabel}}</div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="beginBannerImgUrl" nz-form-item-required>开始活动图片</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <img *ngIf="beginUrl" [seeSrc]="beginUrl" class="avatar">
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="endBannerImgUrl" nz-form-item-required>结束活动图片</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <img *ngIf="endUrl" [seeSrc]="endUrl" class="avatar">
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="imageList" nz-form-item-required>商品详情图</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          <img class="avatar" *ngFor="let img of detailData.imageList" [seeSrc]="img" [style.paddingRight]="'10px'">
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="date" nz-form-item-required>活动时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">
+          {{detailData.beginTime}}至{{detailData.endTime}}
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="friendNum" nz-form-item-required>分享人数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.friendNum}}</div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="winningIntervalNum" nz-form-item-required>中奖间隔人数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.winningIntervalNum}}</div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="luckyBagLimitNum" nz-form-item-required>福袋限量份数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.luckyBagLimitNum}}</div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label for="friendOpenLimitNum" nz-form-item-required>好友拆福袋限制次数</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="12">{{detailData.friendOpenLimitNum}}</div>
+      </div>
+      <div nz-form-item nz-row style="margin-bottom:8px;">
+        <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+          <button nz-button (click)="resetForm()">返回</button>
+        </div>
+      </div>
+    </form>
+  </nz-content>
+</nz-layout>

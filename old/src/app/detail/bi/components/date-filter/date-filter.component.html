@@ -1,0 +1,39 @@
+<div class="bi-date-filter">
+  <span class="labe">时间筛选</span>
+  <select class="date-type"
+          (ngModelChange)="onOptionChange($event)"
+          [(ngModel)]="dateType">
+    <option *ngFor="let option of options"
+            [value]="option.val">
+      {{option.label}}
+    </option>
+  </select>
+
+  <div class="range-date-ct picker-ct"
+       [hidden]="dateType!=4">
+    {{curTime}}
+  </div>
+
+
+  <div class="range-date-ct picker-ct"
+       [ngClass]="{hidden:dateType!=2}">
+    <div #rangeDateCt></div>
+  </div>
+
+  <div class="single-week-ct picker-ct"
+       [ngClass]="{hidden:dateType!=3}">
+    <div #singleWeekCt></div>
+  </div>
+
+  <div class="single-month-ct picker-ct"
+       [ngClass]="{hidden:dateType!=5}">
+    <div #singleMonthCt></div>
+  </div>
+
+  <div class="single-day-4-range-ct picker-ct"
+       [ngClass]="{hidden:dateType!=10}">
+    <div #singleDay4RangeCt></div>
+  </div>
+
+
+</div>

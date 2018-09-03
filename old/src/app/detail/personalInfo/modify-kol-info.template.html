@@ -1,0 +1,163 @@
+<div class="header">
+  <h2><strong>账号信息</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">账号信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form name="userForm" class="form-signup w5c-form" role="form" ng-submit="submitForm(userForm)" novalidate w5c-form-validate>
+      <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class=" table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="38.2%">账户信息</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="right">注册邮箱：</td>
+                                <td>{{formData.seller_info.seller_email}}</td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label class="required" style="font-weight:normal">第二邮箱：</label></td>
+                                <td><input type="email" name="email2" class="form-control form-white" placeholder="第二邮箱" ng-model="formData.seller_info.seller_second_email"
+       uib-tooltip="请添加第二邮箱，以确保你不会遗漏任何合作相关通知"
+       tooltip-placement="top-right"
+       tooltip-trigger="'mouseenter focus'" required>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="38.2%">联系人信息</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="right"><label class="required" style="font-weight:normal">联系人姓名：</label></td>
+                                <td>
+                                    <input type="text" name="contacter" class="form-control form-white" placeholder="联系人姓名" ng-model="formData.seller_info.seller_name" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label class="required" style="font-weight:normal">手机号：</label></td>
+                                <td>
+                                    <input type="text" name="contacter" class="form-control form-white" placeholder="手机号" ng-model="formData.seller_info.seller_mobile" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">支付宝账号：</td>
+                                <td>
+                                    <input type="text" name="contacter" class="form-control form-white" placeholder="支付宝账号" ng-model="formData.seller_info.alipay_account">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="100%">平台信息</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <h5>请选择常用的社交平台（至少选择一项）</h5>
+                                    <label class="checkbox-inline w-110" ng-class="{'m-l-10': $index === 0}" ng-repeat="item in platform_info">
+                                      <input icheck type="checkbox" ng-model="item.is_checked" value="{{item.id}}" ng-disabled="item.is_set" >&nbsp;{{item.name}}
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div ng-repeat="item in platform_info" ng-show="item.is_checked">
+                                        <h5  ng-if="item.id === 1"><label class="required" style="font-weight:normal">{{item.name}}信息</label></h5>
+                                        <h5  ng-if="item.id !== 1">{{item.name}}信息</h5>
+                                        <div ng-if="item.id === 1"> <!--微信-->
+                                          <div class="append-icon">
+                                            <input type="text" name="mpname" class="form-control form-white" placeholder="公众号名称" ng-required="item.is_checked"
+                                                ng-model="item.account_name" w5c-dynamic-element>
+                                            <i class="fa fa-wechat"></i>
+                                          </div>
+                                          <div class="append-icon">
+                                            <input type="text" name="mpid" class="form-control form-white" placeholder="公众号微信号" ng-required="item.is_checked"
+                                                ng-model="item.account_id" w5c-dynamic-element
+                                                uib-tooltip="请真实填写你公众号的微信号，以增加通过审核的几率"
+                                                tooltip-placement="top-right"
+                                                tooltip-trigger="'mouseenter focus'">
+                                            <i class="fa fa-wechat"></i>
+                                          </div>
+                                          <div class="append-icon">
+                                            <select name="tag_list" class="form-control form-white m-b-10"
+                                              ng-model="item.fans_count" ng-options="t as t for t in fans_range">
+                                                <option value="" selected>-- 当前粉丝数 --</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div ng-if="item.id > 1">
+                                          <div class="append-icon">
+                                            <input type="text" class="form-control form-white" placeholder="{{item.placeholder}}" ng-required="item.is_checked"
+                                                ng-model="item.account_name"  w5c-dynamic-name="'account_name' + item.id" w5c-dynamic-element>
+                                            <i class="fa" ng-class="item.class"></i>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                   <div class="terms option-group " ng-if="show_term_checked === true">
+                                    <label style="font-weight: normal" class="m-t-10 ">
+                                        <input type="checkbox" icheck name="terms" ng-model="is_term_checked" /> 同意遵守
+                                        <a  href="//static.seecsee.com/seego_backend/See%20&KOL%E5%88%9D%E6%AD%A5%E5%90%88%E4%BD%9C%E6%84%8F%E5%90%91%E4%B9%A6-20161128.pdf" target="_blank">《See &KOL初步合作意向书》</a>
+                                    </label>
+                                  </div>
+                                  <div class="form-group m-b-10 " ng-show="errors.length">
+                                    <div class="alert alert-danger">
+                                      <ui>
+                                        <li ng-repeat="error in errors track by $index" ng-bind="error"></li>
+                                      </ui>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                        <div class="col-sm-7 col-sm-offset-2">
+                                            <button class="btn btn-primary" type="submit">确定</button>
+                                        </div>
+                                  </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+      </div>
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+

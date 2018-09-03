@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <i type="button" class="si si-close close" ng-click="$ctrl.closeModal()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">添加主题</h3>
+</div>
+<div class="modal-body" loading-mask="$ctrl.loading">
+  <div class="top-bar">
+    <span>&nbsp;</span>
+    <form novalidate ng-submit="$ctrl.search()">
+      <input input-clear="submit" ng-model="$ctrl.formData.keyword" type="text" class="see-input-text" placeholder="主题名">
+      <button type="submit" class="see-btn-search">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </div>
+  <div class="sep-line"></div>
+
+  <div class="main">
+    <table class="table table-hover" ng-show="!$ctrl.nonResult">
+      <thead>
+      <tr>
+        <th class="title">主题名</th>
+        <th class="time">创建时间</th>
+        <th class="op">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr ng-repeat="item in $ctrl.pageData.list track by item.id">
+        <td class="title" title="{{item.title}}">{{item.title}}</td>
+        <!--后台缺个创建时间-->
+        <td class="time">{{$ctrl.formatDate(item.createTime)}}</td>
+        <td class="op">
+            <span class="btn-add"
+                  type="button"
+                  ng-click="$ctrl.select(item)">添加</span>
+          <a class="button btn-view"
+             target="_blank"
+             ng-href="/goods-theme-list/{{item.id}}"
+             type="button">查看</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-tips" ng-show="$ctrl.nonResult">没有合适的主题</div>
+  </div>
+  <div class="see-pagination-wrap">
+    <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+    </div>
+    <ul uib-pagination
+        ng-if="$ctrl.pageData.count"
+        total-items="$ctrl.pageData.count"
+        items-per-page="$ctrl.pageData.pageSize"
+        ng-model="$ctrl.pageData.page"
+        ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+        max-size="5"
+        previous-text="上一页"
+        next-text="下一页"
+        boundary-link-numbers="true">
+    </ul>
+  </div>
+</div>

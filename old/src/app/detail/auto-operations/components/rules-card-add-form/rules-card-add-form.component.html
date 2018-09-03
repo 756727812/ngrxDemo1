@@ -1,0 +1,44 @@
+<form nz-form [formGroup]="myForm" (ngSubmit)="submitForm()">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="rule_name" nz-form-item-required>规则名称</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+      <nz-input [nzSize]="'large'" formControlName="rule_name" [nzId]="'rule_name'">
+        <ng-template #addOnAfter>
+          {{ruleNameTextCount}}/{{ruleNameTextLimitCount}}
+        </ng-template>
+      </nz-input>
+      <div *ngIf="getFormControl('rule_name').invalid && (getFormControl('rule_name').dirty || getFormControl('rule_name').touched)">
+        <div nz-form-explain *ngIf="getFormControl('rule_name').errors.required">
+          规则名称 必填
+        </div>
+        <div nz-form-explain *ngIf="getFormControl('rule_name').errors.maxlength">
+          规则名称最长为 {{ruleNameTextLimitCount}} 个汉字
+        </div>
+      </div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="rule_id" nz-form-item-required>初始默认值</label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+      <nz-radio-group [nzSize]="'large'" formControlName="rule_id">
+        <label nz-radio *ngFor="let item of defaultRules" [nzValue]="item.rule_id">
+          <span>{{item.rule_name}}</span>
+        </label>
+      </nz-radio-group>
+      <div *ngIf="getFormControl('rule_id').invalid && (getFormControl('rule_id').dirty || getFormControl('rule_id').touched)">
+        <div nz-form-explain *ngIf="getFormControl('rule_id').errors.required">
+          初始默认值 必填
+        </div>
+      </div>
+    </div>
+  </div>
+  <div nz-form-item nz-row style="margin-bottom:8px;">
+    <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+      <button type="submit" nz-button [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="isLoading">确认</button>
+    </div>
+  </div>
+</form>

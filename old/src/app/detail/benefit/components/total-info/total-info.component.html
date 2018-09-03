@@ -1,0 +1,4 @@
+<ng-template #checkBlock>
+  <div class="total-info"><i class="anticon anticon-info-circle ant-alert-icon" style="color: #1890ff;"></i> 已选择 <span>{{text}}</span> 项</div>
+</ng-template>
+<div class="total-info" *ngIf="type==='total';else checkBlock">共 <span>{{text}}</span> 个商品</div>

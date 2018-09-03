@@ -1,0 +1,45 @@
+<div class="shop-operate-coupon">
+  <h2 class="shop-operate-coupon-title">商城互链</h2>
+  <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="interlinkForm">
+    <div class="form-group">
+      <label class="col control-label required w-130">互链BANNER</label>
+      <div class="col-sm-8">
+        <label class="btn btn-primary m-0">选择
+          <input type="file" class="hide" ngf-select="$ctrl.uploadBanner($file)" accept="image/jpg, image/jpeg, image/png">
+        </label>
+        <span class="text-info">图片格式支持png、jpg</span>
+      </div>
+      <div class="col-sm-8 m-l-130">
+        <div class="img-container banner m-t-15" ng-show="$ctrl.formData.bannerImgUrl">
+          <div class="position-relative">
+            <img see-src="$ctrl.formData.bannerImgUrl" thumbnail="150x150" see-viewer alt="">
+            <a href="" class="img-del-btn" ng-click="$ctrl.formData.bannerImgUrl = ''"></a>
+          </div>
+        </div>
+        <span class="custom-error" ng-show="interlinkForm.$submitted && $ctrl.formData.xiaochengxuPath && !$ctrl.formData.bannerImgUrl"><i class="si si-danger"></i>&nbsp;请上传互链 BANNER</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col control-label required w-130">跳转小程序码</label>
+      <div class="col-sm-8">
+        <label class="btn btn-primary m-0">选择
+          <input type="file" class="hide" ngf-select="$ctrl.uploadWeAppCode($file)" accept="image/*">
+        </label>
+      </div>
+      <div class="col-sm-8 m-l-130">
+        <div class="img-container banner m-t-15" ng-show="$ctrl.formData.xiaochengxuPath">
+          <div class="position-relative">
+            <img see-src="$ctrl.formData.xiaochengxuPath" thumbnail="150x150" see-viewer alt="">
+            <a href="" class="img-del-btn" ng-click="$ctrl.formData.xiaochengxuPath = ''"></a>
+          </div>
+        </div>
+        <span class="custom-error" ng-show="interlinkForm.$submitted && $ctrl.formData.bannerImgUrl && !$ctrl.formData.xiaochengxuPath"><i class="si si-danger"></i>&nbsp;请上传小程序码</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-8 m-l-130">
+        <button type="submit" w5c-form-submit="$ctrl.save()" class="btn btn-primary m-0">保存</button>
+      </div>
+    </div>
+  </form>
+</div>

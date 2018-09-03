@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">手动发放优惠券</h4>
+</div>
+<div class="modal-body">
+    <uib-tabset>
+        <uib-tab heading="手机号" select="setType(1)"></uib-tab>
+        <uib-tab heading="UID" select="setType(2)"></uib-tab>
+    </uib-tabset>
+    <form class="form" role="form">
+        <div class="form-group">
+            <label for="mobileNums" class="control-label">{{type === 1 ? '用户手机号码' : 'UID' }}</label>
+            <textarea rows="10" class="form-control" id="mobileNums" ng-model="mobile_list"></textarea>
+        </div>
+    </form>
+    <p>当前输入{{mobile_list.split('\n').length || '0'}}个{{type === 1 ? '手机号' : 'UID'}}</p>
+    <p>发放数量请勿超过{{limit_user_num}}张</p>
+    <hr>
+    <p>发放前请确定已跟研发核对券码发放优惠券</p>
+    <p>单个用户多次发放请确保发放次数不超过单个用户限定张数,然后根据发放次数输入多次{{type === 1 ? '手机号' : 'UID'}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

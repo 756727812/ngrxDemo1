@@ -1,0 +1,115 @@
+<div class="sortalble-container goods-container" *ngIf="sortableType === 1">
+  <div [sortablejs]="sortableItems" [sortablejsOptions]="sortableOptions">
+    <div class="item-container" *ngFor="let item of sortableItems; index as index">
+      <div class="item-img-container">
+        <img [seeSrc]="item.bannerUrl || item.itemImgurl || item.mainImgUrl" thumbnail="78x78" [alt]="item.activityName">
+        <span *ngIf="item.distanceEndTime < 0">已结束</span>
+      </div>
+      <ellipsis lines="1" style="max-width: 100px;text-align: center;">
+        <a [href]="groupAndSeckillListPath(item.activityName)" target="_blank" class="item-name" [title]="item.activityName">{{item.activityName}}</a>
+      </ellipsis>
+      <!-- <nz-popconfirm [nzTitle]="'确定删除，删除后点击发布在前端生效'" (nzOnConfirm)="delItem(index)"> -->
+      <!-- <a nz-popconfirm class="del-btn"> -->
+      <a class="del-btn" (click)="delItem(index)">
+        <i class="anticon anticon-close"></i>
+      </a>
+      <!-- </nz-popconfirm> -->
+    </div>
+  </div>
+  <a class="add-item-btn" [hidden]="sortableItems.length >= limit" (click)="addItem()">
+    <i class="anticon anticon-plus"></i>
+  </a>
+</div>
+
+<div class="coupon-container" *ngIf="sortableType === 2">
+  <div class="coupon-list" [sortablejs]="sortableItems" [sortablejsOptions]="sortableOptions">
+    <div class="coupon-item" *ngFor="let item of sortableItems;index as index">
+      <div class="coupon-content">
+        <div class="info">
+          <span class="price">
+            <i class="fa fa-yen"></i>{{item.couponPrice || 30}}</span>
+          <span class="condition">满{{item.limitMoney}}元可用</span>
+        </div>
+        <div class="status">
+          <span>领取</span>
+        </div>
+      </div>
+      <div class="coupon-item-detail">
+        <div class="coupon-item-detail--left">
+          <div class="coupon-item-title">
+            <span class="coupon-item-perid-title">有效期</span>
+            <span [ngClass]="[ 'coupon-item-perid-status', couponStatusClassMap[item.status]]" [innerText]="item.status | couponStatus"></span>
+          </div>
+          <p class="coupon-item-perid">{{ item.avaliableTimeStart | date: 'yyyy-MM-dd HH:mm' }}～{{ item.avaliableTimeEnd | date: 'yyyy-MM-dd HH:mm' }}</p>
+        </div>
+        <div class="coupon-item-detail--right">
+          <div class="pick-wrap">
+            <nz-rangepicker class="date-picker" nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm'" [(ngModel)]="item._dateRange" (ngModelChange)="handleDateRangeNgModelChange(item, $event)"
+              [nzDisabledDate]="_disabledDate">
+            </nz-rangepicker>
+          </div>
+          <a [hidden]="item._dateRange&&(item._dateRange[0]||item._dateRange[1])" (click)="openDatePicker(index)">显示时间</a>
+          <div *ngIf="item._dateRange&&(item._dateRange[0]||item._dateRange[1])" class="date-display">
+            <div class="text-wrap" (click)="openDatePicker(index)">
+              <span>{{item._dateRange[0] | date: 'MM.dd'}}</span>~
+              <span>{{item._dateRange[1] | date: 'MM.dd'}}</span>
+            </div>
+            <i (click)="clearDateRange(index, $event)" class="si si-close2"></i>
+          </div>
+        </div>
+      </div>
+      <nz-popconfirm [nzTitle]="'确定删除，删除后点击发布在前端生效'" (nzOnConfirm)="delItem(index)">
+        <a nz-popconfirm class="del-btn">
+          <i class="anticon anticon-close"></i>
+        </a>
+      </nz-popconfirm>
+    </div>
+  </div>
+  <div class="coupon-add-btn" [hidden]="sortableItems.length >= limit">
+    <a (click)="addItem()">
+      <i class="anticon anticon-plus"></i>添加优惠券
+    </a>
+  </div>
+</div>
+
+<div class="sortalble-container" *ngIf="sortableType === 3">
+  <div [sortablejs]="sortableItems" [sortablejsOptions]="sortableOptions">
+    <div class="item-container" *ngFor="let item of sortableItems; index as index">
+      <div class="item-img-container">
+        <img [seeSrc]="item.imgurl" thumbnail="78x78" [alt]="item.item_name">
+      </div>
+      <ellipsis lines="1" style="max-width: 100px">
+        <span class="item-name" [title]="item.item_name" [innerText]="item.item_name"></span>
+      </ellipsis>
+      <!-- <nz-popconfirm [nzTitle]="'确定删除，删除后点击发布在前端生效'" (nzOnConfirm)="delItem(index)"> -->
+      <a class="del-btn" (click)="delItem(index)">
+        <i class="anticon anticon-close"></i>
+      </a>
+      <!-- </nz-popconfirm> -->
+    </div>
+  </div>
+  <a class="add-item-btn" [hidden]="sortableItems.length >= limit" (click)="addItem()">
+    <i class="anticon anticon-plus"></i>
+  </a>
+</div>
+
+<div class="sortalble-container" *ngIf="sortableType === 4">
+  <div class="category-list" [sortablejs]="sortableItems" [sortablejsOptions]="sortableOptions">
+    <div class="category" *ngFor="let item of sortableItems;index as index">
+      <div class="category-info">
+        <span class="name">{{item.categoryName.replace('（系统默认）', '')}}</span>
+        <a [href]="getCategorySearchLink(item)" target="_blank">修改名称</a>
+      </div>
+      <nz-popconfirm [nzTitle]="'确定删除，删除后点击发布在前端生效'" (nzOnConfirm)="delItem(index)">
+        <a nz-popconfirm class="del-btn">
+          <i class="anticon anticon-close"></i>
+        </a>
+      </nz-popconfirm>
+    </div>
+  </div>
+  <div class="category-add-btn" [hidden]="sortableItems.length >= limit">
+    <a (click)="addItem()">
+      <i class="anticon anticon-plus"></i>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="group-and-seckill-goods">
+  <form nz-form [formGroup]="formGroup" [nzLayout]="'vertical'" (ngSubmit)="emitSave()">
+
+    <div class="module-title fieldset">
+
+      <div class="module-title-action">
+        <h2>模块名称</h2>
+        <nz-popconfirm [nzTitle]="'确定要恢复默认吗？'" (nzOnConfirm)="resetForm()">
+          <a nz-popconfirm>恢复默认</a>
+        </nz-popconfirm>
+      </div>
+
+      <div nz-row [nzGutter]="10">
+        <div nz-col [nzSpan]="12">
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="24">
+              <label>主标题</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="24">
+              <nz-input formControlName="mainTitle" (nzBlur)="emitSave($event)" inputLenPostfix="6" [nzPlaceHolder]="'主标题'"></nz-input>
+              <div nz-form-explain *ngIf="formErrors.mainTitle">{{formErrors.mainTitle}}</div>
+            </div>
+          </div>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="24">
+              <label>副标题</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="24">
+              <nz-input formControlName="subTitle" (nzBlur)="emitSave($event)" inputLenPostfix="12" [nzPlaceHolder]="'副标题'"></nz-input>
+              <div nz-form-explain *ngIf="formErrors.subTitle">{{formErrors.subTitle}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label>
+          <label>标题图标</label>
+        </div>
+        <div nz-form-control>
+          <app-icon-radio-group formControlName="icon" (radioChange)="emitSave($event)"></app-icon-radio-group>
+          <div nz-form-explain *ngIf="formErrors.icon">{{formErrors.icon}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-xl" nz-form-item nz-row *ngIf="isGroupBuy || isSkill">
+      <div nz-form-label class="">
+        <label>排布样式</label>
+      </div>
+      <div nz-form-control>
+        <nz-radio-group formControlName="styleType" *ngIf="isGroupBuy" (click)="emitSave($event)">
+          <!--<label nz-radio [nzValue]="1">
+            <span>单列大图</span>
+          </label>-->
+          <label nz-radio [nzValue]="3">
+            <span>双列小图</span>
+          </label>
+          <label nz-radio [nzValue]="2">
+            <span>详细列表</span>
+          </label>
+        </nz-radio-group>
+        <nz-radio-group formControlName="styleType" *ngIf="isSkill" (click)="emitSave($event)">
+          <label nz-radio [nzValue]="1">
+            <span>横排滑动</span>
+          </label>
+          <label nz-radio [nzValue]="2">
+            <span>纵向列表</span>
+          </label>
+        </nz-radio-group>
+        <div nz-form-explain *ngIf="formErrors.styleType">{{formErrors.styleType}}</div>
+      </div>
+    </div>
+
+    <div class="mt-xl" nz-form-item nz-row *ngIf="!isLotteryGroup">
+      <div nz-form-label class="">
+        <label>添加方式</label>
+      </div>
+      <div nz-form-control>
+        <nz-radio-group formControlName="method" (click)="emitSave($event)">
+          <label nz-radio [nzValue]="0">
+            <span>手动添加</span>
+          </label>
+          <label nz-radio [nzValue]="1">
+            <span>自动添加
+              <i class="anticon anticon-exclamation-circle" nz-tooltip="{{defaultValue.tips}}"></i>
+            </span>
+          </label>
+          <label nz-radio [nzValue]="2" *ngIf="isAdmin">
+            <span>活动模式</span>
+          </label>
+        </nz-radio-group>
+        <div nz-form-explain *ngIf="formErrors.method">{{formErrors.method}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="formGroup.value.method === 2">
+      <div nz-form-control>
+        活动时间
+        <app-show-time formControlName="activityTime" (change)="emitSave($event)" [type]="0"></app-show-time>
+        <div nz-form-explain class="m-t-10" *ngIf="formErrors.activityTime">{{formErrors.activityTime}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="formGroup.value.method !== 0">
+      <div nz-form-control>
+        显示个数
+        <nz-input-number formControlName="showCount"  [nzParser]="parserInt" (nzBlur)="emitSave($event)" [nzMin]="1" [nzMax]="99"></nz-input-number>
+        <div nz-form-explain *ngIf="formErrors.showCount">{{formErrors.showCount}}</div>
+      </div>
+    </div>
+    <div class="mt-xl" nz-form-item nz-row *ngIf="formGroup.value.method === 0">
+      <app-common-len-form-label [label]="defaultValue.addTitle" [limit]="limit" [length]="promotionListLen" [note]="defaultValue.addDesc"></app-common-len-form-label>
+      <div nz-form-control>
+        <sortableItems class="sortable-items" formControlName="promotionList" (change)="emitSave($event)" [type]="_type"></sortableItems>
+        <div nz-form-explain class="m-t-10" *ngIf="formErrors.promotionList">{{formErrors.promotionList}}</div>
+      </div>
+    </div>
+
+    <div class="mt-xl" nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>显示时间</label>
+        <p class="title-explain">让该模块在指定的时间内显示在小电铺，点击发布后生效</p>
+      </div>
+      <div nz-form-control>
+        <app-show-time formControlName="showTime" (change)="emitSave($event)"></app-show-time>
+        <div nz-form-explain class="m-t-10" *ngIf="formErrors.showTime">{{formErrors.showTime}}</div>
+      </div>
+    </div>
+
+    <button hidden></button>
+  </form>
+</div>

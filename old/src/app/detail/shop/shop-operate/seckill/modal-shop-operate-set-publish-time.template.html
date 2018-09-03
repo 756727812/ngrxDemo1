@@ -1,0 +1,35 @@
+<div class="modal-shop-operate-add-coupon">
+  <div class="modal-header bg-primary">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">设置{{ $ctrl.resolve.title }}时间</h3>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="seckillForm">
+      <div class="form-group"
+        ng-class="{ 'has-custom-error': seckillForm.$submitted && ($ctrl.endTimeInvalid() || $ctrl.nowTimeInvalid()) }"
+      >
+        <label class="col-sm-2 control-label required">{{ $ctrl.resolve.title }}时间</label>
+        <div class="col w-200">
+          <div class="dropdown" style="margin-bottom: 10px;display: inline-block;width: 100%;">
+            <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+              <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" ng-model="$ctrl.formData.releaseTime">
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <datetimepicker data-ng-model="$ctrl.formData.releaseTime"
+                data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"
+                data-before-render="$ctrl.beforeRenderPublishTime($view, $dates, $leftDate, $upDate, $rightDate)"
+              />
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+          <span class="custom-error" ng-show="$ctrl.error"><i class="si si-danger"></i>&nbsp;{{ $ctrl.error }}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" w5c-form-submit="$ctrl.ok()">确认</button>
+        <button class="btn dark btn-outline" type="button" ng-click="$ctrl.cancel()">取消</button>
+      </div>
+    </form>
+  </div>
+</div>

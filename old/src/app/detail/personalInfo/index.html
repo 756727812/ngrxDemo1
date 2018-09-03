@@ -1,0 +1,66 @@
+<div ng-controller="indexController">
+  <div class="header">
+    <h2 ng-show="currentType == 'account' && !action"><strong>账号信息</strong></h2>
+
+    <h2 ng-show="currentType == 'circle'"><strong>圈子信息</strong><span style="">{{cir_name}}</span>
+</h2>
+
+<h2 ng-show="currentType == 'flow'"><strong>我的Seego物流</strong></h2>
+
+<h2 ng-show="currentType == 'im'"><strong>IM公告</strong></h2>
+
+<h2 ng-show="currentType == 'account' && action == 'modifypwd'"><strong>修改密码</strong></h2>
+
+<h2 ng-show="currentType == 'account' && action == 'modifyuser'"><strong>修改{{isC2C ? '商户' : '达人'}}描述</strong></h2>
+
+<h2 ng-show="currentType == 'account' && action == 'modifyinfo'"><strong>修改个人信息</strong></h2>
+
+<h2 ng-show="currentType == 'account' && action == 'modifyinfo-kol'"><strong>修改个人信息</strong></h2>
+
+<div class="breadcrumb-wrapper">
+  <ol class="breadcrumb">
+    <li><a href="/">Seego后台</a></li>
+    <li><a href="/index">个人信息</a></li>
+    <li ng-show="currentType == 'account' && !action" class="active">账号信息</li>
+    <li ng-show="currentType == 'circle'" class="active">圈子信息</li>
+    <li ng-show="currentType == 'flow'" class="active">我的Seego物流</li>
+    <li ng-show="currentType == 'im'" class="active">IM公告</li>
+    <li ng-show="currentType == 'account' && action == 'modifypwd'" class="active">修改密码</li>
+    <li ng-show="currentType == 'account' && action == 'modifyuser'" class="active">修改{{isC2C ? '商户' : '达人'}}描述</li>
+    <li ng-show="currentType == 'account' && action == 'modifyinfo'" class="active">修改个人信息</li>
+  </ol>
+</div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content" ng-include="template">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="header">
+  <h2><strong>账号信息</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">账号信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+
+      </div>
+    </div>
+  </div>
+</div>
+

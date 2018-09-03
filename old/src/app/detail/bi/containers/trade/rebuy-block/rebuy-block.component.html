@@ -1,0 +1,80 @@
+<nz-spin [nzSpinning]="busy">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel bi-panel">
+        <div class="panel-content">
+          <div class="h">
+            <div class="left">
+              <span class="h-txt">
+                访客复购率
+                <app-bi-mark-tip tipName="BI_TRADE_REBUY"></app-bi-mark-tip>
+              </span>
+              <ul class="cycle-toggle">
+                <li *ngFor="let item of cycleTypeOptions;let i = index;"
+                    [ngClass]="{active:curCycleType === item.value}"
+                    [hidden]="item.hidden"
+                    (click)="onToggleCycle(item)">
+                  {{item.label}}
+                </li>
+              </ul>
+            </div>
+            <div class="right">
+              <app-bi-date-filter class="date-filter"
+                                  [types]="dateTypeOptions"
+                                  (ngModelChange)="onDateFilterModelChange($event)"
+                                  [(ngModel)]="dateVal"></app-bi-date-filter>
+              <a class="btn-export"
+                 (click)="exportExcel()">导出</a>
+            </div>
+            <!-- TODO component -->
+            <!-- <a #export (click)="export()">导出</a> -->
+          </div>
+          <div class="clearfix main">
+            <div class="top chart-ct">
+              <div class="chart"
+                   #chart>
+              </div>
+
+              <div class="table-wrap"
+                   *ngIf="lineData&&lineData.length">
+                <table id="bi-trade-rebuy-table"
+                       class="table table-hover table-striped bi-rebuy-table">
+                  <thead>
+                    <tr>
+                      <th>访问时间</th>
+                      <th>总付款人数</th>
+                      <th>新付款人数</th>
+                      <th>新付款人数占比</th>
+                      <!--  TODO 如果是月... -->
+                      <th *ngFor="let thItem of lineData[0].rebuy_list;let i = index;">
+                        第 {{i+1}} {{curCycleType === 'week' ? '周': '月'}}复购
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of lineData">
+                      <td class="date">{{fmtTableDate(item)}}</td>
+                      <td>{{item.user_num | number}}</td>
+                      <td>{{item.new_user_num | number}}</td>
+                      <td>{{item.user_rate | percent:'.2' }}</td>
+                      <!--  TODO 如果是月... -->
+                      <td *ngFor="let rebuyItem of item.rebuy_list;"
+                          class="rebuy">
+                        <!-- <div>
+                          {{rebuyItem.value | number}}
+                        </div> -->
+                        <!-- <div> -->
+                        {{rebuyItem.rebuy_rate | percent:'.2' }}
+                        <!-- </div> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

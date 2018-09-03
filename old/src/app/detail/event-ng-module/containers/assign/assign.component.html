@@ -1,0 +1,16 @@
+<div class="panel">
+  <div class="panel-content">
+    <h1>拼团活动批量指派</h1>
+    <nz-tabset [nzTabPosition]="'top'"
+               [nzType]="'card'">
+      <nz-tab>
+        <ng-template #nzTabHeading>拼团模板列表</ng-template>
+        <app-event-list></app-event-list>
+      </nz-tab>
+      <nz-tab>
+        <ng-template #nzTabHeading>指派记录</ng-template>
+        <app-event-logs></app-event-logs>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>

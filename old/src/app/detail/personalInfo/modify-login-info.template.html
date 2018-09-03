@@ -1,0 +1,56 @@
+<div class="header">
+  <h2><strong>修改登录信息</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">修改登录信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" name="loginInfoForm" novalidate w5c-form-validate>
+          <div class="form-group">
+            <div class="form-group" ng-class="{'has-error': loginInfoForm.seller_name.$touched && loginInfoForm.seller_name.$invalid}">
+              <label class="col-sm-2 control-label required">昵称</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" name="seller_name" ng-model="login_info.seller_name" required />
+              </div>
+              <div class="col-sm-3 help-see" ng-show="loginInfoForm.seller_name.$touched && loginInfoForm.seller_name.$invalid">
+                <p class="help-block">请填写昵称</p>
+              </div>
+            </div>
+            <!-- <div class="form-group" ng-class="{'has-error': loginInfoForm.seller_email.$touched && loginInfoForm.seller_email.$invalid}">
+              <label class="col-sm-2 control-label required">登录邮箱</label>
+              <div class="col-sm-7">
+                <input class="form-control" type="email" name="seller_email" required ng-model="login_info.seller_email">
+              </div>
+              <div class="col-sm-3 help-see" ng-show="loginInfoForm.seller_email.$touched && loginInfoForm.seller_email.$invalid">
+                <p class="help-block">请输入登录邮箱</p>
+              </div>
+            </div> -->
+            <div class="form-group" ng-class="{'has-error': confirmtext}">
+              <label class="col-sm-2 control-label required">登录手机</label>
+              <div class="col-sm-7">
+                <input class="form-control" ng-blur="checknewpwd()" type="text" name="ori_pwd" required ng-model="login_info.seller_mobile">
+              </div>
+              <div class="col-sm-3 help-see" ng-show="confirmtext">
+                <p class="help-block">请输入登录手机</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-7 col-sm-offset-2">
+                <button class="btn btn-primary" type='submit' w5c-form-submit="submitFrom(loginInfoForm)">确定</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

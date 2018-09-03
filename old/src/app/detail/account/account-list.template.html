@@ -1,0 +1,221 @@
+<div class="header">
+
+  <h2><strong>账号列表</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/account">账号管理</a></li>
+      <li class="active">账号列表</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div>
+          <see-tabset>
+            <see-tab heading="{{t.name + '账号'}}" ng-repeat="t in $ctrl.accountStatus" select="$ctrl.selectTab()" type="{{t.type}}">
+            </see-tab>
+          </see-tabset>
+          <form class="form-inline" role="form">
+            <div class="form-group">
+              <label class"control-label">账号名称
+                				<input type="search" class="form-control" id="exampleInputEmail2" placeholder="账号名、邮箱" ng-model="$ctrl.account_keyword">
+              				</label>
+
+              				<label ng-if="$ctrl.cur_select_type == 30" class"control-label">跟进人
+                				<input type="search" class="form-control" id="check_account" placeholder="跟进人账号名、跟进人邮箱" ng-model="$ctrl.check_account">
+              				</label>
+
+
+              <button type="submit" class="btn btn-primary" ng-click="$ctrl.filterByKeyWord()">搜索</button>
+            </div>
+            <div class="form-group"  see-hide="See-Admin">
+              <div class="btn-group" uib-dropdown>
+                <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                  <b ng-bind="$ctrl.select_type_name"></b>
+                  <i class="fa fa-angle-down"></i>
+                </button>
+                <ul uib-dropdown-menu>
+                  <li ng-repeat="t in $ctrl.accountType">
+                    <a ng-bind="t.name" ng-click="$ctrl.filterByType(t.id, t.name)"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="form-group" ng-if="$ctrl.cur_select_type == 24" see-access="Super-Admin">
+              <a class="btn btn-primary m-b-10" target="_blank" download ng-href="/api/user/exportList?select_type={{$ctrl.cur_select_type}}">
+                <i class="fa fa-file-excel-o"></i>导出列表</a>
+            </div>
+          </form>
+          <div class="table-scrollable">
+            <table class="table table-striped table-hover m-t-20">
+              <thead>
+                <tr>
+                  <th> 名称</th>
+                  <th> 邮箱</th>
+                  <th> 账号类型</th>
+                  <th> 已绑定用户ID</th>
+                  <th> 主营商品发货国家</th>
+                  <th> 商户居住所在国</th>
+                  <th> 账号状态</th>
+                  <th ng-if="$ctrl.cur_select_type == 30">可用余额</th>
+                  <th ng-if="$ctrl.cur_select_type == 30">保证金</th>
+                  <th ng-if="$ctrl.cur_select_type == 30">欠款额度</th>
+                  <th ng-if="$ctrl.cur_select_type == 30">跟进人</th>
+                  <th> 操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="t in $ctrl.aclist track by t.id">
+                  <td ng-if="t.seller_privilege !== '24'" ng-bind="t.seller_name"></td>
+                  <td ng-if="t.seller_privilege === '24'">
+                    <a href="" see-access="Super-Admin See-Admin Elect-Admin KOL-Admin" editable-textarea="t.seller_name" e-rows="1" e-cols="16"
+onbeforesave="$ctrl.updateSellerNameForKol($data, t.id)"><i class="fa fa-pencil-square-o"></i>{{t.seller_name}}</a>
+                  </td>
+
+                  <td ng-bind="t.seller_email"></td>
+                  <td ng-bind="t.seller_privilege_name"></td>
+                  <td ng-bind="t.bind_u_ids"></td>
+                  <td ng-bind="t.ship_country_data.location || '未知'"></td>
+                  <td ng-bind="t.country_data.location || '未知'"></td>
+                  <td><span class="label {{t.label_class}}" ng-bind="t.seller_status"></span></td>
+
+                  <td ng-if="$ctrl.cur_select_type == 30"><i ng-if="t.available_amount_flag === 1" class="fa fa-exclamation-triangle text-danger"></i>可用余额：{{t.available_amount}}</td>
+                  <td ng-if="$ctrl.cur_select_type == 30">保证金：{{t.cash_deposit}}，缴纳：{{t.str_is_pay}}</td>
+                  <td ng-if="$ctrl.cur_select_type == 30">{{t.str_debt_group}}</td>
+                  <td ng-if="$ctrl.cur_select_type == 30">
+                    {{t.check_backend_info.seller_name}}
+                    <br />{{t.check_backend_info.seller_email}}
+                  </td>
+                  <td ng-if="t.seller_privilege == 40">
+                      <button type="button" class="btn btn-sm btn-danger" ng-repeat="tt in t.operate" ng-bind="tt.name" ng-click="$ctrl.open(tt.id,t)"></button>
+                  </td>
+                  <td ng-if="t.seller_privilege != 40">
+                    <button type="button" class="btn btn-sm btn-danger" ng-repeat="tt in t.operate" ng-bind="tt.name" ng-click="$ctrl.open(tt.id,t)" see-hide="Fin_Admin"></button>
+                    <button type="button" ng-if="$ctrl.getAccountInfo(t.seller_privilege)" ng-click="$ctrl.openAccount(t)" class="btn btn-sm btn-primary">查看账号</button>
+                    <button type="button" ng-if="t.seller_privilege!=1" ng-click="$ctrl.modifySellerRole(t.id, 1)" class="btn btn-sm btn-primary" see-hide="Fin_Admin">转为供货用户</button>
+
+                    <div  class="btn-group" uib-dropdown see-hide="Fin_Admin" ng-if="t.seller_privilege == 1 || t.seller_privilege == 30" >
+                      <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle ng-disabled="$ctrl.select_status==0">{{t.seller_tag_name}}<i class="fa fa-angle-down"></i></button>
+                      <ul style="position:relative; z-index:99999;" uib-dropdown-menu>
+                        <li ng-repeat="tag in $ctrl.seller_tag">
+                          <a ng-bind="tag.name" ng-click="$ctrl.updatePriceTag(t.id, tag.id)"></a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_weiqushi === '1' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockWeiqushi(t.id, t.block_weiqushi)">
+                      <div id="div1" class="close1">
+                        <div id="div2" class="close2"></div>
+                      </div>
+                      <span>微信趋势</span>
+                    </a>
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_weiqushi === '0' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockWeiqushi(t.id, t.block_weiqushi)">
+                      <div id="div1" class="open1">
+                        <div id="div2" class="open2"></div>
+                      </div>
+                      <span>微信趋势</span>
+                    </a>
+
+                    <a  class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_yuqing === '1' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockYuqing(t.id, t.block_yuqing)">
+                      <div id="div1" class="close1">
+                        <div id="div2" class="close2"></div>
+                      </div>
+                      <span>微信舆情</span>
+                    </a>
+                    <a  class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_yuqing === '0' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockYuqing(t.id, t.block_yuqing)">
+                      <div id="div1" class="open1">
+                        <div id="div2" class="open2"></div>
+                      </div>
+                      <span>微信舆情</span>
+                    </a>
+
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_fashion === '1' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockFashion(t.id, t.block_fashion)">
+                      <div id="div1" class="close1">
+                        <div id="div2" class="close2"></div>
+                      </div>
+                      <span>素材库</span>
+                    </a>
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_fashion === '0' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockFashion(t.id, t.block_fashion)">
+                      <div id="div1" class="open1">
+                        <div id="div2" class="open2"></div>
+                      </div>
+                      <span>素材库</span>
+                    </a>
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_kolhome === '1' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockKolHome(t.id, t.block_kolhome)">
+                      <div id="div1" class="close1">
+                        <div id="div2" class="close2"></div>
+                      </div>
+                      <span>主页</span>
+                    </a>
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_kolhome === '0' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockKolHome(t.id, t.block_kolhome)">
+                      <div id="div1" class="open1">
+                        <div id="div2" class="open2"></div>
+                      </div>
+                      <span>主页</span>
+                    </a>
+
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_hotitem === '1' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockHotItem(t.id, t.block_hotitem)">
+                      <div id="div1" class="close1">
+                        <div id="div2" class="close2"></div>
+                      </div>
+                      <span>单品</span>
+                    </a>
+                    <a class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.block_hotitem === '0' && t.seller_privilege == 24" ng-click="$ctrl.updateBlockHotItem(t.id, t.block_hotitem)">
+                      <div id="div1" class="open1">
+                        <div id="div2" class="open2"></div>
+                      </div>
+                      <span>单品</span>
+                    </a>
+
+                    <a  class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.is_skip_main_body === '0' && t.seller_privilege == 30" ng-click="$ctrl.updateIsSkipMainBody(t.id, t.is_skip_main_body)">
+                      <div id="div1" class="close1">
+                        <div id="div2" class="close2"></div>
+                      </div>
+                      <span>小电铺跳过主体选择</span>
+                    </a>
+                    <a  class="temp-detail-switch" see-hide="Fin_Admin" href ng-if="t.is_skip_main_body === '1' && t.seller_privilege == 30" ng-click="$ctrl.updateIsSkipMainBody(t.id, t.is_skip_main_body)">
+                      <div id="div1" class="open1">
+                        <div id="div2" class="open2"></div>
+                      </div>
+                      <span>小电铺跳过主体选择</span>
+                    </a>
+
+                    <a class="temp-detail-switch" see-access="Super_Admin Elect_Admin KOL_Admin" href ng-if="t.seller_privilege == 30" ng-click="$ctrl.updateRoleHotItemAccessPermission(t.id, t.hot_item_flag)">
+                      <div id="div1" ng-class="{ 'close1': t.hot_item_flag == 0, 'open1': t.hot_item_flag == 1 }">
+                        <div id="div2" ng-class="{ 'close2': t.hot_item_flag == 0, 'open2': t.hot_item_flag == 1 }"></div>
+                      </div>
+                      <span>热门单品库显示</span>
+                    </a>
+
+                    <a class="temp-detail-switch" see-access="Super_Admin Elect_Admin KOL_Admin" href ng-if="t.seller_privilege == 30" ng-click="$ctrl.updateRoleTopicItemAccessPermission(t.id, t.topic_item_flag)">
+                      <div id="div1" ng-class="{ 'close1': t.topic_item_flag == 0, 'open1': t.topic_item_flag == 1 }">
+                        <div id="div2" ng-class="{ 'close2': t.topic_item_flag == 0, 'open2': t.topic_item_flag == 1 }"></div>
+                      </div>
+                      <span>主题库显示</span>
+                    </a>
+
+
+                    <div see-hide="Fin_Admin" ng-if="t.seller_privilege == 1 || t.seller_privilege == 30" class="btn-group" uib-dropdown>
+                      <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>{{t.seller_im_name}}<i class="fa fa-angle-down"></i></button>
+                      <ul style="position:relative; z-index:99999;" uib-dropdown-menu>
+                        <li ng-repeat="im in $ctrl.seller_im">
+                          <a ng-bind="im.name" ng-click="$ctrl.updateIm(t.id, im.id)"></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination total-items="$ctrl.total_items"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

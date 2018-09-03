@@ -1,0 +1,179 @@
+<div class="header">
+  <h2><strong>新建批量规则</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">新建批量规则</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="validateForm">
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">规则名称</label>
+                <div class="col-sm-10">
+                    <input type="text" name="name" ng-model="formData.rule_name" required="" class="form-control" placeholder="请输入规则名称" type="number">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">执行时间</label>
+                <div class="col-sm-10">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                            <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" data-ng-model="dateTimePicker" required="">
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="dateTimePicker" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" data-on-set-time="onSetTime(newDate, oldDate)"
+                            />
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">执行操作</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline" see-hide = "C2C-Seller New-Brand">
+                        <input type="radio" ng-model="formData.exec_type"  value="off"> 下架
+                    </label>
+                    <!--<label class="radio-inline">
+                        <input ng-change="showTab()" type="radio" ng-model="formData.exec_type"  value="modifyItemPrice"> 修改商品价格
+                    </label>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">选择商品</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline" ng-show="formData.exec_type == 'off'">
+                        <input type="radio" ng-model="formData.selectGoodsType"  value="1"> 按条件添加商品
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="formData.selectGoodsType"  value="2"> 批量输入商品ID
+                    </label>
+                    <label class="radio-inline" see-access="C2C-Seller New-Brand">
+                        <input type="radio" ng-model="formData.selectGoodsType"  value="3"> 所有商品
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" ng-show="formData.selectGoodsType == 1 && formData.exec_type == 'off'" see-hide = "C2C-Seller New-Brand">
+                <label class="col-sm-2 control-label"></label>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <select class="form-control" ng-model="formData.ship_country" ng-required="formData.selectGoodsType == 1" name="location"
+                            ng-options="location.location as location.location for location in countryList track by location.location_id">
+                            <option value="" selected>---请选择---</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control" ng-model="formData.seller_type" ng-required="formData.selectGoodsType == 1" name="type">
+                            <option value="" selected>---请选择---</option>
+                            <option value="0">全部</option>
+                            <option value="1">B2C</option>
+                            <option value="2">C2C</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-3">
+                        <div>
+                            <span>上架</span>
+                            <input class="form-control" name="" type="number" value="" ng-required="formData.selectGoodsType == 1" ng-model="formData.item_created_days"
+                                style="width:33%" />
+                            <span>天后</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-show="formData.selectGoodsType == 2">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <input ng-model="formData.ids" placeholder="请填写商品ID, 用'|'分隔开" min-length="1" class="form-control" ng-required="formData.selectGoodsType == 2">
+                </div>
+            </div>
+            <div class="form-group" ng-show="formData.exec_type == 'modifyItemPrice'">
+                <label class="col-sm-2 control-label required">调价幅度</label>
+                <div class="col-sm-10">
+                    <div class="col-sm-10" style="height:38px;">
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="formData.modify_price_type"  value="1">
+                            上调&nbsp
+                        </label>
+                        <span  ng-show="formData.modify_price_type == 1">
+                            <input style="width:80px;" type="number" class="form-control ng-pristine ng-valid ng-touched" ng-model="modify_price_count_1" ng-init="modify_price_count_1 = 0">
+                        </span>
+                        &nbsp%
+                        &nbsp&nbsp&nbsp&nbsp
+                        <span ng-show="formData.modify_price_type == 1">
+                            新商品价格=原价*（1+{{modify_price_count_1}}%）
+                        </span>
+                    </div>
+                    <div class="col-sm-10" style="height:38px;">
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="formData.modify_price_type"  value="2">
+                            下降&nbsp
+                        </label>
+                        <span  ng-show="formData.modify_price_type == 2">
+                            <input style="width:80px;" type="number" class="form-control ng-pristine ng-valid ng-touched" ng-model="modify_price_count_2" ng-init="modify_price_count_2 = 0">
+                        </span>
+                        &nbsp%
+                        &nbsp&nbsp&nbsp&nbsp
+                        <span ng-show="formData.modify_price_type == 2">
+                            新商品价格=原价*（1-{{modify_price_count_2}}%）
+                        </span>
+                    </div>
+                    <div class="col-sm-10" style="height:38px;">
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="formData.modify_price_type"  value="3">
+                            上调&nbsp
+                        </label>
+                        <span  ng-show="formData.modify_price_type == 3">
+                            <input style="width:80px;" type="number" class="form-control ng-pristine ng-valid ng-touched" ng-model="modify_price_count_3" ng-init="modify_price_count_3 = 0">
+                        </span>
+                        &nbsp元
+                        &nbsp&nbsp&nbsp&nbsp
+                        <span ng-show="formData.modify_price_type == 3">
+                            新商品价格=原价+{{modify_price_count_3}}
+                        </span>
+                    </div>
+                    <div class="col-sm-10" style="height:38px;">
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="formData.modify_price_type"  value="4">
+                            下降&nbsp
+                        </label>
+                        <span  ng-show="formData.modify_price_type == 4">
+                            <input style="width:80px;" type="number" class="form-control ng-pristine ng-valid ng-touched" ng-model="modify_price_count_4"  ng-init="modify_price_count_4 = 0">
+                        </span>
+                        &nbsp元
+                        &nbsp&nbsp&nbsp&nbsp
+                        <span ng-show="formData.modify_price_type == 4">
+                            新商品价格=原价-{{modify_price_count_4}}
+                        </span>
+                    </div>
+                    <div class="col-sm-10">
+                        <p class="text-danger">*调价时货币单位与发布商品时填写的货币单位一致</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-show="errors.length > 0">
+                <div class="alert alert-danger m-b-10">
+                    <ui>
+                        <li ng-repeat="error in errors track by $index" ng-bind="error"></li>
+                    </ui>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" w5c-form-submit="save()" class="btn btn-primary"> 确定</button>
+                    <button type="button" ng-click="validateForm.reset()" class="btn btn-default"> 重置</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

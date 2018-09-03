@@ -1,0 +1,42 @@
+<div id="xcx-code-auth-tpl">
+  <button class="btn btn-primary m-t-12" ng-click="$ctrl.editTemplate(0)" see-access="Super-Admin">添加模板</button>
+
+  <div class="table-scrollable"
+       see-hide="KOL New-Brand">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th style="width:300px;">适用范围</th>
+          <th style="width:200px;">模板ID</th>
+          <th style="width:300px;">版本号</th>
+          <th style="width:300px;">描述</th>
+          <th>状态</th>
+          <th>小程序数（当前/总数）</th>
+          <th>创建时间</th>
+          <th>最近更新时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in $ctrl.pageData.list  track by $index">
+          <td>{{item.str_status}}</td>
+          <td>{{item.template_id}}</td>
+          <td>{{item.user_version}}</td>
+          <td>{{item.user_desc}}</td>
+          <td><label ng-if="item.status == 1"
+                   class="text-primary">生效中</label></td>
+          <td>{{item.xcx_curr_count}}/{{item.xdp_total_count}}</td>
+          <td>{{item.create_time}}</td>
+          <td>{{item.update_time}}</td>
+          <td>
+            <button ng-if="item.status == 1"
+                    class="btn btn-sm btn-primary ng-scope"
+                    ng-click='$ctrl.editTemplate(item.id)'
+                    see-access="Super-Admin">编辑</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination total-items="$ctrl.pageData.count" ></pagination>
+</div>

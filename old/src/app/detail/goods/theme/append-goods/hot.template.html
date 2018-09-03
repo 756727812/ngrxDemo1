@@ -1,0 +1,42 @@
+<div class="goods-theme-append-goods-hot">
+  <form class="search-form" ng-submit="$ctrl.search()">
+    <i ng-if="$ctrl.notValidSearchId" class="fa fa-info-circle goods-theme-hot-tips"></i>
+    <span class="goods-theme-hot-tips-text" ng-if="$ctrl.notValidSearchId">搜索的商品ID不是一个整数</span>
+    <input ng-model="$ctrl.formData.keyword_id" input-clear="submit" type="text" class="see-input-text" placeholder="商品ID">
+    <input ng-model="$ctrl.formData.keyword" input-clear="submit" type="text" class="see-input-text" placeholder="商品名、品牌">
+    <button type="submit" class="see-btn-search">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+  <div class="sep-line"></div>
+  <div class="main-area">
+    <ul class="goods">
+      <li
+        ng-repeat="item in $ctrl.pageData.list track by $index"
+        ng-click="$ctrl.toggleCheck(item)"
+        loading-mask="item._busy"
+        ng-class="{'can-toggle':$ctrl.canToggleCheck(item)}"
+      >
+        <img class="img" see-src="item.itemImgurl" thumbnail="!200x200r" crop="200x200" gravity="Center"/>
+        <span class="name">{{item.itemName}}</span>
+        <i class="fa fa-check checked" ng-class="{'original-checked':$ctrl.isOriginalChecked(item)}" ng-show="item.add"></i>
+      </li>
+    </ul>
+    <div class="empty-tips" ng-show="$ctrl.nonGoods">没有合适的商品</div>
+  </div>
+  <div class="see-pagination-wrap">
+    <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+    </div>
+    <ul uib-pagination
+        ng-if="$ctrl.pageData.count"
+        total-items="$ctrl.pageData.count"
+        items-per-page="$ctrl.pageData.pageSize"
+        ng-model="$ctrl.pageData.page"
+        ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+        max-size="5"
+        previous-text="上一页"
+        next-text="下一页"
+        boundary-link-numbers="true">
+    </ul>
+  </div>
+</div>

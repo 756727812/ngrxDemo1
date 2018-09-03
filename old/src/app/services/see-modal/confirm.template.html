@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">{{vm.title}}</h3>
+</div>
+<div class="modal-body">
+  <p style="word-break: break-all;" ng-bind-html="vm.body | trustHtml"></p>
+</div>
+<div class="modal-footer" ng-if="vm.text_ok || vm.text_cancel">
+  <button class="btn btn-primary" type="button" ng-if="vm.text_ok" ng-click="vm.ok()">{{vm.text_ok}}</button></center>
+  <button class="btn btn-default" type="button" ng-if="vm.text_cancel" ng-click="vm.cancel()">{{vm.text_cancel}}</button>
+</div>

@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">案例录入</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">上线案例名称</label>
+            <div class="col-sm-7">
+              <input name="title" type="text" class="form-control" ng-model="vm.form_data.title" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">上线时间</label>
+            <div class="col-sm-7">
+              <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                      <input type="text" name="start_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="vm.form_data.start_time" required>
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker data-ng-model="vm.form_data.start_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" />
+                  </ul>
+              </div>
+              <!--
+              <div class="input-group">
+                <input type="text" class="form-control w-100" placeholder="eg: 2016-01-01" readonly
+                  uib-datepicker-popup ng-model="vm.form_data.start_time" is-open="$ctrl.opened" current-text="今天"
+                  clear-text="清空" close-text="关闭" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-click="$ctrl.opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+              </div>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">文章楼层</label>
+            <div class="col-sm-7">
+              <input name="floor_level" type="text" class="form-control" ng-model="vm.form_data.floor_level" placeholder="非微信平台，楼层填0" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">合集ID</label>
+            <div class="col-sm-7">
+              <input name="collection_id" type="text" class="form-control" placeholder="代销商品以及转载文章，合集ID填0"
+                ng-model="vm.form_data.collection_id" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4">案例链接</label>
+            <div class="col-sm-7">
+              <input name="url" type="text" class="form-control" placeholder="链接网址"
+                ng-model="vm.form_data.url" ng-trim="true">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">案例形式</label>
+            <div class="col-sm-7">
+              <select name="from_type" class="form-control" ng-model="vm.form_data.from_type" required>
+                <option value="" selected>-- 请选择 --</option>
+                <option value="1">原创</option>
+                <option value="2">转载</option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.form_data.from_type === '2'">
+            <label class="control-label col-sm-4 required">转载来源</label>
+            <div class="col-sm-7">
+              <input name="from_collection_id" type="text" class="form-control" placeholder="输入转载文章的合集ID"
+                ng-model="vm.form_data.from_collection_id" ng-trim="true" required>
+            </div>
+        </div>
+
+        <br />
+        <div class="form-group" ng-if="vm.$routeParams.show_edit === '1'">
+            <label class="control-label col-sm-4">活动订单</label>
+            <div class="col-sm-7">
+              <input name="act_order" type="text" class="form-control" placeholder="0"
+                ng-model="vm.form_data.act_order" ng-trim="true">
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.$routeParams.show_edit === '1'">
+            <label class="control-label col-sm-4">活动GMV</label>
+            <div class="col-sm-7">
+              <input name="act_gmv" type="text" class="form-control" placeholder="0.00元"
+                ng-model="vm.form_data.act_gmv" ng-trim="true">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

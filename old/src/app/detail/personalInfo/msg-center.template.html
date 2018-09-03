@@ -1,0 +1,109 @@
+<div class="header">
+  <h2>
+    <strong>消息中心</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/personalInfo">个人信息</a></li>
+		  <li class="active">消息中心</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4 ng-bind="circle.cir_name"></h4>
+        <div class="circle-container group">
+          <see-tabset see-hide="KOL">
+           <see-tab heading="KOL子商品调价通知" type="1" select="$ctrl.selectTab()"></see-tab>
+           <see-tab heading="1688货源商品调价通知" type="2" select="$ctrl.selectTab()"></see-tab>
+          </see-tabset>
+          <see-tabset see-access="KOL">
+           <see-tab heading="KOL子商品调价通知" type="1" select="$ctrl.selectTab()"></see-tab>
+          </see-tabset>
+
+          <div class="table-scrollable" see-viewer>
+
+            <table class="table" ng-if="$ctrl.hash === '1'">
+              <thead>
+                <tr>
+                  <th>调价时间</th>
+                  <th>KOL信息</th>
+                  <th>商品ID</th>
+                  <th>SKU ID</th>
+                  <th>商品名称</th>
+                  <th>商品图片</th>
+                  <th>规格</th>
+                  <th>供货价</th>
+                  <th>KOL日常售价</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="msg in $ctrl.list_kol_price">
+                  <td>{{msg.create_time}}</td>
+                  <td>{{msg.kol_name}} <br> {{msg.kol_email}}</td>
+                  <td>{{msg.item_id}}</td>
+                  <td>{{msg.sku_id}}</td>
+                  <td>{{msg.item_name}}</td>
+                  <td><img alt="{{msg.item_imgurl}}" class="img-thumbnail" width="100" height="100" see-src="msg.item_imgurl"
+                           /></td>
+                  <td>{{msg.sku_pros}}</td>
+                  <td>{{msg.supply_price}} -> {{msg.new_supply_price}}</td>
+                  <td>{{msg.sku_price}} -> {{msg.new_sku_price}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table class="table" ng-if="$ctrl.hash === '2'" see-hide="KOL">
+              <thead>
+                <tr>
+                  <th>调整时间</th>
+                  <th>卖家</th>
+                  <th>商品</th>
+                  <th>批发价/代销价</th>
+                  <th>规格/起批量</th>
+                  <th>价格变化</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="msg in $ctrl.list_1688_price">
+                  <td>{{msg.date}}</td>
+                  <td>{{msg.vendor}}</td>
+                  <!--| moreContent:10-->
+                  <td>{{msg.oriId}}<br /><a href="{{msg.oriUrl}}" target="_blank">{{msg.name   }}</a></td>
+                  <td>
+                    <div ng-repeat="price_info_item in msg.priceInfo">
+                      <label>{{price_info_item.type === 'consignment' ? '代销价':'批发价'}}<br /></label>
+                    </div>
+                  </td>
+                  <td>
+                    <div ng-repeat="price_info_item in msg.priceInfo">
+                      <label>{{price_info_item.label}}<br /></label>
+                    </div>
+                  </td>
+                  <td>
+                      <div ng-repeat="price_info_item in msg.priceInfo">
+                        <label>￥{{price_info_item.from}} -> ￥{{price_info_item.to}}<br /></label>
+                      </div>
+                  </td>
+                  <td>
+                    <a ng-href="{{msg.goods_url}}" target="_blank" class="btn btn-sm btn-primary">查看关联母商品</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <pagination total-items="$ctrl.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+
+</footer>

@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">{{vm.template_type == 'edit' ? '编辑' : '新建'}}模板</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-4 required" >模板名称</label>
+            <div class="col-sm-7">
+              <input name="t_name" type="text" class="form-control" ng-model="vm.template_name" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">简介/备注</label>
+            <div class="col-sm-7">
+              <textarea name="t_desc" type="text" class="form-control" ng-model="vm.template_desc" ng-trim="true" required> </textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

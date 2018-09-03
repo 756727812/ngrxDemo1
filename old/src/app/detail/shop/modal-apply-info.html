@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">小电铺认证</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal p-t-20" >
+      <div class="form-body">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">认证类型：</label>
+          <div class="col-sm-3 m-t-5">
+            {{vm.formData.authType == 3? '个人':(vm.formData.authType == 2? '个体工商户':'企业')}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 1">企业名称：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 2">商户姓名：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 3">个人姓名：</label>
+          <div class="col-sm-3 m-t-5" ng-bind="vm.formData.subjectName"></div>
+        </div>
+        <div class="form-group" ng-if="vm.formData.authType == 1">
+          <label class="col-sm-4 control-label required">法人姓名：</label>
+          <div class="col-sm-3" ng-bind="vm.formData.legalPerson"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 1">法人身份证号：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 2">商户身份证号：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 3">个人身份证号：</label>
+          <div class="col-sm-3 m-t-5" ng-bind="vm.formData.identityNo"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 1">法人身份证正面照：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 2">商户身份证正面照：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 3">个人身份证正面照：</label>
+          <div class="col-sm-3">
+            <a href="{{vm.formData.identityCardFrontImgurl}}" target="_blank"><img see-src="vm.formData.identityCardFrontImgurl" width="160px" height="120px"></a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 1">法人身份证反面照：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 2">商户身份证反面照：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 3">个人身份证反面照：</label>
+          <div class="col-sm-3">
+            <a href="{{vm.formData.identityCardBackImgurl}}" target="_blank"><img see-src="vm.formData.identityCardBackImgurl"  width="160px" height="120px"></a>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType != 3">营业执照：</label>
+          <label class="col-sm-4 control-label required" ng-if="vm.formData.authType == 3">个人手持身份证照：</label>
+          <div class="col-sm-3">
+            <a href="{{vm.formData.licenseImgUrl}}" target="_blank"><img see-src="vm.formData.licenseImgUrl"  width="160px" height="120px"></a>
+          </div>
+        </div>
+        <div class="form-group" ng-if="vm.formData.authType != 3">
+          <label class="col-sm-4 control-label required">营业执照号：</label>
+          <div class="col-sm-3 m-t-5" ng-bind="vm.formData.identityNo"></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <div class="col-sm-offset-4 col-sm-8"><button class="btn btn-primary m-r-10" ng-click="vm.ok(1)" >通过认证</button><button type="button" ng-click="vm.ok(2)" class="btn btn-default" >拒绝认证</button></div>
+      </div>
+    </form>
+</div>

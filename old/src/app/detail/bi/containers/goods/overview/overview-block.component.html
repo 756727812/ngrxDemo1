@@ -1,0 +1,85 @@
+<nz-spin [nzSpinning]="busy">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel bi-panel summary-trade">
+        <div class="panel-content">
+          <div class="h">
+            <div class="txt-h">商品概况</div>
+            <div class="right">
+              <app-bi-date-filter class="date-filter"
+                                  [types]="dateTypeOptions"
+                                  (ngModelChange)="onDateFilterModelChange($event)"
+                                  [(ngModel)]="dateVal"></app-bi-date-filter>
+              <app-bi-btn-export name="GOODS_SUMMARY"
+                                 [params]="exportParams"></app-bi-btn-export>
+            </div>
+          </div>
+          <div class="clearfix main">
+            <ul class="cols">
+              <li>
+                <!-- 动态？ -->
+                <div class="title">商品动态</div>
+                <ul class="lines">
+                  <li>
+                    <span class="labe">
+                      在售商品个数
+                      <app-bi-mark-tip class="mark-tip" tipName="BI_TRADE_GOODS_NUM"></app-bi-mark-tip>
+                    </span>
+                    <span class="val">{{data.insale_item_num | number}}</span>
+                  </li>
+                  <li>
+                    <span class="labe">新增商品数</span>
+                    <span class="val">{{data.new_item_num | number}}</span>
+                  </li>
+                  <li>
+                    <span class="labe">产生销量商品数</span>
+                    <span class="val">{{data.pay_item_num | number}}</span>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <!-- 动态？ -->
+                <div class="title">访问详情</div>
+                <ul class="lines">
+                  <li>
+                    <span class="labe">被访问商品个数</span>
+                    <span class="val">{{data.visited_item_num | number}}</span>
+                  </li>
+                  <li>
+                    <span class="labe">商品访客数</span>
+                    <span class="val">{{data.item_user_num | number}}</span>
+                  </li>
+                  <li>
+                    <span class="labe">商品浏览量</span>
+                    <span class="val">{{data.item_user_pv | number}}</span>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <!-- 动态？ -->
+                <div class="title">商品转化</div>
+                <ul class="lines">
+                  <li>
+                    <span class="labe">销量</span>
+                    <span class="val">{{data.pay_quantity_sum | number}}</span>
+                  </li>
+                  <li>
+                    <span class="labe">付款人数</span>
+                    <span class="val">{{data.pay_user_num | number}}</span>
+                  </li>
+                  <li>
+                    <span class="labe">转化率</span>
+                    <span class="val">{{data.tran_rate | percent:'.2' }}</span>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+            <div class="chart"
+                 #chart></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

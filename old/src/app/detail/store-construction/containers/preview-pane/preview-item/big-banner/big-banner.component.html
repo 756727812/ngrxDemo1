@@ -1,0 +1,6 @@
+<div class="big-banner">
+  <img alt="" [seeSrc]="config.links[0]?.imgUrl" *ngIf="config.links && config.links.length > 0" />
+  <div class="placeholder" *ngIf="!config.links || config.links.length === 0">
+    <img alt="" src="../../../../../../../images/image-ph.png"/>
+  </div>
+</div>

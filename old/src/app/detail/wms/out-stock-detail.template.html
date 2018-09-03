@@ -1,0 +1,150 @@
+<div class="header">
+  <h2><strong>出库管理-出库单号{{$ctrl.orderId}}-查看详情</strong></h2>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-title">出库单概况</div>
+      <div class="panel-content">
+        <table class="table">
+          <tr><td class="bg-primary">出库单号</td><td ng-bind="$ctrl.list.exWarehouseOrderId" width="20%"></td><td class="bg-primary">出库类型</td><td ng-bind="$ctrl.list.type | exType" width="20%"></td><td class="bg-primary" >创建时间</td><td ng-bind="$ctrl.list.createTime | date:'yyyy-MM-dd HH:mm:ss'" width="20%"></td></tr>
+          <tr><td class="bg-primary">中订单号</td><td ng-bind="$ctrl.list.midOrderId"></td><td class="bg-primary">出库单状态</td><td ng-bind="$ctrl.list.status | exStatus" width="20%"></td><td class="bg-primary">更新时间</td><td ng-bind="$ctrl.list.updateTime | date:'yyyy-MM-dd HH:mm:ss'" width="20%"></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-title">商品与支付信息</div>
+      <div class="panel-content table-scrollable">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+               <th>商品主图</th>
+               <th>商品信息</th>
+               <th>子商品</th>
+               <th>采购信息</th>
+               <th>供货价</th>
+               <th>售价</th>
+               <th>运费</th>
+               <th>税金</th>
+               <th>优惠额度</th>
+               <th>应出库数量</th>
+               <th>实出库数量</th>
+               <th>小计</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in $ctrl.productPaymentListVO.productPaymentVOList">
+              <td><img width="120" class="img-viewer" see-viewer see-src="item.mainImgUrl"></td>
+              <td>商品名称：{{item.productName}}<br/>母商品ID：{{item.parentItemId}}<br/>规格：{{item.spec}}<br>货号：{{item.skuCode}}</td>
+              <td>子商品ID：{{item.childItemId}}<br/>SEE仓商品ID：{{item.warehouseItemId}}<br/>分销商后台名称：{{item.kolName}}<br/>分销商后台账号：{{item.kolEmail}}</td>
+              <td>
+                <span ng-if="+item.purchaseItemPriceInfoList.length === 0">NA</span>
+                <span ng-repeat="po in item.purchaseItemPriceInfoList">入库单号{{$index+1}}：{{po.warehouseOrderId || '无'}}<br>
+                  采购单价x数量：{{po.unitPriceCnyStr}}x{{po.count}}<br></span>
+              </td>
+              <td>{{item.supplyPrice | currency:'￥'}}</td>
+              <td>{{item.sellingPrice | currency:'￥'}}</td>
+              <td>{{item.shipFee | currency:'￥'}}</td>
+              <td>{{item.taxFee | currency:'￥'}}</td>
+              <td>
+                <p>优惠总额：{{(item.couponShareFee*1 + item.fullOffShareFee*1) | currency: '¥'}}</p>
+                <p>优惠券：{{item.couponShareFee | currency: '¥'}}</p>
+                <p>满减活动：{{item.fullOffShareFee | currency: '¥'}}</p>
+              </td>
+              <td>{{item.expectExWarehouseCount}}</td>
+              <td>{{item.actulExWarehouseCount}}</td>
+              <td>{{item.subtotal | currency:'￥'}}</td>
+            </tr>
+            <tr>
+              <td colspan="10" class="text-right">支付方式：<label class="text-info">{{$ctrl.productPaymentListVO.payDesc}}</label></td>
+              <td colspan="2" class="text-right">总计：<label class="text-danger">{{$ctrl.productPaymentListVO.totalFee | currency:'￥'}}</label></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-title">收货信息</div>
+      <div class="panel-content">
+        <div class="row">
+          <label class="col-sm-2">See昵称：</label>
+          <div class="col-sm-10">{{$ctrl.recvAddressVO.seeNickName || '无'}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">收货人：</label>
+          <div class="col-sm-10">{{$ctrl.recvAddressVO.name || '无'}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">手机号：</label>
+          <div class="col-sm-10">{{$ctrl.recvAddressVO.mobile}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">收货地址：</label>
+          <div class="col-sm-10">{{$ctrl.recvAddressVO.addr}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">身份证号码：</label>
+          <div class="col-sm-10">{{$ctrl.recvAddressVO.idcardNo}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">身份证照片：</label>
+          <div class="col-sm-10">
+            <img width="172" class="img-viewer idcard_front_imgurl" see-viewer see-src="$ctrl.recvAddressVO.idcardFrontImgurl">
+            <img width="172" class="img-viewer idcard_front_imgurl" see-viewer see-src="$ctrl.recvAddressVO.idcardBackImgurl">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-title">物流信息</div>
+      <div class="panel-content" ng-if="!$ctrl.isShowLog">暂无相关物流信息</div>
+      <div class="panel-content" ng-if="$ctrl.isShowLog">
+        <div ng-repeat= "item in $ctrl.logistic_info.transport_info">
+        <div class="row">
+          <label class="col-sm-2">物流路线：</label>
+          <div class="col-sm-10">{{item.action_text}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">物流公司：</label>
+          <div class="col-sm-10">{{item.transport_name}}</div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">物流单号：</label>
+          <div class="col-sm-10">{{item.transport_no}}</div>
+        </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">物流跟踪：</label>
+          <div class="col-sm-10" ng-if="!$ctrl.logistics_list">
+            <ul class="expresslog" ng-repeat="logistic in $ctrl.logistic_info.list">
+                <li ng-class="{'active': $first,'begin': $last}">{{logistic.status_message}}<span>{{logistic.time | date:'yyyy-MM-dd HH:mm:ss' }}</span></li>
+            </ul>
+          </div>
+          <div class="col-sm-10" ng-if="$ctrl.logistics_list">
+            <ul class="expresslog_1" ng-repeat="logistic in $ctrl.logistics_list_vertical">
+              <li ng-class="{'active': $first,'begin': $last}">
+                <div class="active-node" ng-if="$first" style="margin-top: -15px;"></div>
+                <div class="big-node" ng-if="logistic.node_type == '1' && !$first"></div>
+                <div class="small-node" ng-if="logistic.node_type == '0' && !$first"></div>
+                <div class="logistic-mess" ng-class="{'first-mess': $first}">
+                  <span class="node_content" ng-if="logistic.node_name">{{logistic.node_name}}</span>
+                  <span class="node_content" ng-if="logistic.is_other">（由于暂时无法读取物流信息，请复制运单号<span>{{logistic.transport_no}}</span>并
+                  <a ng-href="{{logistic.transport_url}}" target="_blank">点击此处</a>到物流公司官网查询）</span>
+                  <span ng-class="{'active': $first}" ng-if="logistic.node_time_str" class="data">{{logistic.node_time_str | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                  <span ng-if="logistic.isFirstBigNode && logistic.next_node" class="next-node">下一步 &gt; {{logistic.next_node}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer></footer>

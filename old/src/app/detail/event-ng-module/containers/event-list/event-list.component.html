@@ -1,0 +1,85 @@
+<nz-spin [nzSpinning]="_isSpinning" class="loading-spin">
+  <div class="tbar">
+    <div class="l">
+      <button nz-button [nzType]="'primary'" (click)="createTemplate($event)">
+        <i class="anticon anticon-plus"></i>
+        <span>新建拼团模板</span>
+      </button>
+      <button nz-button (click)="batchAssign()" [nzType]="'default'">
+        <span>批量指派</span>
+      </button>
+    </div>
+    <div class="right search">
+      <nz-input class="keyword" [(ngModel)]="_keyword" [nzType]="'search'" (nzOnSearch)="searchClick($event)" [nzPlaceHolder]="'商品名、创建人员名称、邮箱'"></nz-input>
+      <button nz-button [nzType]="'primary'" (click)="searchClick()">
+        <i class="anticon anticon-search"></i>
+        <span>搜索</span>
+      </button>
+    </div>
+  </div>
+
+  <app-event-table-alert [selectedCount]="selectedCount" (clearChecked)="clearChecked()">
+  </app-event-table-alert>
+
+  <nz-table #tableRef nzShowSizeChanger [nzAjaxData]="dataSet" [nzLoading]="loading" [nzTotal]="total" [nzShowQuickJumper]="'true'"
+    [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)"
+    (nzDataChange)="_displayDataChange($event)">
+    <thead nz-thead>
+      <tr>
+        <th nz-th nzCheckbox>
+          <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+          </label>
+        </th>
+        <th nz-th>商品图</th>
+        <th nz-th>模板ID</th>
+        <th nz-th [nzWidth]="'200px'">活动名称</th>
+        <th nz-th [nzWidth]="'300px'">商品名称</th>
+        <th nz-th>创建人员</th>
+        <th nz-th>模板类型</th>
+        <th nz-th>成团人数</th>
+        <th nz-th>
+          <span>活动时间</span>
+          <nz-table-sort [(nzValue)]="sortType" (nzValueChange)="sortByTime($event)"></nz-table-sort>
+        </th>
+        <th nz-th>操作</th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr *ngFor="let item of tableRef.data;let i = index;" (click)="selectTmpl($event,item.templateId)">
+        <td nz-td nzCheckbox>
+          <label nz-checkbox [(ngModel)]="checkedMap[item.templateId]" (ngModelChange)="_refreshStatus($event)">
+          </label>
+        </td>
+        <td nz-td class="item-img">
+          <img [seeSrc]="item.itemMainImg" alt="">
+        </td>
+        <td nz-td>
+          {{item.templateId}}
+        </td>
+        <td nz-td class="item-name">
+          {{item.activityName}}
+        </td>
+        <td nz-td class="item-name">
+          <!-- <div>{{item.itemName}}</div> -->
+          <ellipsis lines="3" style="max-width: 300px;">
+            {{item.itemName}}
+          </ellipsis>
+        </td>
+        <td nz-td>
+          {{item.backendUserName}}
+          <br/>{{item.backendUserEmail}}
+        </td>
+        <td nz-td>{{getGrouponTypeName(item.grouponTemplateType)}}</td>
+        <td nz-td>{{item.grouponSuccessNumber}}</td>
+        <td nz-td>
+          {{item.startTime | date:'yyyy-MM-dd HH:mm'}}
+          <br/> ~
+          <br/> {{item.endTime | date:'yyyy-MM-dd HH:mm'}}
+        </td>
+        <td nz-td>
+          <a [routerLink]="['/event2/form']" [queryParams]="{templateId: item.templateId}">详情</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>

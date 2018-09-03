@@ -1,0 +1,163 @@
+.list-item-card {
+  font-family: "Monospaced Number","Chinese Quote",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0,0,0,0.65);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s;
+  border: 1px solid #e8e8e8;
+  display: block;
+  position: relative;
+  width: 300px;
+  min-height: 175px;
+
+  .card-body {
+    padding: 24px;
+    zoom: 1;
+
+    .card-meta {
+      margin: -4px 0;
+      zoom: 1;
+
+      .card-meta-avatar {
+        padding-right: 16px;
+        float: left;
+
+        .rule-avatar {
+          background: #5971e8;
+          color: #fff;
+        }
+      }
+
+      .card-meta-detail {
+        overflow: hidden;
+
+        .title {
+          font-size: 16px;
+
+          .title-text {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            color: rgba(0, 0, 0, 0.85);
+            font-weight: 500;
+            max-width: 176px;
+            display: inline-block;
+            margin-right: 2px;
+            margin-bottom: -6px;
+          }
+
+          .anticon {
+            color: #5971e8;
+          }
+        }
+
+        .content {
+          color: rgba(0, 0, 0, 0.45);
+
+          .status-icon {
+            font-size: 20px;
+          }
+
+          .status-icon.on {
+            color: #52c41a;
+          }
+
+          .status-icon.off {
+            color: #f5222d
+          }
+        }
+      }
+
+      .card-meta-detail > div:not(:last-child) {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .card-actions {
+    border-top: 1px solid #e8e8e8;
+    background: #fafafa;
+    zoom: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+
+    li {
+      float: left;
+      text-align: center;
+      padding: 12px 0;
+      color: rgba(0,0,0,0.45);
+      width: 50%;
+      display: list-item;
+      cursor: pointer;
+
+      span {
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        line-height: 22px;
+        min-width: 32px;
+        position: relative;
+
+        img {
+          width: 26px;
+          height: 26px;
+        }
+
+        img.hover {
+          display: none;
+        }
+      }
+
+      span:hover {
+        img.normal {
+          display: none;
+        }
+
+        img.hover {
+          display: inline;
+        }
+      }
+    }
+
+    li:not(:last-child) {
+      border-right: 1px solid #e8e8e8;
+    }
+  }
+
+  .card-meta::after, .card-meta::before, .card-body::after, .card-body::before, .card-actions::after, .card-actions::before {
+    content: "";
+    display: table;
+  }
+
+  .card-meta::after, .card-actions::after {
+    clear: both;
+  }
+}
+
+.list-item-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  border-color: rgba(0,0,0,0.09);
+}
+
+.list-item-card .rule-name-update {
+  display: none;
+}
+
+.list-item-card:hover .rule-name-update {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.error-tips {
+  color: #f04134;
+  line-height: 1.5;
+  font-size: 12px;
+}

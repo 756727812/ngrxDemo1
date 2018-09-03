@@ -1,0 +1,110 @@
+<div class="header">
+  <h2>
+    <strong>订单批量操作</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">订单管理</a></li>
+      <li class="active">订单批量操作</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" role="form" name="batchForm" w5c-form-validate novalidate>
+          <div class="form-group">
+            <label class="control-label col-sm-2  required">操作</label>
+            <div class="col-sm-8 ">
+              <select name="action" class="form-control " ng-model="$ctrl.form_data.action" required>
+                    <option value="0" selected>-- 请选择 --</option>
+
+                    <!--<option value="1" see-hide="C2C-Seller New-Brand">重新派发订单</option>-->
+                    <option value="2" see-access="Super-Admin">改为待备货</option>
+                    <!-- <option value="3" see-access="Super-Admin B2C-Service Elect-Admin">改为待官网发货</option>
+                    <option value="4" see-access="Super-Admin B2C-Service Elect-Admin">改为待买手发货</option> -->
+                    <option value="5" see-hide="New-Brand">延长收货时间</option>
+                    <!-- <option value="6" see-hide="C2C-Seller  New-Brand">改为退款中</option> -->
+                    <option value="7" see-access="Super-Admin B2C-Service Elect-Admin">改为订单已完成</option>
+                    <!-- <option value="8" see-hide="C2C-Seller  New-Brand">改为退款完成</option> -->
+
+                    <option value="22">完成线下备货</option>
+                    <option value="23">批量发货（线下采购-直发用户-非Seego）</option>
+                    <!-- <option value="24" see-hide="C2C-Seller New-Brand">批量派发至小助手</option> -->
+                    <option value="25" see-hide="C2C-Seller New-Brand">批量派发订单</option>
+                </select>
+            </div>
+          </div>
+          <div ng-if="$ctrl.form_data.action === '24'">
+            <div class="form-group v-center">
+              <label class="control-label col-sm-2 required">派发商户</label>
+              <div class="col-sm-8 ">
+                <span>seego@seeapp.com</span>
+              </div>
+            </div>
+            <div class="form-group v-center">
+              <label class="control-label col-sm-2 required">派发金额</label>
+              <div class="col-sm-8 ">
+                <span>订单实付金额</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-if="$ctrl.form_data.action === '1'">
+            <label class="control-label col-sm-2 required">买手后台账号</label>
+            <div class="col-sm-8 ">
+              <input type="text" name="buyer" class="form-control " ng-model="$ctrl.form_data.buyer" w5c-dynamic-element required>
+            </div>
+          </div>
+          <div class="form-group" ng-if="$ctrl.form_data.action !== '0'">
+            <label class="control-label col-sm-2 required">订单号</label>
+            <div class="col-sm-8" ng-if="!$ctrl.checkAction()">
+              <input name="order" type="text" class="form-control" ng-model="$ctrl.orders" placeholder="输入订单号，英文逗号分隔" w5c-dynamic-element required>
+            </div>
+            <div class="col-sm-8" ng-if="$ctrl.checkAction()">
+              <a ng-href="{{$ctrl.getTemplateUrl()}}" class="btn btn-primary" target="_blank" download>导出模板</a>
+              <button type="button" class="btn btn-primary" accept=".xlsx,.xls" ngf-select="$ctrl.importExcel($file)">导入</button>
+            </div>
+          </div>
+          <div class="form-group" ng-if="!$ctrl.checkAction() && $ctrl.form_data.action  !== '0' " >
+            <div class="col-sm-offset-2 col-sm-8">
+              <button type="submit" class="btn btn-primary" w5c-form-submit="$ctrl.confirm()">确定</button>
+              <button type="reset" class="btn btn-dark">清空</button>
+            </div>
+          </div>
+
+          <div ng-if="$ctrl.list_confirm_dispatch_order.length > 0">
+              <div class="table-scrollable">
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>中订单号</th>
+                      <th>派发邮箱</th>
+                      <th>派发金额</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in $ctrl.list_confirm_dispatch_order">
+                        <td>{{item.mid_order_id}}</td>
+                        <td>{{item.seller_email}}</td>
+                        <td>￥{{item.rmb}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+               <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                  <button type="reset" class="btn btn-dark" ng-click="$ctrl.confirmDispatch(false)">取消派发</button>
+                  <button type="submit" class="btn btn-primary" ng-click="$ctrl.confirmDispatch(true)">确认派发</button>
+
+                </div>
+              </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

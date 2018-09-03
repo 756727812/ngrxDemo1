@@ -1,0 +1,15 @@
+<div class="container" id="login-block">
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-md-offset-3">
+      <div class="account-wall" ng-switch on="$ctrl.type">
+        <kol-signup ng-switch-when="kol"></kol-signup>
+        <pgc-signup ng-switch-when="pgc"></pgc-signup>
+        <c2c-signup ng-switch-when="c2c"></c2c-signup>
+        <xiaodianpu-signup ng-switch-default></xiaodianpu-signup>
+      </div>
+    </div>
+  </div>
+  <p class="account-copyright" style="position: static;margin-top: 40px;">
+    <span>Copyright © 2017</span>&nbsp;<span>See</span>.<span>All Rights Reserved.</span>
+  </p>
+</div>

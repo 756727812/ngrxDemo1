@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">商品详情</h3>
+</div>
+<div class="modal-body">
+  <div class="scrollable-table">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>商品ID</td>
+          <td>{{good.item_id}}</td>
+          <td class="border-left-f2f5f8">品牌</td>
+          <td>{{good.brand_name}}</td>
+          <td class="border-left-f2f5f8">商品名称</td>
+          <td>{{good.item_name}}</td>
+        </tr>
+        <tr>
+          <td>库存</td>
+          <td>{{good.item_stock || '0'}}</td>
+          <td class="border-left-f2f5f8">售价</td>
+          <td>{{good.item_price | currency: '￥'}}</td>
+          <td class="border-left-f2f5f8">真实创建时间</td>
+          <td>{{good.create_time}}</td>
+        </tr>
+        <tr>
+          <td>商户后台账号</td>
+          <td>{{good.seller_name}}</td>
+          <td class="border-left-f2f5f8">商户圈主名称</td>
+          <td>{{good.circle_ower}}</td>
+          <!--<td class="border-left-f2f5f8">当前创建时间</td>-->
+          <!--<td>{{good.item_weight}}</td>-->
+        </tr>
+        <tr>
+          <td>关键词隐藏</td>
+          <td ng-bind="good.list_hidden_key"></td>
+          <td class="border-left-f2f5f8">全局隐藏</td>
+          <td>{{good.hidden==1 ? '是' : '否'}}</td>
+        </tr>
+        <tr>
+          <td>PV</td>
+          <td ng-bind="good.pv_num"></td>
+          <td class="border-left-f2f5f8">销量</td>
+          <td ng-bind="good.sell_num"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

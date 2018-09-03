@@ -1,0 +1,108 @@
+@import "../../../../../styles/var";
+
+.modal-shop-operate-modal-group-list {
+  .top-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    a {
+      text-decoration: none;
+    }
+
+    .btn-group-link {
+      padding: 4px 8px;
+      background: @primary-color;
+      color: white;
+    }
+
+    .search-input-wrap {
+      display: flex;
+    }
+
+    .input-wrap {
+      position: relative;
+
+      input {
+        padding-right: 28px;
+      }
+
+      i {
+        display: none;
+        position: absolute;
+        right: 8px;
+        top: 10px;
+        color: @see-input-color;
+        font-size: 13px;
+        cursor: pointer;
+
+        &:hover {
+          color: @see-input-edit-color;
+        }
+      }
+
+      &:hover {
+        i {
+          display: block;
+        }
+      }
+    }
+
+    input[type="text"] {
+      height: 36px;
+      width: 180px;
+    }
+
+    .btn-search {
+      margin-left: 10px;
+      appearance: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      width: 44px;
+      height: 36px;
+      border-radius: 2px;
+      background-color: @primary-color;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+    }
+  }
+
+  th,
+  td {
+    font-size: 12px;
+    text-align: center;
+    border: none !important;
+
+    &.name {
+      text-align: left;
+    }
+
+    word-break: break-all;
+  }
+
+  td.op {
+    .button {
+      display: inline-block;
+      width: 43px;
+      height: 26px;
+      text-align: center;
+      line-height: 26px;
+      cursor: pointer;
+    }
+
+    .btn-add {
+      color: #fff;
+      background-color: #5971e8;
+    }
+
+    .btn-cancel {
+      background-color: #e5e8f5;
+      color: #787c92;
+    }
+  }
+}

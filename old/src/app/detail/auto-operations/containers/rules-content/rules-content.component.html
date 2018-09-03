@@ -1,0 +1,937 @@
+<nz-spin [nzSpinning]="busy">
+  <div class="rules-content-wrap">
+    <div class="card-contents">
+      <form nz-form
+            [ngClass]="{submitted:submitted}"
+            [formGroup]="formGroup"
+            [nzLayout]="'vertical'"
+            class="event-form"
+            (ngSubmit)="submit()">
+        <div class="rules-panel">
+            <div class="panel-top">
+              智能选品
+              <i nz-tooltip="商品默认从热门单品库与合作KOL热卖商品中选择，且不包含抽奖团商品"
+                class="i-tips anticon anticon-exclamation-circle"></i>
+            </div>
+            <div class="panel-form">
+
+                <!-- 商品品类 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="goodsTypes"
+                            nz-form-item-required>商品品类：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <see-tree-select [optionList]="treeSelectOptions"
+                                            [useFlatOptions]="true" [disabledEdit]="isElectAdmin"
+                                            [outputType]="'selectLeaves'" (onShowSelectArea)="clickTreeSelect()"
+                                            formControlName="goodsTypes"></see-tree-select>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.goodsTypes.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择商品品类</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 商品售价 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="goodsPrice"
+                            nz-form-item-required>商品售价：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text">需高于</div>
+                          <div class="goods-price-wrapper">
+                              <nz-input [nzSize]="'large'" [nzPlaceHolder]="'￥最低日常售价'" (nzFocus)="intervalFormat('goodsPrice')" (nzBlur)="stopInterval()"
+                                        formControlName="goodsPrice" [nzDisabled]="isElectAdmin"
+                                        [nzId]="'goodsPrice'">
+                              </nz-input>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.goodsPrice.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入商品售价</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.goodsPrice.hasError('required') && !biggerThanZero('goodsPrice')">
+                            <i class="si si-danger"></i>&nbsp;商品售价应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 商品库存 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="goodsStock"
+                            nz-form-item-required>商品库存：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text">需高于</div>
+                          <div class="goods-price-wrapper">
+                              <nz-input [nzSize]="'large'" [nzPlaceHolder]="'最低母商品spu库存'" (nzFocus)="intervalFormat('goodsStock')" (nzBlur)="stopInterval()"
+                                        formControlName="goodsStock" [nzDisabled]="isElectAdmin"
+                                        [nzId]="'goodsStock'">
+                              </nz-input>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.goodsStock.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入商品库存</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.goodsStock.hasError('required') && !biggerThanZero('goodsStock')">
+                            <i class="si si-danger"></i>&nbsp;商品库存应为大于0的整数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 单品利润 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="singleProfit"
+                            nz-form-item-required>单品利润：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text">需高于</div>
+                          <div class="goods-price-wrapper">
+                              <nz-input [nzSize]="'large'" [nzPlaceHolder]="'最低利润%'" (nzFocus)="intervalFormat('singleProfit')" (nzBlur)="stopInterval()"
+                                        formControlName="singleProfit" [nzDisabled]="isElectAdmin"
+                                        [nzId]="'singleProfit'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.singleProfit.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入单品利润</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.singleProfit.hasError('required') && !biggerThanZero('singleProfit')">
+                            <i class="si si-danger"></i>&nbsp;单品利润应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="rules-panel">
+            <div class="panel-top">
+              智能装修
+              <!-- <i nz-tooltip="待定。。。。。。。。。。"
+                class="i-tips anticon anticon-exclamation-circle"></i> -->
+            </div>
+            <div class="panel-form">
+
+                <!-- 皮肤模板 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>皮肤模板：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="16">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 180px;" [nzSize]="'large'" formControlName="skin" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'请选择对应皮肤模板'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of skinOptions"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.skin.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择皮肤模板</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 店铺头图 -->
+                <div nz-form-item nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>店铺头图：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="10">
+                    <see-img-upload formControlName="shopHeadPic"
+                                    [disabledEdit]="isElectAdmin"
+                                    [uploadText]="'上传'"
+                                    [imgValid]="imgValid"></see-img-upload>
+                    <span class="custom-error"
+                          *ngIf="submitted && formGroup.controls.shopHeadPic.errors">
+                      <i class="si si-danger"></i>&nbsp;请选择店铺头图</span>
+                  </div>
+                </div>
+
+                <!-- 导航icon -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>导航icon
+                      <nz-tooltip>
+                        <i nz-tooltip class="i-tips anticon anticon-exclamation-circle"></i>
+                        <ng-template #nzTemplate>
+                          <span>导航需全部填满，方可正常使用</span><br><span>图片建议尺寸：188 * 188</span>
+                        </ng-template>
+                      </nz-tooltip>：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <sortable-img formControlName="navIcons"
+                                      [disabledEdit]="isElectAdmin"></sortable-img>
+                        <span class="custom-error"
+                              *ngIf="submitted && formGroup.controls.navIcons.errors">
+                          <i class="si si-danger"></i>&nbsp;请选择所有导航icon</span>
+                  </div>
+                </div>
+
+                <!-- 各导航头图 -->
+                <div nz-form-item nz-row *ngFor="let nav of formGroup.value.navIcons; index as index">
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>{{nav.name}}头图
+                        <i nz-tooltip="图片建议尺寸：750 * 250"
+                        class="i-tips anticon anticon-exclamation-circle"></i>：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="10">
+                    <see-img-upload [formControlName]="navHeadPicControls[nav.name]"
+                                    [uploadText]="'上传'"
+                                    [imgValid]="imgValid"></see-img-upload>
+                    <span class="custom-error"
+                          *ngIf="submitted && formGroup.controls[navHeadPicControls[nav.name]].errors">
+                      <i class="si si-danger"></i>&nbsp;请选择{{nav.name}}头图</span>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="rules-panel">
+            <div class="panel-top">
+              优惠券
+            </div>
+            <div class="panel-form">
+              <span class="coupon-tips">优惠券审核通过后，会直接在前端显示</span>
+            </div>
+        </div>
+        <div class="rules-panel">
+            <div class="panel-top">
+              爆品拼团
+              <!-- <i nz-tooltip="待定。。。。。。。。。。"
+                class="i-tips anticon anticon-exclamation-circle"></i> -->
+            </div>
+            <div class="panel-form">
+
+                <div class="rule-sub-title">拼团基础信息</div>
+
+                <!-- 拼团title -->
+                <div nz-form-item nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>拼团title：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="10">
+                    <see-img-upload formControlName="groupBuyingTitle"
+                                    [uploadText]="'上传'"
+                                    [imgValid]="imgValid"></see-img-upload>
+                    <span class="custom-error"
+                          *ngIf="submitted && formGroup.controls.groupBuyingTitle.errors">
+                      <i class="si si-danger"></i>&nbsp;请选择拼团title</span>
+                  </div>
+                </div>
+
+                <!-- 模块拼团数 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>模块拼团数：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="16">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 300px;" [nzSize]="'large'" formControlName="groupBuyingNum" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'请选择单一模块内展示的拼团活动数'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of _groupBuyingNumOptions"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingNum.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择模块拼团数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 排列方式 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>排列方式：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <nz-radio-group formControlName="groupBuyingDisplay">
+                          <label nz-radio [nzValue]="1" [nzDisabled]="isElectAdmin">
+                            <span>单列</span>
+                          </label>
+                          <label nz-radio [nzValue]="2" [nzDisabled]="isElectAdmin">
+                            <span>双列</span>
+                          </label>
+                        </nz-radio-group>
+                  </div>
+                </div>
+
+                <div class="rule-sub-title">拼团商品选择</div>
+
+                <!-- 利润限制 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="profitLimit"
+                            nz-form-item-required>利润限制：</label>
+                      <!-- <i nz-tooltip="待定。。。。。。。。。。"
+                        class="i-tips anticon anticon-exclamation-circle"></i>：</label> -->
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <div class="flex-container">
+                          <div class="prefix-text">需高于</div>
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzPlaceHolder]="'最低利润%'" (nzFocus)="intervalFormat('profitLimit')" (nzBlur)="stopInterval()"
+                                        formControlName="profitLimit" [nzDisabled]="isElectAdmin"
+                                        [nzId]="'profitLimit'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.profitLimit.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入利润限制</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.profitLimit.hasError('required') && !biggerThanZero('profitLimit')">
+                            <i class="si si-danger"></i>&nbsp;利润限制应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <div class="rule-sub-title">拼团活动设置</div>
+
+                <!-- 拼团价格 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="groupBuyingPrice"
+                            nz-form-item-required>拼团价格：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text-price">为日常售价的</div>
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('groupBuyingPrice')" (nzBlur)="stopInterval()"
+                                        formControlName="groupBuyingPrice"
+                                        [nzId]="'groupBuyingPrice'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingPrice.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入拼团价格</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.groupBuyingPrice.hasError('required') && !biggerThanZero('groupBuyingPrice')">
+                            <i class="si si-danger"></i>&nbsp;拼团价格应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 拼团供货价 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="groupBuyingSupplyPrice"
+                            nz-form-item-required>拼团供货价：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text-supply-price">为日常供货价的</div>
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('groupBuyingSupplyPrice')" (nzBlur)="stopInterval()"
+                                        formControlName="groupBuyingSupplyPrice"
+                                        [nzId]="'groupBuyingSupplyPrice'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingSupplyPrice.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入拼团供货价</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.groupBuyingSupplyPrice.hasError('required') && !biggerThanZero('groupBuyingSupplyPrice')">
+                            <i class="si si-danger"></i>&nbsp;拼团供货价应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 成团有效期 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="formGoupTime"
+                            nz-form-item-required>成团有效期：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <div class="flex-container">
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('formGoupTime')" (nzBlur)="stopInterval()"
+                                        formControlName="formGoupTime"
+                                        [nzId]="'formGoupTime'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">小时</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.formGoupTime.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入成团有效期</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.formGoupTime.hasError('required') && !timeValid('formGoupTime')">
+                            <i class="si si-danger"></i>&nbsp;成团有效期应为大于0小于96的正整数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 成团人数 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>成团人数：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="16">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 180px;" [nzSize]="'large'" formControlName="formGoupPersonNum" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'请选择成团人数'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of _formGoupPersonNumOptions"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.formGoupPersonNum.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择成团人数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <div class="rule-sub-title">拼团活动轮转</div>
+
+                <!-- 拼团有效期 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="groupBuyingTime"
+                            nz-form-item-required>拼团有效期：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <div class="flex-container">
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('groupBuyingTime')" (nzBlur)="stopInterval()"
+                                        formControlName="groupBuyingTime"
+                                        [nzId]="'groupBuyingTime'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">小时</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingTime.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入拼团有效期</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.groupBuyingTime.hasError('required') && !timeValid('groupBuyingTime')">
+                            <i class="si si-danger"></i>&nbsp;拼团有效期应为大于0小于96的正整数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 拼团商品轮转时间 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>拼团商品轮转时间：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 100px;" [nzSize]="'large'" formControlName="groupBuyingTurnTime" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'天数'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of _groupBuyingTurnTimeOptions"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <div class="suffix-text">天之后，可以用同样的商品拼团</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingTurnTime.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择拼团商品轮转时间</span>
+                        </div>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="rules-panel">
+            <div class="panel-top">
+              新品拼团
+              <!-- <i nz-tooltip="待定。。。。。。。。。。"
+                class="i-tips anticon anticon-exclamation-circle"></i> -->
+            </div>
+            <div class="panel-form">
+
+                <div class="rule-sub-title">拼团基础信息</div>
+
+                <!-- 拼团title -->
+                <div nz-form-item nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>拼团title：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="10">
+                    <see-img-upload formControlName="groupBuyingTitle_new"
+                                    [uploadText]="'上传'"
+                                    [imgValid]="imgValid"></see-img-upload>
+                    <span class="custom-error"
+                          *ngIf="submitted && formGroup.controls.groupBuyingTitle_new.errors">
+                      <i class="si si-danger"></i>&nbsp;请选择拼团title</span>
+                  </div>
+                </div>
+
+                <!-- 模块拼团数 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>模块拼团数：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="16">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 300px;" [nzSize]="'large'" formControlName="groupBuyingNum_new" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'请选择单一模块内展示的拼团活动数'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of _groupBuyingNumOptions_new"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingNum_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择模块拼团数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 排列方式 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>排列方式：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <nz-radio-group formControlName="groupBuyingDisplay_new">
+                          <label nz-radio [nzValue]="1" [nzDisabled]="isElectAdmin">
+                            <span>单列</span>
+                          </label>
+                          <label nz-radio [nzValue]="2" [nzDisabled]="isElectAdmin">
+                            <span>双列</span>
+                          </label>
+                        </nz-radio-group>
+                  </div>
+                </div>
+
+                <div class="rule-sub-title">拼团商品选择</div>
+
+                <!-- 利润限制 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="profitLimit_new"
+                            nz-form-item-required>利润限制：</label>
+                      <!-- <i nz-tooltip="待定。。。。。。。。。。"
+                        class="i-tips anticon anticon-exclamation-circle"></i>：</label> -->
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <div class="flex-container">
+                          <div class="prefix-text">需高于</div>
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzPlaceHolder]="'最低利润%'" (nzFocus)="intervalFormat('profitLimit_new')" (nzBlur)="stopInterval()"
+                                        formControlName="profitLimit_new" [nzDisabled]="isElectAdmin"
+                                        [nzId]="'profitLimit_new'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.profitLimit_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入利润限制</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.profitLimit_new.hasError('required') && !biggerThanZero('profitLimit_new')">
+                            <i class="si si-danger"></i>&nbsp;利润限制应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <div class="rule-sub-title">拼团活动设置</div>
+
+                <!-- 拼团价格 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="groupBuyingPrice_new"
+                            nz-form-item-required>拼团价格：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text-price">为日常售价的</div>
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('groupBuyingPrice_new')" (nzBlur)="stopInterval()"
+                                        formControlName="groupBuyingPrice_new"
+                                        [nzId]="'groupBuyingPrice_new'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingPrice_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入拼团价格</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.groupBuyingPrice_new.hasError('required') && !biggerThanZero('groupBuyingPrice_new')">
+                            <i class="si si-danger"></i>&nbsp;拼团价格应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 拼团供货价 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="groupBuyingSupplyPrice_new"
+                            nz-form-item-required>拼团供货价：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div class="prefix-text-supply-price">为日常供货价的</div>
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('groupBuyingSupplyPrice_new')" (nzBlur)="stopInterval()"
+                                        formControlName="groupBuyingSupplyPrice_new"
+                                        [nzId]="'groupBuyingSupplyPrice_new'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">%</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingSupplyPrice_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入拼团供货价</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.groupBuyingSupplyPrice_new.hasError('required') && !biggerThanZero('groupBuyingSupplyPrice_new')">
+                            <i class="si si-danger"></i>&nbsp;拼团供货价应为大于0的有效数字</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 成团有效期 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="formGoupTime_new"
+                            nz-form-item-required>成团有效期：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <div class="flex-container">
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('formGoupTime_new')" (nzBlur)="stopInterval()"
+                                        formControlName="formGoupTime_new"
+                                        [nzId]="'formGoupTime_new'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">小时</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.formGoupTime_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入成团有效期</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.formGoupTime_new.hasError('required') && !timeValid('formGoupTime_new')">
+                            <i class="si si-danger"></i>&nbsp;成团有效期应为大于0小于96的正整数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 成团人数 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>成团人数：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="16">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 180px;" [nzSize]="'large'" formControlName="formGoupPersonNum_new" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'请选择成团人数'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of _formGoupPersonNumOptions_new"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.formGoupPersonNum_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择成团人数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <div class="rule-sub-title">拼团活动轮转</div>
+
+                <!-- 拼团有效期 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label for="groupBuyingTime_new"
+                            nz-form-item-required>拼团有效期：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <div class="flex-container">
+                          <div class="number-nz-input">
+                              <nz-input [nzSize]="'large'" [nzDisabled]="isElectAdmin" (nzFocus)="intervalFormat('groupBuyingTime_new')" (nzBlur)="stopInterval()"
+                                        formControlName="groupBuyingTime_new"
+                                        [nzId]="'groupBuyingTime_new'">
+                              </nz-input>
+                          </div>
+                          <div class="suffix-text">小时</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingTime_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请输入拼团有效期</span>
+                          <span class="custom-error"
+                                *ngIf="submitted && !formGroup.controls.groupBuyingTime_new.hasError('required') && !timeValid('groupBuyingTime_new')">
+                            <i class="si si-danger"></i>&nbsp;拼团有效期应为大于0小于96的正整数</span>
+                        </div>
+                  </div>
+                </div>
+
+                <!-- 拼团商品轮转时间 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>拼团商品轮转时间：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="18">
+                        <div class="flex-container">
+                          <div>
+                            <nz-select style="width: 100px;" [nzSize]="'large'" formControlName="groupBuyingTurnTime_new" [nzDisabled]="isElectAdmin" [nzPlaceHolder]="'天数'" nzAllowClear>
+                              <nz-option
+                                *ngFor="let option of _groupBuyingTurnTimeOptions_new"
+                                [nzLabel]="option.label"
+                                [nzValue]="option">
+                              </nz-option>
+                            </nz-select>
+                          </div>
+                          <div class="suffix-text">天之后，可以用同样的商品拼团</div>
+                          <span class="custom-error"
+                                *ngIf="submitted && formGroup.controls.groupBuyingTurnTime_new.hasError('required')">
+                            <i class="si si-danger"></i>&nbsp;请选择拼团商品轮转时间</span>
+                        </div>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="rules-panel">
+            <div class="panel-top">
+              商品流
+              <!-- <i nz-tooltip="待定。。。。。。。。。。"
+                class="i-tips anticon anticon-exclamation-circle"></i> -->
+            </div>
+            <div class="panel-form">
+
+              <!-- 分组排序 -->
+              <div nz-form-item
+                    nz-row>
+                <div nz-form-label
+                      nz-col
+                      [nzSm]="6">
+                  <label nz-form-item-required>分组排序：</label>
+                </div>
+                <div nz-form-control
+                      nz-col
+                      [nzSm]="18">
+                      <sortable-tag formControlName="groupOrders"
+                                    [disabledEdit]="isElectAdmin"></sortable-tag>
+                </div>
+              </div>
+
+                <!-- 新品占比 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>新品占比：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <nz-radio-group formControlName="newGoodsPercent">
+                          <label nz-radio [nzValue]="0" [nzDisabled]="isElectAdmin">
+                            <span>少</span>
+                          </label>
+                          <label nz-radio [nzValue]="1" [nzDisabled]="isElectAdmin">
+                            <span>适中</span>
+                          </label>
+                          <label nz-radio [nzValue]="2" [nzDisabled]="isElectAdmin">
+                            <span>多</span>
+                          </label>
+                        </nz-radio-group>
+                  </div>
+                </div>
+
+                <!-- 自营商品占比 -->
+                <div nz-form-item
+                      nz-row>
+                  <div nz-form-label
+                        nz-col
+                        [nzSm]="6">
+                    <label nz-form-item-required>自营商品占比：</label>
+                  </div>
+                  <div nz-form-control
+                        nz-col
+                        [nzSm]="14">
+                        <nz-radio-group formControlName="selfGoodsPercent">
+                            <label nz-radio [nzValue]="0" [nzDisabled]="isElectAdmin">
+                              <span>少</span>
+                            </label>
+                            <label nz-radio [nzValue]="1" [nzDisabled]="isElectAdmin">
+                              <span>适中</span>
+                            </label>
+                            <label nz-radio [nzValue]="2" [nzDisabled]="isElectAdmin">
+                              <span>多</span>
+                            </label>
+                        </nz-radio-group>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+        <div [hidden]="isElectAdmin" class="btn-footer">
+          <button type="button" nz-button [nzSize]="'large'" [nzType]="'default'" (click)="cancelEdit()">
+            <span>取消</span>
+          </button>
+          <button type="submit" class="submit-btn" nz-button [nzSize]="'large'" [nzType]="'primary'">
+            <span>提交</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+    <div class="side-bar-img">
+      <div class="side-bar-title">装修结构图</div>
+      <img [seeSrc]="sideBarImgUrl" />
+    </div>
+  </div>
+</nz-spin>

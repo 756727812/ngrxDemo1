@@ -1,0 +1,60 @@
+<div class="activity-panel">
+  <h2>活动 Banner 配置</h2>
+  <div ng-if="$ctrl.ready" class="clearfix">
+
+    <div class="btn-wrap">
+      <div
+        ng-click="$ctrl.onAppendClick()"
+        class="btn-append">
+        添加 Banner
+        <input
+          class="upload-input-trigger"
+          ng-if="!$ctrl.shouldPreventAppend()"
+          type="file"
+          see-file-select="$ctrl.uploadCb"
+          format="jpg,jpeg,png"
+          accept="image/jpg, image/jpeg, image/png"
+        >
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="clearfix empty-tips" ng-show="$ctrl.formDataList.length === 0">
+      <div class="main">你还没有配置活动Banner</div>
+
+      <ul class="sub">
+        <li class="line">建议上传图片尺寸为<span class="blue">710*334</span></li>
+      </ul>
+    </div>
+
+    <form ng-submit="$ctrl.submit()" name="$ctrl.form" ng-show="$ctrl.formDataList.length > 0">
+      <ul>
+        <li ng-repeat="formData in $ctrl.formDataList track by $ctrl.identifyFormData(formData)">
+          <div class="sep" ng-if="$index!==0"></div>
+          <ul class="op-btns">
+            <li>
+              <i ng-click="$ctrl.move($index, -1)" class="up fa fa-chevron-up" ng-class="{disabled: $index === 0}"></i>
+            </li>
+            <li>
+              <i ng-click="$ctrl.move($index, 1)" class="down fa fa-chevron-down"
+                 ng-class="{disabled: $index === $ctrl.formDataList.length - 1}"></i>
+            </li>
+            <li>
+              <i ng-click="$ctrl.remove($index)" class="del fa fa-times"></i>
+            </li>
+          </ul>
+          <shop-operate-banner-form
+            kol-id="$ctrl.kolId"
+            on-add-banner-form="$ctrl.onAddBannerForm"
+            data="formData"
+            form-submitted="$ctrl.form.$submitted"
+          ></shop-operate-banner-form>
+        </li>
+      </ul>
+      <input type="submit" class="btn-submit" value="保存">
+    </form>
+
+
+  </div>
+</div>

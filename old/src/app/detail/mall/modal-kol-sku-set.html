@@ -1,0 +1,134 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h1 class="modal-title">
+    <font color="black" style="font-size:20px">SKU设置</font>
+  </h1>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-20 portlets" style="padding-left:20px;">
+      <div class="form-group">
+        <label class="control-label col-sm-1">商品</label>
+        <div class="col-sm-4">
+          <select class="form-control" ng-model="vm.cur_item" ng-change="vm.changeProduct()" ng-options="item.item_name for item in vm.list_item">
+            <option value="" selected>-- 请选择 --</option>
+          </select>
+        </div>
+        <label class="control-label col-sm-1">KOL</label>
+        <div class="col-sm-4">
+          <select class="form-control" ng-model="vm.cur_kol" ng-change="vm.changeKol()" ng-options="item.kol_info.kol_name for item in vm.list_kol_mall">
+            <option value="" selected>-- 请选择 --</option>
+          </select>
+        </div>
+      </div>
+      <form class="form-horizontal w5c-form" name="genSubGoodsForm" novalidate w5c-form-validate>
+        <div class="table-scrollable" ng-if="vm.cur_item" style="overflow: visible;">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <!-- <th>KOL</th> -->
+                <!-- <th>商品</th> -->
+                <th>sku_id</th>
+                <th ng-repeat="(name,size) in vm.sku_list[0].sku_pros track by $index">{{name}}</th>
+                <th>
+                  <span class="required">KOL日常售价/市场价&yen;</span>
+                  <br>
+                  <input name="sku_price" class="form-control form-white w-80" type="number" min="0" ng-model="vm.sameTriger.sku_price" ng-change="vm.setSame('sku_price')"
+                  />&nbsp;&sol;&nbsp;
+                  <input name="sku_ori_price" class="form-control form-white w-80" type="number" min="0" ng-model="vm.sameTriger.sku_ori_price"
+                    ng-change="vm.setSame('sku_ori_price')" />
+                </th>
+                <th>
+                  <span class="required">供货价&yen;</span>
+                  <br>
+                  <!--供货价不可编辑
+                          <input name="cost_price" class="form-control form-white w-80" type="number" min="0" ng-model="vm.sameTriger.cost_price"
+                            ng-change="vm.setSame('cost_price');vm.onSkuChanged()"
+                          />-->
+                </th>
+                <th>库存设置
+                  <br>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="vm.sameTriger.share_parent_stock" ng-true-value="1" ng-false-value="0" ng-change="vm.setSame('share_parent_stock');vm.checkInventoryCheckbox('share_parent_stock')">读取闲置
+                  </label>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="vm.sameTriger.lock_quantitative_inventory" ng-true-value="1" ng-false-value="0" ng-change="vm.setSame('lock_quantitative_inventory');vm.checkInventoryCheckbox('lock_quantitative_inventory')">锁定定量
+                  </label>
+                  <div class="dropdown" style="margin-bottom: 10px;display: inline-block;" ng-show="vm.sameTriger.lock_quantitative_inventory">
+                    <a class="dropdown-toggle" id="dropdown5" role="button" data-toggle="dropdown" data-target="" href="" aria-expanded="false">
+                      <input type="text" name="same_triger_release_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control form-white" style="height: 34px;width: 170px;"
+                        placeholder="释放时间" data-ng-model="vm.sameTriger.release_time" ng-disabled="!vm.sameTriger.lock_quantitative_inventory">
+                    </a>
+                    <ul class="dropdown-menu" ng-style="{left:'-100%',top:'100%'}" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker data-ng-model="vm.sameTriger.release_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown5' }"
+                        data-on-set-time="vm.checkReleaseTimeIsValid(newDate, oldDate, 999);vm.onTimeSet(newDate, oldDate)"
+                      />
+                    </ul>
+                  </div>
+                </th>
+                <th>售卖</th>
+                <th>母商品库存
+                  <br>闲置/已锁/总</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="sku_info in vm.sku_list">
+                <td>{{sku_info.sku_id}}</td>
+                <td ng-repeat="(name,size) in sku_info.sku_pros track by $index">{{size}}</td>
+                <td>
+                  <input w5c-dynamic-name="'sku_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control w-80" required
+                    ng-model="sku_info.sku_price" ng-change="vm.onSkuChanged(true)">&nbsp;&sol;&nbsp;
+                  <input w5c-dynamic-name="'sku_ori_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control w-80" ng-model="sku_info.sku_ori_price"
+                    ng-change="vm.onSkuChanged()" required>
+                </td>
+                <td>
+                  <input w5c-dynamic-name="'cost_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control" ng-model="sku_info.cost_price"
+                    ng-disabled="true" ng-change="vm.onSkuChanged()" required>
+                </td>
+                <td>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="sku_info.share_parent_stock" ng-true-value="1" ng-false-value="0" ng-checked="sku_info.share_parent_stock == '1'"
+                      ng-change="vm.checkInventoryCheckbox('share_parent_stock', $index)">读取闲置库存
+                  </label>
+                  <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="sku_info.lock_quantitative_inventory" ng-true-value="1" ng-false-value="0" ng-checked="sku_info.lock_quantitative_inventory == 1"
+                      ng-change="vm.checkInventoryCheckbox('lock_quantitative_inventory', $index)">锁定定量库存
+                  </label>
+                  <div ng-if="sku_info.lock_quantitative_inventory">
+                    <input w5c-dynamic-name="'lock_number' + $index" w5c-dynamic-element ng-trim="true" type="number" min="0" max="{{sku_info.max_input_stock}}"
+                      class="form-control w-100" placeholder="锁定数量" ng-model="sku_info.sku_stock" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                      onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                      ng-disabled="!sku_info.lock_quantitative_inventory">
+                    <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                      <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                        <input type="text" w5c-dynamic-name="'release_time' + $index" w5c-dynamic-element datetime="yyyy-MM-dd HH:mm:ss" class="form-control"
+                          style="height: 34px;width: 170px;" placeholder="释放时间" data-ng-model="sku_info.release_time" ng-disabled="!sku_info.lock_quantitative_inventory">
+                      </a>
+                      <ul class="dropdown-menu" ng-style="vm.sku_list.length-$index <=3 ? {left:'-100%',bottom:'100%',top:'initial'}:{left:'-100%',top:'100%'}"
+                        role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="sku_info.release_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }" data-on-set-time="vm.checkReleaseTimeIsValid(newDate, oldDate, $index)"
+                        />
+                      </ul>
+                    </div>
+                    <a href="" class="btn btn-sm btn-primary m-0" ng-click="sku_info.release_time=null">
+                      <i class="fa fa-times"></i>清空</a>
+                  </div>
+                </td>
+                <td>
+                  <input type="checkbox" ng-model="sku_info.onsale" ng-true-value="1" ng-false-value="0" ng-checked="sku_info.onsale">
+                </td>
+                <td>{{sku_info.free_stock}}/{{sku_info.locked_stock}}/{{sku_info.total_stock}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <!--
+  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+-->
+  <button class="btn btn-primary" type="button" ng-click="vm.ok()">返回</button>
+</div>

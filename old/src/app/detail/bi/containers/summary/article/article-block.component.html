@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="panel bi-panel summary-trade">
+      <div class="panel-content">
+        <div class="h">
+          <div class="txt-h">文章合集概览</div>
+          <app-bi-right-nav label="文章合集分析"
+                            [href]="rightNavHref"></app-bi-right-nav>
+          <!-- TODO 跳转 -->
+        </div>
+        <div class="clearfix main">
+          <div class="bi-table-wrap">
+            <table class="table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>文章名</th>
+                  <th>阅读量</th>
+                  <th>商品数</th>
+                  <th>商品销量</th>
+                  <th>付款金额（元）</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of list; let i = index;">
+                  <td class="rank">{{i+1}}</td>
+                  <td class="name">
+                    <div>
+                      <a [href]="item.article_link"
+                         target="_blank">{{item.article_name}}</a>
+                    </div>
+                  </td>
+                  <td>{{item.read_num | number}}</td>
+                  <td>{{item.item_num | number}}</td>
+                  <td>{{item.sale_quantity | number}}</td>
+                  <td>{{item.pay_price_num | _currency}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

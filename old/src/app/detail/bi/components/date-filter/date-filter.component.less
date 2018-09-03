@@ -1,0 +1,37 @@
+.bi-date-filter {
+  display: flex;
+  align-items: center;
+}
+
+.labe {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.date-type {
+  width: 140px;
+  height: 31px;
+  margin-right: 17px;
+}
+
+.picker-ct.hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+select.date-type {
+  width: 138px;
+  height: 31px;
+  border-radius: 2px;
+  background-color: #fbfbfb;
+  border: solid 1px #e0e0e0;
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:root {
+  .ant-calendar-week-number {
+    .ant-calendar-week-number-cell {
+      visibility: hidden !important;
+    }
+  }
+}

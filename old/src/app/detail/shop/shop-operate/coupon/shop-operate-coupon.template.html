@@ -1,0 +1,46 @@
+<div class="shop-operate-coupon">
+  <h2 class="shop-operate-coupon-title">优惠券配置</h2>
+  <button class="btn btn-primary addCouponAction" type="button" ng-click="$ctrl.openAddCouponModal()">添加优惠券</button>
+  <p class="text-center m-t-50" ng-if="$ctrl.couponList.length === 0">未配置任何优惠券</p>
+  <div class="table-scrollable" ng-if="$ctrl.couponList.length > 0">
+    <table class="table table-hover table-center m-t-20">
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th>面额&amp;门槛</th>
+          <th style="min-width: 104px">有效期</th>
+          <th style="min-width: 58px">状态</th>
+          <th>优惠券排序</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in $ctrl.couponList track by item.id">
+          <td ng-bind="item.name"></td>
+          <td>{{item.couponPrice | currency: '￥'}}&amp;{{item.limitMoney | currency: '￥'}}</td>
+          <td>{{item.avaliableTimeStart | date: 'yyyy-MM-dd HH:mm'}}至<br />{{item.avaliableTimeEnd | date: 'yyyy-MM-dd HH:mm'}}</td>
+          <td ng-bind="item.status | couponStatus" ng-style="{ color: (item.status === 4 || item.status === 5) && '#FF6B6B' }"></td>
+          <td>
+            <div class="action-group-container">
+              <button class="btn btn-sm"
+                ng-click="$ctrl.updateCouponListSort(item.id, 2)"
+                ng-class="{ 'btn-primary': $index > 0 }"
+                ng-disabled="$index === 0"
+              ><i class="fa fa-chevron-up"></i></button>
+              <button class="btn btn-sm"
+                ng-click="$ctrl.updateCouponListSort(item.id, 3)"
+                ng-class="{ 'btn-primary': $index < $ctrl.couponList.length - 1 }"
+                ng-disabled="$index === ($ctrl.couponList.length - 1)"
+              ><i class="fa fa-chevron-down"></i></button>
+            </div>
+          </td>
+          <td>
+            <a class="text-primary click" href=""
+              ng-click="$ctrl.removeCouponItem(item.id)"
+            >移除</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

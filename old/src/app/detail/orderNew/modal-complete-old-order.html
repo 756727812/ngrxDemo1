@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">完成备货</h3>
+</div>
+<div class="modal-body">
+    <form id="submitFinishBuyForm" name="submitFinishBuyForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+            <label class="control-label required col-sm-5">请输入官网单号</label>
+            <div class="col-sm-7 text-left">
+                <input id="pop-listnum" class="form-control" type="text" ng-model="waitBuyInfo.out_order_id" placeholder="非必填项，如果没有，可随机填写即可" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

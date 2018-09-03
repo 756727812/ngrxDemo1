@@ -1,0 +1,170 @@
+<nz-card [nzBordered]="false" class="financial-container">
+  <form nz-form [formGroup]="searchForm" class="ant-advanced-search-form" [nzLayout]="'inline'">
+    <div nz-row>
+      <div nz-form-item >
+        <div nz-form-label>
+          <label>提现单号</label>
+        </div>
+        <div nz-form-control>
+          <nz-input  [nzPlaceHolder]="'请输入'" formControlName="withdrawalId"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-label>
+          <label>提现用户</label>
+        </div>
+        <div nz-form-control>
+          <nz-input [nzPlaceHolder]="'请输入昵称'" formControlName="uUsername"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label>
+          <label>提现状态</label>
+        </div>
+        <div nz-form-control style="width: 162px">
+          <nz-select  [nzPlaceHolder]="'请选择'" [nzAllowClear] = "true" formControlName="withdrawalStatus">
+            <nz-option nzLabel="全部" nzValue=""></nz-option>
+            <nz-option
+              *ngFor="let status of statusList,let i = index"
+              [nzLabel]="status.name"
+              [nzValue]="status.id">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label>
+          <label>提现时间</label>
+        </div>
+        <div nz-form-control>
+          <nz-rangepicker formControlName="dateRange"></nz-rangepicker>
+        </div>
+      </div>
+      <div nz-form-item>
+        <button nz-button [nzType]="'primary'" (click)="search()">查询</button>
+        <button nz-button (click)="resetSearchForm()">重置</button>
+      </div>
+    </div>
+  </form>
+  <div class="tip">
+    <nz-alert [nzType]="'info'">
+      <span alert-body>
+        <i class="fa fa-info-circle"></i>共{{total || 0}}条提现申请
+      </span>
+    </nz-alert>
+  </div>
+
+  <nz-table #nzTable nzShowSizeChanger nzShowQuickJumper  [nzAjaxData]="list" [nzTotal]="total" [nzLoading]="loading"
+            [(nzPageSize)]="pageSize"(nzPageSizeChange)="changePage()" [(nzPageIndex)]="page" (nzPageIndexChange)="changePage()">
+    <thead nz-thead>
+    <tr>
+      <th nz-th>
+        提现单号
+      </th>
+      <th nz-th>
+        提现金额
+      </th>
+      <th nz-th nzWidth="200px">
+        提现用户昵称
+      </th>
+      <th nz-th>
+        状态
+      </th>
+      <th nz-th>
+        提现时间
+      </th>
+      <th nz-th  nzWidth="200px">
+        操作
+      </th>
+    </tr>
+    </thead>
+    <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let item of nzTable.data; let index = index">
+      <td nz-td [innerText]="item.withdrawalId"></td>
+      <td nz-td [innerText]="item.withdrawalAmount/100"></td>
+      <td nz-td [innerText]="item.uUsername"></td>
+      <td nz-td>
+        <span [ngClass]="'status status-' + item.withdrawalStatus">{{statusList[item.withdrawalStatus-1].name}}</span>
+      </td>
+      <td nz-td [innerText]="item.createTime | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+      <td nz-td>
+        <span *ngIf = "item.withdrawalStatus === 1">
+          <nz-popconfirm [nzTitle]="'确定通过审核？通过后系统将立刻发起打款'" (nzOnConfirm)="handlePass(item.id)" [nzOverlayStyle] ="{maxWidth:'200px',wordBreak:'break-all'}">
+              <a nz-popconfirm>通过</a>
+          </nz-popconfirm>
+          | <a href="javascript:;" (click)="handleRefuse(item.id)">拒绝</a>
+        </span>
+        <span *ngIf = "item.withdrawalStatus === 2">
+         <span *ngIf="!item.remark" >暂无</span>
+         <nz-popover *ngIf="item.remark" [nzTitle]="''" [nzTrigger]="'hover'" [nzOverlayStyle] ="{maxWidth:'400px',wordBreak:'break-all'}">
+          <a href="javascript:;" nz-popover>查看说明</a>
+          <ng-template #nzTemplate>
+            <div>{{item.remark}}</div>
+          </ng-template>
+        </nz-popover>
+        </span>
+        <span *ngIf = "item.withdrawalStatus === 3">
+          <nz-popover [nzTitle]="''" [nzTrigger]="'hover'" [nzOverlayStyle] ="{maxWidth:'400px',wordBreak:'break-all'}">
+            <a href="javascript:;" nz-popover>查看说明</a>
+            <ng-template #nzTemplate>
+              <div>{{item.remark || '无'}}</div>
+            </ng-template>
+          </nz-popover>
+        </span>
+        <span *ngIf = "item.withdrawalStatus === 4">
+          <nz-popover [nzTitle]="''" [nzTrigger]="'hover'" [nzOverlayStyle] ="{maxWidth:'400px',wordBreak:'break-all'}">
+            <a href="javascript:;" nz-popover>查看说明</a>
+            <ng-template #nzTemplate>
+              <div>{{item.remark || '无'}}</div>
+            </ng-template>
+          </nz-popover> |
+          <a href="javascript:;" (click)="handleRetry(item.id)">重试</a> |
+
+          <nz-popover [nzTitle]="''" [nzTrigger]="'hover'" [nzOverlayStyle] ="{maxWidth:'300px',wordBreak:'break-all'}">
+             <a href="javascript:;" nz-popover (click)="handleForce(item.id)">强制成功 <i class="fa fa-question-circle-o"></i></a>
+            <ng-template #nzTemplate>
+              <div>若自动打款屡次失败，可进行人工线下打款，并在此处点击“强制成功”，以标记提现成功状态。注意，强制成功仅用于流转提现单状态，不会发起系统自动打款。</div>
+            </ng-template>
+          </nz-popover>
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<ng-template #refuseForm>
+  <div class="refuse-form">
+    <label [ngClass] = "{'error-tip':isRefuseError && !refuseReason}">请说明拒绝理由：</label>
+    <div class="form-value">
+      <textarea [ngClass]="{'error':isRefuseError && !refuseReason}" [(ngModel)] = "refuseReason"></textarea>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #forceForm>
+  <div class="force-form">
+    <label [ngClass] = "{'error-tip':isForceError&&!forceReason}">请说明强制流转提现单至提现成功的原因：</label>
+    <div class="form-value">
+      <textarea [ngClass]="{'error':isForceError&&!forceReason}" [(ngModel)] = "forceReason"></textarea>
+    </div>
+    <p *ngIf="sellerInfo" class="seller-info">操作者：{{sellerInfo.seller_name + '  ' + sellerInfo.seller_email}}</p>
+    <p class="tip">注意：<br/>
+      1.强制成功操作，仅用于流转提现单状态，不会发起系统自动打款<br/>
+      2.由于财务人工线下打款无法系统监控，因此强制成功的操作者将被记录，若出现财务问题请询问相关操作者
+    </p>
+  </div>
+</ng-template>
+
+<ng-template #failTpl>
+  <div class="fail-tpl" (click)="handleCloseFailModal()">
+    <i class="anticon anticon-exclamation-circle-o fail-tpl-icon"></i>
+    <div class="fail-tpl-body">
+      <p class="fail-tpl-body-title">打款失败</p>
+      <p class="fail-tpl-body-content">{{failMsg}}</p>
+    </div>
+    <!--<div class="fail-tpl-footer">-->
+      <!--<a href="javascript:;">查看</a>-->
+    <!--</div>-->
+  </div>
+</ng-template>

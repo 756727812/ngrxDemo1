@@ -1,0 +1,267 @@
+<div class="header">
+  <h2><strong>热门单品</strong></h2>
+
+  <div class="breadcrumb-wrapper" ng-hide="true">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/fashion">全球时尚</a></li>
+      <li class="hotgoods">热门单品</li>
+    </ol>
+  </div>
+</div>
+<div>
+  <div class="row">
+    <div class="col-xs-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <see-tabset see-hide="KOL New-Brand">
+            <see-tab select="$ctrl.selectTab()" heading="单品" ng-if="$ctrl.hash === '1' || $ctrl.hash === '2' " type="1"></see-tab>
+            <see-tab heading="单品" ng-if="$ctrl.hash === '3' " type="3"></see-tab>
+            <see-tab select="$ctrl.selectTab()" heading="品牌" ng-if="$ctrl.hash === '1' || $ctrl.hash === '2' || $ctrl.hash === '3' "
+              type="2"></see-tab>
+          </see-tabset>
+          <div ng-show="$ctrl.hash === '1' || $ctrl.hash === '3' ">
+            <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+
+              <div class="form-group m-b-10">
+                <label class="control-label">品类
+                  <div class="input-group">
+                    <span class="form-control">{{ $ctrl.getSelectedClassName() }}</span>
+                    <div class="btn btn-primary input-group-addon" type="button" ng-click="$ctrl.toSelectClass()">选择品类</div>
+                  </div>
+                </label>
+              </div>
+
+              <div class="form-group m-b-10" ng-if="false">
+                <label class="control-label">选择品类</label>
+                <ui-select multiple ng-model="$ctrl.searchForm.filter_class_id" theme="bootstrap" close-on-select="false" title="选择品类" style="width: 300px;">
+                  <ui-select-match placeholder="选择品类...">{{$item.value}}</ui-select-match>
+                  <ui-select-choices repeat="cls.filter_class_id as cls in $ctrl.list_class | propsFilter: {value: $select.search}">
+                    <div ng-bind-html="cls.value | highlight: $select.search"></div>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+              <div class="form-group m-b-10" see-hide="KOL New-Brand">
+                <label class="control-label">选择国家</label>
+                <ui-select multiple ng-model="$ctrl.searchForm.filter_country_name" theme="bootstrap" close-on-select="false" title="选择国家"
+                  style="width: 300px;">
+                  <ui-select-match placeholder="选择国家...">{{$item.value}}</ui-select-match>
+                  <ui-select-choices repeat="country.filter_country_name as country in $ctrl.list_country | propsFilter: {value: $select.search}">
+                    <div ng-bind-html="country.value | highlight: $select.search"></div>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+              <div class="form-group m-b-10">
+                <label class="control-label">价格区间</label>
+                <input type="number" class="form-control" placeholder="￥" ng-model="$ctrl.searchForm.filter_price_start">&nbsp;-&nbsp;
+                <input type="number" class="form-control" placeholder="￥" ng-model="$ctrl.searchForm.filter_price_end">
+              </div>
+              <div class="form-group m-b-10">
+                <label class="control-label">关键词
+	                  <input see-hide="KOL New-Brand" type="search" class="form-control" ng-model="$ctrl.searchForm.keyword" placeholder="商品名/品牌/商品ID/备注">
+                    <input see-access="KOL New-Brand" type="search" class="form-control" ng-model="$ctrl.searchForm.keyword" placeholder="商品名/品牌">
+	              </label>
+              </div>
+              <button type="submit" class="btn btn-primary m-b-10"><i class="fa fa-search"></i>搜索</button>
+              <!--<button class="btn btn-primary m-b-10" type="button" ng-click="$ctrl.addGoodsModal()" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin"><i class="fa fa-plus"></i>添加商品</button>-->
+              <a class="btn btn-primary m-b-10" target="_blank" download see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-href="/api/data_api/export?day_type={{$ctrl.day_type}}&rank_type={{$ctrl.rank_type}}">
+                <i class="fa fa-file-excel-o"></i>导出列表</a>
+              <div class="btn-group font-size-25">
+                <a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'table'}" ng-disabled="$ctrl.show_type === 'table'" ng-click="$ctrl.changeShowType('table')"><i class="fa fa-list"></i></a>&nbsp;|&nbsp
+                <a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'grid'}" ng-disabled="$ctrl.show_type === 'grid'" ng-click="$ctrl.changeShowType('grid')"><i class="fa fa-table"></i></a>
+              </div>
+            </form>
+            <see-tabset>
+                <see-tab heading="热门榜单" select="$ctrl.selectTab()" type="1"></see-tab>
+                <see-tab heading="最新发布" select="$ctrl.selectTab()" type="3"></see-tab>
+              </see-tabset>
+            <div id="hotgoodsList" class="table-scrollable materialList" ng-if="$ctrl.show_type === 'table'">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>商品图</th>
+                    <th>商品名</th>
+                    <th see-hide="KOL New-Brand">商品ID</th>
+                    <th see-hide="KOL New-Brand">推荐理由</th>
+                    <th>品类</th>
+                    <th>品牌</th>
+                    <th>发货地</th>
+
+                    <th see-hide="KOL New-Brand">库存</th>
+                    <th>可供规格</th>
+                    
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">供货价</th>
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">建议零售价</th>
+                    <!-- 给KOL开放货源 <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">货源</th> -->
+                    <th>货源</th>
+                    <!--
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">浏览量</th>
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">销量</th>
+                    -->
+                    <th see-hide="KOL New-Brand">备注</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.hotgoods_list">
+                    <td>
+                      <img see-src="item.item_imgurl" see-viewer width="100" alt="{{item.item_name}}">
+                    </td>
+                    <td ng-bind="item.item_name"></td>
+                    <td  see-hide="KOL New-Brand" ng-bind="item.item_id"></td>
+                    <td  see-hide="KOL New-Brand">
+                      <a href="" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" editable-textarea="item.recommend_reason" e-rows="7" e-cols="40"
+                        onbeforesave="$ctrl.saveRecommend($data, item.item_id)"><i class="fa fa-pencil-square-o"></i>{{item.recommend_reason}}</a>
+                      <span see-access="KOL New-Brand">{{item.recommend_reason}}</span>
+                    </td>
+                    <td ng-bind="item.class_name"></td>
+                    <td ng-bind="item.brand_name"></td>
+                    <td ng-bind="item.ship_country"></td>
+
+                    <td  see-hide="KOL New-Brand" ng-bind="item.stock"></td>
+                    <td ng-bind="item.sku_detail_str"></td>
+
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">
+                      <span ng-if="item.supply_price_start">{{item.supply_price_start | currency: '￥'}}</span>
+                      <span ng-if="item.supply_price_start && item.supply_price_end">&nbsp;~&nbsp;</span>
+                      <span ng-if="item.supply_price_end">{{item.supply_price_end | currency: '￥'}}</span>
+                    </td>
+
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-bind="item.price | currency: '￥'"></td>
+
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">
+                      <select style="width:80px" class="form-control" ng-model="item.goods_status" ng-change="$ctrl.changeGoodsStatus(item.item_id,item.goods_status)"
+                        ng-options="cat.id as cat.name for cat in $ctrl.list_goods_status" required>
+												</select>
+                    </td>
+                    <td see-access="KOL New-Brand" ng-bind="item.goods_status_str">
+                    </td>
+                    <!--
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-bind="item.num_uv"></td>
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-bind="item.num_sell"></td>
+                  -->
+                    <td  see-hide="KOL New-Brand">
+                      <a href="" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" editable-textarea="item.notes" e-rows="7" e-cols="40"
+                        onbeforesave="$ctrl.saveNotes($data, item.item_id)"><i class="fa fa-pencil-square-o"></i>{{item.notes}}</a>
+                      <span see-access="KOL New-Brand">{{item.notes}}</span>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-primary" ng-href="{{item.buyurl}}" target="_blank">商品详情</a>
+                      <!--隐藏这个按钮
+											<button type="button" class="btn btn-sm btn-primary" see-access="KOL-Admin See-Admin Super-Admin Elect-Admin" ng-click="$ctrl.hideGoods(item.item_id, item.is_public)"
+												ng-bind="item.is_public === 1 ? '隐藏商品' : '显示商品'"></button>
+											-->
+                      <button class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-click="$ctrl.materialSync(item.item_id)">取消同步</button>
+                      <button ng-if="$ctrl.hash === '1'" class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin"
+                        ng-click="$ctrl.materialTop(item.item_id, item.top_flag)">{{ item.top_flag === 0 ? '置顶' : '取消置顶' }}</button>
+                      <button class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin Elect-Admin" ng-click="$ctrl.materialSupplyPrice(item.item_id, item.supply_price_start, item.supply_price_end)">编辑供货价</button>
+                      <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.materialFavorItemAdd(item.item_id, item.is_favor)">{{ item.is_favor === 0 ? '收藏' : '取消收藏' }}</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="grid moveupdown materialList" ng-if="$ctrl.show_type === 'grid'">
+              <div class="grid-sizer"></div>
+              <div class="grid-item" ng-repeat="item in $ctrl.hotgoods_list" id="{{'item' + item.item_id}}">
+                <div class="grid-item-image">
+                  <img see-src="item.item_imgurl" width="100" class="img-viewer" alt="">
+                  <div class="btn-group font-size-25 top">
+                    <a href="" class="" ng-click="$ctrl.materialFavorItemAdd(item.item_id, item.is_favor)">
+                      <i ng-if="item.is_favor === 1" class="fa fa-heart" style="color: #ff5972;"></i>
+                      <i ng-if="item.is_favor === 0" class="fa fa-heart-o"></i></a>
+                  </div>
+                  <!--隐藏这个按钮
+									<div class="btn-group font-size-25 bottom" see-access="KOL-Admin See-Admin Super-Admin Elect-Admin">
+										<a href="" class="" ng-click="$ctrl.hideGoods(item.item_id, item.is_public, $index)" title="{{item.is_public === 1 ? '隐藏商品' : '显示商品'}}">
+											<i class="fa " ng-class="{ 'fa-eye-slash' : item.is_public === 1, 'fa-eye': item.is_public === 0}"></i>
+										</a>
+									</div>
+								-->
+                  <a ng-href="{{item.buyurl}}" class="goods-url" target="_blank"></a>
+                </div>
+                <div class="clear-fix p-5 m-0" style="font-size: 12px;">
+                  <span class="pull-left" see-hide="KOL New-Brand">
+	                    <span>ID&nbsp;<span ng-bind="item.item_id"></span></span>
+                  </span>
+                  <span style="text-align: center;" ng-bind="item.class_name"></span>
+                  <span see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" class="pull-right text-primary" ng-bind="item.price | currency: '￥'"></span>
+                  <span class="pull-right text-primary" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">
+										<span ng-if="item.supply_price_start">{{item.supply_price_start | currency: '￥'}}</span>
+                  <span ng-if="item.supply_price_start && item.supply_price_end">&nbsp;~&nbsp;</span>
+                  <span ng-if="item.supply_price_end">{{item.supply_price_end | currency: '￥'}}</span>
+                  </span>
+                </div>
+                <div class="clear-fix">
+                  <div class="pull-left">
+                    <img ng-if="item.brand_logo" class="img-circle" style="width: 30px;" see-src="item.brand_logo" alt="" />
+                    <span class="text-info" ng-bind="item.brand_name"></span>
+                  </div>
+                  <div class="pull-right">
+                    <img style="width: 25px;" see-src="item.location_logo" alt="" />
+                    <span ng-bind="item.location_name"></a>
+	                </div>
+	              </div>
+	              <a ng-href="{{item.buyurl}}" class="grid-item-desc m-b-10 text-info" ng-bind="item.item_name" target="_blank"></a>
+	              <div class="clear-fix" see-access="KOL-Admin See-Admin Super-Admin Elect-Admin">
+	                <div class="pull-left">
+	                  <span><i class="fa fa-fire text-primary"></i><span ng-bind="item.num_uv"></span></span>
+                    <span><i class="fa fa-shopping-cart text-primary"></i><span ng-bind="item.num_sell"></span></span>
+                  </div>
+                  <div class="pull-right" ng-if="item.goods_status_str === '不稳定'">
+                    <p>货源不稳定</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div ng-show="$ctrl.hash === '2'">
+            <form ng-submit="$ctrl.submitSearchBrand()" class="form-inline">
+              <div class="form-group m-b-10">
+                <label class="control-label">关键词
+				                  <input type="search" class="form-control" ng-model="$ctrl.searchFormBrand.keyword" placeholder="标题/备注">
+				              	</label>
+              </div>
+              <button type="submit" class="btn btn-primary m-b-10"><i class="fa fa-search"></i>搜索</button>
+              <button class="btn btn-primary m-b-10" type="button" ng-click="$ctrl.addBrandModal(0)" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin"><i class="fa fa-plus"></i>添加榜单</button>
+            </form>
+            <div class="table-scrollabel">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <!--
+										<th>排序(值小越前)</th>
+										<th>品牌图</th>-->
+                    <th>标题</th>
+                    <th>链接</th>
+                    <th>备注</th>
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.brand_list">
+                    <!--
+										<td>{{item.rank}}</td>
+										<td>
+											<img see-src="item.kol_brand_banner" see-viewer width="100" alt="{{item.kol_brand_name}}">
+										</td>-->
+                    <td>{{item.kol_brand_name}}</td>
+                    <td><a href="{{item.kol_brand_link}}" target="_blank">{{item.kol_brand_link}}</a></td>
+                    <td>{{item.kol_brand_note}}</td>
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">
+                      <button class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin Elect-Admin" ng-click="$ctrl.addBrandModal(item.kol_brand_id)">编辑</button>
+                      <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.materialBrandDelete(item.kol_brand_id)">删除</button>
+                    </td>
+                  </tr>
+              </table>
+            </div>
+          </div>
+          <pagination total-items="$ctrl.total_items"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

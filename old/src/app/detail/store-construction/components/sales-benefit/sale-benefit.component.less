@@ -1,0 +1,98 @@
+@plusTriggerSize: 20px;
+
+.init-trigger {
+  display: flex;
+  position: relative;
+  height: 48px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+
+  &.dash{
+    align-items: center;
+    justify-content: center;
+    background-color: #fbfbfb;
+    border: dashed 1px #e5e5e5;
+  }
+
+  .i-close-icon{
+    display: none;
+    position: absolute;
+    right: 0;
+    top: -8px;
+    margin-right: -10px;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    opacity: 1;
+    background: #ff6b6b;
+    border-radius: 50%;
+    color: #fff;
+    padding: 2px;
+    font-size: 12px;
+    width: 14px;
+    height: 14px;
+    line-height: 10px;
+  }
+
+  &.nodash{
+    padding-top: 10px;
+
+    &:hover .i-close-icon{
+      display: block;
+    }
+  }
+
+  .trigger-txt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flex-item{
+    flex:1;
+  }
+
+  i.plus {
+    position: relative;
+    width: @plusTriggerSize;
+    height: @plusTriggerSize;
+    margin-right: 10px;
+
+    &::before,
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: #d1d1d1;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    &::before {
+      width: @plusTriggerSize;
+      height: 3px;
+    }
+
+    &::after {
+      width: 3px;
+      height: @plusTriggerSize;
+    }
+  }
+
+  .edit-activename{
+    display:inline-block;
+    padding: 0 0 0 20px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .txt-plain{
+    font-size:12px;
+    line-height: 1.5;
+  }
+
+}
+

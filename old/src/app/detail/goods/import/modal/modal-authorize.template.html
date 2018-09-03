@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">请选择平台授权店铺</h3>
+</div>
+<div class="modal-body">
+  <ul class="platform-list">
+    <li ng-class="vm.platform == 'youzan'&&'selected'"><a  href="" ng-click="vm.select('youzan')">有赞</a></li>
+    <li>更多平台<br/>敬请期待</li>
+  </ul>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+</div>

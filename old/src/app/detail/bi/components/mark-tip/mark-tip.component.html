@@ -1,0 +1,13 @@
+<div class="qm-wrap">
+  <i class="fa fa-info-circle"></i>
+  <div class="hold-wrap"
+       *ngIf="tipName||tipContent"
+       [ngClass]="[align, visible ? 'visible' : '']">
+    <div class="tips"
+         [ngStyle]="style"
+
+         [innerHTML]="tipsHtml"
+         #tipHtmlCt
+         ></div>
+  </div>
+</div>

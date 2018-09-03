@@ -1,0 +1,20 @@
+<div class="operate-panel"
+     id="lead_banner">
+  <h2>店铺Banner配置</h2>
+  <form name="$ctrl.myForm"
+        ng-submit="$ctrl.submit()"
+        novalidate
+        ng-if="$ctrl.ready">
+    <shop-operate-banner-form kol-id="$ctrl.kolId"
+                              dirty="$ctrl.dirty"
+                              on-add-banner-form="$ctrl.onAddBannerForm"
+                              data="$ctrl.data"
+                              form-submitted="$ctrl.myForm.$submitted"
+                              hack-init-range-date-txt="true"
+                              recommended-img-height="1136"></shop-operate-banner-form>
+    <input type="submit"
+           class="btn-submit"
+           value="保存">
+  </form>
+
+</div>

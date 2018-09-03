@@ -1,0 +1,26 @@
+.list-empty {
+  &-info {
+    white-space: pre-line;
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    font-size: 14px;
+  }
+
+  &-img {
+    text-align: center;
+
+    img {
+      width: 100px;
+    }
+  }
+}
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .store-construction-add-items{
+    /* stylelint-disable-next-line selector-type-no-unknown */
+    ellipsis p{
+      margin-bottom: 0;
+    }
+  }
+}

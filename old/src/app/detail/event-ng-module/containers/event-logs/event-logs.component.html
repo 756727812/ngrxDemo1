@@ -1,0 +1,66 @@
+<nz-spin [nzTip]="_spinTip"
+         [nzSpinning]="_isSpinning"
+         class="loading-spin">
+  <div class="tbar">
+    <div class="right search">
+      <nz-input class="keyword"
+                [(ngModel)]="_keyword"
+                [nzType]="'search'"
+                (nzOnSearch)="searchClick($event)"
+                [nzPlaceHolder]="'创建人员名称、邮箱'"></nz-input>
+      <button nz-button
+              [nzType]="'primary'"
+              (click)="searchClick()">
+        <i class="anticon anticon-search"></i>
+        <span>搜索</span>
+      </button>
+    </div>
+  </div>
+
+  <nz-table #tableRef
+            [nzDataSource]="dataSet"
+            nzShowSizeChanger
+            [nzShowQuickJumper]="'true'"
+            [nzLoading]="loading">
+    <thead nz-thead>
+      <tr>
+        <th nz-th>创建人员</th>
+        <th nz-th>任务类型</th>
+        <th nz-th>指派模板数</th>
+        <th nz-th>指派状态</th>
+        <th nz-th>
+          <span>指派时间</span>
+          <nz-table-sort [(nzValue)]="sortType" (nzValueChange)="sortByTime($event)"></nz-table-sort>
+        </th>
+        <th nz-th>操作</th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr *ngFor="let item of tableRef.data">
+        <td nz-td>
+          {{item.backendUserName}}<br/>{{item.backendUserEmail}}
+        </td>
+        <td nz-td>
+          <div>{{item.taskType}}</div>
+        </td>
+        <td nz-td>
+          <div>{{item.taskTemplateCount}}</div>
+        </td>
+        <td nz-td>
+          <div *ngIf="item.taskStatus === 1">
+            <div class="little-circle success"></div>全部成功
+          </div>
+          <div *ngIf="item.taskStatus !== 1">
+            <div class="little-circle fail"></div>部分成功
+          </div>
+        </td>
+        <td nz-td>
+          {{item.createTime | date:'yyyy-MM-dd HH:mm'}}
+        </td>
+        <td nz-td>
+          <a href="javascript:void(0)" (click)="getTaskDetail(item.id)">详情</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>

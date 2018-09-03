@@ -1,0 +1,29 @@
+<div class="img-uploader-wrap">
+  <div class="spinner" ng-if="$ctrl.pending">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+
+  <label class="file-input-trigger">
+    <div class="preview-wrap" ng-if="$ctrl.getPreviewImg()">
+      <img see-src="$ctrl.getPreviewImg()">
+      <div class="edit-overlay">
+        修改
+      </div>
+    </div>
+    <input
+      title=""
+      input-file-dirty
+      ng-if="$ctrl.canUpload()"
+      type="file"
+      see-file-select="$ctrl.uploadCb"
+      format="jpg,jpeg,png"
+      accept="image/jpg, image/jpeg, image/png"
+      prevent-spinner
+      on-before-upload="$ctrl.onBeforeUpload"
+    >
+  </label>
+  <div class="plus-icon" ng-if="!$ctrl.imgSrc && $ctrl.canUpload()"></div>
+
+</div>

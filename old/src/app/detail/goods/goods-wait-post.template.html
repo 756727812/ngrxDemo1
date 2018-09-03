@@ -1,0 +1,66 @@
+<div class="header">
+  <h2><strong>待编辑商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">待编辑商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <goods-search-form></goods-search-form>
+        <div id="imageContainer" class="table-scrollable" see-viewer>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th style="min-width: 120px;">商品主图</th>
+                        <th width="40%">商品名</th>
+                        <th>商品售价</th>
+                        <th>是否为准SKU</th>
+                        <th>商品卖点</th>
+                        <th>库存</th>
+                        <th>发货地</th>
+                        <th style="min-width: 100px;">创建时间</th>
+                        <th width="120">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="good in goods">
+                        <td>
+                            {{good.item_id}}
+                            <p ng-show="skuMark(good)">货号:{{skuMark(good)}}</p>
+                        </td>
+                        <td>
+                            <img width="100" height="100" class="img-thumbnail img-viewer" see-src="good.item_imgurl" alt="{{good.item_name}}">
+                        </td>
+                        <td>
+                            <h4>{{good.item_name}}</h4>
+                        </td>
+                        <td>{{good.item_price | currency: '￥'}}</td>
+                        <td>
+                            {{good.prepare_sku == 1 ? '是' : '否'}}
+                        </td>
+                        <td>
+                            <p>{{good.sell_point}}</p>
+                        </td>
+                        <td>{{good.stock}}</td>
+                        <td>{{good.ship_country}}</td>
+                        <td>{{good.item_created_at}}</td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" ng-href="/goods/Post/edit/editPost/{{good.item_id}}?come_from=wait_post"><i class="fa fa-edit"></i>编辑上架</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <pagination total-items="total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,62 @@
+<div class="headepr">
+  <h2><strong>申请提现</strong></h2>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal" name="userForm" ng-submit="$ctrl.submitForm()" novalidate w5c-form-validate>
+          <div class="form-group">
+            <label class="col-sm-3 control-label">可提现金额</label>
+            <div class="col-sm-4">
+              {{$ctrl.withdrawalsData.availableAmount}} 元
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+            <label class="col-sm-3 control-label">申请提现金额</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" name="seller_addr" ng-model="$ctrl.formData.withdrawalsAmount" placeholder="{{$ctrl.amountPlaceholder}}" />
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+            <label class="col-sm-3 control-label">提现方式</label>
+            <div class="col-sm-4">
+              <span ng-bind="$ctrl.withdrawalsData.withdrawalType"></span> <span class="withdrawal-mobile" ng-bind="$ctrl.withdrawalsData.account"></span>
+              <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.warning()">修改</a>
+              <p>
+                请仔细确认账户信息，如果由于您未确认提现账户而导致资金流失，See概不负责
+              </p>
+            </div>
+            <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+              <p class="help-block">请填写微信公众号ID</p>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+            <label class="col-sm-3 control-label">提现审核周期</label>
+            <div class="col-sm-4 m-t-5">
+              <span>2天</span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+            <label class="col-sm-3 control-label">短信安全验证</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" name="seller_addr" ng-model="$ctrl.formData.verificationCode"  />
+              <p>验证短信将发送到你的绑定手机:+86 {{$ctrl.withdrawalsData.phoneNumber}}</p>
+            </div>
+            <div class="col-xs-3">
+              <button class="btn btn-primary ng-binding" type="button" ng-click="$ctrl.sendSmsCode()" >
+                获取验证码</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-3 col-sm-offset-3">
+              <button class="btn btn-primary" type="submit">确定</button>
+              <a class="btn btn-info" href="/assetNew/info">取消</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

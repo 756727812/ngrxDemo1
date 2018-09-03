@@ -1,0 +1,79 @@
+ul.qr {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+
+  > li {
+    list-style: none;
+    width: 177px;
+    display: inline-block;
+    text-align: center;
+
+    .img-ct {
+      position: relative;
+      height: 200px;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+
+      img {
+        border: solid 1px #e5e5e5;
+        width: 177px;
+        display: block;
+      }
+    }
+
+    .qr-note {
+      font-size: 12px;
+      line-height: 1.42;
+      color: #999;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .btn-download {
+      margin-top: 12px;
+    }
+  }
+}
+
+.btn-download {
+  display: inline-block;
+
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 60px;
+  padding: 0 17px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 2px;
+  background-color: #e5e8f5;
+  font-size: 12px;
+}
+
+.xcxCardImg {
+  width: 197px !important;
+  height: 157.6px !important;
+}
+
+.warn {
+  position: relative;
+  height: 25px;
+
+  .text {
+    white-space: nowrap;
+    position: absolute;
+    font-size: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ff6b6b;
+    font-weight: bold;
+  }
+}

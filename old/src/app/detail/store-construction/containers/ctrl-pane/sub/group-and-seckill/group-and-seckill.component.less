@@ -1,0 +1,27 @@
+.module-title {
+  &-action {
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      font-size: 14px;
+      text-align: left;
+      color: #000;
+      font-weight: bold;
+    }
+  }
+
+  label {
+    font-weight: normal;
+  }
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .sortable-items {
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+    ellipsis {
+      height: 20px;
+    }
+  }
+}

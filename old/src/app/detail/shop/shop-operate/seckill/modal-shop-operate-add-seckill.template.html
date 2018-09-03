@@ -1,0 +1,64 @@
+<div class="modal-shop-operate-add-coupon">
+  <div class="modal-header bg-primary">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">添加秒杀活动</h3>
+  </div>
+  <div class="modal-body">
+    <div>
+      <button type="button" class="btn btn-primary" ng-click="$ctrl.getSeckilList()">
+        <i class="fa fa-refresh"></i>
+      </button>
+    </div>
+    <div ng-if="$ctrl.items.count">
+      <div class="table-scrollable">
+        <table class="table table-hover table-center table-condensed">
+          <thead>
+            <tr>
+              <th>商品主图</th>
+              <th>活动名称</th>
+              <th>活动商品</th>
+              <th>活动时间</th>
+              <th>活动状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in $ctrl.items.list track by item.id">
+            <td>
+              <div class="img-container">
+                <img see-src="item.itemImgurl" thumbnail="150x150" see-viewer alt="">
+              </div>
+            </td>
+            <td>
+              <div style="min-width: 165px;max-width: 166px;">
+                <p class="text-center m-0" see-hide="New-Brand">ID:{{item.id}}</p>
+                <p class="ellipsis text-center m-0" ng-bind="item.activityName" title="{{item.activityName}}"></p>
+              </div>
+            </td>
+            <td>
+              <div style="min-width: 165px;max-width: 166px;">
+                <p class="ellipsis text-center m-0" ng-bind="item.productName" title="{{item.productName}}"></p>
+              </div>
+            </td>
+            <td>{{item.startTime | date: 'yyyy-MM-dd HH:mm'}}<br />至<br />{{item.endTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+            <td ng-bind="item.status | seckillStatus"></td>
+            <td>
+              <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.addSeckillItem(item.id)" ng-show="item.toBanner === 2">添加</button>
+              <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeSeckillItem(item.id)" ng-show="item.toBanner === 1">移出</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-center">
+        <ul uib-pagination ng-if="$ctrl.items.count / 10 > 1" total-items="$ctrl.items.count" items-per-page="10" ng-model="$ctrl.items.page" ng-change="$ctrl.getSeckilList($ctrl.items.page)"
+          max-size="5" class="pagination-sm m-t-0" previous-text="上一页" next-text="下一页" boundary-link-numbers="true">
+        </ul>
+      </div>
+    </div>
+    <div class="empty-coupon-list-container" ng-if="!$ctrl.items.count">
+      <p>当前没有任何有效秒杀活动可进行配置</p>
+      <a href="/event/seckill/add?kolId={{$ctrl.resolve.kolId}}&wechat_id={{$ctrl.resolve.wechatId}}" class="text-primary click" ng-click="$ctrl.cancel()">去创建</a>
+    </div>
+  </div>
+</div>

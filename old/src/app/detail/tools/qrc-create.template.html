@@ -1,0 +1,96 @@
+<div class="header">
+  <h2>
+    <strong>二维码生成</strong>
+  </h2>
+
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal" name="form">
+
+          <div class="form-group">
+            <div class="col-sm-6">
+              <div class="col-sm-5">
+                <label class="control-label" style="margin-left: 0px;">网址链接二维码
+                  <br />
+              </div>
+              <div class="col-sm-10">
+                <textarea ng-trim="true" class="form-control" ng-model="$ctrl.url_set" rows="5" style="width: 100%;"></textarea>
+              </div>
+            </div>
+            <div class="col-sm-6" ng-if="$ctrl.url_set !== ''">
+              <div class="col-sm-5">
+                <label class="control-label" style="margin-left: 0px;">二维码图片
+                  <br />
+              </div>
+              <div class="col-sm-10">
+                <img src="https://portal.xiaodianpu.com/api/qrc/create?url={{$ctrl.getUrl()}}" alt="" />
+              </div>
+            </div>
+          </div>
+          <!--
+          <div class="form-group">
+            <div class="col-sm-10">
+              <button class="btn btn-primary" type="button" ng-click="$ctrl.submitCreate()">生成</button>
+              <button class="btn btn-default" type="button" ng-click="$ctrl.resetCreate()">清空</button>
+            </div>
+          </div>
+        -->
+        </form>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div class="col-xs-12 portlets" ng-hide="true" see-access="Super-Admin Elect-Admin">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-inline inline-block" name="form">
+          <div class="form-group">
+            <div class="col-sm-6">
+              <div class="col-sm-5">
+                <label class="control-label" style="margin-left: 0px;">商品导流二维码
+              </div>
+              <div class="col-sm-12">
+                <br/> 提示：此处生成的二维码适用于其他公众号为女王优购公众号或种草好物坊导流、推送小程序商品
+                <br/>
+                <br/>
+              </div>
+              <div class="col-sm-12 m-t-20">
+                <label class="control-label">商品类型
+                  <select class="form-control" ng-model="$ctrl.queen.item_type">
+                    <option value="1" selected>普通商品</option>
+                    <option value="2">拼团商品</option>
+                    <option value="3">秒杀商品</option>
+                  </select>
+                </label>
+                <label class="control-label">商品ID
+                  <input type="text" class="form-control" ng-model="$ctrl.queen.item_id">
+                </label>
+                <label class="control-label">小电铺名称
+                  <select class="form-control" ng-model="$ctrl.queen.kol_id">
+                    <option value="0" selected>请选择</option>
+                    <option value="6941">女王优购</option>
+                    <option value="7082">种草好物坊</option>
+                  </select>
+                </label>
+                <button type="button" class="btn btn-primary" ng-click="$ctrl.getQueenQr()">确认</button>
+              </div>
+            </div>
+            <div class="col-sm-6" ng-if="$ctrl.queen.qr_img !== ''">
+              <div class="col-sm-5">
+                <label class="control-label" style="margin-left: 0px;">二维码图片
+                  <br />
+              </div>
+              <div class="col-sm-10">
+                <img src="{{$ctrl.queen.qr_img}}" width="145px" alt="女王优购" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

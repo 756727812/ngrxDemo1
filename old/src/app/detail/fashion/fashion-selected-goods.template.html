@@ -1,0 +1,157 @@
+<div id="fashion-selected-goods">
+  <div class="header">
+    <h2>
+      <strong>选品库</strong>
+    </h2>
+
+    <div class="breadcrumb-wrapper"
+         ng-hide="true">
+      <ol class="breadcrumb">
+        <li>
+          <a href="/">Seego后台</a>
+        </li>
+        <li>
+          <a href="/fashion">全球时尚</a>
+        </li>
+        <li class="hotgoods">选品库</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="top-bar">
+    <a href="/fashion/hot-goods-v2?page=1"
+       class="btn-back-hot-list"
+       see-access="New-Brand">返回单品库</a>
+    <form ng-submit="$ctrl.submitSearch()"
+          class="form-inline right-part">
+      <div class="form-group m-b-10">
+        <label class="control-label">
+          <input see-hide="KOL New-Brand"
+                 type="search"
+                 class="form-control"
+                 ng-model="$ctrl.searchForm.keyword"
+                 placeholder="商品名/商品ID/品牌/品类/国家">
+          <input see-access="KOL New-Brand"
+                 type="search"
+                 class="form-control form-white"
+                 ng-model="$ctrl.searchForm.keyword"
+                 placeholder="请输入商品名或品牌名">
+        </label>
+      </div>
+      <button type="submit"
+              class="btn btn-primary m-b-10">
+        <i class="fa fa-search"></i>搜索</button>
+    </form>
+  </div>
+
+
+
+  <div class="panel table-panel">
+    <div class="panel-content">
+      <a see-hide="KOL New-Brand"
+         class="btn btn-primary m-b-10"
+         target="_blank"
+         ng-href="/api/data_api/exportFavorItemV2">
+        <i class="fa fa-file-excel-o"></i>导出为excel</a>
+      <a see-hide="KOL New-Brand"
+         class="btn btn-primary m-b-10"
+         target="_blank"
+         ng-href="/api/data_api/exportFavorItemForHtml?is_v2=1&cur_id={{$ctrl.cur_id}}&cur_sign={{$ctrl.cur_sign}}">
+        <i class="fa fa-file-excel-o"></i>导出为网页</a>
+      <div class="table-scrollable materialList">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th see-hide="New-Brand">
+                <label>
+                  <input type="checkbox"
+                         ng-model="$ctrl.is_checked_all"
+                         ng-change="$ctrl.selectedChangedAll()"
+                         icheck>全选</label>
+              </th>
+              <th>商品图</th>
+              <th>商品名</th>
+              <th see-hide="KOL New-Brand">商品ID</th>
+              <th see-hide="KOL New-Brand">推荐理由</th>
+              <th>品类</th>
+              <th>品牌</th>
+              <th ng-if="false">利润率</th>
+              <th width="80px">库存</th>
+              <th see-hide="KOL New-Brand">供货价</th>
+              <th>建议零售价</th>
+              <th>可供规格</th>
+              <th see-hide="KOL New-Brand">备注</th>
+              <th>操作
+                <button ng-if="$ctrl.check_ids !== ''"
+                        class="btn btn-sm btn-primary"
+                        type="button"
+                        ng-click="$ctrl.materialFavorItemCancelAll()">批量取消收藏</button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in $ctrl.selected_goods_list track by $index">
+              <td see-hide="New-Brand">
+                <label>
+                  <input type="checkbox"
+                         ng-model="item.is_checked"
+                         ng-change="$ctrl.selectedChanged()"
+                         icheck>
+                </label>
+              </td>
+              <td>
+                <img see-src="item.item_imgurl"
+                     see-viewer
+                     width="100"
+                     alt="{{item.item_name}}">
+              </td>
+              <td class="td-name">
+                <a class="txt"
+                   title="{{item.item_name}}"
+                   style="-webkit-box-orient:vertical;"
+                   ng-href="{{item.buyurl}}"
+                   target="_blank">
+                  {{item.item_name}}
+                </a>
+              </td>
+              <td see-hide="KOL New-Brand"
+                  ng-bind="item.item_id"></td>
+              <td see-hide="KOL New-Brand"
+                  ng-bind="item.recommend_reason"></td>
+              <td class="td-class"
+                  title="{{item.class_name}}">{{item.class_name}}</td>
+              <td class="td-brand"
+                  title="{{item.brand_name}}">{{item.brand_name}}</td>
+              <td ng-if="false"
+                  ng-bind="item.str_margin"></td>
+              <td class="td-str_new_goods_status"
+                  title="{{item.str_new_goods_status}}">{{item.str_new_goods_status}}</td>
+              <td see-hide="KOL New-Brand"
+                  ng-bind="item.str_price_kol"></td>
+              <td class="td-str_price_sell"
+                  title="{{item.str_price_sell}}">{{item.str_price_sell}}</td>
+              <td class="td-sku_detail_str"
+                  title="{{item.sku_detail_str}}">{{item.sku_detail_str}}</td>
+              <td see-hide="KOL New-Brand"
+                  ng-bind="item.notes"></td>
+
+              <td class="td-op">
+                <a>
+                  <common-btn-sell-goods item-id="item.item_id"
+                                         on-success="$ctrl.onSellGoodsSuccess()"></common-btn-sell-goods>
+                </a>
+                <a>
+                  <common-btn-off-store item-id="item.item_id"
+                                        on-success="$ctrl.onAddWarehouseSuccess()"></common-btn-off-store>
+                </a>
+                <a ng-click="$ctrl.materialFavorItemCancel(item.item_id)">取消收藏</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pagination total-items="$ctrl.total_items"></pagination>
+    </div>
+  </div>
+
+</div>

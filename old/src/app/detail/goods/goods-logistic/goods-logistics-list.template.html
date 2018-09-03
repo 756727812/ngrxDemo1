@@ -1,0 +1,129 @@
+<div class="header">
+  <h2>
+    <strong>运费模版</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Seego后台</a>
+      </li>
+      <li>
+        <a href="">商品管理</a>
+      </li>
+      <li class="active">运费模版</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+          <div class="form-group">
+            <label class="control-label">搜索
+              <input type="search" class="form-control" ng-model="$ctrl.searchForm.keyword" placeholder="路线名称">
+              <!-- <input type="search" class="form-control" ng-model="$ctrl.searchForm.seller_email" placeholder="商户邮箱"> -->
+            </label>
+          </div>
+          <div class="form-group" see-hide="New-Brand">
+            <label class="control-label">商户筛选</label>
+            <ui-select ng-model="$ctrl.searchForm.search_backend_id" theme="select2" style="min-width: 300px;" title="选择商户">
+              <ui-select-match placeholder="选择商户...">{{$select.selected.seller_name}}</ui-select-match>
+              <ui-select-choices repeat="item.id as item in $ctrl.seller_list_key | propsFilter: {seller_email: $select.search}">
+                <div ng-bind-html="item.seller_name | highlight: $select.search"></div>
+                <div ng-bind-html="item.seller_email | highlight: $select.search" style="color: grey"></div>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">物流筛选</label>
+            <select ng-model="$ctrl.searchForm.is_seego" class="form-control">
+              <option value="" selected>-- 请选择 --</option>
+              <option value="0">所有</option>
+              <option value="1">公共模板</option>
+            </select>
+            <label class="control-label">是否包邮</label>
+            <select ng-model="$ctrl.searchForm.free_mail_method" class="form-control">
+              <option value="" selected>-- 是否包邮 --</option>
+              <option value="3">全部</option>
+              <!--<option value="0">不包邮</option>
+              <option value="1">满额包邮</option>
+              <option value="2">满件包邮</option>-->
+              <option value="4">运费为0</option>
+            </select>
+            <label class="control-label" ng-if="$ctrl.selectOptions.length > 2">关联店铺</label>
+            <!--<select ng-model="$ctrl.searchForm.type" class="form-control">
+              <option value="" selected>-- 请选择 --</option>
+              <option value="1">所有</option>
+              <option value="2">小电铺</option>
+              <option value="3">有赞</option>
+            </select>-->
+            <select ng-model="$ctrl.searchForm.type" class="form-control" ng-if="$ctrl.selectOptions.length > 2" ng-options=" o.value as o.name for o in $ctrl.selectOptions"></select>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-search"></i>搜索</button>
+          <a report="PAGE_CM_FREIGHT_TPL.BTN_CREATE_FREIGHT_TPL"  href="/goods/logistics/new" class="btn btn-primary">
+            <i class="fa fa-plus"></i>创建运费模版</a>
+        </form>
+        <div class="table-scrollable">
+          <table class="table table-hover table-stripped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>创建时间</th>
+                <th>所属者</th>
+                <th>路线名称</th>
+                <th>备注</th>
+                <th>包邮类型</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="log in $ctrl.logisticsList track by log.ex_id">
+                <td ng-bind="log.ex_id"></td>
+                <td ng-bind="log.create_time"></td>
+                <td>
+                  <p ng-bind="log.seller_email"></p>
+                  <p ng-bind="log.seller_name"></p>
+                </td>
+                <td ng-bind="log.ex_name"></td>
+                <!-- <td ng-bind="log.ex_type_str"></td> -->
+                <td>
+                  <span ng-if="log.is_youzan == '1'">已关联有赞模板</span>
+                </td>
+                <td ng-switch on="log.free_mail_method">
+                  <span ng-switch-when="0">不包邮</span>
+                  <span ng-switch-when="1">满额包邮</span>
+                  <span ng-switch-when="2">满件包邮</span>
+                  <span ng-switch-when="3">运费为0</span>
+                </td>
+                <td>
+                  <a class="temp-detail-switch" href ng-if="log.rank === '0'" ng-click="$ctrl.updateTop(log.ex_id,1,'确认要置顶该路线？')">
+                    <div id="div1" class="close1">
+                      <div id="div2" class="close2"></div>
+                    </div>
+                    <span>置顶</span>
+                  </a>
+                  <a class="temp-detail-switch" href ng-if="log.rank !== '0'" ng-click="$ctrl.updateTop(log.ex_id,0,'确认要取消置顶？')">
+                    <div id="div1" class="open1">
+                      <div id="div2" class="open2"></div>
+                    </div>
+                    <span>置顶</span>
+                  </a>
+
+                  <a  href="/goods/logistics/edit/{{log.ex_id}}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-edit"></i>
+                    <span ng-bind="$ctrl.is_c2c && log.is_seego === '1' ? '查看' : '编辑'"></span>
+                  </a>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.deleteItem(log.ex_id)" ng-if="((log.is_seego === '0' || log.is_seego === '3') && $ctrl.is_c2c) || !$ctrl.is_c2c">
+                    <i class="fa fa-trash-o"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination total-items="$ctrl.total_items"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

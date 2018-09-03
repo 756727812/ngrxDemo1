@@ -1,0 +1,153 @@
+<div style="padding-top:20px">
+  <ng-template #formBlock>
+    <form class="aform" nz-form [nzLayout]="'inline'" [formGroup]="aForm"
+          style="padding: 0 0 30px;">
+      <div nz-form-item nz-row>
+        <div nz-form-control nz-col style="width:80px">
+          <nz-select formControlName="type" [nzSize]="'large'" [nzPlaceHolder]="'分销'" [nzDisabled]="true">
+            <nz-option [nzLabel]="'分销1'" [nzValue]="'fenxxiao1'"></nz-option>
+            <nz-option [nzLabel]="'分销2'" [nzValue]="'fenxxiao2'"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>母商品ID</label>
+        </div>
+        <div nz-form-control nz-col>
+          <input type="text" formControlName="parentIdList" nz-input placeholder="支持逗号分隔批量搜索" [nzSize]="'large'"/>
+          <div nz-form-explain *ngIf="aForm.controls.parentIdList.dirty&&aForm.controls.parentIdList.hasError('invalidCode')">
+            母商品编号只能输入数字和分隔符，且每组商品编号长度不超9位！
+          </div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>子商品ID</label>
+        </div>
+        <div nz-form-control nz-col>
+          <input type="text" formControlName="productIdList" nz-input placeholder="支持逗号分隔批量搜索" [nzSize]="'large'"/>
+          <div nz-form-explain
+               *ngIf="aForm.controls.productIdList.dirty&&aForm.controls.productIdList.hasError('invalidCode')">
+            子商品编号只能输入数字和分隔符，且每组商品编号长度不超9位！
+          </div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>商品名称</label>
+        </div>
+        <div nz-form-control nz-col>
+          <input type="text" formControlName="productName" nz-input placeholder="按商品名称" [nzSize]="'large'"/>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-control nz-col>
+          <button nz-button [nzType]="'primary'" style="width:80px;" [nzSize]="'large'" [nzLoading]="loading" (click)="submitForm()">
+            <i class="anticon anticon-search"></i><span>搜索</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <div *ngIf="isError; else formBlock" class="error-block">
+    <p>共添加 <span class="text-info">{{totalInfo()}}</span> 个商品，添加成功 <span class="text-info">{{success}}</span> 个，以下 <span class="text-info">{{errors}}</span> 个添加失败</p>
+    <button nz-button [nzSize]="'large'" type="button" [nzType]="'primary'" nzGhost (click)="tableExport($event)">导出无法添加的商品</button>
+  </div>
+  <total-info *ngIf="!isError" [text]="totalInfo()" type="checked"></total-info>
+  <nz-table #nzTable [nzLoading]="loading" [(nzPageSize)]="pageSize" nzShowSizeChanger nzShowQuickJumper nzShowTotal
+            [nzAjaxData]="_displayData"
+            [nzPageSizeSelectorValues]="pageSizeSelectorValues"
+            [nzTotal]="count" [(nzPageIndex)]="page" (nzPageIndexChange)="pageChange()"
+            (nzPageSizeChange)="pageChange()">
+    <thead nz-thead>
+    <tr>
+      <th nz-th nzCheckbox style='width:80px' *ngIf='!isError'>
+        <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate"
+               (ngModelChange)="_checkAll($event)">
+          <span class='check-all'>全选</span>
+        </label>
+      </th>
+      <th nz-th class='w-72 tc'>
+        <span class='f22'>母商品ID</span>
+      </th>
+      <th nz-th class='w-72 tc'>
+        <span class='f22'>子商品ID</span>
+      </th>
+      <th nz-th class='w-100 tc'>
+        <span class='f22'>商品主图</span>
+      </th>
+      <th nz-th class='tc' style='width: 300px;'>
+        <span class='f22'>商品名称</span>
+      </th>
+      <th nz-th class='tc' style="width:60px">
+        <span class='f22'>类型</span>
+      </th>
+      <th nz-th class='tc' style="width:100px">
+        <span class='f22'>价格</span>
+      </th>
+      <th nz-th class='tc' style="width:70px">
+        <span class='f22'>销售状态</span>
+      </th>
+      <th nz-th class='w-40 tc' *ngIf='!isError'>
+        操作
+      </th>
+      <ng-container *ngIf='isError'>
+        <th nz-th class='tc' style='width:210px'>
+          <span class='f22'>异常原因</span>
+        </th>
+      </ng-container>
+    </tr>
+    </thead>
+    <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let data of nzTable.data" [ngClass]="{disableHover:data.added}" >
+      <td nz-td nzCheckbox *ngIf='!isError'>
+        <label *ngIf="data.added" nz-checkbox [nzDisabled]="true" >
+        </label>
+        <label *ngIf="!data.added" nz-checkbox  [ngModel]="data.checked" (ngModelChange)="refreshStatus($event,data)">
+        </label>
+      </td>
+      <td nz-td class='tc c101010'>
+        <span>{{data.parentId}}</span>
+      </td>
+      <td nz-td class='tc c101010'>
+        <span>{{data.productId}}</span>
+      </td>
+      <td nz-td class='tc c101010'>
+        <img class='thumb' [seeSrc]='data.mainImgUrl'/>
+      </td>
+      <td nz-td class='tc c101010'>
+        <p class="text-center">{{data.productName|strPipe}}</p>
+      </td>
+      <td nz-td class='tc c101010'>{{data.productType|saleType}}</td>
+      <td nz-td class='tc c101010'>¥{{data.price}}</td>
+      <td nz-td class='tc c101010'>{{data.salesState|productState}}</td>
+      <td nz-td class='tc' *ngIf='!isError'>
+        <button nz-button nzType='primary' [disabled]="data.added"
+                [nzType]="data._status || 'primary'" nzGhost (click)="addOne(data)">{{data.btnTitle || '添加'}}
+        </button>
+      </td>
+      <ng-container *ngIf='isError'>
+        <td nz-td class='tc tc101010'>
+          <span [style.color]="isError ?'#e51c23':''">{{data.msg}}</span>
+        </td>
+      </ng-container>
+    </tr>
+    </tbody>
+  </nz-table>
+  <div class='tc btns'>
+    <button nz-button class='btn mr-40' nzType='primary' *ngIf='isError' nzSize='large' (click)="toList()">确定</button>
+    <button nz-button class='btn mr-40' nzType='primary' *ngIf='!isError && _displayData.length>0' nzSize='large' (click)="addParts()">确定添加
+    </button>
+    <button nz-button nzType='primary' class='btn' *ngIf='!isError' nzSize='large' (click)="close()" nzGhost>取消</button>
+  </div>
+</div>
+
+
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'异常商品信息'" [nzContent]="modalContent" nzFooter="false"  (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <div class="warn">
+      <p>共搜索到 <span class="text-info">{{count}}</span> 个结果，以下 <span class="text-info">{{errors}}</span> 个商品ID未找到：{{errorCodes}}。未找到的原因可能包括：ID错误，ID对应的是该店铺的自营商品，ID对应的是其他店铺的商品等</p>
+    </div>
+  </ng-template>
+</nz-modal>

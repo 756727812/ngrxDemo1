@@ -1,0 +1,10 @@
+<div class="favorites-container"
+     see-access="New-Brand"
+     title="{{!$ctrl.active ? '收藏至选品库' : '取消收藏' }}"
+     ng-click="$ctrl.onClick()">
+  <a href=""
+     class="favorites-action">
+    <i class="si"
+       ng-class="{ 'si-heart-o': !$ctrl.active, 'si-heart': $ctrl.active }"></i>
+  </a>
+</div>

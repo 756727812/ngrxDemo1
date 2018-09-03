@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">修改库存</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+ 
+         <div class="form-group">
+            <label class="control-label col-sm-4">货号/条码</label>
+            <div class="col-sm-7">
+              {{vm.sku.sku_mark}}
+            </div>
+        </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-4">规格</label>
+            <div class="col-sm-7">
+               <label ng-repeat="attr in vm.sku.display_value track by $index" ng-bind="attr"></label>
+            </div>
+        </div>
+
+         <div class="form-group">
+            <label class="control-label col-sm-4">当前可售库存</label>
+            <div class="col-sm-7">
+                总{{vm.sku.stock_sum.locked_stock + vm.sku.stock_sum.free_stock}}（锁{{vm.sku.stock_sum.locked_stock}}，闲置{{vm.sku.stock_sum.free_stock}}）
+            </div>
+        </div>
+
+        <div ng-if="vm.type == 1">
+            <div class="form-group">
+                <label class="control-label col-sm-4 required"> 新增件数</label>
+                <div class="col-sm-3">
+                  <input min="1"  name="tmp_sku_set_sku_stock_delta" type="number" class="form-control" ng-model="vm.sku.tmp_sku_set_sku_stock_delta" ng-trim="true" required ng-change="vm.changeDelta()"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                          onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-4 required"> 成本价￥</label>
+                <div class="col-sm-3">
+                  <input min="0"  name="tmp_sku_set_supply_price" type="number"  class="form-control" ng-model="vm.sku.tmp_sku_set_supply_price"  ng-trim="true" required>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="vm.type == 2">
+            <div class="form-group">
+                <label class="control-label col-sm-4 required"> 减少件数(最多:{{vm.sku.stock_sum.locked_stock + vm.sku.stock_sum.free_stock}})</label>
+                <div class="col-sm-3">
+                  <input min="1" max="{{vm.sku.stock_sum.locked_stock + vm.sku.stock_sum.free_stock}}"  name="tmp_sku_set_sku_stock_delta" type="number" class="form-control" ng-model="vm.sku.tmp_sku_set_sku_stock_delta" ng-trim="true" required  ng-change="vm.changeDelta()"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                          onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="form-group" ng-show="vm.errors.length > 0">
+            <ul class="col-sm-offset-2 col-sm-8">
+              <li class="alert alert-danger" ng-repeat="err in vm.errors track by $index" ng-bind="err"></li>
+            </ul>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

@@ -1,0 +1,216 @@
+@import "../../../../styles/var";
+
+#goods-group-view {
+  .empty-tips {
+    height: 300px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.14;
+    color: #8b8ea1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .content-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .btn-add-goods {
+        cursor: pointer;
+        width: 150px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 2px;
+        background-color: #5971e8;
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+
+  .goods-table {
+    th,
+    td {
+      text-align: center;
+    }
+
+    td {
+      height: 100px;
+    }
+    @more-padding-size: 30px;
+
+    td.date,
+    td.price,
+    td.brand-name {
+      padding-left: @more-padding-size;
+      padding-right: @more-padding-size;
+    }
+
+    th.goods-name,
+    td.goods-name {
+      text-align: left;
+    }
+
+    td.goods-img {
+      img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    @order-op-disabled-color: #bdc0ce;
+
+    td.order-op {
+      text-align: center;
+
+      ul {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: visible;
+        width: 144px;
+
+        li {
+          cursor: pointer;
+          width: 36px;
+          height: 36px;
+          background-color: #e5e8f5;
+          display: inline-block;
+          position: relative;
+
+          &.disabled {
+            pointer-events: initial;
+            cursor: not-allowed !important;
+
+            &::before {
+              background-color: @order-op-disabled-color !important;
+            }
+
+            &::after {
+              border-color: @order-op-disabled-color !important;
+            }
+          }
+
+          &::before,
+          &::after {
+            content: ' ';
+            position: absolute;
+            left: 12px;
+          }
+
+          &::before {
+            width: 12px;
+            height: 2px;
+            background-color: #000;
+            top: 12px;
+          }
+
+          &::after {
+            position: absolute;
+            content: ' ';
+            width: 8px;
+            height: 8px;
+            left: 14px;
+            top: 19px;
+            border-color: #000;
+            border-style: solid;
+            border-width: 2px 2px 0 0;
+            transform: rotate(-45deg);
+          }
+        }
+
+        li.bottom {
+          transform: rotate(180deg);
+        }
+
+        li.up,
+        li.down {
+          &::before {
+            display: none;
+            content: '';
+          }
+
+          &::after {
+            border-color: #5971e8;
+            top: 16px;
+          }
+        }
+
+        li.down {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    td.group {
+      .more {
+        display: block;
+        text-align: center;
+        position: relative;
+
+        .trigger {
+          margin-left: -15px;
+          white-space: nowrap;
+          cursor: default;
+          position: relative;
+          color: @primary-color;
+
+          .caret {
+            padding: 0 !important;
+            margin-right: 3px;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            vertical-align: middle;
+            border-top: 9px solid @primary-color;
+            border-right: 5px solid transparent;
+            border-left: 5px solid transparent;
+          }
+        }
+
+        &:hover {
+          ul {
+            display: block;
+          }
+        }
+
+        ul {
+          z-index: 999;
+          margin-top: 6px;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 100%;
+          width: 140px;
+          background-color: #fff;
+          box-shadow: 0 2px 7px 0 rgba(243, 243, 243, 0.5);
+          border: solid 1px #f6f6f6;
+          position: absolute;
+          display: none;
+          padding: 3px 15px;
+
+          li {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            line-height: 1;
+            list-style: none;
+            padding: 8px 0;
+            color: #000;
+          }
+        }
+      }
+    }
+
+    td.op {
+      .button-remove {
+        cursor: pointer;
+        display: inline-block;
+        width: 79px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        border-radius: 2px;
+        color: white;
+        background-color: @primary-color;
+      }
+    }
+  }
+}

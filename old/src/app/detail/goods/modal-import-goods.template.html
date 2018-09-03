@@ -1,0 +1,71 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">导入商品</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form p-10" name="ImportGoodsForm" novalidate w5c-form-validate role="form">
+    <div class="form-group">
+      <select name="platform" class="form-control" required ng-model="vm.cur_platform" ng-options="platform.platform_id as platform.platform_name for platform in vm.platforms">
+                          <option value="" selected>-- 请选择第三方平台 --</option>
+                      </select>
+    </div>
+
+    <!-- 平台号=10001时， 老导入流程 -->
+    <div class="form-group" ng-if="vm.cur_platform === '10001'">
+      <textarea name="spu_ids" class="form-control" rows="10" placeholder="请输入导入商品的ID，每个换行输入" ng-model="vm.spu_ids" required></textarea>
+    </div>
+
+    <!-- 平台号!=10001时， 新导入流程，先选品类，品类，商户 -->
+    <div class="form-group" ng-if="vm.cur_platform !== '10001'">
+      <div class="form-group">
+        <label class="control-label col-sm-2">品类：<font color="red" ng-if="vm.tips_class !== ''">（{{vm.tips_class}}）</font></label>
+        <div class="col-sm-2">
+            <select name="category_one" class="form-control" ng-model="vm.category.one" ng-options="v.class_id as v.class_name for (k, v) in vm.class_tree">
+                <option value="" selected>-- 请选择 --</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select name="category_one" class="form-control" ng-model="vm.category.two" ng-options="v.class_id as v.class_name for (k, v) in vm.class_tree[vm.category.one].children">
+                <option value="" selected>-- 请选择 --</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select name="category_one" class="form-control" ng-model="vm.category.three" ng-options="v.class_id as v.class_name for (k, v) in vm.class_tree[vm.category.one].children[vm.category.two].children">
+                <option value="" selected>-- 请选择 --</option>
+            </select>
+        </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label required">品牌：<font color="red" ng-if="vm.tips_brand !== ''">（{{vm.tips_brand}}）</font></label>
+          <div class="col-sm-8">
+              <input name="item_brand" type="text" class="form-control" ng-model="vm.formData.item_brand" autocomplete="off" required uib-typeahead="brandItem as brandItem.brand_name for brandItem in vm.brandList | filter:{brand_name:$viewValue} | limitTo:8" />
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label required">商户：<font color="red" ng-if="vm.tips_c2c !== ''">（{{vm.tips_c2c}}）</font></label>
+          <div class="col-sm-8">
+              <input name="c2c_user" type="text" class="form-control" ng-model="vm.formData.c2c_user" autocomplete="off" required uib-typeahead="user as user.str for user in vm.c2c_list | filter:{str:$viewValue} | limitTo:8" />
+          </div>
+      </div>
+
+      <div class="form-group">
+            <label class="col-sm-2 control-label required">链接：<font color="red" ng-if="vm.tips_url_get !== ''">（{{vm.tips_url_get}}）</font></label>
+            <div class="col-sm-8">
+              <input name="url_get" type="text" class="form-control" ng-model="vm.formData.url_get" ng-trim="true">
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-10 control-label required">
+                <input type="checkbox" ng-model="vm.check_param" ng-true-value="1" ng-false-value="0">爬取SKU信息&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">(*如果录入失败，请取消勾选，只录入商品信息)</font>
+        </label>
+    </div>
+
+
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+      <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+    </div>
+  </form>

@@ -1,0 +1,1365 @@
+<div class="header">
+  <h2 see-hide="KOL New-Brand">
+    <strong>KOL合作管理</strong>
+  </h2>
+  <h2 see-access="KOL">
+    <strong>KOL主页({{$ctrl.kol_info.kol_name}})</strong>
+  </h2>
+  <h2 see-access="New-Brand" ng-if="$ctrl.hash !== '2'">
+    <strong>内容电商</strong>
+  </h2>
+  <h2 see-access="New-Brand" ng-if="$ctrl.hash === '2'">
+    <strong>所有商品</strong>
+  </h2>
+  <div class="breadcrumb-wrapper" see-hide="KOL New-Brand">
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Seego后台</a>
+      </li>
+      <li>
+        <a href="/kol/kol-cooperation-management">KOL合作管理</a>
+      </li>
+      <li class="active">详情页</li>
+    </ol>
+  </div>
+</div>
+
+<div ng-if="$ctrl.id === '-1' && $ctrl.hash !== '2'">
+  <div class="row" see-access="New-Brand">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-2 text-center">
+              <img see-src="" width="100" class="img-circle">
+            </div>
+            <div class="col-xs-8">
+              <h3 class="font-bold">尚未绑定公众号</h3>
+              <p class="two-line">完善公众号相关资料后，可以随时通过文章推送，生成和发布商品合集，并追踪数据效果&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            </div>
+            <div class="col-xs-2">
+              <button class="btn btn-primary" type="button" id="lead_kol_complete" ng-click="$ctrl.gotoAddWechatId()">去完善</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="$ctrl.id === '-1' && $ctrl.hash === '2'">
+  <div class="row" see-access="New-Brand">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-12">
+              <h3 class="font-bold">
+                <center>暂无分销商品</center>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="$ctrl.id !== '-1'">
+  <div ng-if="$ctrl.wechat_id === ''" see-access="New-Brand">
+    <div class="row">
+      <div class="col-sm-12 portlets">
+        <div class="panel">
+          <div class="panel-content top-panel">
+            <div class="row kol-basic">
+              <div class="col-sm-5 col-md-3  text-center kol-basic-left">
+                <img src="//static.seecsee.com/seego_plus/images/icons/logo.png" width="65" class="img-circle">
+                <h3 class="font-bold">尚未绑定公众号</h3>
+              </div>
+              <div class="col-xs-9 kol-basic-right">
+                <p class="warning-line second-text">完善公众号相关资料后，可以随时通过文章推送，生成和发布商品合集，并追踪数据效果&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" type="button" ng-click="$ctrl.gotoAddWechatId()" id="lead_kol_complete">去完善</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="fashion-kol-info-list-header" ng-if="($ctrl.hash === '1' || $ctrl.hash === '2' || $ctrl.hash === '5')&& $ctrl.wechat_id !== '' "
+    see-access="New-Brand">
+    <div class="col-sm-12 portlets">
+      <div class="panel" style="margin-bottom: 10px;">
+        <div class="panel-content" style="padding: 24px;">
+          <div class="topbar-innerwrap">
+            <!-- 我也不想各种 if else，没做成组件~囧 -->
+            <!-- 文章详情不显示 -->
+            <div ng-if="$ctrl.hash !== '2'">
+              <div class="text-center">
+                <img see-src="$ctrl.getAvatarUrl()" width="65" height="65" alt="{{ $ctrl.wechat_name }}" class="img-circle" />
+              </div>
+            </div>
+            <div class="right-of-avatar" ng-if="$ctrl.hash !== '2'">
+              <div class="desc-block">
+                <h3 class="font-bold"></h3>
+                <p class="m-b-0">微信名称：{{ $ctrl.wechat_name }}</p>
+                <p class="">微信号：{{ $ctrl.wechat_id }}</p>
+              </div>
+
+              <button see-hide="New-Brand" report="PAGE_CONTENT_ELEC_MARKET.BTN_ADD_ARTICLE" class="btn btn-primary" type="button" ng-click="$ctrl.importArticleNew()"
+                id="lead_kol_article">创建文章</button>
+            </div>
+            <div class="right-of-avatar article" ng-if="$ctrl.hash === '2'">
+              <div class="desc-block">
+                <div class="article-title">{{$ctrl.getCurArticleTitle()}}</div>
+              </div>
+              <div class="v-btns">
+                <a ng-click="$ctrl.showSteps()" class="how-sell">
+                  <i class="si si-info"></i>如何在文章中售卖商品</a>
+                <!-- <a ng-click="$ctrl.editArticleNew($ctrl.article_cur.article_id)" class="btn-edit">编辑文章信息</a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-if="$ctrl.article_id == 0" see-hide="New-Brand">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-2 text-center">
+              <img see-src="$ctrl.kol.avatar" width="100" alt="{{ $ctrl.wechat_name }}" class="img-circle">
+            </div>
+            <div class="col-xs-6">
+              <h3 class="font-bold">{{ $ctrl.kol.wechat_name }}</h3>
+              <p class="m-b-0">微信号：{{ $ctrl.kol.wechat_id }}</p>
+              <p class="two-line">简介：{{ $ctrl.kol.wechat_desc }}</p>
+            </div>
+            <div class="col-xs-2">
+              <h3 class="font-bold">KQI
+                <i see-hide="KOL New-Brand" class="fa fa-info-circle" uib-tooltip="基于公众号的阅读、点赞、评论以及内容商业特征覆盖程度等计算出来的KOL质量指标，用于衡量KOL在内容商业化方面的能力"></i>
+              </h3>
+              <p class="font-bold" ng-if="$ctrl.kol.kqi">{{ $ctrl.kol.kqi }}</p>
+            </div>
+            <div class="col-xs-2">
+              <h3 class="font-bold">影响力</h3>
+              <h3 class="font-bold">{{ $ctrl.kol.influence }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- KOL权限下的文章信息 -->
+  <div class="row" ng-if="$ctrl.article_id > 0" see-access="KOL">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-2 text-center">
+              <img see-src="$ctrl.kol.avatar" width="100" alt="{{ $ctrl.kol.wechat_name }}" class="img-circle">
+            </div>
+            <div class="col-xs-4">
+              <h3 class="font-bold">{{ $ctrl.article_cur.title }}</h3>
+              <p class="m-b-0">上线时间：{{$ctrl.article_cur.start_time * 1000 | date: 'yyyy-MM-dd'}}</p>
+            </div>
+            <div class="col-xs-3">
+              <h3 class="font-bold">商品数</h3>
+              <p class="font-bold">{{ $ctrl.article_cur.item_num }}</p>
+            </div>
+            <div class="col-xs-3">
+              <h3 class="font-bold">总支付订单</h3>
+              <h3 class="font-bold">{{ $ctrl.article_cur.gmv_info.kol.order }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 管理员权限下的文章信息 -->
+  <div class="row" ng-if="$ctrl.article_id > 0" see-hide="KOL New-Brand">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-xs-2 text-center">
+              <img see-src="$ctrl.kol.avatar" width="100" alt="{{ $ctrl.kol.wechat_name }}" class="img-circle">
+            </div>
+            <div class="col-xs-4">
+              <h3 class="font-bold">{{ $ctrl.article_cur.title }}</h3>
+              <p class="m-b-0">上线时间：{{$ctrl.article_cur.start_time * 1000 | date: 'yyyy-MM-dd'}}</p>
+            </div>
+            <div class="col-xs-1">
+              <h3 class="font-bold">商品数</h3>
+              <p class="font-bold">{{ $ctrl.article_cur.item_num }}</p>
+            </div>
+            <div class="col-xs-1">
+              <h3 class="font-bold">总下单量</h3>
+              <h3 class="font-bold">{{ $ctrl.article_cur.gmv_info.ex_all.order }}</h3>
+            </div>
+            <div class="col-xs-1">
+              <h3 class="font-bold">总支付订单</h3>
+              <h3 class="font-bold">{{ $ctrl.article_cur.gmv_info.all.order }}</h3>
+            </div>
+            <div class="col-xs-1">
+              <h3 class="font-bold">总支付GMV</h3>
+              <h3 class="font-bold">￥{{ $ctrl.article_cur.gmv_info.all.gmv }}</h3>
+            </div>
+            <div class="col-xs-1">
+              <h3 class="font-bold">包税订单</h3>
+              <h3 class="font-bold">{{ $ctrl.article_cur.gmv_info.normal.order }}</h3>
+            </div>
+            <div class="col-xs-1">
+              <h3 class="font-bold">包税GMV</h3>
+              <h3 class="font-bold">￥{{ $ctrl.article_cur.gmv_info.normal.gmv }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 只会在「文章详情页面出现」 -->
+  <div ng-if="$ctrl.hash === '2'  && $ctrl.id !== '0'" see-access="KOL New-Brand" class="article-detail-form-bar">
+    <!-- 我也有点蒙逼，小心改模板，原来通过 see-access="KOL New-Brand" 来区分超管还是非超管 -->
+    <div class="innerwrap" ng-if="$ctrl.article_cur && $ctrl.article_cur.article_id !== '0' && $ctrl.article_cur.collection_id > 0">
+      <a class="word-btn btn-go-back" ng-href="{{$ctrl.getArticleListHref($ctrl.article_cur)}}">返回文章列表</a>
+      <div class="right-wrap">
+        <a class="button btn-preview-tpl-article" type="button" target="_blank" ng-href="{{$ctrl.article_cur.topic_info.article_url | httpUrl}}"
+          ng-if="$ctrl.shouldShowPreviewArticle($ctrl.article_cur)">预览模板文章</a>
+        <a report="PAGE_ARTICLE_DETAIL.BTN_ADD_COMMODITY" report-ext3="{{$ctrl.article_cur.article_id}}" class="button" type="button" see-access="KOL"
+          ng-click="$ctrl.addItem($ctrl.article_cur.template_id,$ctrl.article_cur.article_id, $ctrl.article_cur.collection_id)">添加其它商品</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel fashion-kon-info-list">
+    <div class="panel-content">
+      <see-tabset ng-if="!$ctrl.is_new_brand">
+        <see-tab heading="合作文章" type="1" select="$ctrl.selectTab()" ng-if="$ctrl.id !== '0'  && $ctrl.is_new_brand == 0" see-access="KOL-Admin Oper"></see-tab>
+        <see-tab heading="商城" type="5" select="$ctrl.selectTab()" ng-if="$ctrl.id !== '0' && $ctrl.is_new_brand == 0" see-access="KOL-Admin Oper"></see-tab>
+        <see-tab heading="合作单品" type="2" select="$ctrl.selectTab()" ng-if="$ctrl.id !== '0'  && $ctrl.is_new_brand == 0"></see-tab>
+        <!-- <see-tab heading="活动管理" type="6" select="$ctrl.selectTab()" ng-if="$ctrl.id !== '0' && $ctrl.is_kol == 0"></see-tab> -->
+        <see-tab heading="内容分析" type="3" select="$ctrl.selectTab()" ng-if="$ctrl.is_kol == 0" see-access="KOL-Admin Oper"></see-tab>
+        <see-tab heading="用户分析" type="4" select="$ctrl.selectTab()" ng-if="$ctrl.is_kol == 0" see-access="KOL-Admin Oper"></see-tab>
+        <see-tab heading="商品分组" type="7" select="$ctrl.selectTab()" ng-if="$ctrl.shouldShowGoodsGroupTab()" see-access="KOL-Admin Oper"></see-tab>
+      </see-tabset>
+
+      <div ng-if="$ctrl.hash === '1' && $ctrl.id !== '0' ">
+        <form class="form-inline search-content clearfix text-left" ng-submit="$ctrl.submitSearch()">
+          <!-- <div class="form-group search-left-group">
+            <label class="control-label">
+              <see-date-range-picker ng-model="$ctrl.search_data.date_picker" ></see-date-range-picker>
+            </label>
+          </div> -->
+          <div class="form-group keyword-group pull-right">
+            <label class="control-label">
+              <input type="text" class="form-control" placeholder="文章名" ng-model="$ctrl.search_data.keyword">
+            </label>
+            <button class="btn btn-primary" type="submit">搜索</button>
+          </div>
+          <div see-hide="KOL New-Brand" class="pull-right">
+            <button class="btn btn-primary" ng-click="$ctrl.exportArticleList(1)">导出文章</button>&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <div class="pull-right" see-hide="New-Brand">
+            <button report="PAGE_CONTENT_ELEC_MARKET.BTN_ADD_ARTICLE" class="btn btn-primary" type="button" ng-click="$ctrl.importArticleNew()">创建文章</button>&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+        </form>
+        <!-- 「文章列表 表格」 -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-scrollable">
+              <!-- KOL文章列表 -->
+              <table class="table table-hover table-striped fashion-kol-info" see-access="KOL New-Brand">
+                <thead>
+                  <tr>
+                    <th>文章名</th>
+                    <th>上线时间</th>
+                    <th>楼层</th>
+                    <th>文章阅读数</th>
+                    <th>文内商品浏览量
+                      <!--<i class="fa fa-info-circle" uib-tooltip="原内容合辑总pv"></i>-->
+                    </th>
+                    <th>文内商品访客量
+                      <!--<i class="fa fa-info-circle" uib-tooltip="原内容合辑总uv"></i>-->
+                    </th>
+                    <th>文内商品总订单量</th>
+                    <th>文内商品总成交额</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.article_list track by item.article_id">
+                    <td title="{{item.title}}">
+                      <a href="{{$ctrl.getArticleGoodsHref(item)}}">{{item.title|moreContent:10}}</a>
+                    </td>
+                    <td>{{item.start_time * 1000 | date: 'yyyy-MM-dd'}}</td>
+                    <td>{{item.floor_level}}</td>
+                    <td>{{item.read_count}}</td>
+                    <td>{{item.pv_info.s_1.pv}}</td>
+                    <td>{{item.pv_info.s_1.uv}}</td>
+                    <td see-access="KOL">实物商品: {{item.gmv_info.kol.order}}/￥{{item.gmv_info.kol.gmv}}
+                      <br />虚拟商品: {{item.virtual_order_num}}/￥{{item.virtual_order_gmv}}
+                    </td>
+
+                    <td see-access="New-Brand">{{item.gmv_info.kol.order}}
+                    </td>
+                    <td see-access="New-Brand">￥{{item.gmv_info.kol.gmv}}
+                    </td>
+                    <td>
+                      <!-- <button report="PAGE_CONTENT_ELEC_MARKET.BTN_LINK"
+                              ng-if="item.status !== '0'"
+                              class="btn btn-sm btn-primary ng-scope"
+                              ng-click="$ctrl.copyUrl(item,'article','链接[文章]：'+item.title)">链接</button> -->
+                      <!--
+                           <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionText(item.collection_id,item.title,'文章名')">文案配置</button>
+                         -->
+                      <a see-hide="New-Brand" class="text-btn" ng-click="$ctrl.editArticleNew(item.article_id)">编辑文章信息</a>
+                      <a href="{{$ctrl.getArticleGoodsHref(item)}}" class="text-btn">查看文中商品</a>
+                      <a see-hide="New-Brand" ng-click="$ctrl.addItem(item.template_id, item.article_id, item.collection_id)">添加商品</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div see-access="New-Brand" class="panel-content my-shop-empty" ng-if="$ctrl.article_list.length == 0 && !$ctrl.search_data.keyword">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="text-center">
+                      <h1 class="second-text">你当前还没创建文章，请前往主题库
+                        <br/>挑选商品，并放入你的公众号推荐中售卖</h1>
+                      <a class="btn btn-primary" type="button" target="_blank" href="/goods-theme-list/">前往主题库</a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div see-access="New-Brand" class="panel-content my-shop-empty" ng-if="$ctrl.article_list.length == 0 && !!$ctrl.search_data.keyword">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="text-center">
+                      没有符合条件的文章！
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 管理员权限文章列表 -->
+              <table class="table table-hover table-striped" see-hide="KOL New-Brand">
+                <thead>
+                  <tr>
+                    <th>文章ID</th>
+                    <th>文章名</th>
+                    <th>上线时间</th>
+                    <th>楼层</th>
+                    <!--<th>合集ID</th>-->
+                    <th>文章阅读量</th>
+                    <th>内容合辑总PV
+                      <br /> 阅读原文来源
+                      <br /> 合辑二维码来源
+                      <br /> 商品二维码来源
+                      <br /> 小程序来源
+                    </th>
+                    <th>内容合辑总UV
+                      <br /> 阅读原文来源
+                      <br /> 合辑二维码来源
+                      <br /> 商品二维码来源
+                      <br /> 小程序来源
+                    </th>
+                    <th>总下单量
+                      <br />总支付订单量
+                      <br />包税路线订单
+                      <br />急速路线订单
+                      <br />性价比路线订单
+                      <br />小程序支付订单
+                      <br />虚拟订单</th>
+                    <!--
+                           <th>总支付订单</th>
+                           <th see-hide="Hide-DD">包税路线订单</th>
+                           <th see-hide="Hide-DD">极速路线</th>
+                           <th see-hide="Hide-DD">性价比路线</th>-->
+                    <th>
+                      <!--总下单GMV<br />-->总支付GMV
+                      <br />包税GMV
+                      <br />急速路线GMV
+                      <br />性价比路线GMV
+                      <br />小程序GMV
+                      <br />虚拟订单GMV
+                    </th>
+                    <th>包税购买用户人数
+                      <br />包税客单价
+                    </th>
+                    <th see-hide="Hide-DD">总支付GMV/阅读
+                      <br />包税GMV/阅读</th>
+                    <!--
+                             <th see-hide="Hide-DD">总转化率<br />包税路线转化率</th>
+                           -->
+                    <th>阅读转化率
+                      <i class="fa fa-info-circle" uib-tooltip="内容合辑支付订单/文章阅读数"></i>
+                      <br /> 内容合辑转化率
+                      <i class="fa fa-info-circle" uib-tooltip="内容合辑支付订单/内容合辑总UV"></i>
+                      <br /> 内容合辑到店率
+                      <i class="fa fa-info-circle" uib-tooltip="内容合辑总UV/文章阅读数"></i>
+                      <br /> 内容合辑下单率
+                      <i class="fa fa-info-circle" uib-tooltip="内容合辑下单数/内容合辑总UV"></i>
+                      <br /> 内容合辑付款率
+                      <i class="fa fa-info-circle" uib-tooltip="内容合辑支付订单/内容合辑下单数"></i>
+                      <br /> 小程序转化率
+                      <i class="fa fa-info-circle" uib-tooltip="小程序付费订单/小程序uv"></i>
+                      <br />
+                    </th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.article_list track by item.article_id">
+                    <td>{{item.article_id}}</td>
+                    <td title="{{item.title}}">
+                      <a href="/kol/kol-cooperation-management/{{$ctrl.id}}?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&article_type={{$ctrl.article_type}}&collection_id={{item.collection_id}}#2"
+                        class="">
+                        <span style="color:black;">{{item.title|moreContent:10}}</span>
+                      </a>
+                    </td>
+                    <td>{{item.start_time * 1000 | date: 'yyyy-MM-dd'}}</td>
+                    <!--  HH:mm:ss -->
+                    <td>{{item.floor_level}}</td>
+                    <!--<td>{{item.collection_id}}</td>-->
+                    <td>{{item.read_count}}</td>
+                    <td>{{item.pv_info.s_1.pv}}
+                      <br /> {{item.pv_info.s_2.pv}}
+                      <br /> {{item.pv_info.s_3.pv}}
+                      <br /> {{item.pv_info.s_4.pv}}
+                      <br /> {{item.pv_info.s_10.pv}}
+                    </td>
+                    <td>{{item.pv_info.s_1.uv}}
+                      <br /> {{item.pv_info.s_2.uv}}
+                      <br /> {{item.pv_info.s_3.uv}}
+                      <br /> {{item.pv_info.s_4.uv}}
+                      <br /> {{item.pv_info.s_10.uv}}
+                    </td>
+                    <!--订单-->
+                    <!--
+                         <td>{{item.gmv_info.all.order}}</td>
+                         <td see-hide="Hide-DD">{{item.gmv_info.normal.order}}</td>
+                         <td see-hide="Hide-DD">{{item.gmv_info.visible.order}}</td>
+                         <td see-hide="Hide-DD">{{item.gmv_info.invisible.order}}</td>
+                       -->
+                    <td>总下单：{{item.gmv_info.ex_all.order}}
+                      <br /> 总支付：{{item.gmv_info.all.order}}
+                      <br /> 包税：{{item.gmv_info.normal.order}}
+                      <br /> 急速：{{item.gmv_info.visible.order}}
+                      <br /> 性价比：{{item.gmv_info.invisible.order}}
+                      <br /> 小程序：{{item.gmv_info.from_type_7.order}}
+                      <br /> 虚拟：{{item.virtual_order_num}}
+                      <br />
+                    </td>
+                    <td>
+                      <!--总下单：{{item.gmv_info.ex_all.gmv | currency: '￥'}}<br />-->
+                      总支付：{{item.gmv_info.all.gmv | currency: '￥'}}
+                      <br /> 包税：{{item.gmv_info.normal.gmv | currency: '￥'}}
+                      <br /> 急速：{{item.gmv_info.visible.gmv | currency: '￥'}}
+                      <br /> 性价比：{{item.gmv_info.invisible.gmv | currency: '￥'}}
+                      <br /> 小程序：{{item.gmv_info.from_type_7.gmv | currency: '￥'}}
+                      <br /> 虚拟：{{item.virtual_order_gmv | currency: '￥'}}
+                      <br />
+                    </td>
+                    <td>
+                      <span style="width:150px;display:block;">人数：{{item.gmv_info.normal.num_buy}}
+                        <br />
+                      </span>
+                      <span see-hide="Hide-DD">客单价：{{item.gmv_info.normal.price_per | currency: '￥'}}
+                        <br />
+                      </span>
+                    </td>
+                    <!--GMV/阅读-->
+                    <td see-hide="Hide-DD">总：{{item.read_count ? item.gmv_info.all.gmv/item.read_count : 0| number: 2}}
+                      <br /> 包税：{{item.read_count ? item.gmv_info.normal.gmv/item.read_count : 0| number: 2}}</td>
+                    <!--转化-->
+                    <!--
+                           <td see-hide="Hide-DD">总：{{item.read_count ? 100 * item.gmv_info.all.order/item.read_count : 0 | percentage: 2}}<br />
+                           包税：{{item.read_count ? 100 * item.gmv_info.normal.order/item.read_count : 0 | percentage: 2}}
+                           </td>
+                         -->
+                    <td>{{item.trans_info.s_1.per}}
+                      <br /> {{item.trans_info.s_2.per}}
+                      <br /> {{item.trans_info.s_3.per}}
+                      <br /> {{item.trans_info.s_4.per}}
+                      <br /> {{item.trans_info.s_5.per}}
+                      <br /> {{item.trans_info.s_10.per}}
+                      <br />
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" type="button" ng-if="item.article_type === '0'" ng-click="$ctrl.editArticle(item.article_id)">文章编辑</button>
+                      <div ng-if="item.collection_id > 0 && (item.article_type === '1' || item.article_type === '2')">
+                        <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.showLinksInfoForArticle(item)">KOL链接</button>
+                        <!--
+                               <a ng-href="{{item.collection_url_article_1}}" ng-if="item.collection_url_article_1 !== ''" target="_blank" class="btn btn-sm btn-primary">文章阅读原文链接</a>
+                               <a ng-href="{{item.collection_url_article_2}}" ng-if="item.collection_url_article_2 !== ''" target="_blank" class="btn btn-sm btn-primary">文章合集二维码</a>
+                               <a class="btn btn-sm btn-primary" type="button" target="_blank" ng-if="item.url_qrc !== ''" ng-href="{{item.url_qrc}}">文章合集二维码图片</a>
+                             -->
+                        <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editArticleNew(item.article_id)">文章编辑</button>
+                        <!--
+                               <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionSeckill(item.collection_id,item.title,'文章名')">秒杀配置</button>-->
+                        <!-- <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionCoupon(item.collection_id,item.title,'文章名')">优惠券配置</button> -->
+                        <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionText(item.collection_id,item.title,'文章名')">文案配置</button>
+                        <a href="/kol/kol-cooperation-management/{{$ctrl.id}}?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&article_type={{$ctrl.article_type}}&collection_id={{item.collection_id}}#2"
+                          class="btn btn-sm btn-primary">商品管理</a>
+                        <!--
+                               <button class="btn btn-sm btn-primary" type="button" ng-if="item.article_type === '1' || item.article_type === '2'" ng-click="$ctrl.editArticle(item.article_id)">添加商品</button>
+                             -->
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="$ctrl.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+      <div ng-if="$ctrl.hash === '5'  && $ctrl.id !== '0' ">
+        <div class="row">
+          <div class="col-sm-12 portlets">
+            <form see-hide="New-Brand" class="form-inline" ng-submit="$ctrl.submitSearch()">
+              <div class="form-group">
+                <label class="control-label">日期
+                  <input date-range-picker class="form-control date-picker" type="text" ng-model="$ctrl.search_data.date_picker">
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="control-label">关键词
+                  <input type="text" class="form-control" placeholder="商城名" ng-model="$ctrl.search_data.keyword">
+                </label>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary" type="submit">搜索</button>
+              </div>
+
+              <div see-hide="KOL New-Brand" class="pull-right">
+                <button class="btn btn-primary" ng-click="$ctrl.exportArticleList(2)">导出商城</button>&nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+              <!--<div class="pull-right" see-hide="KOL New-Brand">-->
+              <!--<button class="btn btn-primary" type="button" ng-click="$ctrl.importArticleShop()">添加商城</button>&nbsp;&nbsp;&nbsp;&nbsp;-->
+              <!--</div>-->
+            </form>
+            <div class="table-scrollable">
+              <!-- KOL商城列表 -->
+              <table class="table table-hover table-striped" see-access="KOL New-Brand">
+                <thead see-hide="New-Brand">
+                  <tr>
+                    <th>商城名</th>
+                    <th>商城状态</th>
+                    <th>上线时间</th>
+                    <th>商城总pv
+                      <!--<i class="fa fa-info-circle" uib-tooltip="商城总pv"></i>-->
+                    </th>
+                    <th>商城总uv
+                      <!--<i class="fa fa-info-circle" uib-tooltip="商城总uv"></i>-->
+                    </th>
+                    <th>总支付订单</th>
+                    <th>总支付GMV</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <thead see-access="New-Brand">
+                  <tr>
+                    <th>商城名</th>
+                    <th>商城状态</th>
+                    <th>上线时间</th>
+                    <th>合集浏览量
+                      <!--<i class="fa fa-info-circle" uib-tooltip="商城总pv"></i>-->
+                    </th>
+                    <th>访客量
+                      <!--<i class="fa fa-info-circle" uib-tooltip="商城总uv"></i>-->
+                    </th>
+                    <th>销量</th>
+                    <th>销售额</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.article_list track by item.article_id">
+                    <td title="{{item.title}}">{{item.title|moreContent:10}}</td>
+                    <td ng-class="{ 'text-primary': item.mall_online === '1' }">{{item.mall_online == 1 ? '上线中':'已下线'}}</td>
+                    <td>{{item.create_time * 1000 | date: 'yyyy-MM-dd'}}</td>
+                    <td>{{item.pv_info.s_1.pv}}</td>
+                    <td>{{item.pv_info.s_1.uv}}</td>
+                    <td>{{item.gmv_info.kol.order}}</td>
+                    <td>￥{{item.gmv_info.kol.gmv}}</td>
+                    <td>
+                      <button see-hide="New-Brand" class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.copyUrl(item,'shop','KOL链接[商城]：'+item.title,1)">KOL商城链接</button>
+                      <button see-hide="New-Brand" class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionText(item.collection_id,item.title,'商城名')">自定义商城</button>
+                      <a href="/kol/kol-cooperation-management/{{$ctrl.id}}?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&article_type={{$ctrl.article_type}}&collection_id={{item.collection_id}}#2"
+                        class="btn btn-sm btn-primary">{{$ctrl.is_new_brand==1?'商品':'查看单品'}}</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- 管理员权限商城列表 -->
+              <table class="table table-hover table-striped" see-hide="KOL New-Brand">
+                <thead>
+                  <tr>
+                    <th>商城ID
+                      <br />商城名
+                      <br />合集ID
+                    </th>
+                    <th>关联商城品类商品
+                      <i class="fa fa-info-circle" uib-tooltip="商城品类关联商品/商城总商品"></i>
+                    </th>
+                    <th>模板ID
+                      <br />模板名</th>
+                    <th>商城状态</th>
+                    <th>同步方式</th>
+                    <th>更新数量
+                      <br />更新时间</th>
+                    <th>KOL最近更新</th>
+                    <th>上线时间</th>
+                    <!--<th>楼层</th>
+                             <th>合集ID</th>
+                             <th>文章阅读量</th>-->
+                    <th>商城总PV
+                      <br /> Tab来源
+                      <br /> 非合作文章二维码来源
+                      <br /> 非合作文章链接推送来源
+                      <br /> 小程序来源
+                      <br />
+                    </th>
+                    <th>商城总UV
+                      <br /> Tab来源
+                      <br /> 非合作文章二维码来源
+                      <br /> 非合作文章链接推送来源
+                      <br /> 小程序来源
+                      <br />
+                    </th>
+                    <th>总下单量
+                      <br /> 总支付订单量
+                      <br />包税路线订单
+                      <br />急速路线订单
+                      <br />性价比路线订单
+                      <br />小程序支付订单
+                    </th>
+                    <!--
+                             <th>总支付订单</th>
+                             <th see-hide="Hide-DD">包税路线订单</th>
+                             <th see-hide="Hide-DD">极速路线</th>
+                             <th see-hide="Hide-DD">性价比路线</th>-->
+                    <th>总支付GMV
+                      <br />包税GMV
+                      <br />急速路线GMV
+                      <br />性价比路线GMV
+                      <br />小程序GMV
+                    </th>
+                    <th see-hide="Hide-DD">总支付GMV/阅读
+                      <br />包税GMV/阅读</th>
+                    <!--
+                               <th see-hide="Hide-DD">总转化率<br />包税路线转化率</th>
+                             -->
+                    <th>商城转化率
+                      <i class="fa fa-info-circle" uib-tooltip="商城支付订单/商城总UV"></i>
+                      <br /> 商城下单率
+                      <i class="fa fa-info-circle" uib-tooltip="商城下单数/商城总UV"></i>
+                      <br /> 商城付款率
+                      <i class="fa fa-info-circle" uib-tooltip="商城支付订单/商城下单数"></i>
+                      <br /> 小程序转化率
+                      <i class="fa fa-info-circle" uib-tooltip="小程序支付订单/小程序uv"></i>
+                      <br />
+                    </th>
+                    <!--真实转化率-->
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.article_list track by item.article_id">
+                    <td title="{{item.title}}">{{item.article_id}}
+                      <br />
+                      <a href="/kol/kol-cooperation-management/{{$ctrl.id}}?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&article_type={{$ctrl.article_type}}&collection_id={{item.collection_id}}#2"
+                        class="">
+                        <span style="color:black;">{{item.title|moreContent:10}}</span>
+                      </a>
+                      <br />合集:{{item.collection_id}}
+                    </td>
+                    <td>{{item.num_mall_class.cur}}/{{item.num_mall_class.all}}</td>
+                    <td title="{{item.template_name}}">{{item.template_id}}
+                      <br />{{item.template_name|moreContent:10}}</td>
+                    <td ng-class="{ 'text-primary': item.mall_online === '1' }">{{item.mall_online == 1 ? '上线中':'已下线'}}</td>
+                    <td ng-class="{ 'text-primary': item.mall_sync === '1' }">{{item.mall_sync == 1 ? '自动同步':'不同步'}}</td>
+                    <td>{{item.template_update_num}}件
+                      <br />
+                      <label ng-if="item.template_update_time !== '0'">
+                        {{item.template_update_time * 1000 | date: 'MM-dd HH:mm'}}
+                      </label>
+                    </td>
+                    <td>{{item.kol_update_num}}件
+                      <br />
+                      <label ng-if="item.kol_update_time !== '0'">
+                        {{item.kol_update_time * 1000 | date: 'MM-dd HH:mm'}}
+                      </label>
+                    </td>
+                    <td>{{item.create_time * 1000 | date: 'yyyy-MM-dd'}}</td>
+                    <!--  HH:mm:ss -->
+                    <!--<td>{{item.floor_level}}</td>
+                           <td>{{item.collection_id}}</td>
+                           <td>{{item.read_count}}</td>-->
+                    <!--订单-->
+                    <td>{{item.pv_info.s_1.pv}}
+                      <br /> {{item.pv_info.s_2.pv}}
+                      <br /> {{item.pv_info.s_3.pv}}
+                      <br /> {{item.pv_info.s_4.pv}}
+                      <br /> {{item.pv_info.s_10.pv}}
+                      <br />
+                    </td>
+                    <td>{{item.pv_info.s_1.uv}}
+                      <br /> {{item.pv_info.s_2.uv}}
+                      <br /> {{item.pv_info.s_3.uv}}
+                      <br /> {{item.pv_info.s_4.uv}}
+                      <br /> {{item.pv_info.s_10.uv}}
+                      <br />
+                    </td>
+                    <td>总下单：{{item.gmv_info.ex_all.order}}
+                      <br /> 总支付：{{item.gmv_info.all.order}}
+                      <br /> 包税：{{item.gmv_info.normal.order}}
+                      <br /> 急速：{{item.gmv_info.visible.order}}
+                      <br /> 性价比：{{item.gmv_info.invisible.order}}
+                      <br /> 小程序：{{item.gmv_info.from_type_7.order}}
+                      <br />
+                    </td>
+                    <td>
+                      <!--总下单：{{item.gmv_info.ex_all.gmv | currency: '￥'}}<br />-->
+                      总支付：{{item.gmv_info.all.gmv | currency: '￥'}}
+                      <br /> 包税：{{item.gmv_info.normal.gmv | currency: '￥'}}
+                      <br /> 急速：{{item.gmv_info.visible.gmv | currency: '￥'}}
+                      <br /> 性价比：{{item.gmv_info.invisible.gmv | currency: '￥'}}
+                      <br /> 小程序：{{item.gmv_info.from_type_7.gmv | currency: '￥'}}
+                      <br />
+                    </td>
+                    <!--GMV/阅读-->
+                    <td see-hide="Hide-DD">总：{{item.read_count ? item.gmv_info.all.gmv/item.read_count : 0| number: 2}}
+                      <br /> 包税：{{item.read_count ? item.gmv_info.normal.gmv/item.read_count : 0| number: 2}}</td>
+                    <!--转化-->
+                    <!--
+                             <td see-hide="Hide-DD">总：{{item.read_count ? 100 * item.gmv_info.all.order/item.read_count : 0 | percentage: 2}}<br />
+                             包税：{{item.read_count ? 100 * item.gmv_info.normal.order/item.read_count : 0 | percentage: 2}}
+                             </td>
+                           -->
+                    <td>{{item.trans_info.s_1.per}}
+                      <br /> {{item.trans_info.s_2.per}}
+                      <br /> {{item.trans_info.s_3.per}}
+                      <br /> {{item.trans_info.s_10.per}}
+                      <br />
+                    </td>
+                    <td>
+                      <div ng-if="item.collection_id > 0 && true">
+                        <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.showLinksInfo4Mall(item)">KOL链接</button>
+                        <!--
+                                 <a ng-href="{{item.collection_url_shop_1}}" ng-if="item.collection_url_shop_1 !== ''" target="_blank" class="btn btn-sm btn-primary">商城Tab链接</a>
+                                 <a ng-href="{{item.collection_url_shop_2}}" ng-if="item.collection_url_shop_2 !== ''" target="_blank" class="btn btn-sm btn-primary">非合作文章二维码</a>
+                                 <a class="btn btn-sm btn-primary" type="button" target="_blank" ng-if="item.url_qrc !== ''" ng-href="{{item.url_qrc}}">非合作文章二维码图片</a>
+                                 <a ng-href="{{item.collection_url_shop_3}}" ng-if="item.collection_url_shop_3 !== ''" target="_blank" class="btn btn-sm btn-primary">非合作文章推送链接</a>
+                               -->
+                        <!--
+                                 <button class="btn btn-sm btn-primary" type="button"  ng-click="$ctrl.editArticleShop(item.article_id)">商城编辑</button>
+                               -->
+                        <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.listSet(item.article_id, item.title, item.mall_online, item.mall_sync)">商城编辑</button>
+                        <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.mallClassSet(item.collection_id)">分类编辑</button>
+                        <!--<button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionSeckill(item.collection_id,item.title,'商城名')">秒杀配置</button>
+                               -->
+                        <!-- <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionCoupon(item.collection_id,item.title,'商城名')">优惠券配置</button> -->
+                        <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editCollectionText(item.collection_id,item.title,'商城名')">文案配置</button>
+                        <a href="/kol/kol-cooperation-management/{{$ctrl.id}}?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&article_type={{$ctrl.article_type}}&collection_id={{item.collection_id}}#2"
+                          class="btn btn-sm btn-primary">商品管理</a>
+                        <!-- <a  href="/kol/kol-mall-banner-list?article_id={{item.article_id}}&kol_id={{$ctrl.id}}&wechat_id={{$ctrl.wechat_id}}" class="btn btn-sm btn-primary">Banner配置</a> -->
+                        <a ng-if="item.default_mall==1" class="btn btn-sm btn-primary" href="/shop/operate?kolId={{$ctrl.id}}&source=admin&wechat_id={{item.weixin_id}}#group"
+                          ng-hide="$ctrl.kol_info.user_type == 1">电铺装修</a>
+                        <a ng-if="item.default_mall==1 && $ctrl.kol_info.xdp_info.id" class="btn btn-sm btn-primary" ng-href="/store-construction?kolId={{ item.kol_id }}&wechatId={{ item.weixin_id }}&source=admin&xdpId={{ $ctrl.kol_info.xdp_info.id }}"
+                          target="_blank" ng-hide="true">电铺装修2.0</a>
+                        <a ng-if="item.default_mall === '1'&&$ctrl.shouldShowSaleToolBtn()" class="btn btn-sm btn-primary" ng-href="/kol/kol-cooperation-management/{{$ctrl.id}}/marketing-tools?wechat_id={{item.weixin_id}}">营销工具</a>
+                        <a ng-if="item.default_mall==1 && $ctrl.kol_info.xdp_info.id" class="btn btn-sm btn-primary" ng-href="/bi/admin?kolId={{ item.kol_id }}&title={{ item.title }}">查看 BI</a>
+                        <!--
+                                 <button class="btn btn-sm btn-primary" type="button" ng-if="item.article_type === '1' || item.article_type === '2'" ng-click="$ctrl.editArticle(item.article_id)">添加商品</button>
+                               -->
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="$ctrl.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+      <div ng-if="$ctrl.hash === '2'  && $ctrl.id !== '0'">
+        <div class="row">
+          <div class="col-sm-12 portlets">
+            <form class="form-inline search-content clearfix tool-bar" ng-submit="$ctrl.submitSearch()">
+              <div class="" see-hide="KOL New-Brand">
+                <label class="control-label">
+                  <select class="form-control select-filter-article" ng-model="$ctrl.search_data.article_id" ng-options="art.article_id as art.title for art in $ctrl.article_list"
+                    ng-change="$ctrl.submitSearchArticle()">
+
+                  </select>
+                  <i class="si si-list tail-icon"></i>
+                </label>
+              </div>
+              <!-- <div see-hide="KOL New-Brand">
+                <button class="btn btn-primary btn-primary" type="button" ng-if="$ctrl.article_cur && $ctrl.article_cur.article_id !== '0' && $ctrl.article_cur.collection_id > 0"
+                  ng-click="$ctrl.addItem($ctrl.article_cur.template_id,$ctrl.article_cur.article_id, $ctrl.article_cur.collection_id)">添加单品库商品</button>
+                <button class="btn btn-primary btn-primary" type="button" ng-if="$ctrl.article_cur && $ctrl.article_cur.article_id !== '0' && $ctrl.article_cur.collection_id > 0"
+                  ng-click="$ctrl.addGoodsFromTheme($ctrl.article_cur)">添加主题</button>
+                <button class="btn btn-primary btn-primary" type="button" ng-click="$ctrl.addGroupBuyGoods()">添加拼团商品</button>
+              </div> -->
+              <div>
+                <label class="control-label">
+                  <div class="input-group">
+                    <div class="btn btn-primary btn-max-w" type="button" ng-click="$ctrl.toSelectMallClass()">{{$ctrl.getSelectedMallClassName() ? '已选品类：' + $ctrl.getSelectedMallClassName() : '筛选品类'}}</div>
+                  </div>
+                </label>
+              </div>
+              <div style="flex:1;"></div>
+              <div class="" see-hide="KOL New-Brand">
+                <label class="control-label">
+                  <input type="text" class="form-control" placeholder="商品名/品类/品牌" ng-model="$ctrl.search_data.keyword">
+                </label>
+                <button class="btn btn-primary" type="submit">搜索</button>
+              </div>
+              <button class="btn btn-primary" see-hide="KOL New-Brand" ng-click="$ctrl.exportItemList()">导出商品</button>
+            </form>
+            <div class="col-xs-12">
+
+              <ul class="kol-info-tab">
+                <li ng-class="{'active': $ctrl.item_status_type === '1'}">
+                  <a href ng-click="$ctrl.itemTypeFilter('1')">可售商品 {{$ctrl.count_sell}}</a>
+                </li>
+                <li ng-class="{'active': $ctrl.item_status_type === '2'}">
+                  <a href ng-click="$ctrl.itemTypeFilter('2')">非可售商品 {{$ctrl.count_not_sell}}</a>
+                </li>
+              </ul>
+
+            </div>
+            <div class="table-scrollable">
+              <!-- KOL权限下的合作商品 -->
+              <table class="table table-hover fashion-kol-info" see-access="KOL New-Brand">
+                <thead see-access="KOL">
+                  <tr>
+                    <th>商品图</th>
+                    <th>商品名</th>
+                    <th>品类</th>
+                    <th>品牌</th>
+                    <!-- <th>国别</th> -->
+                    <th>售价</th>
+                    <th>商详总pv</th>
+                    <th>商详总uv</th>
+                    <th ng-if="$ctrl.search_data.rank_type === '0'">
+                      <a href="" ng-click="$ctrl.changeRank('2')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">总支付订单
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+                    </th>
+                    <th ng-if="$ctrl.search_data.rank_type === '2'">
+                      <a href="" ng-click="$ctrl.changeRank('22')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">总支付订单
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+                    </th>
+                    <th ng-if="$ctrl.search_data.rank_type === '22'">
+                      <a href="" ng-click="$ctrl.changeRank('2')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '22'}">总支付订单
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+                    </th>
+
+                    <th>总支付GMV</th>
+                    <!-- <th>操作</th> -->
+                  </tr>
+                </thead>
+                <thead see-access="New-Brand">
+                  <tr>
+                    <th>商品图</th>
+                    <th>商品名</th>
+                    <th>品类</th>
+                    <th>品牌</th>
+                    <!-- <th>国别</th> -->
+                    <th>售价</th>
+                    <th>浏览量</th>
+                    <th>访客量</th>
+                    <th ng-if="$ctrl.search_data.rank_type === '0'">
+                      <a href="" ng-click="$ctrl.changeRank('2')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">销量
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+                    </th>
+                    <th ng-if="$ctrl.search_data.rank_type === '2'">
+                      <a href="" ng-click="$ctrl.changeRank('22')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">销量
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+                    </th>
+                    <th ng-if="$ctrl.search_data.rank_type === '22'">
+                      <a href="" ng-click="$ctrl.changeRank('2')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '22'}">销量
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+                    </th>
+
+                    <th>销售额</th>
+                    <!-- <th>操作</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.goods_list track by item.item_id">
+                    <td class="item-img">
+                      <a href="{{item.url_item}}" target="_blank">
+                        <img see-src="item.item_imgurl" style="width:120px;height:120px;">
+                      </a>
+                    </td>
+                    <td class="item-name" title="{{item.item_name}}">
+                      {{item.item_name}}
+                    </td>
+                    <td class="class-name" title="{{item.class_name}}">{{item.class_name}}</td>
+                    <td class="brand-name" title="{{item.brand_name}}">{{item.brand_name}}</td>
+                    <!-- <td>{{item.ship_country}}</td> -->
+                    <td>
+                      <span ng-if="item.price_min == item.price_max">
+                        ￥{{item.price_min}}
+                      </span>
+                      <span ng-if="item.price_min !== item.price_max">
+                        ￥{{item.price_min}}~￥{{item.price_max}}
+                      </span>
+                    </td>
+                    <td>{{item.pv_info.s_1.pv}}</td>
+                    <td>{{item.pv_info.s_1.uv}}</td>
+                    <td>{{item.order_info.kol.order}}</td>
+                    <td>￥{{item.order_info.kol.gmv}}</td>
+                    <!-- <td>
+                      <a ng-if="$ctrl.article_cur.status === '1'" class="word-btn btn-access-link" ng-click="$ctrl.showGoodsLinks(item)">获取链接</a>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+              <div see-access="New-Brand" class="panel-content my-shop-empty" ng-if="$ctrl.goods_list.length == 0">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <h1>
+                      <i class="icon si si-emoji-happy"></i>没有符合条件的商品</h1>
+                    <div class="text-center" ng-if="$ctrl.article_cur && $ctrl.article_cur.article_id !== '0' && $ctrl.article_cur.collection_id > 0">
+                      <button report="PAGE_ARTICLE_DETAIL.BTN_ADD_COMMODITY" report-ext3="{{$ctrl.article_cur.article_id}}" class="btn btn-primary"
+                        type="button" ng-click="$ctrl.addItem($ctrl.article_cur.template_id,$ctrl.article_cur.article_id, $ctrl.article_cur.collection_id)">添加商品</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 管理员权限下的合作商品 -->
+              <table class="table table-hover table-striped" see-hide="KOL New-Brand">
+                <thead>
+                  <tr>
+                    <th>商品图</th>
+                    <th width="240px">商品ID
+                      <br />商品名
+                      <br />
+                    </th>
+                    <th>商城品类</th>
+                    <th>品类
+                      <br />品牌
+                      <br />国别</th>
+                    <th>排序,越大越前</th>
+                    <!-- <th>状态</th> -->
+                    <!--<th>品类</th>
+                           <th>品牌</th>
+                           <th>国别</th>-->
+                    <!-- <th see-hide="Hide-DD">供货价</th> -->
+                    <!--
+                           <th see-hide="Hide-DD">给KOL价</th> -->
+                    <th>定价</th>
+                    <th>毛利率</th>
+                    <!-- <th>商详总PV -->
+                    <!--
+                        <br /> 阅读原文渠道
+                        <br /> 合辑二维码来源
+                        <br /> 商品二维码渠道
+                        <br /> 小程序来源
+                        <br />
+                      -->
+                    <!-- </th> -->
+                    <!-- <th>商详总UV -->
+                    <!--
+                        <br /> 阅读原文来源
+                        <br /> 合辑二维码来源
+                        <br /> 商品二维码来源
+                        <br /> 小程序来源
+                        <br />
+                      -->
+                    <!-- </th> -->
+                    <th see-access="KOL-Admin Oper">商详总PV
+                      <br /> Tab来源
+                      <br /> 二维码来源
+                      <br /> 链接推送来源
+                      <br /> 小程序来源
+                      <br />
+                    </th>
+                    <th see-access="KOL-Admin Oper">商详总UV
+                      <br /> Tab来源
+                      <br /> 二维码来源
+                      <br /> 链接推送来源
+                      <br /> 小程序来源
+                      <br />
+                    </th>
+                    <th ng-if="$ctrl.isAdmin()" see-access="KOL-Admin Oper">
+                      <!-- 下单排序 ??这里代码简化下 -->
+                      <a ng-if="$ctrl.search_data.rank_type !== '1' && $ctrl.search_data.rank_type !== '11'" href="" ng-click="$ctrl.changeRank('1')"
+                        ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '1'}">总下单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '1'" href="" ng-click="$ctrl.changeRank('11')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '1'}">总下单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '11'" href="" ng-click="$ctrl.changeRank('1')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '11'}">总下单量/SKU
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+
+                      <!-- 支付订单排序??这里代码简化下 -->
+                      <a ng-if="$ctrl.search_data.rank_type !== '2' && $ctrl.search_data.rank_type !== '22'" href="" ng-click="$ctrl.changeRank('2')"
+                        ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">
+                        <br />总支付订单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '2'" href="" ng-click="$ctrl.changeRank('22')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">
+                        <br />总支付订单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '22'" href="" ng-click="$ctrl.changeRank('2')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '22'}">
+                        <br />总支付订单量/SKU
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+                      <!--
+
+                      <br />包税路线订单/SKU
+                      <br />急速路线订单/SKU
+                      <br />性价比路线订单/SKU
+                      <br />小程序支付订单/SKU
+                     -->
+                    </th>
+                    <!--
+                    <th>包税购买用户人数</th>
+                     -->
+                    <th see-access="KOL-Admin Oper">
+                      内容商品转化率
+                      <i class="fa fa-info-circle" uib-tooltip="内容商品支付订单/文章阅读数"></i>
+                      <br /> 内容商品下单率
+                      <i class="fa fa-info-circle" uib-tooltip="内容商品下单数/内容商品商详UV"></i>
+                      <br /> 内容商品付款率
+                      <i class="fa fa-info-circle" uib-tooltip="内容商品支付订单/内容商品下单数"></i>
+                      <br /> 小程序转化率
+                      <i class="fa fa-info-circle" uib-tooltip="小程序支付订单/小程序uv"></i>
+                      <br />
+                    </th>
+                    <th see-access="KOL-Admin Oper">
+                      商城商品转化率
+                      <i class="fa fa-info-circle" uib-tooltip="商城商品支付订单/商城UV"></i>
+                      <br /> 商城商品下单率
+                      <i class="fa fa-info-circle" uib-tooltip="商城商品下单数/商城商品商详UV"></i>
+                      <br /> 商城商品付款率
+                      <i class="fa fa-info-circle" uib-tooltip="商城商品支付订单/商城商品下单数"></i>
+                      <br /> 小程序转化率
+                      <i class="fa fa-info-circle" uib-tooltip="小程序支付订单/小程序uv"></i>
+                      <br />
+                    </th>
+                    <!-- <th>库存</th> -->
+                    <th>
+                      <a ng-if="$ctrl.search_data.rank_type !== '4' && $ctrl.search_data.rank_type !== '44'" href="" ng-click="$ctrl.changeRank('4')"
+                        ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '4'}">上线时间
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '4'" href="" ng-click="$ctrl.changeRank('44')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '4'}">上线时间
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '44'" href="" ng-click="$ctrl.changeRank('4')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '44'}">上线时间
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+                    </th>
+                    <th>状态</th>
+                    <th>供货价</th>
+                    <th ng-if="false">可见刷单</th>
+                    <th ng-if="false">不可见刷单</th>
+                    <th>
+                      <!-- 下单排序 ??这里代码简化下 -->
+                      <a ng-if="$ctrl.search_data.rank_type !== '1' && $ctrl.search_data.rank_type !== '11'" href="" ng-click="$ctrl.changeRank('1')"
+                        ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '1'}">总下单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '1'" href="" ng-click="$ctrl.changeRank('11')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '1'}">总下单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '11'" href="" ng-click="$ctrl.changeRank('1')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '11'}">总下单量/SKU
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+
+                      <!-- 支付订单排序??这里代码简化下 -->
+                      <!-- <a ng-if="$ctrl.search_data.rank_type !== '2' && $ctrl.search_data.rank_type !== '22'" href="" ng-click="$ctrl.changeRank('2')"
+                        ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">
+                        <br />总支付订单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '2'" href="" ng-click="$ctrl.changeRank('22')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '2'}">
+                        <br />总支付订单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '22'" href="" ng-click="$ctrl.changeRank('2')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '22'}">
+                        <br />总支付订单量/SKU
+                        <i class="fa fa-caret-up"></i>
+                      </a> -->
+                      <!-- 近30日支付订单排序??这里代码简化下 -->
+                      <a ng-if="$ctrl.search_data.rank_type !== '3' && $ctrl.search_data.rank_type !== '33'" href="" ng-click="$ctrl.changeRank('3')"
+                        ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '3'}">
+                        <br />近30日支付订单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '3'" href="" ng-click="$ctrl.changeRank('33')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '3'}">
+                        <br />近30日支付订单量/SKU
+                        <i class="fa fa-caret-down"></i>
+                      </a>
+
+                      <a ng-if="$ctrl.search_data.rank_type === '33'" href="" ng-click="$ctrl.changeRank('3')" ng-class="{ 'text-info': $ctrl.search_data.rank_type !== '33'}">
+                        <br />近30日支付订单量/SKU
+                        <i class="fa fa-caret-up"></i>
+                      </a>
+                    </th>
+                    <th see-hide="Hide-DD">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.goods_list track by item.item_id">
+                    <td>
+                      <div class="img-container">
+                        <a href="{{item.url_item}}" target="_blank">
+                          <img see-src="item.item_imgurl" style="width:120px;height:120px;">
+                        </a>
+                      </div>
+                    </td>
+                    <td>{{item.item_id}}
+                      <br />
+                      <label ng-if="item.can_edit == 1" title="{{item.item_name}}">
+                        <a href="" editable-textarea="item.item_name" e-rows="1" e-cols="64" onbeforesave="$ctrl.updateItemName($data,item)">
+                          <i class="fa fa-pencil-square-o"></i>{{item.item_name | moreContent:10}}</a>
+                      </label>
+                      <label ng-if="item.can_edit == 0" style="width:240px;word-break: break-all;">
+                        <!--<a href="{{item.url_item}}" target="_blank">-->
+                        {{item.item_name}}
+                        <!--</a>-->
+                      </label>
+                    </td>
+                    <td>{{item.mall_class_name}}</td>
+                    <td>{{item.class_name}}
+                      <br />{{item.brand_name}}
+                      <br />{{item.ship_country}}</td>
+                    <td>
+                      <a href="" editable-textarea="item.item_rank" e-rows="1" e-cols="16" onbeforesave="$ctrl.updateItemRank($data,item.collection_id, item.item_id)">
+                        <i class="fa fa-pencil-square-o"></i>{{item.item_rank}}</a>
+                    </td>
+                    <!-- <td>{{item.item_id}}</td> -->
+                    <!-- <td>{{item.is_hide === 1?'隐藏':'显示'}}</td> -->
+                    <!--
+                           <td see-hide="Hide-DD">{{item.ori_price !== '0' ? (item.ori_price | currency: '￥') : '待填'}}</td>
+                         -->
+                    <!--
+                           <td see-hide="Hide-DD"><a href="" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" editable-textarea="item.kol_price" e-rows="7" e-cols="40"
+                           onbeforesave="$ctrl.savePrice($data,item.id)"><i class="fa fa-pencil-square-o"></i>
+                           {{item.kol_price !== '0' ? (item.kol_price | currency: '￥') : '待填'}}
+                           </a>
+                           </td>
+                         -->
+                    <td>
+                      <label ng-if="item.price_min == item.price_max">
+                        <label ng-if="item.can_edit == 1">
+                          <a type="number" href="" editable-textarea="item.price_min" e-rows="1" e-cols="12" onbeforesave="$ctrl.updateItemPrice($data,item)">
+                            <i class="fa fa-pencil-square-o"></i>{{item.price_min}}</a>
+                        </label>
+                        <label ng-if="item.can_edit == 0">
+                          ￥{{item.price_min}}
+                        </label>
+                      </label>
+                      <label ng-if="item.price_min !== item.price_max">
+                        ￥{{item.price_min}}~￥{{item.price_max}}
+                      </label>
+                    </td>
+                    <td>
+                      <div ng-if="item.parent_id != 0">
+                        <label ng-if="item.profit_rate.min == item.profit_rate.max">
+                          <label ng-if="item.can_edit == 1" class="profit_rate">
+                            <a type="number" href="" onshow="$ctrl.showMark[$index] = true" oncancel="$ctrl.showMark[$index] = false" editable-textarea="item.profit_rate.min"
+                              e-rows="1" e-cols="12" onbeforesave="$ctrl.updateItemProfit($data,item);$ctrl.showMark[$index] = false">
+                              <i class="fa fa-pencil-square-o"></i>{{item.profit_rate.min}}%</a>
+                            <i class="mark" ng-if="$ctrl.showMark[$index]">%</i>
+                          </label>
+                          <label ng-if="item.can_edit == 0">
+                            {{item.profit_rate.min}}%
+                          </label>
+                        </label>
+                        <label ng-if="item.profit_rate.min !== item.profit_rate.max">
+                          {{item.profit_rate.min}}%~{{item.profit_rate.max}}%
+                        </label>
+                      </div>
+                    </td>
+                    <!--
+                           <td>{{item.real_price !== '0' ? (item.real_price | currency: '￥') : '待填'}}</td>
+                         -->
+                    <td see-access="KOL-Admin Oper">{{item.pv_info.s_1.pv}}
+                      <!--
+                        <br /> {{item.pv_info.s_2.pv}}
+                        <br /> {{item.pv_info.s_3.pv}}
+                        <br /> {{item.pv_info.s_4.pv}}
+                        <br /> {{item.pv_info.s_10.pv}}
+                        <br />
+                      -->
+                    </td>
+                    <td see-access="KOL-Admin Oper">{{item.pv_info.s_1.uv}}
+                      <!--
+                        <br /> {{item.pv_info.s_2.uv}}
+                        <br /> {{item.pv_info.s_3.uv}}
+                        <br /> {{item.pv_info.s_4.uv}}
+                        <br /> {{item.pv_info.s_10.uv}}
+                        <br />
+                      -->
+                    </td>
+                    <td ng-if="$ctrl.isAdmin()" see-access="KOL-Admin Oper">总下单：{{item.order_info.ex_all.order_norefund}}/{{item.order_info.all.num_item_norefund}}
+                      <br /> 总支付：{{item.order_info.all.order_norefund}}/{{item.order_info.all.num_item_norefund}}
+                      <!--
+                        <br /> 包税：{{item.order_info.normal.order}}/{{item.order_info.normal.num_item}}
+                        <br /> 急速：{{item.order_info.visible.order}}/{{item.order_info.visible.num_item}}
+                        <br /> 性价比：{{item.order_info.invisible.order}}/{{item.order_info.invisible.num_item}}
+                        <br /> 小程序：{{item.order_info.from_type_7.order}}/{{item.order_info.from_type_7.num_item}}
+                        <br />
+                      -->
+                    </td>
+                    <!--
+                    <td>
+                      人数:{{item.order_info.normal.num_buy}}
+                    </td>
+                     -->
+                    <!--
+                           <td see-hide="Hide-DD">{{item.order_info.normal.order}}</td>
+                           <td see-hide="Hide-DD">{{item.order_info.visible.order}}</td>
+                           <td see-hide="Hide-DD">{{item.order_info.invisible.order}}</td>
+                         -->
+                    <td ng-if="false">{{item.order_info.sham_visible_order_count}}</td>
+                    <td ng-if="false">{{item.order_info.sham_invisible_order_count}}</td>
+                    <!--
+                           <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.editPrice(item.id)">编辑</button>-->
+                    <!--
+                           <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.hideItem(item.id, item.is_public)">{{item.is_public === '1' ? '隐藏' : '取消隐藏'}}</button>
+                           <button class="btn btn-sm btn-primary" type="button" ng-if="item.can_delete === 1" ng-click="$ctrl.deleteItem(item.id, item.can_delete)">删除</button>
+                         -->
+                    <td see-access="KOL-Admin Oper">
+                      {{item.trans_info.s_1.per}}
+                      <br /> {{item.trans_info.s_2.per}}
+                      <br /> {{item.trans_info.s_3.per}}
+                      <br /> {{item.trans_info.s_10.per}}
+                      <br />
+                    </td>
+                    <td see-access="KOL-Admin Oper">
+                      {{item.trans_info.s_1.per}}
+                      <br /> {{item.trans_info.s_2.per}}
+                      <br /> {{item.trans_info.s_3.per}}
+                      <br /> {{item.trans_info.s_10.per}}
+                      <br />
+                    </td>
+                    <!-- <td>0/0/0</td> -->
+                    <td>{{ item.online_time * 1000 | date: 'MM/dd HH:mm' }}
+                      <label class="text-primary" ng-if="item.is_block_time == 1">
+                        <br />未开售</label>
+                    </td>
+                    <td>{{item.str_status}}</td>
+                    <td>
+                      <label ng-if="item.price_kol_min == item.price_kol_max">
+                        <!--供货价不可编辑-->
+                        <label ng-if="false">
+                          <!--ng-if="item.can_edit == 1">-->
+                          <a type="number" href="" editable-textarea="item.price_kol_min" e-rows="1" e-cols="12" onbeforesave="$ctrl.updateItemCostPrice($data,item)">
+                            <i class="fa fa-pencil-square-o"></i>{{item.price_kol_min}}</a>
+                        </label>
+                        <label ng-if="true">
+                          <!--ng-if="item.can_edit == 0">-->
+                          ￥{{item.price_kol_min}}
+                        </label>
+                      </label>
+                      <label ng-if="item.price_kol_min !== item.price_kol_max">
+                        ￥{{item.price_kol_min}}~￥{{item.price_kol_max}}
+                      </label>
+                    </td>
+                    <td>总下单：{{item.order_info.ex_all.order}}/{{item.order_info.all.num_item}}
+                      <!-- <br /> 总支付：{{item.order_info.all.order}}/{{item.order_info.all.num_item}} -->
+                      <br/>近30日支付：{{item.num_pay_order_mounth}}/{{item.order_info.all.num_item}}
+                    </td>
+                    <td>
+                      <div ng-if="item.is_collection === 1 && item.url_f_id_1 != '' ">
+                        <!-- === 1-->
+                        <!--
+                               <a class="btn btn-sm btn-primary" ng-if="item.item_type === '1'" ng-href="/goods/posted/{{item.class_id}}/{{item.item_id}}?page_from={{$ctrl.page_url}}"
+                               see-access="C2C-Seller New-Brand C2C-Service B2C-Service Fin-Admin Oper-Admin Super-Admin See-Admin Elect-Admin Oper">
+                               <i class="fa fa-edit"></i>编辑</a>
+                               <a class="btn btn-sm btn-primary" ng-if="item.item_type === '0'" ng-href="/goods/Post/{{item.class_id}}/post/{{item.item_id}}?come_from=posted&page_from={{$ctrl.page_url}}"
+                               see-access="C2C-Seller New-Brand C2C-Service B2C-Service Fin-Admin Oper-Admin Super-Admin See-Admin Elect-Admin Oper">
+                               <i class="fa fa-edit"></i>编辑</a>-->
+                        <!--<button class="btn btn-sm btn-primary" ng-click="$ctrl.showGoodsLinks(item, true)" ng-if="item.groupon_flag == 1">拼团链接</button>-->
+                        <button class="btn btn-sm btn-primary" ng-click="$ctrl.showGoodsQr(item)"  ng-if="item.kol_id == 7709 ||item.kol_id == 7647 ||item.kol_id == 7082 || item.kol_id == 6941 || item.kol_id == 7234|| item.kol_id == 7550">获取链接</button>
+
+                        <button ng-if="item.parent_id !== '0' " class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.popSet(item.item_id)">SKU设置</button>
+                        <button class="btn btn-sm btn-primary" type="button" ng-if="item.show_delete === 1" ng-click="$ctrl.deleteCollectionItem(item.collection_id,item.item_id,'删除商品')">删除</button>
+                        <!--
+                               <a class="btn btn-sm btn-primary" type="button" target="_blank" ng-if="item.url_f_id_2 !== ''" ng-href="{{item.url_f_id_2}}">可见刷</a>
+                               <a class="btn btn-sm btn-primary" type="button" target="_blank" ng-if="item.url_f_id_1 !== ''" ng-href="{{item.url_f_id_1}}">不可见刷</a>
+                               <a class="btn btn-sm btn-primary" type="button" target="_blank" ng-if="item.url_item !== ''" ng-href="{{item.url_item}}"> 文章商品二维码原链接</a>
+                               <a class="btn btn-sm btn-primary" type="button" target="_blank" ng-if="item.url_qrc !== ''" ng-href="{{item.url_qrc}}">二维码图片</a>
+                             -->
+                        <a class="temp-detail-switch" href ng-if="item.is_hide === 0" ng-click="$ctrl.hideItem2(item.collection_id,item.item_id,1,'隐藏商品',$index)">
+                          <div id="div1" class="close1">
+                            <div id="div2" class="close2"></div>
+                          </div>
+                          <span>隐藏</span>
+                        </a>
+                        <a class="temp-detail-switch" href ng-if="item.is_hide === 1 && item.kol_block_hide == 0 " ng-click="$ctrl.hideItem2(item.collection_id,item.item_id,0,'取消隐藏商品',$index)">
+                          <div id="div1" class="open1">
+                            <div id="div2" class="open2"></div>
+                          </div>
+                          <span>隐藏</span>
+                        </a>
+                        <a class="temp-detail-switch" href see-access="Elect_Admin Super_Admin" ng-if="item.tag_recommend === 0" ng-click="$ctrl.recommendItem(item.collection_id,item.item_id,1,'设为爆款')">
+                          <div id="div1" class="close1">
+                            <div id="div2" class="close2"></div>
+                          </div>
+                          <span>爆款推荐</span>
+                        </a>
+                        <a class="temp-detail-switch" href see-access="Elect_Admin Super_Admin" ng-if="item.tag_recommend === 1" ng-click="$ctrl.recommendItem(item.collection_id,item.item_id,0,'取消爆款')">
+                          <div id="div1" class="open1">
+                            <div id="div2" class="open2"></div>
+                          </div>
+                          <span>爆款推荐</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="$ctrl.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+
+
+      <div ng-if="$ctrl.hash === '7'">
+        <goods-group-list kol-id="$ctrl.id"></goods-group-list>
+      </div>
+    </div>
+  </div>
+</div>

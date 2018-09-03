@@ -1,0 +1,15 @@
+.tmp/
+coverage/
+node_modules/
+.vscode/
+.idea/
+yarn-error.log
+npm-debug.log
+www/
+.jshintrc
+.jshintignore
+package-lock.json
+.yarnclean
+dist
+.DS_Store
+*.mp4

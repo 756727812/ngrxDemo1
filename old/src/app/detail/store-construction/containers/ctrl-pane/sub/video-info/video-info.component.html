@@ -1,0 +1,59 @@
+<div class="ctrl-video-info">
+  <form nz-form [formGroup]="formGroup" [nzLayout]="'vertical'" class="ctrl-widget-form" (ngSubmit)="emitSave()">
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>添加视频</label>
+        <div class="title-explain">
+          <p>视频大小需小于10MB，建议时长30秒，建议宽高比为16:9或9:16，格式支持mp4</p>
+        </div>
+      </div>
+      <div nz-form-control class="txinvest">
+        <app-video-upload formControlName="videoUrl" (success)="emitSave($event)" [label]="'修改视频'"></app-video-upload>
+        <div nz-form-explain *ngIf="formErrors.videoUrl">{{formErrors.videoUrl}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row style="display: none">
+      <div nz-form-label class="">
+        <label>展示方向</label>
+      </div>
+      <div nz-form-control>
+        <nz-radio-group formControlName="showStyle">
+          <label nz-radio [nzValue]="1">
+            <span>纵向</span>
+          </label>
+          <label nz-radio [nzValue]="2">
+            <span>横向</span>
+          </label>
+        </nz-radio-group>
+        <div nz-form-explain *ngIf="formErrors.method">{{formErrors.method}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>视频封面（选填）</label>
+        <div class="title-explain">
+          <p>带上传的图片，如果不添加封面，系统会默认截取视频的第一个画面作为封面</p>
+        </div>
+      </div>
+      <div nz-form-control>
+        <see-img-upload [initFileList]="initImg"
+                        [imgValid]="imgValid"
+                        uploadText="视频封面上传"
+                        (onUploadSuccess)="uploadImgSuccess($event)"
+                        (onUploadError)="uploadImgError($event)"
+                        (onRemoveImg)="removeImg($event)"></see-img-upload>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>显示时间</label>
+        <p class="title-explain" style="margin-top:4px">让该模块在指定的时间内显示在小电铺，点击发布后生效</p>
+      </div>
+      <div nz-form-control>
+        <app-show-time formControlName="showTime" (change)="emitSave($event)"></app-show-time>
+        <div nz-form-explain *ngIf="formErrors.showTime">{{formErrors.showTime}}</div>
+      </div>
+    </div>
+    <button hidden></button>
+  </form>
+</div>

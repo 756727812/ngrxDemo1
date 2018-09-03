@@ -1,0 +1,77 @@
+<div class="modal-link-container">
+
+  <section class="main-container" *ngIf = "isKolInCrm === true">
+    <div class="main-container-side" *ngIf="isAdmin">
+      <ul class="side-list">
+        <li class="side-list-item" *ngFor="let item of sideMenu" [ngClass]="{ active:item.id === activeId }" (click)="handleClickSide(item.id)">{{item.name}}</li>
+      </ul>
+    </div>
+    <div class="main-container-content">
+      <section class="empty-info" *ngIf = "activeId === -1">
+        <img style="width:540px;margin-left:8px" src="../../../../../images/link_welcome.png">
+        <!-- <img class="empty-img" src="../../../../../images/modal-link-empty.png">
+        <p>取链接须知</p>
+        <p>1.日常内容推文：解释文案待定</p>
+        <p>2.广告内容推文：解释文案待定</p>
+        <p>3.日常推片文案：解释文案待定</p>
+        <p>4.广告推片文案：解释文案待定</p> -->
+      </section>
+
+      <section class="content-info" *ngIf = "activeId !== -1" [ngClass]="{'center':modalLink.type !== 0}">
+        <div oncontextmenu="return false" oncopy="return false" class="content-info-row"  nz-row>
+          <div nz-col [nzSpan]="6">
+            {{paths.xcxPath.label}}
+          </div>
+          <div nz-col [nzSpan]="12" [nzOffset]="1">
+            <nz-input [nzDisabled]="true" [ngModel]="paths.xcxPath.path"></nz-input>
+          </div>
+          <div nz-col [nzSpan]="4"  [nzOffset]="1">
+            <a class="info-btn" ngxClipboard [cbContent]="paths.xcxPath.path" (click)="showMsg()">复制</a>
+          </div>
+        </div>
+
+        <div class="content-info-row img-row"  nz-row>
+          <div nz-col [nzSpan]="6">
+            {{paths.xcxCode.label}}
+          </div>
+          <div nz-col [nzSpan]="12" [nzOffset]="1" [hidden]="!paths.xcxCode.imgUrl">
+            <img class="xiaochengxu-code" [src]="paths.xcxCode.imgUrl">
+          </div>
+          <div nz-col [nzSpan]="4" [nzOffset]="1" [hidden]="!paths.xcxCode.imgUrl">
+            <a class="info-btn" target="_blank" href="javascript:;" (click)="downloadImg(paths.xcxCode.imgUrl,paths.xcxCode.downLoadTitle)">下载</a>
+          </div>
+        </div>
+
+        <div *ngIf="modalLink.type === 0" class="content-info-row img-row"  nz-row>
+          <div nz-col [nzSpan]="6">
+            {{paths.xcxCard.label}}
+          </div>
+          <div nz-col [nzSpan]="12" [nzOffset]="1" [hidden]="!paths.xcxCard.imgUrl">
+            <img class="xiaochengxu-img" [src]="paths.xcxCard.imgUrl">
+          </div>
+          <div nz-col [nzSpan]="4" [nzOffset]="1" [hidden]="!paths.xcxCard.imgUrl">
+            <a class="info-btn" target="_blank" href="javascript:;" (click)="downloadImg(paths.xcxCard.imgUrl,paths.xcxCard.downLoadTitle)">下载</a>
+          </div>
+          <div class="how-to" [hidden]="!paths.xcxCard.imgUrl">
+            <span class="yellow-q">?</span>
+            <faq-link name="how-to-put-xcx-in-article">如何将小程序卡片放入文章</faq-link>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="no-kol-container" *ngIf = "isKolInCrm === false">
+    <img class="empty-img" src="../../../../../images/modal-link-empty.png">
+    <div *ngIf="isAdmin">
+      <p class="fail-text">获取链接失败，请将kol添加至CRM系统</p>
+      <p><a nz-button [nzType]="'primary'" target="_blank" href="https://da.seeapp.com/dc/crm/record/index">KOL CRM 系统</a></p>
+      <p><a href="javascript:;" (click)="flush()">刷新</a></p>
+    </div>
+    <div *ngIf="!isAdmin">
+      <p class="fail-text">获取链接失败，请联系对接运营人员</p>
+      <p><button nz-button [nzType]="'primary'" (click)="flush()">刷新</button></p>
+    </div>
+
+  </section>
+</div>

@@ -1,0 +1,41 @@
+<nz-spin [nzSpinning]="busy">
+  <div class="row top-part">
+    <div class="col-xs-12">
+      <div class="panel as-panel bi-panel">
+        <div class="panel-content">
+          <div class="h">
+            <span class="txt-h">售后分析</span>
+            <div class="right">
+              <app-bi-date-filter class="date-filter"
+                                  [types]="dateTypeOptions"
+                                  (ngModelChange)="onDateFilterModelChange($event)"
+                                  [(ngModel)]="dateVal"></app-bi-date-filter>
+              <app-bi-btn-export name="AFTER_SALE"
+                                 [params]="exportParams"></app-bi-btn-export>
+            </div>
+          </div>
+          <div class="clearfix main">
+            <ul class="blocks">
+              <li>
+                <div>退款单数</div>
+                <div>{{data.return_num | number}}</div>
+              </li>
+              <li>
+                <div>退款金额</div>
+                <div>{{data.return_money_sum | _currency}}</div>
+              </li>
+              <li>
+                <div>退款人数</div>
+                <div>{{data.return_user_num | number}}</div>
+              </li>
+              <li>
+                <div>退款商品数</div>
+                <div>{{data.return_item_num | number}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

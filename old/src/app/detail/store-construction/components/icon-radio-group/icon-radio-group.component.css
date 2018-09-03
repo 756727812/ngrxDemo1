@@ -1,0 +1,26 @@
+.icon-radio-group {
+  .list {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    li {
+      >label {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        font-size: 22px;
+        font-weight: 300;
+        color: #ccc;
+        margin: 0;
+
+        span {
+          margin-bottom: 10px;
+        }
+
+        img {
+          width: 32px;
+        }
+      }
+    }
+  }
+}

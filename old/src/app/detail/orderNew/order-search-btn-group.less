@@ -1,0 +1,37 @@
+.btn-tab {
+  > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle),
+  > .btn {
+    border: 0;
+    border-left: none !important;
+  }
+
+  > .btn.btn-primary {
+    background-color: #fff;
+    border-radius: 0;
+    color: #000;
+    margin-bottom: 0;
+
+    .btn-content {
+      border-bottom: 2px solid #000 !important;
+    }
+  }
+
+  > .btn.btn-primary:hover {
+    background-color: #fff !important;
+  }
+
+  > .btn.btn-primary:active {
+    background-color: #fff !important;
+  }
+
+  .btn-content {
+    padding-bottom: 11px;
+    border-bottom: 2px solid #fff !important;
+    display: inline-block;
+  }
+
+  .btn {
+    margin-bottom: 0;
+    padding-bottom: 0 !important;
+  }
+}

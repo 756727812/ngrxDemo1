@@ -1,0 +1,303 @@
+<div class="modal-header">
+  <i type="button" class="si si-close close" ng-click="$ctrl.dismiss()" data-dismiss="modal"></i>
+  <h3 class="modal-title">商品</h3>
+</div>
+<div class="modal-body clearfix">
+  <div ng-if="$ctrl.ready">
+    <div ng-include="'kol-article-goods-link-info-tab-xcx.html'" ng-if="$ctrl.resolve.onlyXcx"></div>
+    <kol-article-goods-link-info-tabs dir="h" ng-if="!$ctrl.resolve.onlyXcx">
+      <div ng-repeat="item in $ctrl.resolve.tabs">
+        <!-- 开始没考虑组件配置化，临时 TODO -->
+        <kol-article-goods-link-info-tab-pane ng-if="$index===0" title="微信小程序" recommend="true">
+          <div ng-include="'kol-article-goods-link-info-tab-xcx.html'"></div>
+        </kol-article-goods-link-info-tab-pane>
+        <kol-article-goods-link-info-tab-pane ng-if="$index===1" title="网页">
+          <div ng-include="'kol-article-goods-link-info-tab-web.html'" ng-if="!item.custom"></div>
+          <div ng-include="item.templateId" ng-if="item.custom"></div>
+        </kol-article-goods-link-info-tab-pane>
+      </div>
+    </kol-article-goods-link-info-tabs>
+  </div>
+</div>
+
+<script type="text/ng-template" id="kol-article-goods-link-info-tab-xcx.html">
+  <!-- 小电铺还没上线 -->
+  <div ng-if="!$ctrl.isXdpApproved" class="full">
+    <div class="comp">
+      <div class="nav-tips">
+        <div class="txt">你的小程序目前还没有上线
+          <br/> 请前往小电铺首页查看目前进度</div>
+        <a target="_self" href="/dashboard/dashboard">前往</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 上线 && 小电铺版本不合适 -->
+  <div ng-if="$ctrl.isXdpApproved && $ctrl.shouldAdviceUpgrade" class="full">
+    <!-- 没有小电铺 -->
+    <div class="nav-tips">
+      <div class="txt">
+        扫描下方二维码，联系业务人员升级小电铺套餐
+        <br/> 使用商品点击率更高的小程序在文章中售卖商品
+      </div>
+      <img src="/api/xiaodianpu/headingHelpImg" style="width:160px" />
+    </div>
+  </div>
+
+
+  <!-- 小电铺上线 && 版本合适 -->
+  <kol-article-goods-link-info-tabs dir="v" ng-if="$ctrl.isXdpApproved && !$ctrl.shouldAdviceUpgrade">
+    <!-- <kol-article-goods-link-info-tab-pane title="文章" hidden>
+      <div class="comp has-link">
+        <div class="top-title"></div>
+        <div class="comp-main">
+          <div class="left">小程序路径</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.articlePath}}" class="link" />
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.articlePath}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+        <div class="comp-main" ng-if="$ctrl.data.mallPath && !$ctrl.resolve.preventMallPath">
+          <div class="left">商城路径</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.mallPath}}" class="link" />
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.mallPath}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+        <ul class="qr">
+          <li ng-if="$ctrl.XCXCardImg">
+            <div class="img-ct">
+              <img style="width: 197px !important;height: 157.6px !important;" ng-src="{{$ctrl.XCXCardImg}}" alt="">
+            </div>
+            <div class="qr-note">小程序卡片配图</div>
+            <a class="btn-download" ng-href="{{$ctrl.XCXCardImg}}" target="_blank" download="文章-小程序卡片配图">下载</a>
+          </li>
+          <li>
+            <div class="img-ct">
+              <img see-src="$ctrl.data.articleAcodeUrl" alt="">
+            </div>
+            <div class="qr-note">微信扫码预览商品</div>
+            <a class="btn-download" href="{{$ctrl.data.articleAcodeUrl}}" target="_blank" download="文章-商品小程序码">下载</a>
+          </li>
+        </ul>
+        <div class="how-to">
+          <span class="yellow-q">?</span>
+          <faq-link name="how-to-put-xcx-in-article">如何将小程序卡片放入文章</faq-link>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+    <kol-article-goods-link-info-tab-pane title="微信群" hidden>
+      <div class="comp has-link wx-group">
+        <div class="top-title">
+          将商品详情以小程序卡片/小程序码的形式进行传播
+        </div>
+        <ul class="qr">
+          <li>
+            <div class="img-ct">
+              <img see-src="$ctrl.data.wxGroupShareAcodeUrl" alt="">
+            </div>
+            <div class="qr-note">小程序卡片分享</div>
+            <div class="warn">
+              <span class="text">(请勿直接分享此码，需先扫此码，后分享小程序卡片）</span>
+            </div>
+            <a class="btn-download" href="{{$ctrl.data.wxGroupShareAcodeUrl}}" target="_blank" download="微信群-小程序卡片分享">下载</a>
+          </li>
+          <li>
+            <div class="img-ct">
+              <img see-src="$ctrl.data.wxGroupAcodeUrl" alt="">
+            </div>
+            <div class="qr-note">小程序码分享</div>
+            <a class="btn-download" href="{{$ctrl.data.wxGroupAcodeUrl}}" target="_blank" download="微信群-小程序码">下载</a>
+          </li>
+        </ul>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+    <kol-article-goods-link-info-tab-pane title="线下渠道" hidden>
+      <div class="comp has-link">
+        <div class="top-title">
+          用于易拉宝，地铁，海报，等线下传播渠道的统计
+        </div>
+        <ul class="qr">
+          <li>
+            <div class="img-ct">
+              <img see-src="$ctrl.data.scanAcodeUrl" alt="">
+            </div>
+            <a class="btn-download" href="{{$ctrl.data.scanAcodeUrl}}" target="_blank" download="线下-商品小程序码">下载</a>
+          </li>
+        </ul>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+    <kol-article-goods-link-info-tab-pane title="公众号菜单" hidden>
+      <div class="comp has-link">
+        <div class="top-title">
+          配置/统计 公众号菜单时，可取此链接
+        </div>
+        <div class="comp-main">
+          <div class="left">小程序路径</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.publicNumberPath}}" class="link" />
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.publicNumberPath}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane> -->
+    <kol-article-goods-link-info-tab-pane title="公众号导流">
+      <div class="comp has-link">
+        <!-- <div class="top-title" style="padding-left:0;text-align:center">
+          选择商品类型后，将生成对应商品商详链接二维码
+        </div>
+        <div class="text-center">
+          <form class="form-inline">
+            <div class="form-group">
+              <label>商品类型</label>
+              <select class="form-control" ng-model="$ctrl.queen.item_type" ng-change="$ctrl.getQueenQr()">
+                <option value="" selected>--请选择--</option>
+                <option value="1">普通商品</option>
+                <option value="2">拼团商品</option>
+                <option value="3">秒杀商品</option>
+              </select>
+            </div>
+            <div class="form-group" ng-if="$ctrl.queen.item_type==2">
+              <label>拼团ID</label>
+              <input type="text" class="form-control" placeholder="请输入商品团ID" ng-model="$ctrl.queen.group_id">
+            </div>
+            <button type="button" ng-if="$ctrl.queen.item_type==2" class="btn btn-primary" ng-click="$ctrl.getQueenQr(true)">确认</button>
+          </form>
+        </div> -->
+        <ul class="qr">
+          <li>
+            <div class="img-ct">
+              <img see-src="$ctrl.queen.qr_img" alt="">
+            </div>
+            <a class="btn-download" ng-if="$ctrl.queen.qr_img" href="{{$ctrl.queen.qr_img}}" target="_blank" download="线下-商品小程序码">下载</a>
+          </li>
+        </ul>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+  </kol-article-goods-link-info-tabs>
+</script>
+
+<script type="text/ng-template" id="kol-article-goods-link-info-tab-web.html">
+  <kol-article-goods-link-info-tabs dir="v">
+    <kol-article-goods-link-info-tab-pane title="商品二维码">
+      <!-- 「网页」 - 「商品二维码」 -->
+      <div class="comp">
+        <div class="top-title">
+          将商品以网页链接的形式，放入文章中售卖
+        </div>
+        <div class="comp-main">
+          <div class="left">商品二维码</div>
+          <div class="center-wrap">
+            <img see-src="$ctrl.data.webQrcodeUrl" alt="">
+            <div class="note">微信扫码预览商品</div>
+          </div>
+          <div class="right">
+            <a class="btn-download" href="{{$ctrl.data.webQrcodeUrl}}" target="_blank" download="商品二维码">下载</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+    <kol-article-goods-link-info-tab-pane title="商品链接">
+      <div class="comp">
+        <div class="top-title">
+          将商品以网页链接的形式，放入文章中售卖
+        </div>
+        <div class="comp-main">
+          <div class="left">商品链接</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.webUrl}}" class="link" />
+            <div class="note"></div>
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.webUrl}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+  </kol-article-goods-link-info-tabs>
+</script>
+
+
+<script type="text/ng-template" id="link-info-tab-web-4-article.html">
+  <kol-article-goods-link-info-tabs dir="v">
+    <kol-article-goods-link-info-tab-pane title="内容商品二维码">
+      <!-- 「网页」 - 「商品二维码」 -->
+      <div class="comp">
+        <div class="top-title">
+          将商品以网页链接的形式，放入文章中售卖
+        </div>
+        <div class="comp-main">
+          <div class="left">商品二维码</div>
+          <div class="center-wrap">
+            <img see-src="$ctrl.data.webQrcodeUrl" alt="">
+            <div class="note">微信扫码预览商品</div>
+          </div>
+          <div class="right">
+            <a class="btn-download" href="{{$ctrl.data.webQrcodeUrl}}" target="_blank" download="商品二维码">下载</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+    <kol-article-goods-link-info-tab-pane title="内容商品链接">
+      <div class="comp">
+        <div class="top-title">
+          将商品以网页链接的形式，放入文章中售卖
+        </div>
+        <div class="comp-main">
+          <div class="left">商品链接</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.webUrl}}" class="link" />
+            <div class="note"></div>
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.webUrl}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+  </kol-article-goods-link-info-tabs>
+</script>
+
+
+<script type="text/ng-template" id="link-info-tab-web-4-mall.html">
+  <kol-article-goods-link-info-tabs dir="v">
+    <kol-article-goods-link-info-tab-pane title="商城tab链接">
+      <div class="comp">
+        <div class="top-title">
+          将商城以网页链接的形式，放入文章中售卖
+        </div>
+        <div class="comp-main">
+          <div class="left">商城tab链接</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.webUrl}}" class="link" />
+            <div class="note"></div>
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.webUrl}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+    <kol-article-goods-link-info-tab-pane title="用户订单查询">
+      <div class="comp">
+        <div class="top-title"></div>
+        <div class="comp-main">
+          <div class="left">订单查询链接</div>
+          <div class="center-wrap">
+            <input type="text" readonly value="{{$ctrl.data.orderListUrl}}" class="link" />
+            <div class="note"></div>
+          </div>
+          <div class="right">
+            <a class="btn-download" ngclipboard data-clipboard-text="{{$ctrl.data.orderListUrl}}" ng-click="$ctrl.onCopySuccess()">复制</a>
+          </div>
+        </div>
+      </div>
+    </kol-article-goods-link-info-tab-pane>
+  </kol-article-goods-link-info-tabs>
+</script>

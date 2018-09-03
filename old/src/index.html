@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <base href="/">
+  <link rel="dns-prefetch" href="//static.seecsee.com">
+  <link rel="dns-prefetch" href="//image.seecsee.com">
+  <link rel="dns-prefetch" href="//img-qn.seecsee.com">
+  <link rel="manifest" href="/manifest.json">
+  <meta charset="utf-8">
+  <meta name="author" content="see">
+  <meta name="description" content="Seego后台系统">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="format-detection" content="telephone=no, email=no">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="msapplication-TileImage" content="//static.seecsee.com/favicon.png">
+  <meta name="msapplication-TileColor" content="#FF5972">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="white">
+  <meta name="apple-mobile-web-app-title" content="Seego后台">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="apple-touch-icon" sizes="192x192" href="//static.seecsee.com/favicon.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="//static.seecsee.com/favicon.png" />
+  <meta name="theme-color" content="#FF5972">
+  <title>SEE小电铺 | 后台</title>
+  <link rel="shortcut icon" href="//static.seecsee.com/favicon.ico" type="image/ico">
+  <link rel="stylesheet" href="//static.seecsee.com/seego_plus/bower_components/bootstrap3-editable/css/bootstrap-editable.css">
+  <style type="text/css">
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #2D2E2F;
+      z-index: 9999;
+      transition: opacity .65s
+    }
+
+    .preloader-hidden-add {
+      opacity: 1;
+      display: block
+    }
+
+    .preloader-hidden-add-active {
+      opacity: 0
+    }
+
+    .preloader-hidden {
+      display: none
+    }
+
+    .cs-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%
+    }
+
+    .cs-loader-inner {
+      transform: translateY(-50%);
+      top: 50%;
+      position: absolute;
+      width: 100%;
+      color: #fff;
+      text-align: center
+    }
+
+    .cs-loader-inner label {
+      font-size: 20px;
+      opacity: 0;
+      display: inline-block
+    }
+
+    @keyframes lol {
+      0% {
+        opacity: 0;
+        transform: translateX(-300px)
+      }
+      33% {
+        opacity: 1;
+        transform: translateX(0)
+      }
+      66% {
+        opacity: 1;
+        transform: translateX(0)
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(300px)
+      }
+    }
+
+    .cs-loader-inner label:nth-child(6) {
+      animation: lol 3s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(5) {
+      animation: lol 3s .1s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(4) {
+      animation: lol 3s .2s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(3) {
+      animation: lol 3s .3s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(2) {
+      animation: lol 3s .4s infinite ease-in-out
+    }
+
+    .cs-loader-inner label:nth-child(1) {
+      animation: lol 3s .5s infinite ease-in-out
+    }
+
+  </style>
+</head>
+
+<body class="fixed-topbar fixed-sidebar theme-sdtl bg-see color-default theme-see" style="overflow-x: hidden;">
+  <!--[if lt IE 9]>
+      <p class="browsehappy">你的浏览器版本过低,存在严重的安全隐患,请<a href="http://browsehappy.com/>升级你的浏览器</a>体验完整功能.</p>
+    <![endif]-->
+  <noscript>当你看到这条信息，意味着
+    <strong> JavaScript 已被你的浏览器禁用</strong>，请
+    <strong>开启 JS </strong>以使你的设备正常访问。</noscript>
+
+  <div class="preloader">
+    <div class="cs-loader">
+      <div class="cs-loader-inner">
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+      </div>
+    </div>
+  </div>
+  <app-root></app-root>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/jquery-dotdotdot/jquery.dotdotdot-3.0.2.min.js"></script>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/jquery/jquery-migrate-1.2.1.min.js"></script>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/jquery-ui/jquery-ui-1.11.2.min.js"></script>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="//static.seecsee.com/seego_plus/bower_components/bootstrap3-editable/js/bootstrap-editable.js"></script>
+  <!--ueditor-->
+  <script src="//static.seecsee.com/seego_backend/global/plugins/ueditor/ueditor.config.js"></script>
+  <script src="//static.seecsee.com/seego_backend/global/plugins/ueditor/ueditor.all.min.js?v=14901756131111"></script>
+</body>
+
+</html>

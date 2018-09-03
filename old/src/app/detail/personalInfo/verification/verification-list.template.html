@@ -1,0 +1,118 @@
+<!-- <h4 class="text-center m-b-10">小电铺认证</h4> -->
+<form name="applyBaseForm" class="form-horizontal w5c-form p-t-20" w5c-form-validate>
+  <div class="form-body">
+    <div class="form-group">
+      <label class="col-sm-4 control-label">认证类型：</label>
+      <div class="col-sm-4" ng-if="!$ctrl.isReadonly">
+          <label for="personal-sort" class="radio-inline p-l-0 hover" ng-click="$ctrl.changeType(1)">
+              <input type="radio" name="authType" id="personal-sort-type-1" ng-value="1" ng-model="$ctrl.formData.authType" icheck data-skin="iradio_square-blue" ng-disabled="true"> 企业
+          </label>
+          <label for="business-sort-type-2" class="radio-inline p-l-0 hover" ng-click="$ctrl.changeType(2)">
+              <input type="radio" name="authType" id="business-sort-type-2" ng-value="2" ng-model="$ctrl.formData.authType" icheck data-skin="iradio_square-blue" ng-disabled="true"> 个体工商户
+          </label>
+          <label for="business-sort-type-3" class="radio-inline p-l-0 hover" ng-click="$ctrl.changeType(3)">
+              <input type="radio" name="authType" id="business-sort-type-3" ng-value="3" ng-model="$ctrl.formData.authType" icheck data-skin="iradio_square-blue" ng-disabled="true"> 个人
+          </label>
+      </div>
+      <div class="col-sm-3 m-t-5" ng-if="$ctrl.isReadonly">
+        {{$ctrl.formData.authType == 3? '个人':($ctrl.formData.authType == 2? '个体工商户':'企业')}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 1">企业名称：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 2">商户姓名：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 3">个人姓名：</label>
+      <div class="col-sm-3" ng-if="!$ctrl.isReadonly">
+        <input type="text" class="form-control form-white" required ng-model="$ctrl.formData.subjectName" name="subjectName" >
+      </div>
+      <div class="col-sm-3 m-t-5" ng-if="$ctrl.isReadonly" ng-bind="$ctrl.formData.subjectName"></div>
+    </div>
+    <div class="form-group" ng-if="$ctrl.formData.authType == 1">
+      <label class="col-sm-4 control-label required">法人姓名：</label>
+      <div class="col-sm-3" ng-if="!$ctrl.isReadonly">
+        <input type="text" class="form-control form-white" required ng-model="$ctrl.formData.legalPerson" name="legalPerson" >
+      </div>
+      <div class="col-sm-3" ng-if="$ctrl.isReadonly" ng-bind="$ctrl.formData.legalPerson"></div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 1">法人身份证号：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 2">商户身份证号：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 3">个人身份证号：</label>
+      <div class="col-sm-3" ng-if="!$ctrl.isReadonly">
+        <input type="text" class="form-control form-white" required ng-model="$ctrl.formData.identityNo" name="identityNo" ng-pattern="">
+      </div>
+      <div class="col-sm-3 m-t-5" ng-if="$ctrl.isReadonly" ng-bind="$ctrl.formData.identityNo"></div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 1">法人身份证正面照：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 2">商户身份证正面照：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 3">个人身份证正面照：</label>
+      <div class="col-sm-3">
+        <verification-img-uploader
+          img-src="$ctrl.formData.identityCardFrontImgurl"
+          on-success="$ctrl.onUploadSuccess"
+          on-fail="$ctrl.onUploadFail"
+          up-index="0"
+          name="identityCardFrontImgurl"
+          required
+          ng-model="$ctrl.formData.identityCardFrontImgurl"
+          is-readonly="$ctrl.isReadonly"
+        ></verification-img-uploader>
+      </div>
+      <div class="col-sm-3">
+        示例：<img src="../../../../images/help/demo_id_f.png" height="120px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 1">法人身份证反面照：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 2">商户身份证反面照：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 3">个人身份证反面照：</label>
+      <div class="col-sm-3">
+        <verification-img-uploader
+          img-src="$ctrl.formData.identityCardBackImgurl"
+          on-success="$ctrl.onUploadSuccess"
+          on-fail="$ctrl.onUploadFail"
+          up-index="1"
+          name="identityCardBackImgurl"
+          required
+          ng-model="$ctrl.formData.identityCardBackImgurl"
+          is-readonly="$ctrl.isReadonly"
+        ></verification-img-uploader>
+      </div>
+      <div class="col-sm-3">
+        示例：<img src="../../../../images/help/demo_id_b.png" height="120px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType != 3">营业执照：</label>
+      <label class="col-sm-4 control-label required" ng-if="$ctrl.formData.authType == 3">个人手持身份证照：</label>
+      <div class="col-sm-3">
+        <verification-img-uploader
+          img-src="$ctrl.formData.licenseImgUrl"
+          on-success="$ctrl.onUploadSuccess"
+          on-fail="$ctrl.onUploadFail"
+          up-index="2"
+          name="licenseImgUrl"
+          required
+          ng-model="$ctrl.formData.licenseImgUrl"
+          is-readonly="$ctrl.isReadonly"
+        ></verification-img-uploader>
+      </div>
+      <div class="col-sm-3">
+        示例：<img src="../../../../images/help/demo_license_c.png" height="120px" ng-if="$ctrl.formData.authType == 1">
+        <img src="../../../../images/help/demo_license_p.png" height="120px" ng-if="$ctrl.formData.authType == 2">
+        <img src="../../../../images/help/demo_id_hand.png" height="120px" ng-if="$ctrl.formData.authType == 3">
+      </div>
+    </div>
+    <div class="form-group" ng-if="$ctrl.formData.authType != 3">
+      <label class="col-sm-4 control-label required">营业执照号：</label>
+      <div class="col-sm-3" ng-if="!$ctrl.isReadonly">
+        <input type="text" class="form-control form-white" required ng-model="$ctrl.formData.licenseNo" name="licenseNo" >
+      </div>
+      <div class="col-sm-3 m-t-5" ng-if="$ctrl.isReadonly" ng-bind="$ctrl.formData.licenseNo"></div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <div class="col-sm-offset-4 col-sm-8"><button type="submit" class="btn btn-primary m-r-10" w5c-form-submit="$ctrl.newBaseApply()" ng-if="!$ctrl.isReadonly">提交认证</button><button type="button" ng-click="$ctrl.backTo()" class="btn btn-default" >{{$ctrl.isReadonly?'返回':'取消'}}</button></div>
+  </div>
+</form>

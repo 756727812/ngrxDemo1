@@ -1,0 +1,198 @@
+<div class='page-wrap'>
+  <div class='page-head' *ngIf="from==='v2'">
+    <a  (click)="markettools($event)">
+      <i class='si si-arrow-left'></i>返回营销工具</a>
+  </div>
+  <div class='btn-group'>
+    <a nz-button class="mr-30" *ngIf="from==='v2'" [nzType]="'primary'"  (click)="addActivity($event)"><i class="anticon anticon-plus"></i>新建满减</a>
+    <!--<a nz-button [nzType]="'primary'" target="_blank"
+       href="/shop/operate?kolId={{kolInfo?.kolId}}&wechat_id={{kolInfo?.wechatId}}#coupon">小电铺装修</a>-->
+  </div>
+  <div>
+    <nz-card [nzBordered]="false">
+      <form nz-form [formGroup]="sForm" class="benefit-form" [nzLayout]="'inline'" (ngSubmit)="submitForm()">
+        <div nz-row>
+          <div nz-col nzSpan="4">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="8">
+                <label>活动编号</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="16">
+                <input nz-input  nzSize="large" formControlName="id" placeholder="活动编号" />
+              </div>
+            </div>
+          </div>
+          <div nz-col nzSpan="4">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="8">
+                <label>活动名称</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="16">
+                <nz-input [nzSize]="'large'" nzType="text" formControlName="activityName"
+                          [nzPlaceHolder]="'活动名称'"></nz-input>
+              </div>
+            </div>
+          </div>
+          <div nz-col nzSpan='8'>
+            <div nz-row>
+              <div nz-form-label nz-col nzSpan='4'>
+                <label>活动时间</label>
+              </div>
+              <div nz-form-control nz-col nzSpan='8'>
+                <nz-datepicker [nzSize]="'large'" formControlName='startTime' nzShowTime [nzFormat]="dateFormat"
+                               [nzPlaceHolder]="'开始时间'"></nz-datepicker>
+              </div>
+              <div nz-col [nzSpan]="1" style="width: 24px;">
+                <p nz-form-split style='font-size:13px'>至</p>
+              </div>
+              <div nz-form-control nz-col nzSpan='8'>
+                <nz-datepicker [nzSize]="'large'" formControlName='endTime' nzShowTime [nzFormat]="dateFormat"
+                               [nzPlaceHolder]="'结束时间'"></nz-datepicker>
+              </div>
+            </div>
+          </div>
+          <div nz-col nzSpan="8" style="margin-left: -3%">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="4">
+                <label>优惠规则</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="8">
+                <nz-select [nzSize]="'large'"  formControlName="thresholdType" [nzPlaceHolder]="'优惠规则'" nzAllowClear>
+                  <nz-option
+                    [nzLabel]="'全部'"
+                    [nzValue]="null">
+                  </nz-option>
+                  <nz-option
+                    *ngFor="let option of discountRules"
+                    [nzLabel]="option.label"
+                    [nzValue]="option.value"
+                    [nzDisabled]="option.disabled">
+                  </nz-option>
+                </nz-select>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="11" [nzOffset]="1">
+                <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">
+                  <span>查询</span>
+                </button>
+                <button nz-button type="button" [nzType]="'primary'" [nzLoading]="loading" nzGhost (click)="reset()">
+                  <span>重置</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div nz-row>
+
+        </div>
+      </form>
+      <div nz-row [nzGutter]="16">
+        <div nz-col [nzMd]="24">
+          <nz-table #nzTable [(nzPageSize)]="pageSize" [nzLoading]="loading" nzIsPageIndexReset='false' nzShowTotal
+                    nzShowSizeChanger
+                    nzShowQuickJumper [nzAjaxData]="data" [nzTotal]="count" [(nzPageIndex)]="page"
+                    (nzPageIndexChange)="pageChange()"
+                    (nzPageSizeChange)="pageChange()">
+            <div noResult style="text-align: center;">
+              无符合条件的活动
+            </div>
+            <thead nz-thead>
+            <tr>
+              <th nz-th>
+                <span>活动编号</span>
+              </th>
+              <th nz-th style='width:300px'>
+                <span>活动名称</span>
+              </th>
+              <th nz-th class='tc'>
+                <span>活动时间</span>
+              </th>
+              <th nz-th class="tc">
+                <span>优惠规则</span>
+              </th>
+              <th nz-th class='tc'>
+                <span>费用承担</span>
+                <nz-dropdown [nzTrigger]="'click'">
+                  <i class="anticon anticon-filter" nz-dropdown></i>
+                  <ul nz-menu>
+                    <li nz-menu-item style="background:#FFF;">
+                      <nz-radio-group [(ngModel)]="barFilter.costBearer" (ngModelChange)="listData()">
+                        <div class="block h-40" nz-radio [nzValue]="filter.value" *ngFor="let filter of costTypes">
+                          <span>{{filter.name}}</span>
+                        </div>
+                      </nz-radio-group>
+                    </li>
+                  </ul>
+                </nz-dropdown>
+              </th>
+              <th nz-th class='tc'>
+                <span>活动受众</span>
+                <nz-dropdown [nzTrigger]="'click'">
+                  <i class="anticon anticon-filter" nz-dropdown></i>
+                  <ul nz-menu>
+                    <li nz-menu-item style="background:#FFF;">
+                      <nz-radio-group [(ngModel)]="barFilter.userType" (ngModelChange)="listData()">
+                        <div class="block h-40" nz-radio [nzValue]="filter.value" *ngFor="let filter of userTypes">
+                          <span>{{filter.name}}</span>
+                        </div>
+                      </nz-radio-group>
+                    </li>
+                  </ul>
+                </nz-dropdown>
+              </th>
+              <th nz-th class='tc'>
+                <span>状态</span>
+                <nz-dropdown [nzTrigger]="'click'">
+                  <i class="anticon anticon-filter" nz-dropdown></i>
+                  <ul nz-menu>
+                    <li nz-menu-item style="background:#FFF;">
+                      <nz-radio-group [(ngModel)]="barFilter.status" (ngModelChange)="listData()">
+                        <div class="block h-40" nz-radio [nzValue]="filter.value" *ngFor="let filter of statusTypes">
+                          <span>{{filter.name}}</span>
+                        </div>
+                      </nz-radio-group>
+                    </li>
+                  </ul>
+                </nz-dropdown>
+              </th>
+              <th nz-th>
+                <span>操作</span>
+              </th>
+            </tr>
+            </thead>
+            <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let item of nzTable.data; index as index">
+              <td nz-td>
+                {{item.id}}
+              </td>
+              <td nz-td class='c101010'>{{item.activityName|strPipe}}</td>
+              <td nz-td class='c101010 tc'>
+                {{item.extra?.startTime }}
+                <br/>~ <br/>{{item.extra?.endTime }}
+              </td>
+              <td nz-td class="c101010 tc">
+                <span>{{item.thresholdType|discRule}}</span>
+              </td>
+              <td nz-td class='c101010 tc'>
+                {{item.extra?.costBearer }}
+                <br/>
+                <span *ngIf='item.bus?.no'>({{item.extra?.costBearer }})</span>
+              </td>
+              <td nz-td class='tc'>{{item.extra?.userType }}</td>
+              <td nz-td class='tc'>{{item.extra?.status}}</td>
+              <td nz-td>
+                  <a class='link' *ngIf="item.status<=1" (click)="editBenefit(item)">编辑</a>
+                  <a class='link' *ngIf="item.status>=2" (click)="detailBenefit(item)">查看</a>
+                  <nz-popconfirm *ngIf="item.status<=1" [nzTitle]="'确定要结束此活动吗？'" [nzOkText]="'确定'" [nzCancelText]="'取消'"
+                                 (nzOnConfirm)="discard(item)">
+                    <a class='link' nz-popconfirm>结束</a>
+                  </nz-popconfirm>
+              </td>
+            </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</div>
+

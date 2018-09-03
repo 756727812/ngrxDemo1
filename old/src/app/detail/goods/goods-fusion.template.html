@@ -1,0 +1,112 @@
+<div class="header">
+  <h2><strong>复制商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">复制商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="container">
+            <form class="form-horizontal w5c-form" name="fusionForm" role="form" novalidate w5c-form-validate>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">商品ID</label>
+                    <div class="col-sm-8 col-md-7">
+                        <tags-input ng-model="ids" placeholder="请输入需要复制的商品ID，逗号隔开" min-length="1"></tags-input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">是否为囤货型商品</label>
+                    <div class="col-sm-8 col-md-7">
+                        <label class="radio-inline">
+                            <input name="is_stored" type="radio" ng-model="formData.is_stored" ng-value="1" ng-change="setStore()"> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input name="is_stored" type="radio" ng-model="formData.is_stored" ng-value="0" ng-change="setStore()"> 否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">是否删除原商品</label>
+                    <div class="col-sm-8 col-md-7">
+                        <label class="radio-inline">
+                            <input name="remove" type="radio" ng-model="formData.is_delete" ng-value="1"> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input name="remove" type="radio" ng-model="formData.is_delete" ng-value="0"> 否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">目标买手账号</label>
+                    <div class="col-sm-8 col-md-7">
+                        <input name="email" type="email" class="form-control" placeholder="买手账号的后台邮箱" ng-model="formData.seller_email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否设置自动下架</label>
+                    <div class="col-sm-8 col-md-7">
+                        <input type="checkbox" ng-model="isPre" ng-true-value="1" ng-false-value="0">
+                    </div>
+                </div>
+                <div class="form-group" ng-if="isPre == 1">
+                    <label class="col-sm-2 control-label">自动下架时间</label>
+                    <div class="col-sm-8 col-md-7">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                                <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control pre-form-control" data-ng-model="formData.expire_time_1">
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <datetimepicker data-ng-model="formData.expire_time_1" data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }" data-on-set-time="onSetTime(newDate, oldDate)"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required">是否复制物流模版</label>
+                    <div class="col-sm-8 col-md-7">
+                        <label class="radio-inline">
+                            <input name="copy" type="radio"
+                                ng-disabled="formData.is_stored === 1"
+                                ng-model="formData.is_copy_express" value="1"> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input name="copy" type="radio" ng-disabled="formData.is_stored === 1" ng-model="formData.is_copy_express" value="0"> 否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8 col-md-7 col-sm-offset-2">
+                        <p class="alert alert-danger m-b-10" ng-show="formError" ng-bind="formError"></p>
+                        <button type="button" w5c-form-submit="ok()" class="btn btn-primary">提交</button>
+                    </div>
+                </div>
+            </form>
+            <div ng-show='goods.length > 0'>
+                <h4>已成功复制商品!</h4>
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>原商品ID</th>
+                        <th>对应复制商品ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="good in goods">
+                        <td>{{good.ori_id}}</td>
+                        <td>{{good.new_id}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

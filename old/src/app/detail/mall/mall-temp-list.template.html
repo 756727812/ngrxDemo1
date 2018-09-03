@@ -1,0 +1,129 @@
+<div class="header">
+    <h2><strong>模板管理</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/">Seego后台</a></li>
+            <li><a href="/mall">商城管理</a></li>
+            <li class="active">模板管理</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 portlets">
+        <button  ng-if="$ctrl.is_testing == 1" class="btn btn-primary" type="button" ng-click="$ctrl.funcTest()">功能测试</button>
+
+        <div class="panel">
+            <div class="panel-"></div>
+            <div class="panel-content">
+                <!-- 列表 -->
+                 <form class="form-inline" ng-submit="$ctrl.submitSearch()">
+                    <div class="form-group m-b-10">
+                        <label class="control-label">模板 </label>
+                        <ui-select multiple ng-model="$ctrl.filter_info.template_select" theme="bootstrap" close-on-select="false" title="选择模板" style="width: 300px;">
+                            <ui-select-match placeholder="选择模板...">{{$item.name}}</ui-select-match>
+                            <ui-select-choices repeat="item.name as item in $ctrl.list_template_key | propsFilter: {name: $select.search}">
+                                <div ng-bind-html="item.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>搜索</button>
+                    </div>
+                    <div class="form-group m-b-10" style="padding-left:50px;">
+                        <div class="pull-right">
+                          <button class="btn btn-primary" ng-click="$ctrl.creatTemplate('create')">新建模板</button>
+                        </div>
+                    </div>
+                </form>
+ 
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>模版名称ID</th>
+                                <th>商品量
+                                    <br>可售/总</th>
+                                <th>使用量
+                                    <br>有效/当前总/历史总</th>
+                                <th>当日销量
+                                    <br>订单/SKU</th>
+                                <th>总销量
+                                    <br>订单/SKU</th>
+                                <th>浏览量
+                                    <br>当日/总</th>
+                                <th>模版转化率
+                                    <br>当日/总</th>
+                                <th>最近更新</th>
+                                <th>更新次数</th>
+                                <th>简介</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $ctrl.item_list track by $index">
+                                <td>
+                                    <a ng-href="/mall/temp-list/{{item.template_id}}?template_id={{item.template_id}}&template_name={{item.template_name}}" class="text-primary"><span>{{item.template_name}}<br>{{'ID ' + item.template_id}}</span></a>
+                                </td>
+                                <td>{{item.num_info.item.sell}}/{{item.num_info.item.all}}</td>
+                                <td>
+                                    <a ng-href="/mall/list/?template_select={{item.template_name}}" class="text-primary">
+                                        <span>
+                                            {{item.num_info.mall.enabled}}/{{item.num_info.mall.cur_all}}/{{item.num_info.mall.all}}
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div style="width:150px;display:block;">
+                                        总下单：{{item.gmv_today_info.ex_all.order}}/{{item.gmv_today_info.ex_all.num_item}}
+                                        <br />总支付：{{item.gmv_today_info.all.order}}/{{item.gmv_today_info.all.num_item}}
+                                        <br>包税：{{item.gmv_today_info.normal.order}}/{{item.gmv_today_info.normal.num_item}}
+                                        <br>国内：{{item.gmv_today_info.sham.order}}/{{item.gmv_today_info.sham.num_item}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width:150px;display:block;">
+                                        总下单：{{item.gmv_info.ex_all.order}}/{{item.gmv_info.ex_all.num_item}}
+                                        <br />总支付：{{item.gmv_info.all.order}}/{{item.gmv_info.all.num_item}}
+                                        <br>包税：{{item.gmv_info.normal.order}}/{{item.gmv_info.normal.num_item}}
+                                        <br>国内：{{item.gmv_info.sham.order}}/{{item.gmv_info.sham.num_item}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width:150px;display:block;">
+                                        UV {{item.pv_info.uv.today}}/{{item.pv_info.uv.all}}
+                                        <br/>PV {{item.pv_info.pv.today}}/{{item.pv_info.pv.all}}
+                                    </div>
+                                </td>
+                                <td>{{item.trans_info.today}}%/{{item.trans_info.all}}%</td>
+                                <td><div style="width:150px;display:block;">
+                                        {{item.str_update_tips}}
+                                        <br>{{item.str_create_time}}
+                                    </div>
+                                </td>
+                                <td>{{item.num_update}}</td>
+                                <td>{{item.template_desc}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.divideTemplate(item.template_id, item.template_name)">模版分配</button>
+                                    
+                                    <a ng-href="/mall/temp-list/{{item.template_id}}?template_id={{item.template_id}}&template_name={{item.template_name}}" class="btn btn-sm btn-primary">模板详情</a>
+
+                                    <a ng-href="/mall/list?template_select={{item.template_name}}"  class="btn btn-sm btn-primary">
+                                        商城列表
+                                    </a>
+
+                                    <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.creatTemplate('edit',item.template_id,item.template_name,item.template_desc)">编辑</button>
+                                    <button ng-if="item.can_delete == 1" class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.deleteTemplate(item.template_id)">删除</button>
+
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 换页 -->
+                <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

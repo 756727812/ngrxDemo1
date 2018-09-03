@@ -1,0 +1,39 @@
+<div class="shop-operate-coupon">
+  <h2 class="shop-operate-coupon-title">视频</h2>
+  <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="videoForm">
+    <div class="form-group">
+      <label class="col control-label required w-130">上传缩略图</label>
+      <div class="col-sm-8">
+        <label class="btn btn-primary m-0">选择图片
+          <input type="file" class="hide" ngf-select="$ctrl.uploadBanner($file)" accept="image/jpg, image/jpeg, image/png">
+        </label>
+        <span class="text-info">尺寸要求700*300，格式支持png、jpg</span>
+      </div>
+      <div class="col-sm-8 m-l-130">
+        <div class="img-container banner m-t-15" ng-show="$ctrl.formData.videoImgUrl">
+          <div class="position-relative">
+            <img see-src="$ctrl.formData.videoImgUrl" thumbnail="150x150" see-viewer alt="">
+            <a href="" class="img-del-btn" ng-click="$ctrl.formData.videoImgUrl = ''"></a>
+          </div>
+        </div>
+        <span class="custom-error" ng-show="videoForm.$submitted && $ctrl.formData.videoOriUrl && !$ctrl.formData.videoImgUrl"><i class="si si-danger"></i>&nbsp;请上传图片</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col control-label required w-130">视频文件地址</label>
+      <div class="col">
+        <input type="url" class="form-control" name="introduction" ng-required="$ctrl.formData.videoImgUrl"
+          ng-model="$ctrl.formData.videoOriUrl"
+        >
+      </div>
+      <div class="col-sm-8 m-l-130">
+        <span class="text-info">需填写视频文件地址，非视频所在网页地址，否则小程序无法正常显示</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-8 m-l-130">
+        <button type="submit" w5c-form-submit="$ctrl.save()" class="btn btn-primary m-0">保存</button>
+      </div>
+    </div>
+  </form>
+</div>

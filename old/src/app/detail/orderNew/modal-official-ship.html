@@ -1,0 +1,203 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">官网发货</h3>
+</div>
+<div class="modal-body">
+  <uib-tabset>
+    <uib-tab heading="{{logistics_type === 1 ? '直发用户' : '官网发往转运仓'}}" select="setExpressMethod(2)" active="tab2">
+      <form class="form-horizontal mt20 text-center">
+        <div class="form-group">
+          <label class="control-label required col-sm-4">请选择物流方式:</label>
+          <div class="col-sm-6 text-left">
+            <label class="radio-inline">
+                            <input type="radio" ng-model="express2.isSeegoExpress" value="1">Seego物流
+                        </label>
+            <label class="radio-inline">
+                            <input type="radio" ng-model="express2.isSeegoExpress" value="2">非Seego物流
+                        </label>
+          </div>
+        </div>
+        <div ng-show="express2.isSeegoExpress == 1">
+          <div class="form-group">
+            <label for="expressName" class="control-label col-sm-4 required">请选择收货仓库:</label>
+            <div class="col-sm-6">
+              <select id="express2Name" class=" form-control" ng-model="express21.name" ng-change="getServiceData(express21.name)">
+                                <option value="" selected>-- 请选择你包裹发往的转运仓 --</option>
+                                <option value="1">美国转运仓</option>
+                                <!--<option value="52" see-access="Super-Admin">波特兰仓(笨鸟转运)</option>-->
+                                <option value="5">澳洲转运仓</option>
+                                <!--<option value="51" see-access="Super-Admin">悉尼仓(笨鸟转运)</option>-->
+                                <!--<option value="6">德国仓(一号仓转运)</option>-->
+                                <option value="7">日本转运仓</option>
+                                <!--<option value="53" see-access="Super-Admin">日本仓(笨鸟转运)</option>-->
+                                <!--<option value="101">英国仓</option>-->
+                                <option value="102">韩国仓</option>
+                            </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label required col-sm-4">物流路线：</label>
+            <div class="col-sm-7">
+              <select name="service_code" class="form-control" ng-model="express21.service_code"
+                ng-options="s.service_code as s.service_name for s in service_data">
+                <option value="" selected>-- 请选择 --</option>
+              </select>
+            </div>
+          </div>
+          <p class="text-danger text-center">你的发货方式请注意和用户选择的路线相匹配</p>
+          <div class="form-group">
+            <label for="express22Name" class="control-label col-sm-4 required">请选择物流公司:</label>
+            <div class="col-sm-6">
+              <select id="express21Express" class=" form-control" ng-model="express21.express" ng-options="t.transport_code as t.transport_name for t in transportList">
+                                <option value="" selected>-- 请选择官网发出包裹使用的物流公司 --</option>
+                            </select>
+            </div>
+          </div>
+          <div ng-show="express21.express == 'other'">
+            <div class="form-group">
+              <label class="col-sm-4 control-label required">添加物流公司:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="物流公司名称" ng-model="express21.other">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label required">物流追踪网址:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="https://" ng-model="express21.url">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="express21Code" class="col-sm-4 control-label required">请输入物流单号:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="express21Code" placeholder="请输入官网发出包裹的物流单号" ng-model="express21.code">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="express21Days" class="col-sm-4 control-label">预计到货时间:</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="express21Days" placeholder="预计到达买手的时间" ng-model="express21.days">
+            </div>
+            <span class="col-sm-1" style="margin: 7px -20px">天</span>
+          </div>
+          <div class="form-group">
+            <label class="control-label required col-sm-4">请选择包裹情况:</label>
+            <div class="col-sm-6 text-left">
+              <label class="radio-inline">
+                                <input type="radio" name="isOnlyOne" ng-model="express21.isOnlyOne" value="1">只有一个中订单
+                            </label>
+              <label class="radio-inline">
+                                <input type="radio" name="isOnlyOne" ng-model="express21.isOnlyOne" value="2">包含多个中订单
+                            </label>
+            </div>
+          </div>
+          <div class="form-group" ng-show="express21.isOnlyOne == 2">
+            <div class="col-sm-10 col-sm-offset-1">
+              <textarea ng-model="express21.otherOrders" class="form-control col-sm-4" name="otherOrders" id="otherOrders" rows="5" placeholder="请输入该订单包含的其他中订单号,一行一个订单号"></textarea>
+            </div>
+          </div>
+        </div>
+        <div ng-show="express2.isSeegoExpress == 2">
+          <div class="form-group">
+            <label for="express22Name" class="control-label col-sm-4 required">请选择物流公司:</label>
+            <div class="col-sm-6">
+              <select id="express22Name" class=" form-control" ng-model="express22.name" ng-options="t.transport_code as t.transport_name for t in transportList">
+                                <option value="" selected>-- 请选择官网发出包裹使用的物流公司 --</option>
+
+                            </select>
+            </div>
+          </div>
+          <div ng-show="express22.name == 'other'">
+            <div class="form-group">
+              <label for="expressOther2" class="col-sm-4 control-label" ng-class="{'required': express22.name == 'other'}">添加物流公司:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="expressOther2" placeholder="物流公司名称" ng-model="express22.other" ng-required="express22.name == 'other'">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="expressUrl2" class="col-sm-4 control-label" ng-class="{'required': express22.name == 'other'}">物流追踪网址:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="expressUrl2" placeholder="https://" ng-model="express22.url" ng-required="express22.name == 'other'">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="express22Code" class="col-sm-4 control-label" ng-class="{'required': logistics_type === 1}">请输入物流单号:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="express22Code" placeholder="请输入官网发出包裹的物流单号" ng-model="express22.code" ng-required="logistics_type === 1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="express22Days" class="col-sm-4 control-label">预计到货时间:</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="express22Days" placeholder="请输入包裹预计到达转运仓的时间" ng-model="express22.days">
+            </div>
+            <span class="col-sm-1" style="margin: 7px -20px">天</span>
+          </div>
+        </div>
+      </form>
+      <p ng-if="!logistic.express_desc_list" class="alert alert-info" ng-show="infoMsg">{{infoMsg}}</p>
+    </uib-tab>
+    <uib-tab heading="{{logistics_type === 1 ? '发往买手' : '官网发往海外买手住址'}}" select="setExpressMethod(1)" active="tab1">
+      <form class="form-horizontal mt20">
+        <div class="form-group">
+          <label for="expressName" class="control-label col-sm-4 required">请选择物流公司:</label>
+          <div class="col-sm-6">
+            <select id="expressName" class=" form-control" ng-model="express1.name">
+                            <option value="" selected>-- 请选择官网发出包裹使用的物流公司 --</option>
+                            <option ng-repeat="transport_info in transportList" value={{transport_info.transport_code}}>{{transport_info.transport_name}}
+                            </option>
+                        </select>
+          </div>
+        </div>
+        <div ng-show="express1.name == 'other'">
+          <div class="form-group">
+            <label for="expressOthe1r" class="col-sm-4 control-label required">添加物流公司名称:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="expressOthe1r" placeholder="" ng-model="express1.other">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="expressUrl1" class="col-sm-4 control-label required">物流追踪网址:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="expressUrl1" placeholder="https://" ng-model="express1.url">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="expressCode" class="col-sm-4 control-label required">请输入物流单号:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="expressCode" placeholder="请输入官网发出包裹的物流单号" ng-model="express1.code">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="expressDays" class="col-sm-4 control-label">预计到货时间:</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" id="expressDays" placeholder="预计到达买手的时间" ng-model="express1.days">
+          </div>
+          <span class="col-sm-1" style="margin: 7px -20px">天</span>
+        </div>
+      </form>
+    </uib-tab>
+
+  </uib-tabset>
+  <div class="alert alert-danger" ng-show="errMes">{{errMes}}</div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>
+<div ng-if="logistic.express_desc_list">
+  <hr>
+  <span class="text-primary">用户所选路线提示：<span ng-bind="logistic.ex_name"></span></span>
+  <a href="" class="text-primary" ng-click="isCollapsed = !isCollapsed">展开详情</a>
+
+  <div uib-collapse="!isCollapsed">
+    <div class="alert bg-info m-t-5">
+      <ul class="p-l-10">
+        <li ng-repeat="desc in logistic.express_desc_list track by $index" ng-bind="desc"></li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+</div>

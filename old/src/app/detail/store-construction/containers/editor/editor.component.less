@@ -1,0 +1,249 @@
+.editor {
+  padding-left: 19px;
+  background: #fff;
+  box-shadow: -1px 1px 4px #ccc;
+  position: relative;
+  overflow: hidden;
+
+  *[hidden] {
+    display: none !important;
+  }
+
+  .busy-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: centern;
+    justify-content: center;
+
+    .spin {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .main {
+    display: flex;
+    flex: 1;
+    background: #fafafa;
+  }
+
+  .intro {
+    padding: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .guide {
+      width: 385px;
+      p {
+        font-size: 14px;
+        padding-bottom: 23px;
+      }
+    }
+
+    .pic {
+      img {
+        width: 288px;
+      }
+    }
+  }
+
+  .head {
+    height: 70px;
+    border-bottom: 1px solid #f2f2f2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .release-warn {
+      display: flex;
+      align-items: center;
+      margin-left: 27px;
+      font-size: 12px;
+      color: #999;
+
+      i.info-icon {
+        display: inline-block;
+        transform: rotate(180deg);
+        color: #ff6b6b;
+        margin-right: 5px;
+        font-size: 14px;
+      }
+
+      img {
+        display: block;
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+      }
+    }
+
+    .caption {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      height: 18px;
+      font-size: 18px;
+      text-align: left;
+      color: #000;
+      a{
+        padding-left:10px;
+        font-size:14px;
+        color: #5971e8;
+      }
+    }
+  }
+
+  .submit-btns {
+    margin-right: 20px;
+    display: flex;
+
+    .btn-wrap {
+      width: 103px;
+      display: flex;
+      flex-direction: column;
+
+      &:last-child {
+        margin-left: 24px;
+      }
+    }
+
+    .time {
+      margin-top: 5px;
+      align-self: center;
+      text-align: center;
+      font-size: 12px;
+      transform: scale(0.84);
+      transform-origin: center top;
+      color: #999;
+      white-space: nowrap;
+      line-height: 10px;
+    }
+  }
+
+  .button {
+    cursor: pointer;
+    width: 103px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 2px;
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+    font-weight: bold;
+
+    &.btn-save {
+      color: #787c92;
+      background-color: #e5e8f5;
+    }
+
+    &.btn-release {
+      color: #fff;
+      background-color: #5971e8;
+    }
+
+    &.btn-start {
+      color: #fff;
+      background-color: #5971e8;
+    }
+  }
+}
+
+.upgrade-info-modal {
+  text-align: center;
+  > * {
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  &__desc {
+    font-size: 14px;
+  }
+  > .old-entry-btn {
+    margin: 10px;
+  }
+  .qrcode {
+    img {
+      width: 150px;
+    }
+  }
+}
+
+//  TODO 全局cover
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .ant-modal-header {
+    background-color: #5971e8;
+
+    .ant-modal-title {
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+    }
+  }
+
+  .ant-modal-close-x::before {
+    color: #fff;
+    font-size: 20px;
+  }
+
+  .xdp-img-modal {
+    .ant-modal-body {
+      padding: 29px 0 26px;
+      text-align: center;
+    }
+
+    .notes {
+      line-height: 1.41;
+      text-align: center;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .img-wrap {
+      text-align: center;
+    }
+
+    img {
+      width: 260px;
+      display: inline-block;
+    }
+
+    .btn-i-know {
+      border: none;
+      outline: none;
+      margin-top: 15px;
+      width: 130px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 2px;
+      background-color: #5971e8;
+      font-size: 14px;
+      text-align: center;
+      color: #fff;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    .ant-modal-footer {
+      display: none !important;
+    }
+  }
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+app-preview-pane {
+  flex: 1;
+}

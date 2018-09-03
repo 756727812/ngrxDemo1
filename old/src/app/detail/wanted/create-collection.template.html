@@ -1,0 +1,122 @@
+<div class="header">
+  <h2>
+    <strong>我的圈子</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">我的圈子</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4 ng-bind="isMiniCollection ? '创建小合集' : '创建合集'"></h4>
+        <form name="createCollectionForm" class="w5c-form form-horizontal " w5c-form-validate novalidate>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">合集名称</label>
+            <div class="col-sm-7">
+              <input name="name" type="text" class="form-control" ng-model="formData.name" required/>
+            </div>
+          </div>
+          <div class="form-group" ng-if="!isMiniCollection">
+            <label class="col-sm-2 control-label required">合集封面</label>
+            <div class="col-sm-7">
+              <label id="bannerImage" class="bg-white bg-font-white text-center upload-image-label" style="width: 360px !important;height: 240px;background-repeat: no-repeat;">
+                <p ng-hide="formData.imgurl" style="line-height: 240px;">点击上传图片(750 &times; 500 像素)</p>
+                <input type="file" see-file-select="upload" size="750x500" class="hide" accept="image/jpg, image/jpeg, image/png">
+              </label>
+            </div>
+          </div>
+          <div class="form-group" ng-if="isMiniCollection">
+            <label class="col-sm-2 control-label">合集标签</label>
+            <div class="col-sm-7">
+              <img width="150" class="img-thumbnail" see-src="formData.mcol_tag_imgurl" alt="{{formData.name}}">
+              <div>
+                <label class="btn btn-sm btn-primary">
+                  选择标签
+                  <input class="hide" type="file" see-file-select="uploadTag" accept="image/jpg, image/jpeg, image/png">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div ng-if="!isMiniCollection">
+            <p class="col-sm-offset-2 col-sm-10 text-primary">* 以下标签请至少填写一个</p>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">品类标签</label>
+              <div class="col-sm-7">
+                <ui-select multiple tagging tagging-label="（创建新品类标签）" ng-model="tempData.category" theme="bootstrap" sortable="true" title="选择品类标签">
+                  <ui-select-match placeholder="选择品类标签">{{$item}}</ui-select-match>
+                  <ui-select-choices repeat="cat in catList | filter:$select.search track by $index">
+                    {{cat}}
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">属性标签</label>
+              <div class="col-sm-7">
+                <ui-select multiple tagging tagging-label="（创建新属性标签）" ng-model="tempData.attr" theme="bootstrap" sortable="true" title="选择属性标签">
+                  <ui-select-match placeholder="选择属性标签">{{$item}}</ui-select-match>
+                  <ui-select-choices repeat="attr in attrList | filter:$select.search track by $index">
+                    {{attr}}
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+            <div class="form-group" ng-repeat="brand in tempData.brand track by $index">
+              <label class="col-sm-2 control-label"><span ng-if="$index === 0">品牌标签</span></label>
+              <div class="col-sm-7">
+                <input type="text" ng-model="tempData.brand[$index]" placeholder="请输入品牌" uib-typeahead="brand.brand_name for brand in brandList | filter:$viewValue | limitTo:8"
+                       class="form-control tags_{{::$index}}">
+              </div>
+              <button type="button" class="btn btn-sm btn-primary" ng-click="tempData.brand.push('')" ng-if="$index === 0">添加品牌标签</button>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">其他标签</label>
+              <div class="col-sm-7">
+                <tags-input ng-model="tempData.tag" placeholder="添加其他标签"></tags-input>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-if="!isMiniCollection">
+            <label class="col-sm-2 control-label required">合集描述</label>
+            <div class="col-sm-7">
+              <textarea name="add_comment" ng-model="formData.desc" class="form-control" rows="5" ng-required="!isMiniCollection" w5c-dynamic-element></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">商品列表</label>
+            <div class="col-sm-10">
+              <button type="button" ng-click="selectGoods()" class="btn btn-sm btn-primary">添加商品</button>
+              <div class="selected-item-list">
+                <div class="m-r-5" style="display: inline-block;" ng-repeat="(item_id, item) in selectItems">
+                  <img alt="" width="100" height="100" class="img-thumbnail" see-src="item.item_imgurl" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-show="errMsg.length > 0">
+            <div class="alert alert-danger m-b-10">
+              <ui>
+                <li ng-repeat="error in errMsg track by $index" ng-bind="error"></li>
+              </ui>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-7">
+              <button type="submit" class=" btn btn-lg btn-primary" w5c-form-submit="createCollection()">创建合集</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

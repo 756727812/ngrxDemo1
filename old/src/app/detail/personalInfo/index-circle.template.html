@@ -1,0 +1,67 @@
+<div class="header">
+  <h2><strong>圈子信息</strong><span>{{cir_name}}</span></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">圈子信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <a ng-show="isNew" ng-href="/wanted/myCircle/createCircle" class="btn btn-primary yellow-casablanca">创建圈子</a>
+        <form class="form-horizontal" name="form" ng-submit="editCircle()" ng-hide="isNew">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">圈子名称</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" ng-model="formData.cir_name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">圈子Banner</label>
+                <div class="col-sm-7">
+                    <img width="360" height="240" class="img-viewer" see-src="formData.cir_banner" alt="{{formData.cir_name}}" see-viewer>
+                    <span>750 &times; 500 像素， jpg或png</span>
+                    <div>
+                        <label class="btn btn-outline yellow-casablanca">
+                            修改Banner
+                            <input style="display:none" type="file" see-file-select="uploadBanner" size="750x500" accept="image/jpg, image/jpeg, image/png">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">圈子Logo</label>
+                <div class="col-sm-7">
+                    <img width="150" class="img-viewer" see-src="formData.cir_logo" alt="{{formData.cir_name}}" see-viewer>
+                    <div>
+                        <label class="btn btn-outline yellow-casablanca">
+                            修改Logo
+                            <input style="display:none" type="file" see-file-select="uploadLogo" accept="image/jpg, image/jpeg, image/png">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">圈子简介</label>
+                <div class="col-sm-7">
+                    <textarea class="form-control" rows="5" ng-model="formData.cir_description"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-7">
+                    <button type="submit" class="btn btn-lg btn-primary" ng-disabled="!form.$dirty">
+                        确认修改
+                    </button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

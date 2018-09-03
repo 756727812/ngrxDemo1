@@ -1,0 +1,54 @@
+#shop-info {
+  //****************************
+  //*** 小电铺能力标签
+  //****************************
+  .power-block {
+    .panel-content {
+      height: 110px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .main-wrap {
+      display: flex;
+      align-items: center;
+    }
+
+    ul.tags {
+      margin-left: 26px;
+      display: inline-block;
+
+      li.tag-wrap {
+        margin-left: 10px;
+        display: inline-block;
+        position: relative;
+
+        &:hover {
+          .pop {
+            display: block;
+          }
+        }
+
+        &.active {
+          .tag {
+            background-color: #e5eaff;
+            border-color: #5971e8;
+            color: #5971e8;
+          }
+        }
+
+        .tag {
+          border-radius: 2px;
+          background-color: #f1f1f1;
+          border: solid 1px #c5c5c5;
+          color: #98989b;
+          height: 33px;
+          line-height: 33px;
+          text-align: center;
+          padding: 0 10px;
+        }
+      }
+    }
+  }
+}

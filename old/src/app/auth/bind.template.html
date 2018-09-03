@@ -1,0 +1,86 @@
+<div class="container m-t-100 p-t-10 auth-box" style="width: 620px">
+  <h1 class="color-333">安全升级</h1>
+  <div class="row">
+    <div class="col-xs-12">
+      <step-bar active="$ctrl.currentStep" steps="$ctrl.steps"></step-bar>
+    </div>
+  </div>
+  <hr style="border-top-color: #ddd">
+  <div ng-if="$ctrl.currentStep === 1">
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="text-center m-b-0 m-t-10">由于系统最近进行了重大更新</p>
+        <p class="text-center">为了提升你账户的安全性，请你将原登录邮箱绑定微信</p>
+      </div>
+    </div>
+    <div class="row m-t-20">
+      <div class="col-xs-12">
+        <!-- <h2 class="text-center m-b-50">手机验证</h2> -->
+        <form name="bindStepOneForm" class="form-horizontal w5c-form" novalidate w5c-form-validate>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">手机号</label>
+            <!-- <div class="col-xs-2">
+              <select name="country" class="form-control">
+                <option value="86" selected>+86</option>
+              </select>
+            </div> -->
+            <div class="col-xs-6">
+              <input type="tel" class="form-control form-white" name="mobile" ng-model="$ctrl.formData.seller_mobile" ng-pattern="/^1[0-9]{10}$/" placeholder="请输入你的手机号" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">验证码</label>
+            <div class="col-xs-3">
+              <input type="text" name="captcha" class="form-control form-white" placeholder="图像验证码"
+                ng-model="$ctrl.formData.captcha" ng-trim="true" required>
+            </div>
+            <div class="col-xs-3">
+              <a  href="" ng-click="$ctrl.getCaptcha()"><img ng-src="{{$ctrl.codeImg}}"></a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">短信验证</label>
+            <div class="col-xs-3">
+              <input type="text" class="form-control form-white" name="code" ng-model="$ctrl.formData.code" placeholder="手机验证码" required>
+            </div>
+            <div class="col-xs-3">
+              <button class="btn btn-primary" type="button"
+                ng-click="bindStepOneForm.validateElement('mobile');$ctrl.getSMSCode(bindStepOneForm.mobile.$valid)"
+                ng-disabled="$ctrl.isGetSMSCodeBtnDisabled || bindStepOneForm.mobile.$invalid || bindStepOneForm.captcha.$invalid"
+              >{{$ctrl.getSMSCodeBtnText}}</button>
+            </div>
+          </div>
+
+          <div class="form-group" ng-show="$ctrl.isGetSMSCodeBtnDisabled">
+            <div class="col-sm-offset-4 col-sm-8">
+              <p><i class="fa fa-check-circle valid"></i>&nbsp;验证码已发送到你的手机，请勿泄露</p>
+            </div>
+          </div>
+          <div class="form-group" ng-show="$ctrl.error">
+            <div class="col-sm-offset-4 col-sm-8">
+              <p><i class="fa fa-info-circle invalid"></i>&nbsp;{{$ctrl.error}}</p>
+            </div>
+          </div>
+          <div class="form-group m-t-20">
+            <div class="col-xs-12 text-center">
+              <button type="button" class="btn btn-lg btn-primary" w5c-form-submit="$ctrl.onSubmitStepOne()">下一步</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div ng-if="$ctrl.currentStep === 2">
+    <p class="text-center m-b-0">在成功绑定微信后</p>
+    <p class="text-center">你可通过微信扫码直接登录后台</p>
+    <iframe name="wechatQRCode" ng-src="{{$ctrl.iFrameUrl}}"
+      frameborder="0" scrolling="no" width="200px" height="210px" class="block-center">
+    </iframe>
+    <p class="text-center f-16">微信扫码，安全登录</p>
+    <p class="text-center m-t-20 p-b-10">微信已经绑定?<a class="href" href="/auth.html#!/login">扫码登录</a></p>
+  </div>
+  <div class="text-center m-b-20" ng-if="$ctrl.currentStep === 3">
+    <p class="m-t-100 f-16 text-center">恭喜你，安全升级成功</p>
+    <button class="btn btn-lg btn-primary m-t-100" type="button" ng-click="$ctrl.onGetIn()">进入后台</button>
+  </div>
+</div>

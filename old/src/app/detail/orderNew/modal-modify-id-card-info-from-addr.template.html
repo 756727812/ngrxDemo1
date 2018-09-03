@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">修改身份证信息 </h3>
+</div>
+<div class="modal-body">
+  <form novalidate>
+    <div id="imagesContainer" class="radio text-center">
+      <label ng-repeat="info in addrInfo">
+                        <input type="radio" name="options" ng-value="info" ng-model="newChoice.result">
+                        <img width="344" class="img-viewer" see-src="info.idcard_front_imgurl" alt="身份证正面">
+                        <img width="344" class="img-viewer" see-src="info.idcard_back_imgurl" alt="身份证反面">
+                    </label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

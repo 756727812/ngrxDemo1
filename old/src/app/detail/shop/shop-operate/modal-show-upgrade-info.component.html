@@ -1,0 +1,13 @@
+<div>
+  <p>小电铺装修已升级至2.0版本，快来体验吧！</p>
+  <div class="customize-footer">
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+      稍后体验
+    </button>
+    <a
+      [href]="newEntryPath"
+      (click)="handleCancel($event)"
+      class="ant-btn ant-btn-primary ant-btn-lg"
+      >去体验</a>
+  </div>
+</div>

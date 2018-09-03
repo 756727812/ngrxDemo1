@@ -1,0 +1,145 @@
+<pro-header [title]="isEdit ? '编辑采购单' : '新建采购单'" [paths]="paths"></pro-header>
+<div class="purchase-order">
+  <nz-card [nzBordered]="false">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+    <!-- <form nz-form [formGroup]="validateForm" (ngSubmit)="isConfirmModalVisible=true"> -->
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="buyer">采购方主体</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          <nz-select formControlName="buyer" [nzPlaceHolder]="'请选择'" nzAllowClear *ngIf="!isEdit">
+            <nz-option *ngFor="let option of buyerOptions" [nzLabel]="option" [nzValue]="option">
+            </nz-option>
+          </nz-select>
+          <span *ngIf="isEdit">{{getFormControl('buyer').value}}</span>
+          <div nz-form-explain *ngIf="isFormControlHasError('buyer', 'required')">请选择采购方主体</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="supplierId">供应商</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          <nz-select *ngIf="!isEdit" nzAllowClear nzShowSearch formControlName="supplier" [nzFilter]="false" [nzPlaceHolder]="'公司名称/联系人'"
+            (nzSearchChange)="searchChange$.next($event)" [nzNotFoundContent]="'无法找到'">
+            <nz-option *ngIf="supplierInfo" [nzLabel]="supplierInfo.companyName + '(' + supplierInfo.contactInfo + ')'" [nzValue]="supplierInfo">
+              <ng-template #nzOptionTemplate>
+                <h5>{{option?.companyName}}</h5>
+                <span>{{option?.contact}} {{option?.contactInfo}}</span>
+              </ng-template>
+            </nz-option>
+            <nz-option *ngFor="let option of supplierOptions" [nzLabel]="option?.companyName + '(' + option.contactInfo + ')'" [nzValue]="option">
+              <ng-template #nzOptionTemplate>
+                <h5>{{option?.companyName}}</h5>
+                <span>{{option?.contact}} {{option?.contactInfo}}</span>
+              </ng-template>
+            </nz-option>
+          </nz-select>
+          <span *ngIf="isEdit">{{supplierInfo?.companyName}}</span>
+          <div nz-form-explain *ngIf="isFormControlHasError('supplier', 'required')">请选择供应商</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="2">
+          <label for="currency">货币</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="4" [nzXs]="22">
+          <nz-select formControlName="currency" [nzPlaceHolder]="'请选择'" nzAllowClear *ngIf="!isEdit">
+            <nz-option *ngFor="let option of currencyOptions" [nzLabel]="option" [nzValue]="option">
+            </nz-option>
+          </nz-select>
+          <span *ngIf="isEdit">{{getFormControl('currency').value}}</span>
+          <div nz-form-explain *ngIf="isFormControlHasError('currency', 'required')">请选择货币</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="items">采购商品</label>
+        </div>
+        <div nz-col [nzSm]="14" [nzXs]="24">
+          <app-add-purchase-item-form-control formControlName="items" [sDisabled]="isEdit"></app-add-purchase-item-form-control>
+          <div style="color: red" nz-form-explain *ngIf="isFormControlHasError('items', 'required')">请选择采购商品</div>
+          <div style="color: red" nz-form-explain *ngIf="isFormControlHasError('items', 'omit')">请补全信息</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="7" [nzXs]="24">
+          <label for="otherAmount">其他金额</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="4" [nzXs]="24">
+          <nz-input [nzPlaceHolder]="" formControlName="otherAmount" [nzDisabled]="isEdit" (nzBlur)="handleNumberBlur('otherAmount')"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="7" [nzXs]="2">
+          <label for="voucher">采购总金额</label>
+        </div>
+        <div nz-form-control nz-col style="color: red;" [nzSm]="4" [nzXs]="22">{{sumAmount}}
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="voucher">发票等凭证</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24">
+          <nz-checkbox-group formControlName="voucher" [nzDisabled]="isEdit"></nz-checkbox-group>
+          <div nz-form-explain *ngIf="isFormControlHasError('voucher', 'required')">请选择发票等凭证</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="settlementMethod">结款方式</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <nz-radio-group formControlName="settlementMethod" (click)="handleSettlementMethodChange()">
+            <label nz-radio [nzValue]="0" [nzDisabled]="isEdit">
+              <span>月结</span>
+            </label>
+            <label nz-radio [nzValue]="1" [nzDisabled]="isEdit">
+              <span>款到发货，期望付款时间</span>
+            </label>
+            <nz-datepicker [nzDisabled]="isEdit" *ngIf="getFormControl('settlementMethod') && getFormControl('settlementMethod').value==1"
+              [nzFormat]="'YYYY-MM-DD'" formControlName="expectPaymentTime" [nzPlaceHolder]="'请选择'"></nz-datepicker>
+            <label nz-radio [nzValue]="2" [nzDisabled]="isEdit">
+              <span>其他(请备注说明)</span>
+            </label>
+          </nz-radio-group>
+          <div nz-form-explain *ngIf="isFormControlHasError('settlementMethod', 'required')">请选择结款方式</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="remark">备注(选填)</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24">
+          <nz-input formControlName="remark" [nzType]="'textarea'" [nzRows]="'4'" [nzPlaceHolder]="'可用于标记财务是否打款等'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="remark">申请人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24">
+          <span *ngIf="!isEdit">{{sellerName}}({{sellerEmail}})</span>
+          <span *ngIf="isEdit">{{purchaseOrderData?.applicant}}({{purchaseOrderData?.applicantEmail}})</span>
+        </div>
+      </div>
+      <div nz-form-item nz-row style="margin-bottom:8px;">
+        <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+          <button nz-button [nzSize]="'large'" [nzType]="'primary'">提交</button>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+</div>
+
+
+<nz-modal [nzVisible]="isConfirmModalVisible" [nzTitle]="'提示'" [nzContent]="modalContent" (nzOnCancel)="isConfirmModalVisible=false"
+  (nzOnOk)="_submitForm()">
+  <ng-template #modalContent>
+    <p>因采购单信息涉及公司财务资金，你的修改操作
+      <span style="color: red;">将被生成修改记录</span>，并显示在详情页中，请务必谨慎修改</p>
+    <p>确认提交？</p>
+  </ng-template>
+</nz-modal>

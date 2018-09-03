@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.close()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">商品信息</h3>
+</div>
+<div class="modal-body clearfix">
+  <div class="sell-point-block block">
+    <div class="labe">本商品卖点</div>
+    <div class="txt">
+      <div class="p"
+           ng-repeat="line in $ctrl.data.topicItemSellPoint.split('\n')">{{line}}</div>
+    </div>
+  </div>
+  <div class="word-block block"
+       ng-if="$ctrl.data.wordLink">
+    <div class="labe">商品推荐文案</div>
+    <div class="txt">公众号推文售卖该商品时，推荐使用的文案</div>
+    <a ng-href="{{$ctrl.data.wordLink}}"
+       target="_blank">点击查看</a>
+  </div>
+  <span class="btn-ok"
+        ng-click="$ctrl.dismiss()">知道了</button>
+
+</div>

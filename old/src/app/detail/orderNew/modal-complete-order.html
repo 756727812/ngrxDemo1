@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">完成备货</h4>
+</div>
+<div class="modal-body">
+    <form id="submitFinishBuyForm" name="submitFinishBuyForm" class="form-horizontal" ng-submit="submitFinishBuy()" novalidate>
+        <div class="form-group">
+            <label class="control-label required col-sm-5">请选择订单采购方式:</label>
+            <div class="col-sm-7 text-left">
+                <label class="radio-inline">
+                    <input type="radio" ng-model="purchaseMethod" value="online_buy">官网采购
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="purchaseMethod" value="offline_buy">线下采购
+                </label>
+            </div>
+        </div>
+        <div ng-hide="purchaseMethod == 'offline_buy'">
+            <div class="form-group">
+                <label for="expressDate" class="col-sm-5 control-label required">预计官网发货时间:</label>
+                <div class="col-sm-5">
+                    <input id="expressDate" type="number" class="form-control" ng-model="waitBuyInfo.expressDate">
+                </div>
+                <span class="col-sm-1" style="margin:7px -15px">天</span>
+            </div>
+            <p class="col-sm-offset-5 col-sm-7 text-danger">预计发货时间将通知用户</p>
+            <div class="form-group">
+                <label for="out_order_id" class="col-sm-5 control-label required">请填写官网订单号:</label>
+                <div class="col-sm-5">
+                    <input id="out_order_id" type="text" class="form-control" ng-model="waitBuyInfo.out_order_id" placeholder="转运仓发货时需与对应官网订单号匹配">
+                </div>
+            </div>
+            <div class="form-group" see-access="B2C-Service Super-Admin">
+                <label for="originalPrice" class="col-sm-5 control-label">请填写官网原价:</label>
+                <div class="col-sm-4">
+                    <input id="originalPrice" type="number" class="form-control" ng-model="waitBuyInfo.originalPrice">
+                </div>
+                <span class="col-sm-3" style="margin:7px -15px">元人民币</span>
+            </div>
+
+        </div>
+    </form>
+    <p class="alert alert-danger" ng-show="errMsg">{{errMsg}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

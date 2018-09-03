@@ -1,0 +1,341 @@
+<div>
+  <h4>编辑专题</h4>
+  <form name="editForm" novalidate>
+    <div class="form-group">
+      <label class=" control-label required">专题名称</label>
+      <div class="input-group">
+        <input id="topic_title" class="form-control form-white" type="text" name="title" maxlength="50" placeholder="50个字以内" ng-model="topic_info.title"
+        required>
+        <span class="input-group-addon">{{topic_info.title.length || 0}}/50</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class=" control-label">合集ID</label>
+      <input class="form-control form-white" type="text" name="collection_id" placeholder="" ng-model="topic_info.collection_id" >
+    </div>
+    <div class="form-group">
+      <label class=" control-label">圈子ID</label>
+      <input class="form-control form-white" type="text" name="relate_cir_id" placeholder="" ng-model="topic_info.relate_cir_id">
+    </div>
+    <div class="form-group">
+      <label class=" control-label required">关键词</label>
+      <tags-input ng-model="tagsKeywords" placeholder="填写10个以内的关键词" min-length="1" max-tags="10"></tags-input>
+    </div>
+    <div class="form-group">
+      <label class=" control-label required">专题封面</label>
+      <div class="bannerImage">
+        <img class="img-thumbnail img-viewer" width="450" height="300" see-src="topic_info.imgurl" alt="{{topic_info.title}}">
+        <span>750 &times; 500 像素， jpg或png</span>
+        <div>
+          <label class="btn btn-primary">
+            上传封面图片
+            <input class="hidden" type="file" see-file-select="uploadBanner" size="750x500" accept="image/jpg, image/jpeg, image/png">
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class=" control-label required">引言</label>
+      <textarea name="desc" rows="10" class="form-control" required ng-model="topic_info.desc" placeholder="请填写专题引言"></textarea>
+    </div>
+    <div class="form-group">
+      <label class=" control-label required">专题内容</label>
+      <div>
+        <script type="text/plain" id="myEditor">
+        </script>
+      </div>
+      <label ng-show="showUEditorBool == true" for="content-img-upload" class="btn btn-primary">
+        上传内容图片
+      </label>
+      <input id="content-img-upload" type="file" class="hide" see-file-select="uploadContentImg0">
+      <span ng-show="showUEditorBool == true" style="color: red;margin-left: 15px;">
+        (在编辑框内插入本地图片点此按钮！！)
+      </span>
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" style="margin-bottom: 10px;" ng-show="showUEditorBool == false" ng-click="showUEditor()">生成编辑内容</button>
+      <button type="button" class="btn btn-primary" style="margin-bottom: 10px;" ng-show="showUEditorBool == true" ng-click="getContent()">解析</button>
+    </div>
+    <div ng-show="showBatchAction == true">
+      <div style="margin-bottom: 5px;">
+        <ul class="list-inline">
+          <li style="float: left;width: 20%;">
+            <select class="form-control" ng-model="selectedItemOne" ng-options="obj.cir_name for obj in categoryData" style="width: 100%">
+            </select>
+          </li>
+          <li style="float: left;width: 20%;">
+            <select class="form-control" ng-init="" style="width: 100%" ng-model="selectedItemOneSub">
+              <option></option>
+              <option ng-repeat="label in categoryData[selectedItemOne.id].sub_category">
+                {{label.cir_name}}
+              </option>
+            </select>
+          </li>
+          <li style="float: left;width: 20%;">
+            <button type="button" class="btn btn-primary" ng-click="equalOne()">批量添加</button>
+          </li>
+          <div style="clear: both;"></div>
+        </ul>
+      </div>
+      <div style="margin-bottom: 5px;">
+        <ul class="list-inline">
+          <li style="float: left;width: 20%;">
+            <select class="form-control" ng-model="selectedItemTwo" ng-options="obj.cir_name for obj in categoryData" style="width: 100%">
+            </select>
+          </li>
+          <li style="float: left;width: 20%;">
+            <select class="form-control" ng-init="" style="width: 100%" ng-model="selectedItemTwoSub">
+              <option></option>
+              <option ng-repeat="label in categoryData[selectedItemTwo.id].sub_category">
+                {{label.cir_name}}
+              </option>
+            </select>
+          </li>
+          <li style="float: left;width: 20%;">
+            <button type="button" class="btn btn-primary" ng-click="equalTwo()">批量添加</button>
+          </li>
+          <div style="clear: both;"></div>
+        </ul>
+      </div>
+      <div style="margin-bottom: 5px;">
+        <ul class="list-inline">
+          <li style="float: left;width: 20%;">
+            <select class="form-control" ng-model="selectedItemThree" ng-options="obj.cir_name for obj in categoryData" style="width: 100%">
+            </select>
+          </li>
+          <li style="float: left;width: 20%;">
+            <select class="form-control" ng-init="" style="width: 100%" ng-model="selectedItemThreeSub">
+              <option></option>
+              <option ng-repeat="label in categoryData[selectedItemThree.id].sub_category">
+                {{label.cir_name}}
+              </option>
+            </select>
+          </li>
+          <li style="float: left;width: 20%;">
+            <button type="button" class="btn btn-primary" ng-click="equalThree()">批量添加</button>
+          </li>
+          <div style="clear: both;"></div>
+        </ul>
+      </div>
+    </div>
+    <div ng-if="reborn == false" class="form-group m-t-10 m-b-10" ng-repeat="item in topic_info.content_info">
+      <input ng-show="false" id="content{{$index+1}}_id" ng-model="item.content_id" />
+      <input ng-show="false" id="content{{$index+1}}_ques1" ng-model="item.question_info[0].q_id">
+      <input ng-show="false" id="content{{$index+1}}_ques2" ng-model="item.question_info[1].q_id">
+      <input ng-show="false" id="content{{$index+1}}_ques3" ng-model="item.question_info[2].q_id">
+
+      <h5>专题内容{{$index+1}}</h5>
+      <div>
+        <div style="display: inline-block;vertical-align: top;">
+          <img id="content_img{{$index+1}}" width="90" class=" img-thumbnail img-viewer" style="display: block;" see-src="item.con_imgurl"
+          alt="{{item.text}}" >
+          <label for="content_img-upload{{$index+1}}" class="btn btn-sm btn-primary">
+            上传图片
+            <input id="content_img-upload{{$index+1}}" class="hidden" type="file" see-file-select="uploadContentImg{{$index+1}}" accept="image/jpg, image/jpeg, image/png">
+          </label>
+          <br>
+          <button class="btn btn-sm btn-primary"  ngf-select="uploadVideo($file, $index+1)" accept="video/*" ngf-pattern="'video/*'">上传视频</button>
+        </div>
+        <div style="display: inline-block;width: 450px;vertical-align: top;">
+          <textarea rows="6" cols="10" id="content{{$index+1}}" class="form-control" style="height:155px;" placeholder="请填写内容信息！！" ng-model="item.text"></textarea>
+        </div>
+        <div style="display: inline-block;width: 450px;position: relative;top: -28px;">
+          <div style="margin-bottom: 3px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;text-align:center">品类</li>
+              <li style="float: left;width: 20%;text-align:center">款式</li>
+              <li style="float: left;width: 30%;text-align:center">原链接</li>
+              <li style="float: left;width: 30%;text-align:center">备注</li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="item.question_info[0].category" style="width: 100%" id="content{{$index+1}}_class1">
+                  <option ng-repeat="cate in categoryData">{{cate.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="item.question_info[0].style" id="content{{$index+1}}_style1" style="width: 100%">
+                  <option ng-repeat="style in styleList[item.question_info[0].category]">{{style.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" ng-model="item.question_info[0].ori_link" id="content{{$index+1}}_oriurl1" />
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" ng-model="item.question_info[0].desc" id="content{{$index+1}}_desc1" />
+              </li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="item.question_info[1].category" style="width: 100%" id="content{{$index+1}}_class2">
+                  <option ng-repeat="cate in categoryData">{{cate.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="item.question_info[1].style" id="content{{$index+1}}_style2" style="width: 100%">
+                  <option ng-repeat="style in styleList[item.question_info[1].category]">{{style.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" ng-model="item.question_info[1].ori_link" id="content{{$index+1}}_oriurl2" />
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" ng-model="item.question_info[1].desc" id="content{{$index+1}}_desc2" />
+              </li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="item.question_info[2].category" style="width: 100%" id="content{{$index+1}}_class3">
+                  <option ng-repeat="cate in categoryData">{{cate.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="item.question_info[2].style" id="content{{$index+1}}_style3" style="width: 100%">
+                  <option ng-repeat="style in styleList[item.question_info[2].category]">{{style.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" ng-model="item.question_info[2].ori_link" id="content{{$index+1}}_oriurl3" />
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" ng-model="item.question_info[2].desc" id="content{{$index+1}}_desc3" />
+              </li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <input id="content{{$index+1}}_con_video" type="text" class="form-control" placeholder="内容视频url" ng-model='item.con_video'>
+            <p class="text-primary" ng-bind="upProgress[$index+1]"></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div ng-if="reborn == true" class="form-group m-t-10 m-b-10" ng-repeat="item in items">
+      <h5>专题内容{{item+1}}</h5>
+      <div>
+        <div style="display: inline-block;vertical-align: top;">
+          <img width="90" class=" img-thumbnail img-viewer" style="display: block;" see-src="topic_info.content_info[item].con_imgurl"
+          alt="" >
+          <label for="content_img-upload{{item+1}}" class="btn btn-sm btn-primary">
+            上传图片
+            <input id="content_img-upload{{item+1}}" style="display:none" type="file" see-file-select="uploadContentImg{{item+1}}" required>
+          </label>
+          <br>
+          <button class="btn btn-sm btn-primary"  ngf-select="uploadVideo($file, item+1)" accept="video/*" ngf-pattern="'video/*'">上传视频</button>
+        </div>
+        <div style="display: inline-block;width: 450px;vertical-align: top;">
+          <textarea id="content{{item+1}}" rows="6" class="form-control" style="height:155px;" placeholder="请填写内容信息！！">{{topic_info.content_info[item].text}}</textarea>
+        </div>
+        <div style="display: inline-block;width: 450px;position: relative;top: -28px;">
+          <div style="margin-bottom: 3px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;text-align:center">品类</li>
+              <li style="float: left;width: 20%;text-align:center">款式</li>
+              <li style="float: left;width: 30%;text-align:center">原链接</li>
+              <li style="float: left;width: 30%;text-align:center">备注</li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="selectedItem" ng-options="obj.cir_name for obj in categoryData" id="content{{item+1}}_class1"
+                style="width: 100%">
+                  <option value=""></option>
+                </select>
+              </li>
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-init="" id="content{{item+1}}_style1" style="width: 100%" ng-model="selectedItemSub">
+                  <option></option>
+                  <option ng-repeat="label in categoryData[selectedItem.id].sub_category">{{label.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" id="content{{item+1}}_oriurl1" />
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" id="content{{item+1}}_desc1" />
+              </li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="selectedItem1" ng-options="obj.cir_name for obj in categoryData" id="content{{item+1}}_class2"
+                style="width: 100%">
+                  <option value=""></option>
+                </select>
+              </li>
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-init="" id="content{{item+1}}_style2" style="width: 100%" ng-model="selectedItem1Sub">
+                  <option></option>
+                  <option ng-repeat="label in categoryData[selectedItem1.id].sub_category">{{label.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" id="content{{item+1}}_oriurl2" />
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" id="content{{item+1}}_desc2" />
+              </li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <ul class="list-inline">
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-model="selectedItem2" ng-options="obj.cir_name for obj in categoryData" id="content{{item+1}}_class3"
+                style="width: 100%">
+                  <option value=""></option>
+                </select>
+              </li>
+              <li style="float: left;width: 20%;">
+                <select class="form-control" ng-init="" id="content{{item+1}}_style3" style="width: 100%" ng-model="selectedItem2Sub">
+                  <option></option>
+                  <option ng-repeat="label in categoryData[selectedItem2.id].sub_category">{{label.cir_name}}</option>
+                </select>
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" id="content{{item+1}}_oriurl3" />
+              </li>
+              <li style="float: left;width: 30%;">
+                <input class="form-control" type="text" id="content{{item+1}}_desc3" />
+              </li>
+              <div style="clear: both;"></div>
+            </ul>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <input id="content{{item+1}}_con_video" type="text" class="form-control" placeholder="内容视频url" ng-model='topic_info.content_info[item].con_video'>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" ng-click="updateTopicDetail(1)">
+        发布
+      </button>
+      <button type="submit" class="btn btn-primary" ng-click="updateTopicDetail(2)">
+        存草稿
+      </button>
+      <button type="submit" class="btn btn-primary" ng-click="updateTopicDetail(3)">
+        预览
+      </button>
+    </div>
+  </form>
+  <div class="scroll-to-top" style="position: fixed;top: 50%;right: 2%;text-align: center;z-index: 10000;">
+    <button class="btn btn-transparent btn-primary" ngf-select="uploadFiles($files)" multiple accept="image/jpg, image/jpeg, image/png">批量上传图片</button>
+  </div>
+</div>

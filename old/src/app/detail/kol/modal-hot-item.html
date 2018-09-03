@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">从热门单品库添加</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-20 portlets" style="padding-left:20px;">
+          <label>已选中：{{vm.str_choice}}</label>
+          <br />
+          <div class="grid-portfolio m-t-10">
+            <div class="grid-portfolio m-t-10" ng-if="vm.list_item.length > 0">
+              <!--
+              <button type="button" class="btn btn-primary" ng-click="vm.checkAll()">全选</button>
+              <button type="button" class="btn btn-primary" ng-click="vm.checkReverse()">反选</button>-->
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-xlg-2 m-t-10" ng-repeat="good in vm.list_item" style="width:135px;height:180px;">
+                  <img see-src="good.item_imgurl"  style="max-height: 120px;">
+                  <label>
+                  <input type="checkbox" ng-model="good.isChecked" ng-change="vm.selectedChanged(good)">{{good.item_id}}&nbsp;&nbsp;&nbsp;&nbsp;{{good.item_discount_price | currency: '￥'}}</label>
+                  <p><span title="{{good.item_discount_price | currency: '￥'}} {{good.item_name}}">{{good.item_name}}</span></p>
+                </div>
+              </div>
+              <div class="row">
+                <div style="float:left; padding-left:40px;padding-top:15px;">
+                  <select class="form-control" ng-model="vm.cur_page" ng-change="vm.changePage()" ng-options="item for item in vm.list_page">
+                     <option value="" selected>-- 页数 --</option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+                  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

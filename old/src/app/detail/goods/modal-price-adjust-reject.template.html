@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">拒绝调价</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form" role="form" name="rejectAdjust" novalidate w5c-form-validate>
+    <div class="form-group">
+      <label for="name" class="col-sm-3 control-label required">拒绝理由</label>
+      <div class="col-sm-8">
+        <input type="text" name="reject_reason" class="form-control" id="name" ng-model="formData.reject_reason" required>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit" w5c-form-submit="ok()">确定</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+    </div>
+  </form>
+</div>
+

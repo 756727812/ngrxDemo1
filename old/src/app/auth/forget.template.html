@@ -1,0 +1,105 @@
+<div class="container m-t-100 p-t-10 auth-box" style="width: 630px;">
+  <h1 class="color-333">找回密码</h1>
+  <div class="row">
+    <div class="col-xs-12">
+      <step-bar active="$ctrl.currentStep" steps="$ctrl.steps"></step-bar>
+    </div>
+  </div>
+  <hr style="border-top-color: #ddd">
+  <div ng-if="$ctrl.currentStep === 1">
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="text-center m-t-10 m-b-50">请输入你需要找回登录密码的手机号</p>
+      </div>
+    </div>
+    <div class="row" style="margin: 0 auto;">
+      <div class="col-xs-12">
+        <form name="forgetStepOneForm" class="form-horizontal w5c-form" novalidate w5c-form-validate>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">手机号</label>
+            <!-- <div class="col-xs-2">
+              <select name="country" class="form-control">
+                <option value="86" selected>+86</option>
+              </select>
+            </div> -->
+            <div class="col-xs-6">
+              <input type="tel" class="form-control form-white" name="mobile" w5c-dynamic-element ng-model="$ctrl.formData.seller_mobile" ng-pattern="/^1[0-9]{10}$/" placeholder="请输入你的登录手机号" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">验证码</label>
+            <div class="col-xs-3">
+              <input type="text" name="captcha" class="form-control form-white" placeholder="图像验证码"
+                ng-model="$ctrl.formData.captcha" ng-trim="true" required>
+            </div>
+            <div class="col-xs-3">
+              <a  href="" ng-click="$ctrl.getCaptcha()"><img ng-src="{{$ctrl.codeImg}}"></a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">短信验证</label>
+            <div class="col-xs-3">
+              <input type="text" class="form-control form-white" name="code" w5c-dynamic-element ng-model="$ctrl.formData.code" placeholder="手机验证码" required>
+            </div>
+            <div class="col-xs-3">
+              <button class="btn btn-primary" type="button"
+                ng-click="forgetStepOneForm.validateElement('mobile');$ctrl.getSMSCode(forgetStepOneForm.mobile.$valid)"
+                ng-disabled="$ctrl.isGetSMSCodeBtnDisabled || forgetStepOneForm.mobile.$invalid || forgetStepOneForm.captcha.$invalid"
+              >{{$ctrl.getSMSCodeBtnText}}</button>
+            </div>
+          </div>
+          <div class="form-group" ng-show="$ctrl.isGetSMSCodeBtnDisabled">
+            <div class="col-xs-offset-2 col-xs-8">
+              <p class="alert alert-success"><i class="fa fa-check-circle"></i>&nbsp;验证码已发送到你的手机，请勿泄露</p>
+            </div>
+          </div>
+          <div class="form-group" ng-show="$ctrl.error">
+            <div class="col-xs-offset-2 col-xs-8">
+              <p class="alert alert-danger"><i class="fa fa-info-circle"></i>&nbsp;{{$ctrl.error}}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 text-center">
+              <button type="button" class="btn btn-lg btn-primary" w5c-form-submit="$ctrl.onSubmitStepOne()">下一步</button>
+            </div>
+            <div class="col-xs-12 text-center m-t-10"><a href="/auth.html" class="href">注册/登录</a></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div ng-if="$ctrl.currentStep === 2">
+    <div class="row" style="margin: 0 auto;">
+      <div class="col-xs-12">
+        <form name="forgetStepTwoForm" class="form-horizontal w5c-form" novalidate w5c-form-validate>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">重置登录密码</label>
+            <div class="col-xs-6">
+              <input type="password" class="form-control form-white" name="password" w5c-dynamic-element ng-model="$ctrl.form2Data.seller_pwd" placeholder="请设置你的登录密码" required ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&_]{8,16}$/">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-4 control-label">再次确认</label>
+            <div class="col-xs-6">
+              <input type="password" class="form-control form-white" name="repeatPassword" w5c-dynamic-element w5c-repeat="password" ng-model="$ctrl.form2Data.seller_confirm_pwd" placeholder="" required>
+            </div>
+          </div>
+          <div class="form-group" ng-show="$ctrl.error">
+            <div class="col-xs-12 text-center">
+              <p class="alert alert-danger"><i class="fa fa-info-circle"></i>&nbsp;{{$ctrl.error}}</p>
+            </div>
+          </div>
+          <div class="form-group m-t-20">
+            <div class="col-xs-12 text-center">
+              <button type="button" class="btn btn-primary" w5c-form-submit="$ctrl.onSubmitStepTwo()">下一步</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 text-center m-b-20" ng-if="$ctrl.currentStep === 3">
+    <p class="m-t-100 f-16 text-center">重置密码成功</p>
+    <button class="btn btn-primary m-t-100" type="button" ng-click="$ctrl.onGetIn()">重新登录</button>
+  </div>
+</div>

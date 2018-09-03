@@ -1,0 +1,220 @@
+<div class="xcx-code-auth">
+  <div class="top-bar">
+    <button class="btn btn-primary" ng-click="$ctrl.toOnePress()" see-hide="Traffic_Buy">一键操作</button>
+    <form novalidate
+          class="search-form"
+          ng-submit="$ctrl.search()">
+      <span class="labe">审核状态</span>
+      <div class="submit-status-select">
+        <see-select options="$ctrl.submitStatusOptions"
+                    name="submit_status"
+                    ng-change="$ctrl.search()"
+                    ng-model="$ctrl.filter.submit_status"></see-select>
+      </div>
+
+      <input type="text"
+             class="see-input-text keyword"
+             name="keyword"
+             ng-model="$ctrl.filter.keyword"
+             placeholder="KOL 信息、小电铺名称">
+
+      <button type="submit"
+              class="see-btn-search"><i class="fa fa-search"></i></button>
+
+    </form>
+  </div>
+
+  <div class="table-scrollable">
+    <div class="pull-right">
+      <!-- <button ng-if="$ctrl.reset_info.num > 0"
+              class="btn btn-sm btn-primary ng-scope"
+              ng-click='$ctrl.codeSubmitViewBatch()'>一键刷新({{$ctrl.reset_info.num}}个)</button>
+
+      <button ng-if="$ctrl.release_info.num > 0"
+              class="btn btn-sm btn-primary ng-scope"
+              ng-click='$ctrl.codeReleateBatch()'>一键发布({{$ctrl.release_info.num}}个)</button> -->
+      <!--功能屏蔽
+    <a class="btn btn-primary" href="{{$ctrl.frame_url}}" target="_blank">一键授权</a>
+  -->
+    </div>
+
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th see-hide="KOL New-Brand"
+              style="width:200px;">小电铺ID</th>
+          <th see-hide="KOL New-Brand"
+              style="width:200px;">KOL信息</th>
+          <th style="width:300px;">小程序信息</th>
+          <th style="width:300px;">授权方信息</th>
+          <th>基本信息</th>
+          <th see-hide="KOL New-Brand">域名信息</th>
+          <th style="width:250px;">版本信息</th>
+          <th>审核状态</th>
+          <th see-hide="KOL New-Brand">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in $ctrl.pageData.list track by item.id">
+          <td see-hide="KOL New-Brand">{{item.id}}</td>
+          <td see-hide="KOL New-Brand">{{item.kol_name}}
+            <br />{{item.seller_email}}
+          </td>
+          <td>{{item.authorizer_info.nick_name}}
+            <br /><img src="{{item.authorizer_info.head_img}}"
+                 width="60"
+                 height="60" />
+            <!--<br />{{item.authorizer_appid}}-->
+          </td>
+          <td>{{item.authorizer_info.principal_name}}
+            <br />{{item.authorizer_info.signature}}
+            <br /><label class="text-primary"
+                   ng-if="item.authorizer_info.verify_type_info.id == -1">微信未验证</label>
+            <label class="text-info"
+                   ng-if="item.authorizer_info.verify_type_info.id == 0">微信已验证</label>
+          </td>
+          <td align="center"
+              style="text-align:center;">
+            <label class="text-primary"
+                   ng-if="item.is_full_info == 0">未补充</label>
+            <br />
+            <button ng-if="item.is_full_info == 0"
+                    class="btn btn-sm btn-primary ng-scope"
+                    ng-click="$ctrl.editInfo(item)">补全资料</button>
+
+
+            <label class="text-info"
+                   ng-if="item.is_full_info == 1">已补全</label>
+            <br />
+            <button ng-if="item.is_full_info == 1"
+                    class="btn btn-sm btn-primary ng-scope"
+                    ng-click="$ctrl.editInfo(item)">修改资料</button>
+
+          </td>
+          <td see-hide="KOL New-Brand">
+            <div ng-repeat="domain in item.authorizer_info.MiniProgramInfo.network.RequestDomain"> <label>{{domain}}</label>
+            </div>
+          </td>
+          <td>
+            体验版本:<label ng-if="item.version_view">{{item.version_view.template_id}}-{{item.version_view.user_version}}</label>
+            <label ng-if="item.version_view == false">无</label>
+
+            <br />审核版本:<label ng-if="item.version_submit">{{item.version_submit.template_id}}-{{item.version_submit.user_version}}</label>
+            <label ng-if="item.version_submit == false">无</label>
+
+            <br />发布版本:<label ng-if="item.version_online">{{item.version_online.template_id}}-{{item.version_online.user_version}}</label>
+            <label ng-if="item.version_online == false">无</label>
+          </td>
+          <td>
+            <span ng-class="{green:item.submit_status==1,red:item.submit_status==2}">
+              {{$ctrl.getSubmitStatusCn(item)}}
+            </span>
+            <br />
+            <label ng-if="item.update_status_time !== '0'">{{item.update_status_time * 1000 | date: 'MM-dd HH:mm'}}</label>
+          </td>
+          <td see-hide="KOL"
+              class="op">
+            <a ng-if="item.auth_url !== ''"
+               class="btn btn-sm btn-primary"
+               href="{{item.auth_url}}"
+               target="_blank">重新授权</a>
+            <!-- <button class="btn btn-sm btn-primary ng-scope"
+                    ng-click="$ctrl.managerLogo(item)">小电铺信息配置</button>
+            <button class="btn btn-sm btn-primary ng-scope"
+                    ng-click="$ctrl.editService(item)">客服配置</button> -->
+
+            <button class="btn btn-sm btn-primary ng-scope"
+                    ng-click="$ctrl.openInfoConfig(item)">信息配置</button>
+            <div ng-if="item.is_full_info == 1">
+              <button class="btn btn-sm btn-primary ng-scope"
+                      ng-click="$ctrl.managerTester(item.authorizer_appid)">体验者管理</button>
+
+              <button ng-if="item.version_view || item.version_submit || item.version_online"
+                      class="btn btn-sm btn-primary ng-scope"
+                      ng-click="$ctrl.toViewQrc(item)">二维码</button>
+
+              <div ng-if="item.submit_status == 1">
+                <a class="btn  btn-sm btn-primary"
+                   href="https://m.seeapp.com/weixin/get_auditstatus?authorizer_appid={{item.authorizer_appid}}"
+                   target="_blank">查看失败原因</a>
+
+                <button class="btn btn-sm btn-primary ng-scope"
+                        ng-click="$ctrl.resestAudit(item)">重置审核状态</button>
+              </div>
+
+
+              <div>
+                <button ng-if="item.is_domain_ok == 0"
+                        class="btn btn-sm btn-primary ng-scope"
+                        ng-click='$ctrl.setDomain(item.authorizer_appid)'>配置服务器</button>
+                <!--
+            <button  class="btn btn-sm btn-primary ng-scope">开发者管理</button>
+            <br />-->
+                <div ng-if="item.is_domain_ok == 1 && (item.submit_status == 0 || item.submit_status == 3 || item.submit_status == -1 || item.submit_status == 4)">
+                  <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.codePost(item)">上传代码</button>
+                </div>
+
+                <div ng-if="$ctrl.canItemSubmit(item)">
+                  <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.codeSubmit(item)">提审审核</button>
+                </div>
+
+                <div ng-if="item.submit_status == 2">
+                  <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.codeSubmitView(item)">刷新审核状态</button>
+                </div>
+
+                <div ng-if="item.submit_status == 0">
+                  <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.codeReleate(item)">发布版本</button>
+                </div>
+                <div ng-if="item.rollback_flag == 1">
+                  <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.codeRollback(item)">代码回滚</button>
+                </div>
+
+                <!--
+            <button  class="btn btn-sm btn-primary ng-scope">提交审核</button>
+            <button  class="btn btn-sm btn-primary ng-scope">发布上线</button>
+            -->
+              </div>
+            </div>
+
+            <a class="temp-detail-switch"
+               href
+               ng-click="$ctrl.changeApplyOpen(item.id,item.btn_apply_open,item)">
+              <div id="div1"
+                   class="{{item.btn_apply_open === '0' ? 'close1':'open1'}}">
+                <div id="div2"
+                     class="{{item.btn_apply_open === '0' ? 'close2':'open2'}}"></div>
+              </div>
+              <span>申请入口({{item.btn_apply_open === '0' ? '已隐藏':'可见中'}})</span>
+            </a>
+
+            <a class="temp-detail-switch"
+               href
+               ng-click="$ctrl.changeSearchOpen(item.id,item.btn_search_open,item)">
+              <div id="div1"
+                   class="{{item.btn_search_open === '0' ? 'close1':'open1'}}">
+                <div id="div2"
+                     class="{{item.btn_search_open === '0' ? 'close2':'open2'}}"></div>
+              </div>
+              <span>搜索栏({{item.btn_search_open === '0' ? '已隐藏':'可见中'}})</span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="see-pagination-wrap">
+    <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+    </div>
+    <ul uib-pagination
+        ng-if="$ctrl.pageData.count"
+        total-items="$ctrl.pageData.count"
+        items-per-page="$ctrl.pageData.pageSize"
+        ng-model="$ctrl.pageData.page"
+        ng-change="$ctrl.weixin_getList()"
+        max-size="5"
+        previous-text="上一页"
+        next-text="下一页"
+        boundary-link-numbers="true">
+    </ul>
+  </div>
+</div>

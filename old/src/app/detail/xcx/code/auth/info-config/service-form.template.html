@@ -1,0 +1,61 @@
+<form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+
+    <div class="form-group">
+        <label class="control-label col-sm-4"></label>
+        <div class="col-sm-7">
+          <a class="temp-detail-switch" href ng-if="$ctrl.info.service_config.use_seego == 0" ng-click="$ctrl.changeUseSeego(1)">
+                  <div id="div1" class="close1">
+                    <div id="div2" class="close2"></div>
+                  </div>
+                  <span>使用Seego小助手</span>
+                </a>
+                <a class="temp-detail-switch" href ng-if="$ctrl.info.service_config.use_seego == 1" ng-click="$ctrl.changeUseSeego(0)">
+                  <div id="div1" class="open1">
+                    <div id="div2" class="open2"></div>
+                  </div>
+                  <span>使用Seego小助手</span>
+                </a>
+        </div>
+    </div>
+
+    <div ng-if="$ctrl.info.service_config.use_seego == 0">
+      <div class="form-group">
+          <label class="control-label col-sm-4">电话(选填)</label>
+          <div class="col-sm-7">
+            <input name="app_id" type="mobile" trim="true" class="form-control" ng-model="$ctrl.info.service_config.mobile" ng-trim="true" placeholder="如：4008510508">
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="control-label col-sm-4">微信号(选填)</label>
+          <div class="col-sm-7">
+            <input name="app_id" type="wechat" trim="true" class="form-control" ng-model="$ctrl.info.service_config.wechat" ng-trim="true" placeholder='如: SeegoB' >
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-4 required">二维码(必填)</label>
+        <div class="col-sm-7">
+          <label class="btn btn-primary btn-sm">上传图片
+            <input type="file" see-file-select="$ctrl.uploadQrc" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize>
+          </label>
+          <br />
+          <img ng-if="$ctrl.info.service_config.qrc_img !== ''" id="mainImage" width="200" class="img-viewer" see-src="$ctrl.info.service_config.qrc_img">
+        </div>
+      </div>
+
+      <div class="form-group">
+          <label class="control-label col-sm-4 required">工作时间(必填)</label>
+          <div class="col-sm-7">
+            <textarea required class="form-control" rows="2" ng-model="$ctrl.info.service_config.worktime" placeholder="如周一至周五 9:30 - 18:30"></textarea><!-- 剩{{$ctrl.remain_count}}字 -->
+            <!--
+            <input name="app_id" type="worktime" trim="true" class="form-control" ng-model="$ctrl.info.service_config.worktime" ng-trim="true" required placeholder="如周一至周五 9:30 - 18:30" >
+          -->
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" w5c-form-submit="$ctrl.ok()">确定</button>
+        <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">取消</button>
+    </div>
+</form>

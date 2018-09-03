@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <p ng-hide="$ctrl.urlFrom === 'sidebar' || $ctrl.urlFrom === 'kolV2'"><a ng-href="/kol/kol-cooperation-management/{{ $ctrl.kolId }}/marketing-tools?wechat_id={{ $ctrl.wechatId }}" class="text-primary"><i class="fa fa-chevron-left"></i>返回营销工具</a></p>
+        <p ng-if="$ctrl.urlFrom === 'kolV2'"><a ng-href="/kol-v2/kol-cooperation-management/{{ $ctrl.kolId }}/{{ $ctrl.wechatId }}/marketing-tools" class="text-primary"><i class="fa fa-chevron-left"></i>返回营销工具</a></p>
+        <div class="clear-fix">
+          <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input date-range-picker class="form-control date-picker-blue m-w-200 z-idx-auto" type="text" placeholder="筛选有效期"
+                  ng-model="$ctrl.dateRange"
+                  options="$ctrl.dateRange.options"
+                >
+                <span class="input-group-addon bg-primary"><i class="icon si si-calenda tail-icon"></i></span>
+              </div>
+            </div>
+            <div class="form-group" ng-if="$ctrl.isAdmin">
+              <select class="form-control" ng-model="$ctrl.formData.moneyPayer" ng-change="$ctrl.submitSearch()">
+                <option value="" selected>筛选承担者</option>
+                <option value="2">SEE</option>
+                <option value="1">小电铺客户</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select class="form-control" ng-model="$ctrl.formData.type" ng-change="$ctrl.submitSearch()">
+                <option value="" selected>优惠券类型</option>
+                <option ng-value="1">普通优惠券</option>
+                <option ng-value="2">普通优惠券(仅限新用户)</option>
+                <option ng-value="3">抽奖团优惠券</option>
+                <option ng-value="4">下单返券优惠券</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <select class="form-control" ng-model="$ctrl.formData.status" ng-change="$ctrl.submitSearch()">
+                <option value="" selected>所有状态</option>
+                <option value="3">发放中</option>
+                <option value="4">已领完</option>
+                <option value="5">已结束</option>
+                <option value="1" ng-if="$ctrl.isAdmin">待审核</option>
+                <option value="2" ng-if="$ctrl.isAdmin">未通过审核</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <input type="text" placeholder="{{$ctrl.isAdmin ? '优惠券名称/小电铺名称/帐号手机号' : '请输入优惠券名称'}}" class="form-control"
+                ng-model="$ctrl.formData.name"
+                ng-keyup="$event.keyCode == 13 && $ctrl.submitSearch()"
+                style="min-width: 230px"
+              >
+            </div>
+            <a ng-href="/event/couponv2/add?kolId={{ $ctrl.kolId }}&name={{ $ctrl.formData.name }}" class="btn btn-primary m-5 pull-right">创建优惠券</a>
+            <a class="btn btn-primary m-5 pull-right" ng-if="$ctrl.isAdmin"
+              href="/shop/operate?kolId={{$ctrl.kolId}}&wechat_id={{$ctrl.wechatId}}#coupon">小电铺装修</a>
+          </form>
+        </div>
+        <div class="table-scrollable">
+          <table class="table table-striped m-t-20">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th see-access="Super-Admin Elect-Admin">承担者&amp;小电铺</th>
+                <th>面额&amp;门槛</th>
+                <th>有效期</th>
+                <th>限领/人</th>
+                <th>使用量/领取量/发行量</th>
+                <th ng-if="$ctrl.isAdmin">适用店铺</th>
+                <th>优惠券类型</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in $ctrl.couponData.list track by item.id">
+                <td ng-bind="item.name"></td>
+                <td see-access="Super-Admin Elect-Admin">
+                  {{item.moneyPayer === 2 ? 'SEE' : ''}}<br ng-if="item.moneyPayer === 2" />{{item.xiaodianpuName + '（' + item.sellerMobile + '）'}}
+                </td>
+                <td>{{item.couponPrice | currency: '￥'}}&amp;{{item.limitMoney | currency: '￥'}}</td>
+                <td>{{item.avaliableTimeStart}}-<br />{{item.avaliableTimeEnd}}</td>
+                <td ng-bind="item.limitPer"></td>
+                <td ng-bind="+item.usedCount + '/' + (item.allCount - +item.remainingQuantity) + '/' + item.allCount"></td>
+                <!-- <td ng-bind="$ctrl.isAdmin ? item.xiaodianpuName : '全店'"></td> -->
+                <td ng-if="$ctrl.isAdmin" ng-bind="item.xiaodianpuName"></td>
+                <!-- <td ng-bind="item.type === 1 ? '全体用户' : '仅限新用户'"></td> -->
+
+                <td ng-switch="item.type">
+                  <span ng-switch-when="1">普通优惠券</span>
+                  <span ng-switch-when="2">普通优惠券（仅限新用户）</span>
+                  <span ng-switch-when="3">抽奖团优惠券</span>
+                  <span ng-switch-when="4">下单返券优惠券</span>
+                </td>
+                <td ng-bind="item.status | couponStatus"></td>
+                <td>
+                  <a class="btn btn-sm btn-primary" ng-show="item.status === 3 || item.status === 4" ng-href="/event/couponv2/{{item.id}}/edit" see-hide="Elect-Admin">编辑</a>
+                  <a class="btn btn-sm btn-primary"
+                    ng-show="item.status === 5 || ($ctrl.isAdmin && (item.status === 1 || item.status === 2)) || ($ctrl.isElectAdmin && (item.status === 3 || item.status === 4))"
+                    ng-href="/event/couponv2/{{item.id}}/view" >查看</a>
+                  <button class="btn btn-sm btn-primary" type="button" ng-show="item.status === 3 || item.status === 4" ng-click="$ctrl.terminateCoupon(item.id)" see-hide="Elect-Admin">结束</a>
+                  <button class="btn btn-sm btn-primary" type="button" ng-show="item.status === 1" ng-click="$ctrl.reviewApply(item.id, 'pass')" see-access="Super-Admin">通过</a>
+                  <button class="btn btn-sm btn-primary" type="button" ng-show="item.status === 1" ng-click="$ctrl.reviewApply(item.id, 'refuse')" see-access="Super-Admin">拒绝</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div ng-if="$ctrl.couponData.count === 0" ng-cloak>
+          <p class="text-center" ng-if="!$ctrl.hasSearchParams" ng-cloak>尚未创建任何优惠券，现在去<a href="/event/couponv2/add" class="text-primary click">创建</a></p>
+          <p class="text-center" ng-if="$ctrl.hasSearchParams" ng-cloak>没有符合条件的优惠券</p>
+        </div>
+        <pagination total-items="$ctrl.couponData.count"></pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<kol-detail-base see-hide="New-Brand" wechat-id="$ctrl.wechatId"></kol-detail-base>
+<kol-marketing-info see-access="New-Brand" wechat-id="$ctrl.kolId"></kol-marketing-info>
+<div class="row marketing-tools">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col marketing-item">
+            <img src="../../../images/marketing-tools-coupon.svg" alt="">
+            <h3>优惠券</h3>
+            <p>发放日常粉丝福利，提供新人专享优惠</p>
+            <a see-access="New-Brand" ng-href="/event/couponv2?kolId={{$ctrl.kolInfo.kol_id}}"></a>
+            <a see-hide="New-Brand" ng-href="/event/couponv2?name={{$ctrl.kolInfo.seller_mobile}}&kolId={{$ctrl.kolInfo.kol_id}}"></a>
+          </div>
+          <div class="col marketing-item">
+            <img src="../../../images/marketing-tools-seckill.svg" alt="">
+            <h3>秒杀</h3>
+            <p>限量秒杀抢购或限时折扣专场<br/>多种活动玩法等你来</p>
+            <a href="/event/seckill?kolId={{$ctrl.kolId}}&wechat_id={{$ctrl.wechatId || $ctrl.kolInfo.weixin_id}}"></a>
+          </div>
+          <div class="col marketing-item">
+            <img src="../../../images/marketing-tools-group.svg" alt="">
+            <h3>拼团</h3>
+            <p>依托微信好友关系社交裂变<br/>引导用户分享购买</p>
+            <a href="/event/group?kolId={{$ctrl.kolId}}&wechat_id={{$ctrl.wechatId || $ctrl.kolInfo.weixin_id}}"></a>
+          </div>
+          <div class="col marketing-item" see-access="Super-Admin Elect-Admin">
+            <img src="../kol-v2/containers/marketing-tools/marketing-tools-order-coupon.png" alt="">
+            <h3>下单返券</h3>
+            <p>用户下单支付即返优惠券<br/>刺激复购增强粘性</p>
+            <a href="/event2/coupon?kolId={{$ctrl.kolId}}&xdpId={{$ctrl.kolInfo.weixin_auth_info_id}}&wechat_id={{$ctrl.wechatId || $ctrl.kolInfo.weixin_id}}"></a>
+          </div>
+          <div class="col marketing-item" see-access="Super-Admin Elect-Admin">
+            <img src="../kol-v2/containers/marketing-tools/marketing-tools-fulloff.png" alt="" style='width:98px;height:67px'>
+            <h3>满减</h3>
+            <p>提供直观优惠力度，激励用户凑单转化<br/>为用户提供优惠</p>
+            <a href="/kol-benefit/v2/{{$ctrl.kolId}}/{{$ctrl.wechatId || $ctrl.kolInfo.weixin_id}}/{{$ctrl.kolInfo.weixin_auth_info_id}}/benefit-list"></a>
+          </div>
+
+          <div class="col marketing-item marketing-item__more">
+            <img src="../../../images/marketing-tools-more.svg" alt="">
+            <h3>更多营销工具</h3>
+            <p>敬请期待…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

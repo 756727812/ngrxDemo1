@@ -1,0 +1,47 @@
+<div class='page-wrap'>
+      <div class='page-head'>
+          <a (click)="toList()"><i class='si si-arrow-left'></i>返回活动列表</a>
+          <nz-row>
+              <nz-col nzSpan='12'>
+                  <p class='title'>活动详情</p>
+              </nz-col>
+              <nz-col nzSpan='2' nzOffset='10'>
+                  <ng-container *ngIf='data.status<2'>
+                    <a nz-button nzType='primary'  *seeAccess="'Super-Admin Elect-Admin'" nzGhost nz-col nzSpan='24' (click)="editGBenefit()">编辑</a>
+                  </ng-container>
+              </nz-col>
+            </nz-row>
+      </div>
+
+<div class="detail-wrap">
+  <div class='info c101010' style='padding-bottom: 20px;'>
+    <p>
+      <span>活动名称: </span>{{data.activityName}}</p>
+    <p>
+      <span>费用承担:</span>{{data.extra?.costBearer}}</p>
+    <div class="activity-info">
+      <span>活动力度:</span>
+      <span *ngIf="data.thresholdType === 0">每满{{data.rules[0].thresholdValue/100}}立减{{data.rules[0].discountValue/100}}<span>({{data.extra?.capping}})</span></span>
+      <ul *ngIf="data.thresholdType === 1">
+        <li *ngFor="let item of data.rules">满{{item.thresholdValue}}件{{item.discountValue}}折</li>
+      </ul>
+    </div>
+    <p>
+      <span>活动时间:</span>{{data.extra?.startTime}} 至 {{data.extra?.endTime}}</p>
+    <p>
+      <span>叠加范围:</span>{{data.extra?.overRange}}</p>
+    <p>
+      <span>活动受众:</span>{{data.extra?.userType}}</p>
+    <p>
+      <span>设置商品:</span>商品分组展示</p>
+  </div>
+  <div nz-row style='padding-bottom:50px'>
+      <div nz-col nzXs="24" nzOffset="1" nzSm="24" nzMd="16">
+        <benefit-group [xiaodianpuId]="xiaodianpuId" [data]="groupList"
+                       [isEdit]="isEdit"
+                       (detailGroupEvent)="detailGroupEvent($event)"
+                       ></benefit-group>
+      </div>
+  </div>
+
+</div>

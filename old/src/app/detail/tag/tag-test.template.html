@@ -1,0 +1,177 @@
+<div class="header">
+  <h2><strong>用户评测</strong></h2>
+
+  <div class="breadcrumb-wrapper" ng-hide="true">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">标签管理</a></li>
+      <li class="active">用户评测</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <see-tabset>
+          <see-tab heading="商品评测" type="goods" select="$ctrl.selectTab()">
+            <form class="form-inline" ng-submit="$ctrl.submitGoodsSearch()">
+              <div class="form-group">
+                <label class="control-label">搜索</label>
+                <input type="text" class="form-control" style="min-width: 260px;" ng-model="$ctrl.form_goods.search" placeholder="商品ID、商品名称、买手名称、买手邮箱">
+              </div>
+              <div class="form-group">
+                <label for="" class="control-label">发货地筛选</label>
+                <select name="type" class="form-control" ng-model="$ctrl.form_goods.ship_country"
+                  ng-options="c.location as c.location for c in $ctrl.country_list">
+                    <option value="" selected>-- 所有 --</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" type="submit">
+                  查询
+              </button>
+            </form>
+            <div class="table-scrollable">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>U_ID</th>
+                    <th>用户昵称</th>
+                    <th style="min-width:100px">商品</th>
+                    <th width="200"></th>
+                    <th width="80"></th>
+                    <th style="min-width:120px">商户账号</th>
+                    <th style="min-width:100px">评测时间</th>
+                    <th>尺码</th>
+                    <th>商品分</th>
+                    <th>服务分</th>
+                    <th style="min-width:200px">心愿</th>
+                    <th>心愿状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="goods in $ctrl.goods_list">
+                    <td>{{goods.u_id}}</td>
+                    <td>{{goods.u_username}}</td>
+                    <td>
+                      <div class="img-container">
+                        <img class="img-viewer" see-src="goods.detail.item_info.item_imgurl" alt="{{goods.detail.item_info.item_name}}"
+                        see-viewer>
+                      </div>
+                    </td>
+                    <td>
+                      <p>订单号：{{goods.order_id}}</p>
+                      <p>{{goods.detail.item_info.item_name}}</p>
+                      <p>商品ID：{{goods.detail.item_info.item_id}}</p>
+                    </td>
+                    <td>&yen;{{goods.detail.item_info.item_price}}
+                    </td>
+                    <td>
+                      <p>后台账号：<br>{{goods.seller_info.seller_email}}</p>
+                      <p>See名称：<br>{{goods.seller_info.seller_u_username}}</p>
+                    </td>
+                    <td>{{goods.rate_time}}</td>
+                    <td class="text-center">{{goods.detail.rate_info.map[101].choice}}</td>
+                    <td class="text-center">{{goods.detail.rate_info.map[201].choice}}</td>
+                    <td class="text-center">{{goods.detail.rate_info.map[202].choice}}</td>
+                    <td>
+                      <div ng-if="goods.theme_info.t_id">
+                        <p>ID：{{goods.theme_info.t_id}}</p>
+                        <p>发布者：{{goods.theme_info.u_username}}</p>
+                        <div class="img-container">
+                          <img class="img-viewer" see-src="goods.theme_info.t_imgurl" alt="{{goods.theme_info.t_title}}" see-viewer>
+                        </div>
+                        <p>{{goods.theme_info.t_title}}</p>
+                      </div>
+                    </td>
+                    <td>{{goods.t_id !== '0' ? (goods.theme_info.t_ispublic !== '1' ? '隐藏':'显示') : ''}}</td>
+                    <td>
+                      <a ng-hide="goods.t_id === '0'" class="btn btn-sm btn-primary" ng-href="//m.seeapp.com/see/static/detail/index.html?tid={{goods.t_id}}"
+                        target="_blank">预览</a>
+                      <a ng-hide="goods.t_id === '0'" class="btn btn-sm btn-primary" ng-click="$ctrl.reset(goods.t_id, goods.theme_info.t_ispublic)">{{goods.theme_info.t_ispublic != 1 ? '显示':'隐藏'}}心愿</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </see-tab>
+          <see-tab heading="品牌评测" type="brand" select="$ctrl.selectTab()">
+            <form class="form-inline" ng-submit="$ctrl.submitBrandSearch()">
+              <div class="form-group">
+                <label class="control-label">搜索：</label>
+                <input type="text" class="form-control" ng-model="$ctrl.form_brand.search" placeholder="品牌名称">
+              </div>
+              <div class="form-group">
+                <label for="" class="control-label">筛选：</label>
+                <select name="type" class="form-control" ng-model="$ctrl.form_brand.class_type">
+                    <option value="" selected>所有</option>
+                    <option value="4">鞋子</option>
+                    <option value="1">包包</option>
+                    <option value="2">服饰</option>
+                    <option value="3">配饰</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" type="submit">查询</button>
+            </form>
+            <div class="table-scrollable">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>U_ID</th>
+                    <th>用户昵称</th>
+                    <th style="min-width:100px">品牌logo</th>
+                    <th>品牌ID</th>
+                    <th>品牌名称</th>
+                    <th style="min-width:200px">心愿</th>
+                    <th>商品ID</th>
+                    <th>总分</th>
+                    <th style="min-width:120px">细分</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="brand in $ctrl.brand_list">
+                    <td>{{brand.u_id}}</td>
+                    <td>{{brand.u_username}}</td>
+                    <td>
+                      <div class="img-container">
+                        <img class="img-viewer" see-src="brand.detail.brand_info.brand_logo" alt="{{brand.brand_name}}" see-viewer>
+                      </div>
+                    </td>
+                    <td>{{brand.detail.brand_info.brand_id}}</td>
+                    <td>{{brand.detail.brand_info.brand_name}}</td>
+                    <td>
+                      <div ng-if="brand.theme_info.t_id">
+                        <p>ID：{{brand.theme_info.t_id}}</p>
+                        <p>发布者：{{brand.theme_info.u_username}}</p>
+                        <div class="img-container">
+                          <img class="img-viewer" see-src="brand.theme_info.t_imgurl" see-viewer>
+                        </div>
+                        <p>{{brand.theme_info.t_title}}</p>
+                      </div>
+                    </td>
+                    <td>{{brand.item_id === '0' ? '无商品' : brand.item_id}}</td>
+                    <td>{{brand.detail.rate_info.score}}</td>
+                    <td>
+                      <div ng-repeat="list in brand.detail.rate_info.list">{{list.name}}：{{list.choice}}</div>
+                    </td>
+                    <td>{{brand.t_id !== '0' ? (brand.theme_info.t_ispublic !== '1' ? '隐藏':'显示') : ''}}</td>
+                    <td>
+                      <a ng-hide="brand.t_id === '0'" class="btn btn-sm btn-primary" ng-href="//m.seeapp.com/see/static/detail/index.html?tid={{brand.t_id}}"
+                        target="_blank">预览</a>
+                      <a ng-hide="brand.t_id === '0'" class="btn btn-sm btn-primary" ng-click="$ctrl.reset(brand.t_id, brand.theme_info.t_ispublic)">{{brand.theme_info.t_ispublic !== '1' ? '显示':'隐藏'}}心愿</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </see-tab>
+        </see-tabset>
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

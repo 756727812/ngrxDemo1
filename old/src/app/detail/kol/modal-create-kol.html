@@ -1,0 +1,91 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">创建KOL</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+        <!-- <div class="form-group">
+            <label class="control-label col-sm-4 required">平台</label>
+            <div class="col-sm-7">
+              <select name="platform_id" class="form-control" ng-model="vm.form_data.platform_id" required>
+                <option value="" selected>-- 请选择 --</option>
+                <option value="1">微信</option>
+                <option value="2">微博</option>
+                <option value="3">知乎</option>
+                <option value="4">豆瓣</option>
+              </select>
+            </div>
+        </div> -->
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">平台昵称</label>
+            <div class="col-sm-7">
+              <input name="kol_name" type="text" class="form-control" ng-model="vm.form_data.kol_name" placeholder="如微信公众号，微博昵称等" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">微信号</label>
+            <div class="col-sm-7">
+              <input name="weixin_id" type="text" class="form-control" ng-model="vm.form_data.weixin_id" placeholder="仅限微信平台，其他平台填0" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">Seego账号</label>
+            <div class="col-sm-7">
+              <input placeholder="KOL后台注册邮箱" name="kol_seller_email" type="text" class="form-control" required
+                ng-model="vm.form_data.seller_email" autocomplete="off"
+                uib-typeahead="seller.seller_email as seller.seller_name for seller in vm.seller_list | filter:{seller_name:$viewValue}"
+                typeahead-show-hint="true" typeahead-min-length="0">
+            </div>
+        </div>
+        <!-- <div class="form-group">
+            <label class="control-label col-sm-4 required">See用户ID</label>
+            <div class="col-sm-7">
+              <input name="kol_u_id" type="number" class="form-control" ng-model="vm.form_data.kol_u_id" ng-trim="true" placeholder="运营后台KOL u_id" required>
+            </div>
+        </div> -->
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">等级</label>
+            <div class="col-sm-7">
+              <select name="rank" class="form-control" ng-model="vm.form_data.rank" required>
+                <option value="1">新P0</option>
+                <option value="2">新P1</option>
+                <option value="3">新P2</option>
+                <option value="4">D级</options>
+                <option value="5">C级</options>
+                <option value="6">B级</options>
+                <option value="7">A级</options>
+                <option value="8">S级</options>
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4">运营状态</label>
+            <div class="col-sm-7">
+              <select name="operate_status" class="form-control" ng-model="vm.form_data.operate_status">
+                <option value="{{item.val}}" ng-repeat="item in vm.kolOpStatusOptions">{{item.label}}</option>
+                <!-- <option value="0">未填写</option> -->
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">代销</label>
+            <div class="col-sm-7">
+              <select name="is_delegate" class="form-control" ng-model="vm.form_data.is_delegate" required>
+                <option value="" selected>-- 请选择 --</option>
+                <option value="1">是</option>
+                <option value="0">否</option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">粉丝数</label>
+            <div class="col-sm-7">
+              <input name="fans_count" type="number" class="form-control" ng-model="vm.form_data.fans_count" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

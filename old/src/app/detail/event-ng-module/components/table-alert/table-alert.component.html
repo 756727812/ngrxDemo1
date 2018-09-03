@@ -1,0 +1,10 @@
+<div class="table-alert">
+  <div data-show="true" class="ant-alert ant-alert-info">
+    <i class="anticon anticon-info-circle ant-alert-icon"></i>
+    <span class="ant-alert-message">已选择 <span class="count-num">{{selectedCount}}</span> 项&nbsp;&nbsp;
+    <a *ngIf="hasSelectedAll" style="margin-left: 24px;" (click)="checkAll()">全选</a>
+    <a *ngIf="selectedCount" style="margin-left: 24px;" (click)="clear()">清空</a>
+  </span>
+    <span class="ant-alert-description"></span>
+  </div>
+</div>

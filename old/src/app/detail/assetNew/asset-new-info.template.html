@@ -1,0 +1,198 @@
+<div class="shop-info asset-new-info">
+  <div class="header">
+    <h2><strong>概况</strong></h2>
+    <div class="breadcrumb-wrapper">
+      <ol class="breadcrumb">
+        <li><a href="/">Seego后台</a></li>
+        <li class="active">概况</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row shop-info-header avatar-block" ng-if="$ctrl.profileData">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-6 profile-section">
+                <img see-src="$ctrl.profileData.img" width="64"  height="64" alt="" class="img-circle m-r-10">
+                <ul class="desc-block">
+                  <li><strong class="name" ng-bind="$ctrl.profileData.app_title"></strong></li>
+                  <li ng-if="!$ctrl.isOldC2C&&!$ctrl.isC2C"><span class="label-xdp-v">{{$ctrl.profileData.type_str}}</span></li>
+                  <a class="btn btn-default btn-no-margin" ng-if="$ctrl.isOldC2C || $ctrl.isC2C" href="/asset/settle">进入旧版</a>
+                  <p class="m-b-0" style="color: #ff6b6b;" ng-if="$ctrl.isOldC2C || $ctrl.isC2C">
+                    2017年7月16日以前生成的订单，请进入旧资产管理申请提现
+                  </p>
+                </ul>
+            </div>
+            <div class="col-sm-5 ammount-section col-sm-offset-1">
+              <div class="available-ammount">
+                <strong>可用余额</strong> <i class="si si-info" uib-tooltip="可用余额=已入账金额-提现成功金额-申请提现金额-提现中金额" tooltip-placement="bottom"></i>
+                <span class="color-ff6b6b" ng-bind="$ctrl.data.availableAmount || 0 | currency: '￥'"></span>
+              </div>
+              <a class="btn btn-primary" ng-click="$ctrl.applyRecharge()">充值</a>
+              <a report="'PAGE_ASSET_OVERVIEW.BTN_WITHDRAW_CASH'"
+                 class="btn btn-primary" ng-click="$ctrl.applyWithdrawals()">提现</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row data">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>收益概况</strong></h3>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-14-money-round"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">近7日收益</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.flow.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.data.weekIncome || 0  | currency: '￥'"></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-folder"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">近30日收益</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.user.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.data.monthIncome || 0 | currency: '￥'"></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-stats"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">累计收益</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.order.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.data.totalIncome || 0 | currency: '￥'"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-xs-12 p-r-10">
+          <div class="panel">
+            <div class="panel-header bg-white">
+              <h3 class="pull-left"><strong>待入账</strong></h3>
+              <div class="pull-right p-t-3 m-t-5">
+                <i class="si si-info f-20" uib-tooltip="当订单处在进行中的状态时，订单相关结算金额将被冻结，处于“待入账”状态" tooltip-placement="bottom"></i>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+            <div class="panel-content">
+              <div class="row">
+                <div class="col-sm-8 p-r-0">
+                  <!-- <div class="data-icon-beyond-title">
+                    <i class="icon si si-yen"></i>
+                  </div> -->
+                  <div class="data-item">
+                    <span class="data-item-title">待入账余额</span>
+                    <span class="data-item-detail color-ff6b6b" ng-bind="$ctrl.data.billingAmount | currency: '￥'"></span>
+                  </div>
+                </div>
+                <div class="col-sm-4 text-right">
+                  <a href="/assetNew/recording" class="btn btn-default">查看明细</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-xs-12 p-l-10">
+          <div class="panel">
+            <div class="panel-header bg-white">
+              <h3 class="pull-left"><strong>已入账</strong></h3>
+              <div class="pull-right p-t-3 m-t-5">
+                <i class="si si-info f-20" uib-tooltip="当订单完成并通过See管理员审核后，订单相关结算金额将被解冻，并被加至可用余额" tooltip-placement="left-top"></i>
+              </div>
+              <div class="clear-fix"></div>
+            </div>
+            <div class="panel-content">
+              <div class="row">
+                <div class="col-sm-8  p-r-0">
+                  <!-- <div class="data-icon-beyond-title">
+                    <i class="icon si si-yen"></i>
+                  </div> -->
+                  <div class="data-item">
+                    <span class="data-item-title">已入账金额</span>
+                    <span class="data-item-detail color-ff6b6b" ng-bind="$ctrl.data.creditedAmount | currency: '￥'"></span>
+                  </div>
+                </div>
+                <div class="col-sm-4 text-right">
+                  <a href="/assetNew/recorded" class="btn btn-default">查看明细</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-6" ng-if="!$ctrl.is_open_todo">
+         <dashboard-last-update last-updated="$ctrl.lastUpdated"></dashboard-last-update>
+         </div> -->
+  </div>
+  <div class="row data withdrawal-data">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>提现记录</strong></h3>
+          <section class="btn-set">
+            <a class="btn btn-primary" href="/personalInfo/account#5">提现方式</a>
+            <a class="btn btn-default" href="/assetNew/list">提现记录</a>
+          </section>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-yen"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">申请提现中</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.flow.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.withdrawalData.applicationWithdrawalAmount | currency: '￥'"></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-folder"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">提现中</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.user.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.withdrawalData.withdrawalingAmount | currency: '￥'"></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-stats"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">累计提现成功</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.order.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.withdrawalData.withdrawalAmount | currency: '￥'"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

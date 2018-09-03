@@ -1,0 +1,66 @@
+<div class="header">
+    <h2><strong>合集数据</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/">Seego后台</a></li>
+            <li><a href="/datacenter">数据中心</a></li>
+            <li class="active">合集数据</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <form class="form-inline w5c-form" name="search_form" novalidate w5c-validate ng-submit="$ctrl.submitArticleSearch()">
+                    <div class="form-group m-b-10">
+                        <label class="control-label">日期
+                            <input date-range-picker class="form-control date-picker" type="text" placeholder="请选择日期" ng-model="$ctrl.search_form.date_picker">
+                        </label>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <button class="btn btn-primary" type="submit">搜索</button>
+                    </div>
+                </form>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>合集ID</th>
+                                <th>合集图集</th>
+                                <th>合集名称</th>
+                                <th>类型(APP/微信)</th>
+                                <th>合集浏览PV <a href="" ng-click="$ctrl.changeOrder('0')" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a></th>
+                                <th>合集浏览UV <a href="" ng-click="$ctrl.changeOrder('1')" ng-class="{ 'text-info': $ctrl.order_id !== '1'}"><i class="fa fa-caret-down"></i></a></th>
+                                <th>付款订单数
+                                    <a href="" ng-click="$ctrl.changeOrder('2')" ng-class="{ 'text-info': $ctrl.order_id !== '2'}"><i class="fa fa-caret-down"></i></a></th>
+                                <th>总GMV
+                                    <a href="" ng-click="$ctrl.changeOrder('3')" ng-class="{ 'text-info': $ctrl.order_id !== '3'}"><i class="fa fa-caret-down"></i></a></th>
+                                <th>查看合集商品详情数据</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $ctrl.item_list track by $index">
+                                <td>{{item.collectionId}}</td>
+                                <td>
+                                    <div class="img-container">
+                                        <img see-src="item.imgUrl" see-viewer alt="{{item.name}}">
+                                    </div>
+                                </td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.typeName}}</td>
+                                <td>{{item.collectionPv}}</td>
+                                <td>{{item.collectionUv}}</td>
+                                <td>{{item.collectionOrderNum}}</td>
+                                <td>{{item.collectionGmv}}</td>
+                                <td ng-class="{ active  : $ctrl.isActive('/datacenter/collection-data/{{item.typeId}}?type_id={{item.typeId}}&collection_id={{item.collectionId}}&start_date={{$ctrl.search_form.date_picker.startDate&&$ctrl.search_form.date_picker.startDate.unix()}}&end_date={{$ctrl.search_form.date_picker.endDate&&$ctrl.search_form.date_picker.endDate.unix()}}')}" see-hide="PGC-Service See-Admin KOL"><a ng-href="/datacenter/collection-data/{{item.typeId}}?type_id={{item.typeId}}&collection_id={{item.collectionId}}&start_date={{$ctrl.search_form.date_picker.startDate&&$ctrl.search_form.date_picker.startDate.unix()}}&end_date={{$ctrl.search_form.date_picker.endDate&&$ctrl.search_form.date_picker.endDate.unix()}}"> 查看详情</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

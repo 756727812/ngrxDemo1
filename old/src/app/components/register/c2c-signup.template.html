@@ -1,0 +1,120 @@
+<!-- <h1 style="margin:0"><img src="//static.seecsee.com/seego_backend/global/images/logo/see-logo-black.png" alt="" style="margin-top:-20px;">
+    <h3 style="margin:0 0 20px 0"><center><font style="padding-top:-20px;">自媒体联盟品牌报名</font></center></h3></h1> -->
+<form name="registerForm" class="form-signup w5c-form" ng-class="$ctrl.isMobile?'form-mobile':'form-horizontal'" role="form"
+  novalidate w5c-form-validate>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">公司名称 </label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" id="seller_company" name="seller_company" class="form-control form-white seller_company" ng-model="$ctrl.formData.seller_company">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">联系人名称</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="brand_contact_name" class="form-control form-white" ng-model="$ctrl.formData.brand_contact_name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">公众号名称</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="wx_official_name" class="form-control form-white" ng-model="$ctrl.formData.wx_official_name" placeholder="如没有，可暂时不填写">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">公众号ID(微信号)</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="wx_official_account" class="form-control form-white" ng-model="$ctrl.formData.wx_official_account"
+        placeholder="如没有，可暂时不填写">
+      <div ng-if="!$ctrl.isMobile" class="pop-tips-info-content" style="position: absolute;top: 20%;right: -10px;">
+        <i class="icon-info"></i>
+        <div class="pop-content">
+          <div class="inner clearfix">
+            <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" ng-hide="true">
+    <label class="col-md-4 col-xs-12 control-label">公司类型</label>
+    <div class="col-md-8 col-xs-12">
+      <label for="personal-sort" class="radio-inline" style="padding-left: 0;">
+        <input type="radio" name="type" id="personal-sort-type-1" value="1" ng-model="$ctrl.formData.brand_company_type" icheck data-skin="iradio_square-blue"> 品牌方
+      </label>
+      <label for="business-sort" class="radio-inline" style="padding-left: 0;">
+        <input type="radio" name="type" id="business-sort-type-2" value="2" ng-model="$ctrl.formData.brand_company_type" icheck data-skin="iradio_square-blue"> 代理方
+      </label>
+      <label for="business-sort" class="radio-inline" style="padding-left: 0;">
+        <input type="radio" name="type" id="business-sort-type-3" value="3" ng-model="$ctrl.formData.brand_company_type" icheck data-skin="iradio_square-blue"> 综合性供应链公司
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">品牌适合人群</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="brand_suitable_crowd" class="form-control form-white" placeholder="" ng-model="$ctrl.formData.brand_suitable_crowd">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">品牌平均售价</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="brand_avg_price" class="form-control form-white" placeholder="￥" ng-model="$ctrl.formData.brand_avg_price">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">品牌消费人群</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" id="" name="brand_consume_crowd" class="form-control form-white" placeholder="" ng-model="$ctrl.formData.brand_consume_crowd">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">品牌毛利空间</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" id="" name="brand_gross_profit" class="form-control form-white" ng-model="$ctrl.formData.brand_gross_profit">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">经营类目</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" id="" name="brand_business_category" class="form-control form-white" ng-model="$ctrl.formData.brand_business_category">
+    </div>
+  </div>
+
+  <div class="form-group" ng-hide="true">
+    <label class="col-md-4 col-xs-12 control-label">是否与自媒体合作</label>
+    <div class="col-md-7 col-xs-12">
+      <label for="personal-sort" class="radio-inline" style="padding-left: 0;">
+        <input type="radio" name="brand_we_media_flag" id="personal-sort-name-1" value="1" ng-model="$ctrl.formData.brand_we_media_flag"
+          icheck data-skin="iradio_square-blue"> 有
+      </label>
+      <label for="business-sort" class="radio-inline" style="padding-left: 0;">
+        <input type="radio" name="brand_we_media_flag" id="business-sort-name-2" value="2" ng-model="$ctrl.formData.brand_we_media_flag"
+          icheck data-skin="iradio_square-blue"> 没有
+      </label>
+      <label for="business-sort" class="radio-inline" style="padding-left: 0;">
+        <input type="radio" name="brand_we_media_flag" id="business-sort-name-3" value="3" ng-model="$ctrl.formData.brand_we_media_flag"
+          icheck data-skin="iradio_square-blue"> 合作中
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">品牌对接人</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="manname" class="form-control form-white" placeholder="如无，可不填" ng-model="$ctrl.formData.connection_man_name">
+    </div>
+  </div>
+  <div class="text-center form-btn">
+    <!-- <a class="btn btn-primary" href="/auth.html#!/register/3">暂时跳过</a> -->
+    <button type="button" class="shop-btn shop-btn-lg m-t-20" ng-disabled="$ctrl.btn_disabled" w5c-form-submit="$ctrl.signup()">下一步</button>
+  </div>
+  <div class="text-center m-t-20">
+    <p class="text-center">品牌供应链合作，请将品牌介绍资料发送至邮箱</p>
+    <p class="text-primary text-center">supplychain@seeapp.com</p>
+  </div>
+</form>

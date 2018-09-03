@@ -1,0 +1,46 @@
+<div class="explore-col-goods">
+  <form nz-form
+        [formGroup]="formGroup"
+        [nzLayout]="'vertical'"
+        class="ctrl-widget-form"
+        (ngSubmit)="emitSave()">
+
+    <div nz-form-item
+         nz-row>
+      <app-common-len-form-label label="添加商品分组"
+                                 [limit]="limit"
+                                 [length]="formGroup.controls.categoryList.value?.length || 0"
+                                 note="可拖拽商品分组调整分类排列顺序"></app-common-len-form-label>
+      <div nz-form-control>
+        <sortableItems formControlName="categoryList"
+                       (change)="emitSave($event)"
+                       [type]="MODAL_TYPE.CATEGORY"></sortableItems>
+        <div nz-form-explain
+             class="m-t-10"
+             *ngIf="formErrors.categoryList">{{formErrors.categoryList}}</div>
+      </div>
+    </div>
+    <div nz-form-item
+         nz-row>
+      <div nz-form-label
+           class="">
+        <label>显示时间</label>
+        <p class="title-explain">让该模块在指定的时间内显示在小电铺，点击发布后生效</p>
+      </div>
+      <div nz-form-control>
+        <app-show-time formControlName="showTime"
+                       (change)="emitSave($event)"></app-show-time>
+        <div nz-form-explain
+             class="m-t-10"
+             *ngIf="formErrors.showTime">{{formErrors.showTime}}</div>
+      </div>
+    </div>
+    <button hidden></button>
+  </form>
+</div>
+
+<!--
+
+
+
+-->

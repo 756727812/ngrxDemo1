@@ -1,0 +1,10 @@
+<div class="auth-container bind-container fade-in">
+  <div class="auth-content bind-content">
+    <h1 class="title">安全升级</h1>
+    <time-line [steps]="steps" [currentStep]="currentStep"></time-line>
+    <div class="hr-line"></div>
+    <bind-step-one *ngIf="currentStep === 1"></bind-step-one>
+    <bind-step-two *ngIf="currentStep === 2"></bind-step-two>
+    <bind-step-three *ngIf="currentStep === 3"></bind-step-three>
+  </div>
+</div>

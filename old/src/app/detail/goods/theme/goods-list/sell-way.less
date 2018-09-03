@@ -1,0 +1,60 @@
+.modal-goods-theme-sell-way {
+  .modal-body {
+    text-align: center;
+    padding: 60px 80px 85px 80px;
+  }
+
+  ul.choices {
+    display: inline-block;
+    margin: 0 auto;
+
+    li {
+      cursor: pointer;
+      list-style: none;
+      width: 200px;
+      height: 173px;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9f9;
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      i {
+        color: #787c92;
+        font-size: 40px;
+        margin-bottom: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .btn {
+        width: 123px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+        background-color: #5971e8;
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 0;
+        margin: 0;
+      }
+
+      &.disabled{
+        pointer-events: none;
+
+        .btn{
+          background: #999
+        }
+      }
+    }
+  }
+}

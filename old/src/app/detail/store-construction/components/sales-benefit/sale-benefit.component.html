@@ -1,0 +1,16 @@
+<ng-template #activeBlock>
+  <div class="init-trigger dash" (click)="addActive($event)">
+    <div class="trigger-txt" >
+      <i class="plus"></i>
+    </div>
+  </div>
+</ng-template>
+<div class="init-trigger nodash"  *ngIf="hasData; else activeBlock">
+  <p class="flex-item">
+    <ellipsis lines="2">
+      <span class="txt-plain" >{{data.activityName}}</span>
+    </ellipsis>
+  </p>
+  <i class="i-close-icon si si-close2"  (click)="delItem($event)"></i>
+  <a class="edit-activename" target="_blank" [routerLink]="['/kol-benefit/v2/',kolInfo.kolId,kolInfo.wechatId,kolInfo.xdpId,'benefit-edit']" [queryParams]="{id:data.id,xpdId:kolInfo.xdpId}">修改名称</a>
+</div>

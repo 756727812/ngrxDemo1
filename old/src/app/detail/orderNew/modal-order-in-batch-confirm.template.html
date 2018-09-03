@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">订单批量操作确认</h3>
+</div>
+<div class="modal-body">
+  <div class="scrollable-table">
+    <p>确认对以下订单执行<span class="text-primary" ng-bind="$ctrl.resolve.action | action"></span>操作吗？</p>
+    <table class="table table-bordered">
+      <tbody>
+        <tr ng-repeat="o in $ctrl.orders track by o.order">
+          <td ng-bind="o.order"></td>
+          <td ng-if="$ctrl.resolve.action === '1'"><input type="number" class="form-control" ng-model="o.price"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">取消</button>
+</div>

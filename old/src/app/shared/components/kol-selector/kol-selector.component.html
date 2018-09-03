@@ -1,0 +1,69 @@
+<nz-spin [nzSpinning]="_isSpinning">
+  <div nz-row [nzType]="'flex'" [nzJustify]="'center'">
+    <div nz-col>
+      <div nz-row class="top-tips" [nzType]="'flex'" [nzAlign]="'middle'">
+        <div nz-col [nzSpan]="10">
+            <i class="i-tips anticon anticon-exclamation-circle"></i>
+            请将需要指派的KOL加入右框内
+        </div>
+      </div>
+
+      <div nz-row class="search-tips" [nzType]="'flex'" [nzJustify]="'space-between'" *ngIf="leftSearchResult || rightSearchResult">
+        <div nz-col class="left-tips">
+          <div data-show="true" class="ant-alert ant-alert-info" *ngIf="leftSearchResult">
+            <i class="anticon anticon-info-circle ant-alert-icon"></i>
+            <span class="ant-alert-message">批量搜索<span class="count-num">{{searchKolsL.length}}</span>个&nbsp;&nbsp;命中<span class="count-num">{{searchMatchL_re}}</span>个
+              <span *ngIf="searchMatchL_re < searchKolsL.length">&nbsp;&nbsp;未命中<span class="count-num">{{searchKolsL.length - searchMatchL_re}}</span>个&nbsp;
+              <a ngxClipboard [cbContent]="copyLeftCont" (click)="showMsg()">复制</a></span></span>
+          </div>
+
+        </div>
+        <div nz-col class="right-tips" [ngStyle]="{'left': rightTipsLeft + 'px'}">
+          <div data-show="true" class="ant-alert ant-alert-info" *ngIf="rightSearchResult">
+            <i class="anticon anticon-info-circle ant-alert-icon"></i>
+            <span class="ant-alert-message">批量搜索<span class="count-num">{{searchKolsR.length}}</span>个&nbsp;&nbsp;命中<span class="count-num">{{searchMatchR_re}}</span>个
+              <span *ngIf="searchMatchR_re < searchKolsR.length">&nbsp;&nbsp;未命中<span class="count-num">{{searchKolsR.length - searchMatchR_re}}</span>个&nbsp;
+              <a ngxClipboard [cbContent]="copyRightCont" (click)="showMsg()">复制</a></span></span>
+          </div>
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col class="transfer-wrap">
+          <nz-transfer
+            [nzDataSource]="list"
+            [nzTitles]="['KOL源列表', '需要指派KOL']"
+            [nzOperations]="['加入右侧', '加入左侧']"
+            [nzItemUnit]="'项'"
+            [nzItemsUnit]="'项'"
+            [nzSearchPlaceholder]="'KOL名称，登录账号，账户类型'"
+            [nzListStyle]="{'width.px': 400, 'height.px': 300}"
+            nzShowSearch
+            [nzFilterOption]="filterOption"
+            (nzSearchChange)="search($event)"
+            (nzSelectChange)="select($event)"
+            (nzChange)="change($event)">
+          </nz-transfer>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8" [nzType]="'flex'" [nzJustify]="'end'" class="bottom-btn">
+        <div nz-col>
+          <button nz-button
+            (click)="cancelSelect()"
+            [nzType]="'default'"
+            [nzSize]="'default'">
+            <span>{{cancelText}}</span>
+          </button>
+        </div>
+        <div nz-col>
+          <button nz-button
+            (click)="confirmSelect()"
+            [nzType]="'primary'"
+            [nzSize]="'default'">
+            <span>{{confirmText}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

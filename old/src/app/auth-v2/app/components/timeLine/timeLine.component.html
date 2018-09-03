@@ -1,0 +1,6 @@
+<ul class="auth-time-line">
+  <li class="auth-time-line-item" [ngClass]="{'active':i < currentStep}" *ngFor="let step of steps; let i = index;">
+    <span class="circle-number">{{i+1}}</span><br>
+    <span class="item-text">{{step}}</span>
+  </li>
+</ul>

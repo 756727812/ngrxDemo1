@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">审核退款</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form" name="returnGoodsForm" novalidate w5c-form-validate>
+    <div class="form-group">
+      <label for="expressName" class="control-label col-sm-4 required">退款金额</label>
+      <div class="col-sm-7">
+        <input type="number" name="refund_fee" class="form-control" placeholder="{{vm.refund_fee}}" ng-model="vm.form_data.refund_fee" ng-trim="true" required>
+      </div>
+    </div>
+    <p class="alert" ng-if="vm.is_withdraw === 1">该订单商户已申请提现/已提现，请与电商同事确认是否需向商户追回款项！</p>
+    <div class="modal-footer">
+      <button type="submit" w5c-form-submit="vm.ok()" class="btn btn-primary" data-dismiss="modal">确定</button>
+      <button type="button" ng-click="vm.cancel()" class="btn btn-default">取消</button>
+    </div>
+  </form>
+</div>

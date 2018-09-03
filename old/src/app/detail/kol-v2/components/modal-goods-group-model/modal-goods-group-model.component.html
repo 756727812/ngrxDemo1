@@ -1,0 +1,109 @@
+<form nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form)">
+  <div nz-form-item nz-row>
+    <div nz-col nzXs="24" nzSm="7" nz-form-label>
+      <label>分组名称</label>
+    </div>
+    <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+      <nz-input formControlName="categoryName" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'请输入分组名称'">
+      </nz-input>
+      <div nz-form-explain *ngIf="isFormControlHasError('categoryName', 'required')">请填写分组名称</div>
+    </div>
+  </div>
+  <div *ngIf="_type === 1">
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>分组规则</label>
+      </div>
+      <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+        <nz-select formControlName="rule" [nzSize]="'large'" [nzPlaceHolder]="'请选择分组规则'">
+          <nz-option *ngFor="let option of ruleOptions" [nzLabel]="option.name" [nzValue]="option.id">
+          </nz-option>
+        </nz-select>
+        <div nz-form-explain *ngIf="isFormControlHasError('rule', 'required')">请选择分组规则</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="getFormControlValue('rule') === 3">
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>售价区间 (元)</label>
+      </div>
+      <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+        <nz-input [nzType]="'number'" formControlName="priceFrom" style="width: calc(47%);" [nzSize]="'large'"></nz-input>
+        <span nz-form-split class="formSplit">~</span>
+        <nz-input [nzType]="'number'" formControlName="priceTo" style="width: calc(47%);" [nzSize]="'large'"></nz-input>
+        <div nz-form-explain *ngIf="isFormControlHasError('priceFrom', 'required')">请填写售价区间下限</div>
+        <div nz-form-explain *ngIf="isFormControlHasError('priceTo', 'required')">请填写售价区间上限</div>
+        <div nz-form-explain *ngIf="isFormControlHasError('priceFrom', 'pattern')">售价区间下限只能为正整数</div>
+        <div nz-form-explain *ngIf="isFormControlHasError('priceTo', 'pattern')">售价区间上限只能为正整数</div>
+        <div nz-form-explain *ngIf="isFormControlHasError('priceFrom', 'compare')">售价区间下限不能高于上限</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="getFormControlValue('rule') === 4">
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>创建时间区间</label>
+      </div>
+      <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+        <nz-rangepicker formControlName="dateRange" [nzSize]="'large'" [nzPlaceholder]="['选择开始日期', '选择结束日期']"></nz-rangepicker>
+        <div nz-form-explain *ngIf="isFormControlHasError('dateRange', 'required')">请选择创建时间区间</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="getFormControlValue('rule') === 1">
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>品类名称</label>
+      </div>
+      <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+        <nz-select
+          [nzMode]="'multiple'" [nzSize]="'large'"
+          [nzPlaceHolder]="'请选择品类'"
+          formControlName="categoryVal"
+          [nzNotFoundContent]="'无法找到'">
+          <nz-option
+            *ngFor="let option of (categoryOptions$ | async)"
+            [nzLabel]="option.categoryName"
+            [nzValue]="option.categoryId">
+          </nz-option>
+        </nz-select>
+        <div nz-form-explain *ngIf="isFormControlHasError('orderType', 'required')">请选择品类</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="getFormControlValue('rule') === 2">
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>品牌名称</label>
+      </div>
+      <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+        <nz-select
+          [nzMode]="'multiple'" [nzSize]="'large'"
+          [nzPlaceHolder]="'请选择品牌'"
+          formControlName="brandVal"
+          [nzNotFoundContent]="'无法找到'">
+          <nz-option
+            *ngFor="let option of (brandOptions$ | async)"
+            [nzLabel]="option.brandName"
+            [nzValue]="option.brandId">
+          </nz-option>
+        </nz-select>
+        <div nz-form-explain *ngIf="isFormControlHasError('brandVal', 'required')">请选择品牌</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>组内商品排序</label>
+      </div>
+      <div nz-col nzXs="24" nzSm="15" nz-form-control nzHasFeedback>
+        <nz-radio-group formControlName="orderType">
+          <label *ngFor="let radio of orderTypeOptions" nz-radio [nzValue]="radio.val">
+            <span>{{ radio.text }}</span>
+          </label>
+        </nz-radio-group>
+        <div nz-form-explain *ngIf="isFormControlHasError('orderType', 'required')">请选择组内商品排序</div>
+      </div>
+    </div>
+  </div>
+  <div class="customize-footer">
+    <button type="submit" nz-button [nzType]="'primary'" [nzSize]="'large'">
+      确定
+    </button>
+    <button type="button" nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+      取消
+    </button>
+  </div>
+</form>

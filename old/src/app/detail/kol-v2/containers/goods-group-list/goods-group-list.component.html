@@ -1,0 +1,127 @@
+<nz-card [nzBordered]="false">
+  <form [nzLayout]="'inline'" nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form.value)">
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label>
+            <label for="keyword">商品分组名称</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <nz-input nzType="text" formControlName="keyword" nzId="keyword" [nzSize]="'large'" [nzPlaceHolder]="'请输入'"></nz-input>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" class="text-left mb-md">
+        <button nz-button type="submit" [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="loading$ | async">
+          <span>查询</span>
+        </button>
+        <button nz-button type="reset" [nzSize]="'large'" (click)="resetForm()">
+          <span>重置</span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="mb-md">
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="add(2)">添加手动分组</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="add(1)">添加自动分组</button>
+  </div>
+  <div class="mb-md">
+    <nz-alert [nzType]="'info'">
+      <span alert-body>
+        共
+        <strong class="text-primary">{{ count$ | async }}</strong> 个分组
+      </span>
+    </nz-alert>
+  </div>
+  <nz-table #nzTable nzShowSizeChanger nzShowQuickJumper [nzLoading]="loading$ | async" [nzAjaxData]="goodsGroups$ | async" [nzTotal]="count$ | async"
+    [(nzPageSize)]="pageSize" (nzPageSizeChange)="changePage()" [(nzPageIndex)]="page" (nzPageIndexChange)="changePage()">
+    <thead nz-thead>
+      <tr>
+        <th nz-th>
+          分组名称
+        </th>
+        <th nz-th>
+          创建时间
+        </th>
+        <th nz-th>
+          分组类型
+        </th>
+        <th nz-th>
+          商品数
+        </th>
+        <th nz-th>
+          操作
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of nzTable.data; let i = index">
+        <td nz-td>
+          <div *ngIf="editIndex !== i" class="d-flex align-items-center">
+            <ellipsis lines="1" style="max-width: 200px">
+              <span *ngIf="item.isSystem; else editTemplate" [title]="item.categoryName" [innerText]="item.categoryName"></span>
+              <ng-template #editTemplate>
+                <a (click)="edit(i)" [title]="item.categoryName" style="color: rgba(0, 0, 0, 0.65);">{{ item.categoryName }}<i class="anticon anticon-edit"></i></a>
+              </ng-template>
+            </ellipsis>
+          </div>
+          <span *ngIf="editIndex === i">
+            <input nz-input [ngModel]="item.categoryName" (ngModelChange)="saveModel($event)" class="w-100 m-r-10" placeholder="请输入分组名称">
+            <a (click)="save(item)">保存</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-popconfirm (nzOnConfirm)="cancel()" [nzTitle]="'是否要取消操作？'">
+              <a nz-popconfirm>取消</a>
+            </nz-popconfirm>
+          </span>
+        </td>
+        <td nz-td [innerText]="item.createTime | date:'yyyy-MM-dd'"></td>
+        <td nz-td class="goodsGroupType">
+          <nz-popover [nzPlacement]="'bottom'" *ngIf="item.type === 1 && !item.isSystem; else normal">
+            <span nz-popover>自动 <i class="anticon anticon-info-circle"></i></span>
+            <ng-template #nzTemplate>
+              <div class="group-info-view">
+                <table>
+                  <tbody>
+                  <tr *ngIf="item.policyType === 1">
+                    <td>品类：</td>
+                    <td>{{ fmtCategoryList(item) }}</td>
+                  </tr>
+                  <tr *ngIf="item.policyType === 2">
+                    <td>品牌：</td>
+                    <td>{{ fmtBrandList(item) }}</td>
+                  </tr>
+                  <tr *ngIf="item.policyType === 3">
+                    <td>售价区间 (元)：</td>
+                    <td>{{ item.priceFrom }} - {{ item.priceTo }}</td>
+                  </tr>
+                  <tr *ngIf="item.policyType === 4">
+                    <td>创建时间区间：</td>
+                    <td>{{ item.itemCreateTimeFrom }} - {{ item.itemCreateTimeTo }}</td>
+                  </tr>
+                  <tr>
+                    <td>商品排序：</td>
+                    <td>{{ fmtOrderType(item) }}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-template>
+          </nz-popover>
+          <ng-template #normal>
+            <span>{{ item.type === 1 ? '自动' : '手动' }}</span>
+          </ng-template>
+        </td>
+        <td nz-td [innerText]="item.commodityCount"></td>
+        <td nz-td>
+          <a (click)="addGoods(item)" [class.disabled]="item.type === 1">添加商品</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a [href]="getViewHref(item)">查看</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <nz-popconfirm [nzTitle]="'确认删除该分组？'" (nzOnConfirm)="deleteGoodsGroup(item)">
+            <a nz-popconfirm [class.disabled]="item.isSystem === 1">删除</a>
+          </nz-popconfirm>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

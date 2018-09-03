@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.close()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">售卖方式</h3>
+</div>
+<div class="modal-body clearfix">
+  <ul class="choices">
+    <li class="articel"
+        ng-class="{'disabled':$ctrl.isQuhaodian}"
+        ng-click="$ctrl.select('article')">
+      <i class="si si-book"></i>
+      <span class="btn btn-articel">在文章中售卖</span>
+    </li>
+    <li class="shop"
+        ng-click="$ctrl.select('shop')">
+      <i class="si si-shop-center-round"></i>
+      <span class="btn btn-show">在小电铺中售卖</span>
+
+    </li>
+  </ul>
+
+</div>

@@ -1,0 +1,201 @@
+<div class="header">
+    <h2><strong>商城列表</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/">Seego后台</a></li>
+            <li><a href="/mall">商城管理</a></li>
+            <li class="active">商城列表</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <form class="form-inline" ng-submit="$ctrl.submitSearch()">
+                    <div class="form-group" see-hide="Hide-DD">
+                        <label class="control-label">订单时间
+                            <input date-range-picker class="form-control date-picker" type="text" ng-model="$ctrl.filter_info.date_picker" placeholder="时间筛选">
+                        </label>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label">模板 </label>
+                        <ui-select multiple ng-model="$ctrl.filter_info.template_select" theme="bootstrap" close-on-select="false" title="选择模板" style="width: 300px;">
+                            <ui-select-match placeholder="选择模板...">{{$item.name}}</ui-select-match>
+                            <ui-select-choices repeat="item.name as item in $ctrl.list_template | propsFilter: {name: $select.search}">
+                                <div ng-bind-html="item.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label">KOL </label>
+                        <ui-select multiple ng-model="$ctrl.filter_info.kol_select" theme="bootstrap" close-on-select="false" title="选择KOL" style="width: 300px;">
+                            <ui-select-match placeholder="选择KOL...">{{$item.name}}</ui-select-match>
+                            <ui-select-choices repeat="item.name as item in $ctrl.list_key | propsFilter: {name: $select.search}">
+                                <div ng-bind-html="item.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label">关键词
+                            <input type="text" class="form-control" style="min-width: 210px;" placeholder="商城名称&ID，模版名称&ID" ng-model="$ctrl.filter_info.keyword_article" ng-trim="true">
+                        </label>
+                    </div>
+                    <div class="form-group m-b-10" see-hide="Hide-DD">
+                        <label class="control-label">商城状态
+                            <select class="form-control" ng-model="$ctrl.filter_info.mall_online">
+                                <option value="-1" selected>-- 请选择 --</option>
+                                <option value="1">上线中</option>
+                                <option value="0">已下线</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label">商城同步方式
+                            <select class="form-control" ng-model="$ctrl.filter_info.mall_sync">
+                                <option value="-1" selected>-- 请选择 --</option>
+                                <option value="1">同步</option>
+                                <option value="0">不同步</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>搜索</button>
+                    </div>
+                </form>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>平台</th>
+                                <th>平台昵称</th>
+                                <th>合作次数</th>
+                                <th>商城ID
+                                    <br>商城名</th>
+                                <th>模版ID
+                                    <br>模版名称</th>
+                                <th>发布时间</th>
+                                <th>商城状态</th>
+                                <th>同步方式</th>
+                                <th>更新数量/更新时间</th>
+                                <th>商城总PV
+                                    <br /> Tab来源
+                                    <br /> 非合作文章二维码来源
+                                    <br /> 非合作文章链接推送来源
+                                    <br />
+                                </th>
+                                <th>商城总UV
+                                    <br /> Tab来源
+                                    <br /> 非合作文章二维码来源
+                                    <br /> 非合作文章链接推送来源
+                                    <br />
+                                </th>
+                                <th>等级</th>
+                                <th>分类</th>
+                                <th>总下单/SKU
+                                    <br />总支付订单/SKU
+                                    <br />包税路线订单/SKU
+                                    <br />国内路线订单/SKU
+                                    <br />活动订单</th>
+                                <th>
+                                    <!--总下单GMV<br />-->总支付GMV
+                                    <br />包税路线GMV
+                                    <br />国内路线GMV
+                                    <br />活动GMV</th>
+                                <th>包税购买用户人数
+                                    <br />包税客单价</th>
+                                <th see-hide="Hide-DD">极速路线订单
+                                    <br />性价比路线订单
+                                    <br />
+                                </th>
+                                <th see-hide="Hide-DD">极速路线GMV
+                                    <br />性价比路线GMV</th>
+                                <th>商城转化率<i class="fa fa-info-circle" uib-tooltip="商城支付订单/商城总UV"></i>
+                                    <br /> 商城下单率
+                                    <i class="fa fa-info-circle" uib-tooltip="商城下单数/商城总UV"></i>
+                                    <br /> 商城付款率
+                                    <i class="fa fa-info-circle" uib-tooltip="商城支付订单/商城下单数"></i>
+                                    <br />
+                                </th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $ctrl.article_list track by item.article_id">
+                                <td>{{item.platform_name}}</td>
+                                <td><a  href="/kol/kol-cooperation-management/{{item.kol_id}}?wechat_id={{item.weixin_id}}#5" class="text-success">{{item.kol_name}}</a></td>
+                                <td>{{item.coop_count}}</td>
+                                <td title="{{item.title}}"><a  href="/kol/kol-cooperation-management/{{item.kol_id}}/?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&collection_id={{item.collection_id}}&article_type=2#2" class="text-success">{{item.mall_id}}<br>{{item.title|moreContent:10}}</a></td>
+                                <td ><span style="color:black;">{{tem.template_id}}<br>{{item.template_name|moreContent:10}}</span></td>
+                                <td>{{item.collection_info.create_time * 1000 | date: 'yyyy-MM-dd' }}</td>
+                                <td ng-class="item.mall_online == 1 || 'text-primary'">{{item.mall_online == 1 ? '上线中':'已下线'}}</td>
+                                <td ng-class="item.mall_sync == 1 || 'text-primary'">{{item.mall_sync == 1 ? '自动同步':'不同步'}}</td>
+                                <td>{{item.last_update_num}}
+                                    <br>{{item.last_update_time * 1000 | date: 'MM-dd HH:mm' }}</td>
+                                <td>{{item.pv_info.s_1.pv}}
+                                    <br /> {{item.pv_info.s_2.pv}}
+                                    <br /> {{item.pv_info.s_3.pv}}
+                                    <br /> {{item.pv_info.s_4.pv}}
+                                    <br />
+                                </td>
+                                <td>{{item.pv_info.s_1.uv}}
+                                    <br /> {{item.pv_info.s_2.uv}}
+                                    <br /> {{item.pv_info.s_3.uv}}
+                                    <br /> {{item.pv_info.s_4.uv}}
+                                    <br />
+                                </td>
+                                <td>{{item.rank_name}}</td>
+                                <td>{{item.category_name}}</td>
+                                <td>
+                                    <span style="width:100px;display:block;">总下单：{{item.gmv_info.ex_all.order}}/{{item.gmv_info.ex_all.num_item}}<br /></span>
+                                    <span style="width:100px;display:block;">总支付：{{item.gmv_info.all.order}}/{{item.gmv_info.all.num_item}}<br /></span>
+                                    <span see-hide="Hide-DD">包税：{{item.gmv_info.normal.order}}/{{item.gmv_info.normal.num_item}}<br /></span>
+                                    <span see-hide="Hide-DD">国内：{{item.gmv_info.sham.order}}/{{item.gmv_info.sham.num_item}}<br /></span>
+                                    <span see-hide="Hide-DD">活动：{{item.gmv_info.act.order}}</span>
+                                </td>
+                                <td>
+                                    <!--
+                      <span style="width:150px;display:block;">总下单：{{item.gmv_info.ex_all.gmv | currency: '￥'}}<br /></span>
+                    -->
+                                    <span style="width:150px;display:block;">总支付：{{item.gmv_info.all.gmv | currency: '￥'}}<br /></span>
+                                    <span see-hide="Hide-DD">包税：{{item.gmv_info.normal.gmv | currency: '￥'}}<br /></span>
+                                    <span see-hide="Hide-DD">国内：{{item.gmv_info.sham.gmv | currency: '￥'}}<br /></span>
+                                    <span see-hide="Hide-DD">活动：{{item.gmv_info.act.gmv | currency: '￥'}}<br /></span>
+                                </td>
+                                <td>
+                                    <span style="width:150px;display:block;">人数：{{item.gmv_info.normal.num_buy}}<br /></span>
+                                    <span see-hide="Hide-DD">客单价：{{item.gmv_info.normal.price_per | currency: '￥'}}<br /></span>
+                                </td>
+                                <td see-hide="Hide-DD">
+                                    <span style="width:100px;display:block;">极速：{{item.gmv_info.visible.order}}<br /></span>
+                                    <span>性价：{{item.gmv_info.invisible.order}}<br /></span>
+                                </td>
+                                <td see-hide="Hide-DD">
+                                    <span style="width:150px;display:block;">极速：{{item.gmv_info.visible.gmv | currency: '￥'}}<br /></span>
+                                    <span>性价：{{item.gmv_info.invisible.gmv | currency: '￥'}}<br /></span>
+                                </td>
+                                <td>{{item.trans_info.s_1.per}}
+                                    <br /> {{item.trans_info.s_2.per}}
+                                    <br /> {{item.trans_info.s_3.per}}
+                                    <br />
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary ng-scope" ng-click="$ctrl.listSet(item.mall_id, item.title, item.mall_online, item.mall_sync)">编辑</button>
+
+                                    <a ng-href="{{item.collection_url_shop_1}}" ng-if="item.collection_url_shop_1 !== ''" target="_blank" class="btn btn-sm btn-primary">商城Tab链接</a>
+                                    <a ng-href="{{item.collection_url_shop_2}}" ng-if="item.collection_url_shop_2 !== ''" target="_blank" class="btn btn-sm btn-primary">非合作文章二维码</a>
+                                    <a ng-href="{{item.collection_url_shop_3}}" ng-if="item.collection_url_shop_3 !== ''" target="_blank" class="btn btn-sm btn-primary">非合作文章推送链接</a>
+
+                                    <a   href="/kol/kol-cooperation-management/{{item.kol_id}}?article_id={{item.article_id}}&wechat_id={{item.weixin_id}}&article_type=2&collection_id={{item.collection_id}}#2" class="btn btn-sm btn-primary">商品管理</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- </see-tab> -->
+                <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

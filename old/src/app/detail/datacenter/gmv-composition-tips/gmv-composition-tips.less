@@ -1,0 +1,42 @@
+.gmv-composition-tips {
+  display: inline-block;
+  position: relative;
+
+  .val {
+    cursor: default;
+    display: inline-block;
+    z-index: 10;
+    overflow: visible;
+  }
+
+  ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    width: 180px;
+    padding: 10px !important;
+    border: solid 1px #e4e4e4;
+    z-index: 20;
+  }
+
+  &.has-data {
+    &:hover {
+      ul {
+        display: block;
+      }
+    }
+
+    .val {
+      color: #5971e8;
+    }
+  }
+
+  .labe {
+    min-width: 50px;
+    display: inline-block;
+    text-align: right;
+  }
+}

@@ -1,0 +1,83 @@
+<nz-card [nzBordered]="false">
+  <form [nzLayout]="'inline'" nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form.value)">
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+        <div nz-form-item class="d-flex">
+          <div nz-form-label>
+            <label for="keyword">文章标题</label>
+          </div>
+          <div nz-form-control class="flex-1">
+            <nz-input nzType="text" formControlName="keyword" nzId="keyword" [nzSize]="'large'" [nzPlaceHolder]="'请输入'"></nz-input>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzXs="24" nzSm="24" nzMd="8" class="text-left mb-md">
+        <button nz-button type="submit" [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="loading$ | async">
+          <span>查询</span>
+        </button>
+        <button nz-button type="reset" [nzSize]="'large'" (click)="resetForm()">
+          <span>重置</span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <!--<div class="mb-md">-->
+    <!--<button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="add()" report="PAGE_CONTENT_ELEC_MARKET.BTN_ADD_ARTICLE">-->
+      <!--<i class="anticon anticon-plus"></i>-->
+      <!--<span>新建</span>-->
+    <!--</button>-->
+  <!--</div>-->
+  <div class="mb-md">
+    <nz-alert [nzType]="'info'">
+      <span alert-body>
+        共
+        <strong class="text-primary">{{ count$ | async }}</strong> 篇文章
+      </span>
+    </nz-alert>
+  </div>
+  <nz-table #nzTable nzShowSizeChanger nzShowQuickJumper [nzLoading]="loading$ | async" [nzAjaxData]="articles$ | async"
+    [nzTotal]="count$ | async" [(nzPageSize)]="pageSize" (nzPageSizeChange)="changePage()" [(nzPageIndex)]="page" (nzPageIndexChange)="changePage()">
+    <thead nz-thead>
+      <tr>
+        <th nz-th>
+          文章ID
+        </th>
+        <th nz-th>
+          文章标题
+        </th>
+        <th nz-th>
+          楼层
+        </th>
+        <th nz-th>
+          上线时间
+        </th>
+        <th nz-th>
+          操作
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of nzTable.data; let index = index">
+        <td nz-td [innerText]="item.article_id"></td>
+        <td nz-td>
+          <ellipsis lines="1" style="max-width: 200px">
+            <span [title]="item.title" [innerText]="item.title"></span>
+          </ellipsis>
+        </td>
+        <td nz-td [innerText]="item.floor_level"></td>
+        <td nz-td [innerText]="item.start_time * 1000 | date:'yyyy-MM-dd HH:mm:ss'"></td>
+        <td nz-td>
+          <!--<a (click)="edit(item)">编辑</a>-->
+          <!--<nz-divider nzType="vertical"></nz-divider>-->
+          <!--<span *ngIf="item.article_flag == 1">-->
+            <!--<a (click)="linkTo(item)">关联页面</a>-->
+            <!--<nz-divider nzType="vertical"></nz-divider>-->
+          <!--</span>-->
+          <!--<a (click)="links(item)">链接</a>-->
+          <!--<nz-divider nzType="vertical"></nz-divider>-->
+          <a [href]="getArticleGoodsHref(item)">查看商品</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

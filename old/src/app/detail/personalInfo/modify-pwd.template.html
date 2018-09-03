@@ -1,0 +1,56 @@
+<div class="header">
+  <h2><strong>修改密码</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">修改密码</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" name="pwdForm" novalidate w5c-form-validate>
+          <div class="form-group">
+            <div class="form-group" ng-class="{'has-error': pwdtext}">
+              <label class="col-sm-2 control-label required">输入原密码</label>
+              <div class="col-sm-7">
+                <input class="form-control" ng-blur="checkpwd()" type="password" name="pwd" required ng-model="formData.pwd">
+              </div>
+              <div class="col-sm-3 help-see" ng-show="pwdtext">
+                <p class="help-block">{{pwdtext}}</p>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': pwdForm.new_pwd.$touched && pwdForm.new_pwd.$invalid}">
+              <label class="col-sm-2 control-label required">输入新密码</label>
+              <div class="col-sm-7">
+                <input class="form-control" type="password" name="new_pwd" required ng-model="formData.new_pwd">
+              </div>
+              <div class="col-sm-3 help-see" ng-show="pwdForm.new_pwd.$touched && pwdForm.new_pwd.$invalid">
+                <p class="help-block">请输入新密码</p>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': confirmtext}">
+              <label class="col-sm-2 control-label required">确认新密码</label>
+              <div class="col-sm-7">
+                <input class="form-control" ng-blur="checknewpwd()" type="password" name="ori_pwd" required ng-model="formData.new1_pwd">
+              </div>
+              <div class="col-sm-3 help-see" ng-show="confirmtext">
+                <p class="help-block">{{confirmtext}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-7 col-sm-offset-2">
+                <button class="btn btn-primary" type='submit' w5c-form-submit="submitFrom(pwdForm)">确定</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

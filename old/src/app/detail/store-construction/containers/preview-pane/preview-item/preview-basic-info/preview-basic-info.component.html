@@ -1,0 +1,23 @@
+<div class="preview-basic-info">
+  <div class="iosbar"></div>
+  <div class="shop-title">
+    <i class="si si-arrow-left"></i>
+    <span>{{config.name}}</span>
+  </div>
+  <div class="basic-info--basic"
+       *ngIf="!bannerLinkInfo && config.show==1">
+    <div class="avatar">
+      <img alt=""
+           [seeSrc]="config.logoImgUrl" />
+    </div>
+    <div class="info">
+      <h3>{{ config.name}}</h3>
+      <p>{{ config.introduct}}</p>
+    </div>
+  </div>
+  <div class="basic-info--banner"
+       *ngIf="bannerLinkInfo && bannerLinkInfo.imgUrl && config.show==1">
+    <img alt=""
+         [seeSrc]="bannerLinkInfo?.imgUrl" />
+  </div>
+</div>

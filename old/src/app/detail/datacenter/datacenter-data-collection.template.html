@@ -1,0 +1,157 @@
+<div class="header">
+    <h2><strong>电商月度数据</strong></h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li><a href="/">Seego后台</a></li>
+            <li><a href="/datacenter">数据中心</a></li>
+            <li class="active">电商月度数据</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <h4>月度数据</h4>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped align-right">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 70px;">日期</th>
+                                <th>有效订单数</th>
+                                <th>购买人数</th>
+                                <th>GMV</th>
+                                <th>每单平均金额</th>
+                                <th>人均购买单数</th>
+                                <th>客单价</th>
+                                <th>退款退货数</th>
+                                <th>退款退货金额</th>
+                                <th>月复购人数</th>
+                                <th>月复购率</th>
+                                <th>总复购人数</th>
+                                <th>总复购率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item_1 in $ctrl.item_list_1 track by $index">
+                                <td>{{item_1.monthId}}</td>
+                                <td>{{item_1.orderNum}}</td>
+                                <td>{{item_1.orderUv}}</td>
+                                <td>{{item_1.gmv | currency:'¥'}}</td>
+                                <td>{{item_1.avgOrderGmv | currency:'¥'}}</td>
+                                <td>{{item_1.avgOrderNum | number:2}}</td>
+                                <td>{{item_1.avgUserGmv | currency:'¥'}}</td>
+                                <td>{{item_1.refundOrderNum}}</td>
+                                <td>{{item_1.refundMoney | currency:'¥'}}</td>
+                                <td>{{item_1.relastOrderUv}}</td>
+                                <td>{{item_1.relastOrderRate | number:2}}%</td>
+                                <td>{{item_1.reagoOrderUv}}</td>
+                                <td>{{item_1.reagoOrderRate | number:2}}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-content">
+                <h4>新增用户复购率%</h4>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped align-right">
+                        <thead>
+                            <tr>
+                                <th>首次购买日期</th>
+                                <th>新增购买用户数</th>
+                                <th>1月后</th>
+                                <th>2月后</th>
+                                <th>3月后</th>
+                                <th>4月后</th>
+                                <th>5月后</th>
+                                <th>6月后</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item_2 in $ctrl.item_list_2 track by $index">
+                                <td>{{item_2.monthId}}</td>
+                                <td>{{item_2.newOrderUv}}</td>
+                                <td>{{item_2.nextUvRate | number:2}}%</td>
+                                <td>{{item_2.nextUvRate2 | number:2}}%</td>
+                                <td>{{item_2.nextUvRate3 | number:2}}%</td>
+                                <td>{{item_2.nextUvRate4 | number:2}}%</td>
+                                <td>{{item_2.nextUvRate5 | number:2}}%</td>
+                                <td>{{item_2.nextUvRate6 | number:2}}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-content">
+                <h4>每个复购用户的平均购买次数</h4>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped align-right">
+                        <thead>
+                            <tr>
+                                <th>首次购买日期</th>
+                                <th>新增购买用户数</th>
+                                <th>1月后</th>
+                                <th>2月后</th>
+                                <th>3月后</th>
+                                <th>4月后</th>
+                                <th>5月后</th>
+                                <th>6月后</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item_3 in $ctrl.item_list_3 track by $index">
+                                <td>{{item_3.monthId}}</td>
+                                <td>{{item_3.newOrderUv}}</td>
+                                <td>{{item_3.avgNextNum | number:2}}</td>
+                                <td>{{item_3.avgNextNum2 | number:2}}</td>
+                                <td>{{item_3.avgNextNum3 | number:2}}</td>
+                                <td>{{item_3.avgNextNum4 | number:2}}</td>
+                                <td>{{item_3.avgNextNum5 | number:2}}</td>
+                                <td>{{item_3.avgNextNum6 | number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-content">
+                <h4>每个复购用户的平均购买额度</h4>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped align-right">
+                        <thead>
+                            <tr>
+                                <th>首次购买日期</th>
+                                <th>新增购买用户数</th>
+                                <th>1月后</th>
+                                <th>2月后</th>
+                                <th>3月后</th>
+                                <th>4月后</th>
+                                <th>5月后</th>
+                                <th>6月后</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item_4 in $ctrl.item_list_4 track by $index">
+                                <td>{{item_4.monthId}}</td>
+                                <td>{{item_4.newOrderUv}}</td>
+                                <td>{{item_4.avgNextGmv | currency:'¥'}}</td>
+                                <td>{{item_4.avgNextGmv2 | currency:'¥'}}</td>
+                                <td>{{item_4.avgNextGmv3 | currency:'¥'}}</td>
+                                <td>{{item_4.avgNextGmv4 | currency:'¥'}}</td>
+                                <td>{{item_4.avgNextGmv5 | currency:'¥'}}</td>
+                                <td>{{item_4.avgNextGmv6 | currency:'¥'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

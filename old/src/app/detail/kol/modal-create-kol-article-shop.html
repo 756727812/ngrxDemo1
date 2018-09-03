@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">添加商城-2.0</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">商城名称</label>
+            <div class="col-sm-7">
+              <input name="title" type="text" class="form-control" ng-model="vm.form_data.title" ng-trim="true" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

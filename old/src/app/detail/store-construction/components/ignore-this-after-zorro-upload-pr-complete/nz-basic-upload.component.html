@@ -1,0 +1,15 @@
+<span [ngClass]="_classMap" (click)="onClick($event)" role="button" style="padding: 20px;">
+  <!--
+    accept="image/jpg, image/jpeg, image/png"
+chrome bug: 不写这部分，会超级无敌慢
+   -->
+<input
+    #input
+    [accept]="nzAccept"
+    style="display:none"
+    type="file"
+    (change)="onChange($event)"
+    [multiple]="nzMultiple"
+>
+<ng-content></ng-content>
+</span>

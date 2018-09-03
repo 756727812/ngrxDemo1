@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.dismiss()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">如何在文章中售卖商品</h3>
+</div>
+<div class="modal-body clearfix">
+  <div class="top-note">
+    <p>请按照以下步骤</p>
+    <p>将主题内商品放入公众号文章中售卖</p>
+  </div>
+  <ul class="steps">
+    <li ng-repeat="item in $ctrl.steps track by $index">
+      <div class="no-step">{{$ctrl.getNoStepCn($index)}}</div>
+      <div class="summary">{{item.summary}}</div>
+      <div class="desc">{{item.desc}}</div>
+    </li>
+  </ul>
+  <div class="bottom">
+    <div class="warn-txt">请按照以上流程操作<br/>否则会导致你的商品无法被购买</div>
+    <span class="btn-ok"
+          ng-click="$ctrl.dismiss()">知道了</span>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div loading-mask="$ctrl.busy">
+  <div class="modal-header">
+    <i type="button"
+       class="si si-close close"
+       ng-click="$ctrl.dismiss()"
+       data-dismiss="modal"></i>
+    <h3 class="modal-title">信息配置</h3>
+  </div>
+  <div class="modal-body">
+    <see-tabset use-hash="false"
+                active-type="1">
+      <see-tab heading="前端配置"
+               type="1">
+        <xcx-code-auth-info-config-display-form info="$ctrl.infoData"
+                                                ok="$ctrl.ok()"
+                                                cancel="$ctrl.cancel()">
+        </xcx-code-auth-info-config-display-form>
+      </see-tab>
+      <see-tab heading="客服配置"
+               type="2">
+        <xcx-code-auth-info-config-service-form info="$ctrl.infoData"
+                                                ok="$ctrl.ok()"
+                                                cancel="$ctrl.cancel()">
+        </xcx-code-auth-info-config-service-form>
+      </see-tab>
+    </see-tabset>
+  </div>
+</div>

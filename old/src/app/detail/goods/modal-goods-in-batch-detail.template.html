@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title" ng-bind="rule.rule_name"></h3>
+</div>
+<div class="modal-body">
+  <div class="table-scrollable">
+    <table class="table table-hover table-striped">
+      <tbody>
+        <tr>
+          <td align="right" width="15%">商品数：</td>
+          <td ng-bind="ruleItemCount"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">发货地：</td>
+          <td ng-bind="rule.ship_country"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">商家类型：</td>
+          <td ng-bind="rule.seller_type+'   (0=全部, 1=B2C, 2=C2C)'"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">创建天数：</td>
+          <td ng-bind="rule.item_created_days"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">指定id：</td>
+          <td ng-bind="rule.item_ids"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">生效时间：</td>
+          <td ng-bind="(rule.start_time*1000|date:'yyyy-MM-dd HH:mm:ss')"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">创建时间：</td>
+          <td ng-bind="(rule.create_time*1000|date:'yyyy-MM-dd HH:mm:ss')"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">操作：</td>
+          <td ng-bind="rule.rule_type_str"></td>
+        </tr>
+        <tr>
+          <td align="right" width="15%">操作内容：</td>
+          <td ng-bind="rule.rule_content_str"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,255 @@
+<pro-header [title]="'入库详情'" [paths]="paths">
+    <ng-template #action>
+    <!-- <nz-button-group [nzSize]="'large'"> -->
+    <button nz-button (click)="alert()" [nzSize]="'large'">
+      <span><i [style.color]="warehouseDetail.alert ? 'red' : '#aaa'" class="si si-warn"></i> {{warehouseDetail.alert ? '取消告警' : '设置告警'}}</span>
+    </button>
+    <button nz-button (click)="cancel()" [nzSize]="'large'" *ngIf="warehouseDetail.status == 1">
+      <span>撤销</span>
+    </button>
+    <button nz-button (click)="navigateToEdit()" [nzSize]="'large'">
+      <span>编辑</span>
+    </button>
+    <button nz-button (click)="isDeliverModalVisible=true" [nzType]="'primary'" [nzSize]="'large'" *ngIf="warehouseDetail.status == 1">
+      <span>发货</span>
+    </button>
+    <button nz-button (click)="isConfirmModalVisible=true" [nzType]="'primary'" [nzSize]="'large'" *ngIf="warehouseDetail.status == 3">
+      <span>确认入库</span>
+    </button>
+  </ng-template>
+  <ng-template #status>
+    单号：{{warehouseDetail.warehouseOrderNo}}     状态：<span style="color: red;">{{warehouseDetail.statusStr}}</span>
+  </ng-template>
+</pro-header>
+<div class="warehouse-order">
+  <nz-card [nzBordered]="false">
+    <form nz-form (ngSubmit)="isConfirmModalVisible=true">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="buyer">入库类型</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          采购入库
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="supplierId">入库仓库</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          沙井仓
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="items">预报时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.forecastTime | date: "yyyy-MM-dd"}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status > 2">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24" >
+          <label for="items">入仓时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.warehouseTime | date: "yyyy-MM-dd"}}
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="items">关联采购单</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="16" [nzXs]="24" *ngFor="let po of warehouseDetail.purchaseOrders">
+          <app-purchase-order-item [warehouseOrderStatus]="warehouseDetail.status" [purchaseOrder]="po"></app-purchase-order-item>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">入库预报人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.warehouseForecaster}} ({{warehouseDetail.warehouseForecasterEmail}})
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="">预报人联系电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.warehouseForecasterPhone}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>1">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">承运商</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.carrier}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>1 && warehouseDetail.carrier !== '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">运单号</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.carrierInfo}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>1 && warehouseDetail.carrier === '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">车牌号</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.carNo}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>1 && warehouseDetail.carrier === '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">司机姓名</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.driverName}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>1 && warehouseDetail.carrier === '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">司机电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.driverPhone}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>2">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseReceiver">仓库签收人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.warehouseReceiver}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>2">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="warehouseForcasterPhone">签收人联系电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.warehouseReceiverPhone}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>3">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="confirmer">入库确认人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.confirmer}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>3">
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="confirmWarehouseTime">确认入库时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.confirmWarehouseTime | date: 'yyyy-MM-dd HH:mm'}}
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+          <label for="remark">备注(选填)</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24">
+          {{warehouseDetail.remark}}
+        </div>
+      </div>
+    </form>
+  </nz-card>
+</div>
+
+<nz-modal [nzVisible]="isDeliverModalVisible" [nzTitle]="'提示'" [nzContent]="deliverModalContent" (nzOnCancel)="isDeliverModalVisible=false"
+  (nzOnOk)="deliver()" [nzFooter]="deliverModalFooter">
+
+  <ng-template #deliverModalContent>
+    <form novalidate #df="ngForm" (ngSubmit)="_submitDeliverForm(df.valid)" id="deliverForm">
+    <div nz-form-item nz-row>
+      <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+        <label for="supplierId" nz-form-item-required>承运商</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+        <select [(ngModel)]="deliverForm.carrier" name="carrier" class="ant-input" required>
+          <option *ngFor="let c of carrierOptions" [value]="c">{{c}}</option>
+        </select>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="deliverForm.carrier !== '货拉拉'">
+      <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+        <label for="supplierId" nz-form-item-required>运单号</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+        <nz-input [(ngModel)]="deliverForm.carrierInfo" name="carrierInfo" #carrierInfo="ngModel" [nzSize]="'large'" required></nz-input>
+        <small [hidden]="carrierInfo.valid || (carrierInfo.pristine && !df.submitted)" class="text-danger">
+          请填写运单号
+        </small>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="deliverForm.carrier === '货拉拉'">
+      <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+        <label for="supplierId" nz-form-item-required>车牌号</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+        <nz-input [(ngModel)]="deliverForm.carNo" name="carNo" #carNo="ngModel" [nzPlaceHolder]="''" [nzSize]="'large'" required></nz-input>
+        <small [hidden]="carNo.valid || (carNo.pristine && !df.submitted)" class="text-danger">
+          请填写车牌号
+        </small>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="deliverForm.carrier === '货拉拉'">
+      <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+        <label for="supplierId" nz-form-item-required>司机姓名</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+        <nz-input [(ngModel)]="deliverForm.driverName" #driverName="ngModel" name="driverName" [nzPlaceHolder]="''" [nzSize]="'large'" required></nz-input>
+        <small [hidden]="driverName.valid || (driverName.pristine && !df.submitted)" class="text-danger">
+          请填写司机姓名
+        </small>
+      </div>
+    </div>
+    <div nz-form-item nz-row *ngIf="deliverForm.carrier === '货拉拉'">
+      <div nz-form-label nz-col [nzSm]="4" [nzXs]="24">
+        <label for="supplierId" nz-form-item-required>司机电话</label>
+      </div>
+      <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+        <nz-input [(ngModel)]="deliverForm.driverPhone" #driverPhone="ngModel" name="driverPhone" [nzPlaceHolder]="''" [nzSize]="'large'" required></nz-input>
+        <small [hidden]="driverPhone.valid || (driverPhone.pristine && !df.submitted)" class="text-danger">
+          请填写司机电话
+        </small>
+      </div>
+    </div>
+    </form>
+  </ng-template>
+  <ng-template #deliverModalFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="isDeliverModalVisible=false">
+      返 回
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [nzSize]="'large'" form="deliverForm">
+      确认
+    </button>
+  </ng-template>
+</nz-modal>
+
+
+<nz-modal [nzVisible]="isConfirmModalVisible" [nzTitle]="'提示'" [nzContent]="confirmModalContent" (nzOnCancel)="confirmer=''; isConfirmModalVisible=false"
+  (nzOnOk)="confirm()">
+  <ng-template #confirmModalContent>
+    <div nz-row>
+      <div nz-col [nzSpan]="3">
+        确认人：
+      </div>
+      <div nz-col [nzSpan]="10">
+        <nz-input [(ngModel)]="confirmer" name="confirmer" [nzPlaceHolder]="'确认人'" [nzSize]="'large'"></nz-input>
+        <p *ngIf="confirmer?.length>0 && sellerName !== confirmer" style="color: red">仅支持输入当前账号对应的姓名</p>
+      </div>
+    </div>
+    <p>注意：部分商品的预报货号与实入货号不匹配！</p>
+    <p>请务必确认入库数据的准确性，确认后商品库存将被离开更新。</p>
+    <p>确认进行该操作？</p>
+  </ng-template>
+</nz-modal>

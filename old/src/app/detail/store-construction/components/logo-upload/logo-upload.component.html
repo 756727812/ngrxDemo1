@@ -1,0 +1,14 @@
+<div class="logo-upload">
+  <div class="init-trigger" [hidden]="value||uploading">
+    <nz-basic-upload name="image" [nzBeforeUpload]="beforeUpload" [nzAccept]="'image/jpg, image/jpeg, image/png, image/gif'" [nzAction]="'/api/item/upload'"
+      (nzOnError)="onError($event)" (nzOnProgress)="onProgress($event)" (nzOnStart)="onStart($event)" (nzOnSuccess)="onSuccess($event)">
+    </nz-basic-upload>
+  </div>
+  <div class="img-seat" *ngIf="value||uploading">
+    <div class="spin-wrap" [hidden]="!uploading">
+      <nz-spin class="spin" [nzSize]="'large'"></nz-spin>
+    </div>
+    <img [hidden]="!value" [seeSrc]="value" alt="">
+  </div>
+  <span class="edit-trigger" [hidden]="!value" (click)="handleEditClick()">{{label}}</span>
+</div>

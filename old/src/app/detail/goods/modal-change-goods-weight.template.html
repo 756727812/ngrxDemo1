@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">调整权重2.0</h3>
+</div>
+<div class="modal-body">
+  <div class="table-scrollable">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>商品ID：</td>
+          <td>{{score_info.item_id}}</td>
+        </tr>
+        <tr>
+          <td>搜索总评分：</td>
+          <td>{{score_info.score_data_info.score}}</td>
+        </tr>
+        <tr>
+          <td>相关性：</td>
+          <td>{{score_info.score_data_info.simi_score}}</td>
+        </tr>
+        <tr>
+          <td>热度：</td>
+          <td>{{score_info.score_data_info.hot_score}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form name="changeWeightForm" class="form-horizontal" novalidate>
+    <div class="form-group">
+      <label class="control-label col-sm-4">人工分（范围0.00 ～ 2.00）</label>
+      <div class="col-sm-7 text-left">
+        <input id="pop-listnum" class="form-control" type="text" ng-model="score_info.score_manual" placeholder="范围0.00 ～ 2.00" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4 required">人工分有效天数</label>
+      <div class="col-sm-7">
+        <select class="form-control" ng-model="score_info.day_reset_manual" required>
+          <option value="0" selected>-- 请选择 --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

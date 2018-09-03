@@ -1,0 +1,113 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">选择商品</h3>
+</div>
+<div class="modal-body">
+    <div class="row" see-hide="KOL New-Brand">
+        <div class="col-xs-12 portlets">
+            <label style="width: 100%;">商品：
+                <textarea rows="3" style="width: 100%;" disabled>{{vm.str_choice}}</textarea>
+            </label>
+            <p>已选中{{vm.list_choice.length}}个商品</p>
+            <br />
+        </div>
+        <div class="col-xs-12 portlets">
+            <!-- <label class="control-label col-xs-5">
+                品类
+                <div class="input-group">
+                    <ui-select multiple ng-model="vm.search_form.filter_class_id" theme="bootstrap" close-on-select="false" title="选择品类" style="width:200px">
+                        <ui-select-match placeholder="选择品类...">{{$item.value}}</ui-select-match>
+                        <ui-select-choices repeat="cls.filter_class_id as cls in vm.filter_class | propsFilter: {value: $select.search}">
+                            <div ng-bind-html="cls.value | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </label> -->
+            <label class="control-label col-xs-5">品类
+                <div class="input-group">
+                    <span class="form-control">{{ vm.getSelectedClassName() }}</span>
+                    <div class="btn btn-primary input-group-addon" type="button" ng-click="vm.toSelectClass()">选择品类
+                    </div>
+                </div>
+            </label>
+            <label class="control-label col-xs-5">
+                关键词
+                <div class="input-group">
+                    <input type="search" class="form-control w-300 ng-pristine ng-valid ng-empty ng-touched" placeholder="关键词" ng-model="vm.search_form.keyword">
+                </div>
+                <!-- {{vm.search_form.keyword}}-->
+            </label>
+            <div class="col-xs-2">
+                <br>
+                <button class="btn btn-primary" ng-click="vm.hotGoods()">搜索</button>
+            </div>
+        </div>
+
+        <div class="col-xs-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <uib-tabset active="active">
+                        <uib-tab heading="热门单品库" select="vm.changeTab_1()" index="0">
+                            <div class="grid-portfolio m-t-10">
+                                <div class="grid-portfolio m-t-10" ng-if="vm.list_item.length > 0">
+                                    <div class="row">
+                                        <label class="grid-item"
+                                        ng-disabled="good.alreadyChecked"
+                                        ng-repeat="good in vm.list_item track by $index"
+                                        >
+                                          <i ng-show="good.isChecked"
+                                          class="fa fa-check checked"
+                                          ng-class="{'original-checked':good.alreadyChecked}"></i>
+                                          <img see-src="good.item_imgurl">
+                                          <input ng-if="!good.alreadyChecked" type="checkbox" ng-model="good.isChecked" ng-change="vm.selectedChanged(good)" >
+                                          <p><span title="{{good.item_discount_price | currency: '￥'}} {{good.item_name}}">{{good.item_name}}</span></p>
+                                        </label>
+                                    </div>
+                                    <!-- 页码 -->
+                                    <div class="row">
+                                        <div class="col-xs-2">
+                                            <select class="form-control" ng-model="vm.cur_page" ng-change="vm.hotGoods()" ng-options="item for item in vm.list_page">
+                                                <option value="" selected>-- 页数 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab heading="选品库" select="vm.changeTab_2()" index="1">
+                            <div class="grid-portfolio m-t-10">
+                                <div class="grid-portfolio m-t-10" ng-if="vm.list_item.length > 0">
+                                    <!--
+              <button type="button" class="btn btn-primary" ng-click="vm.checkAll()">全选</button>
+              <button type="button" class="btn btn-primary" ng-click="vm.checkReverse()">反选</button>-->
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-4 col-md-3 col-xlg-2 m-t-10" ng-repeat="good in vm.selected_goods_list" style="width:135px;height:180px;">
+                                            <img see-src="good.item_imgurl" width="120px" height="120px">
+                                            <label>
+                                                <input type="checkbox" ng-model="good.isChecked" ng-change="vm.selectedChanged(good)" ng-disabled="good.alreadyChecked">{{good.item_id}}&nbsp;&nbsp;&nbsp;&nbsp;{{good.item_discount_price | currency: '￥'}}</label>
+                                            <p><span title="{{good.item_discount_price | currency: '￥'}} {{good.item_name}}">{{good.item_name}}</span></p>
+                                        </div>
+                                    </div>
+                                    <!-- 页码 -->
+                                    <div class="row">
+                                        <div style="float:left; padding-left:40px;padding-top:15px;">
+                                            <select class="form-control" ng-model="vm.favour_page" ng-change="vm.materialFavorItemList()" ng-options="item for item in vm.list_page_favour">
+                                                <option value="" selected>-- 页数 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                    </uib-tabset>
+                    <!-- <pagination total-items="$ctrl.total_items"></pagination> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+</div>

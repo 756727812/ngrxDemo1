@@ -1,0 +1,2 @@
+<a *ngIf="useLinkBtn" (click)="batchAssign()">{{btnText}}</a>
+<button *ngIf="!useLinkBtn" nz-button (click)="batchAssign()" [nzSize]="nzSize" [nzType]="nzType" [disabled]="disabled">{{btnText}}</button>

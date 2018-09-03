@@ -1,0 +1,51 @@
+<div class="header">
+  <h2><strong>搜索管理</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">搜索管理</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-inline" ng-submit="search()">
+          <div class="form-group">
+            <label class="control-label">搜索关键词
+                      <input type="text" class="form-control" style="min-width:210px;" autofocus ng-model="keyword" placeholder="商品名、品牌名、其他关键词">
+                  </label>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+          <div class="form-group">
+            <label class="control-label">批量操作</label>
+          </div>
+          <button type="button" class="btn btn-primary" ng-click="checkAll()">全选</button>
+          <button type="button" class="btn btn-primary" ng-click="checkReverse()">反选</button>
+          <button type="button" class="btn btn-primary" ng-click="hideOrShow(checkedItems)">隐藏</button>
+          <button type="button" class="btn btn-primary" ng-click="hideOrShow(checkedItems, true)">显示</button>
+          <button type="button" class="btn btn-primary" ng-click="changeWeight(checkedItems)">调整权重</button>
+          <button type="button" class="btn btn-primary" ng-click="setGlobalHidden(checkedItems)">全局隐藏</button>
+        </form>
+        <div class="grid-portfolio m-t-10">
+          <div class="row">
+            <div class="col-xs-6 col-sm-4 col-md-3 col-xlg-2 m-t-10" ng-repeat="good in goods">
+              <img class="img-responsive img-rounded img-viewer" see-src="good.item_imgurl" alt="{{good.item_name}}" ng-click="showUp(good)">
+              <label>
+                          <input type="checkbox" ng-model="good.isChecked" ng-change="selectedChanged()">{{good.item_id}}</label><span style="float:right;margin-right:0px;color:red; font-weight:bold;">{{good.score_info.score_data_info.score}}&nbsp;&nbsp;</span>
+              <p>{{good.brand_name}}</p>
+              <p>{{good.item_name}}</p>
+              <p>{{good.item_discount_price | currency: '￥'}}</p>
+              <button class="btn btn-sm btn-primary" ng-click="hideOrShow(good, good.key_hidden == '1')">{{good.key_hidden == '1' ? '显示' : '隐藏'}}</button>
+              <button class="btn btn-sm btn-primary" ng-click="changeWeight(good)">调整权重</button>
+            </div>
+          </div>
+        </div>
+        <pagination total-items="total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,48 @@
+<nz-table #nzTable nzBordered style="width:900px" [nzPageSize]="pageSize" [nzAjaxData]="data" nzIsPagination='false'>
+  <thead nz-thead>
+  <tr>
+    <th nz-th class='text-center w-220'>分组名称</th>
+    <th nz-th class='text-center w-90'>商品数</th>
+    <th nz-th class='text-center w-70'>
+      <span class="f22">排序 <i class="anticon anticon-exclamation-circle" nz-tooltip="填写排序数字，越大越靠前"></i></span>
+    </th>
+    <th nz-th class='text-center w-220'>操作</th>
+  </tr>
+  </thead>
+  <tbody nz-tbody>
+  <tr nz-tbody-tr *ngFor='let m of nzTable.data'>
+    <td nz-td>
+      <div nz-row>
+        <div nz-col nzSpan="20">
+          <input *ngIf="m.nameEdit" nz-input [(ngModel)]="m.groupName" placeholder="分组名称"/>
+          <p *ngIf="!m.nameEdit">{{m.groupName}}</p>
+        </div>
+        <div nz-col nzSpan="2" *ngIf="isEdit">
+          <i *ngIf="m.nameEdit" class="icon fa fa-pencil-square-o edit-name" (click)="nameChange(m)"></i>
+          <i *ngIf="!m.nameEdit" class="icon fa fa-pencil-square-o edit-name" (click)="toggleName(m)"></i>
+        </div>
+      </div>
+    </td>
+    <td nz-td class='text-center'>
+      <span [style.color]="m.count<=0 ?'#e51c23':''">{{m.count}}</span>
+    </td>
+    <td nz-td>
+      <div class="text-center">
+        <span *ngIf="!isEdit" style="padding: 0 10px;">{{m.sortId}}</span>
+        <sort-input *ngIf="isEdit" [sort]="m.sortId" [isBenefit]="true" (sortChange1)="sortGroup($event,m)"></sort-input>
+      </div>
+    </td>
+    <td nz-td class='text-center'>
+      <a (click)="showGroup(m)" class='link'>查看</a>
+      <ng-container *ngIf="isEdit">
+        <span nz-table-divider></span>
+        <a (click)='addGoods(m)' class='link'>添加商品</a>
+        <span nz-table-divider></span>
+        <nz-popconfirm [nzTitle]="'确定要删除这个分组吗？'"   [nzOkText]="'确定'" [nzCancelText]="'取消'" (nzOnConfirm)="removeGroup(m)">
+          <a nz-popconfirm class='link'>删除</a>
+        </nz-popconfirm>
+      </ng-container>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

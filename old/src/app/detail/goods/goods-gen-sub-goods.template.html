@@ -1,0 +1,559 @@
+<div class="header">
+  <h2><strong>{{ $ctrl.type === 'new' ? '生成' : '编辑' }}子商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">{{ $ctrl.type === 'new' ? '生成' : '编辑' }}子商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" name="genSubGoodsForm" novalidate w5c-form-validate>
+          <!-- <div class="form-group">
+               <label class="col-sm-2 control-label required">母商品ID</label>
+               <div class="col-sm-8">
+               <input class="form-control" type="text" name="item_id" ng-model="$ctrl.form_data.item_id" ng-trim="true" ng-disabled="$ctrl.type === 'edit'" required ng-blur="$ctrl.onGetParentProduct()">
+               </div>
+               </div>
+               <div class="form-group" ng-show="$ctrl.item.item_id">
+               <div class=" col-sm-8 col-sm-offset-2">
+               <div class="table-scrollable">
+               <table class="table">
+               <tbody>
+               <tr>
+               <td>
+               <div class="img-container">
+               <img see-src="$ctrl.item.item_imgurl" see-viewer alt="{{$ctrl.item.item_name}}">
+               </div>
+               </td>
+               <td>{{ $ctrl.item.item_name }}</td>
+               <td>{{ $ctrl.item.seller_name}} <span ng-if="$ctrl.item.seller_email">{{ '(' + $ctrl.item.seller_email + ')' }}</span></td>
+               </tr>
+               </tbody>
+               </table>
+               </div>
+               </div>
+               </div>
+               <div class="form-group">
+               <label class="col-sm-2 control-label required">分销账号</label>
+               <div class="col-sm-8">
+               <ui-select ng-model="$ctrl.form_data.spu_info.backend_id" theme="select2" style="min-width: 300px;" title="请选择"  ng-disabled="$ctrl.type === 'edit'" ng-change="$ctrl.changeKOL()">
+               <ui-select-match placeholder="请选择...">{{$select.selected.name}}</ui-select-match>
+               <ui-select-choices repeat="item.backend_id as item in $ctrl.list_key | propsFilter: {name: $select.search}">
+               <div ng-bind-html="item.name | highlight: $select.search"></div>
+               </ui-select-choices>
+               </ui-select>
+               </div>
+               </div> -->
+          <h4>商品编辑</h4>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" style="text-align: left">
+                <input type="checkbox" ng-model="$ctrl.sync_check.all" ng-change="$ctrl.getSyncCheck('all')">与原商品同步</label>
+            <div class="col-sm-8">商品信息</div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+                  <input type="checkbox" class="pull-left" ng-model="$ctrl.sync_check.item_name" ng-change="$ctrl.getSyncCheck('item_name')"><span class="required">商品名称</span></label>
+            <div class="col-sm-8">
+              <input class="form-control" type="text" name="item_name" required
+                ng-model="$ctrl.form_data.spu_info.item_name"
+                ng-readonly="$ctrl.sync_check.item_name"
+                >
+              <p class="text-info m-0">格式：品牌名+元素（材质，流行色）+风格（复古，甜美等）+品类（连衣裙，卫衣等）例如： FEWMODA抹胸侧系带优雅礼服裙</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+                <input type="checkbox" class="pull-left" ng-model="$ctrl.sync_check.sell_point" ng-trim="true" ng-change="$ctrl.getSyncCheck('sell_point')"><span class="required">商品卖点</span></label>
+            <div class="col-sm-8 ">
+              <input class="form-control" type="text" name="sell_point" ng-trim="true" placeholder="7-12个字"
+                ng-model="$ctrl.form_data.spu_info.sell_point" ng-readonly="$ctrl.sync_check.sell_point" required>
+            </div>
+            <p class="text-info col-sm-offset-2 col-sm-8">例如: 年会必备的手拿包 、霉霉最爱的帆布鞋</p>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+                  <input type="checkbox" class="pull-left" ng-model="$ctrl.sync_check.item_main_img_list" ng-change="$ctrl.getSyncCheck('item_main_img_list')"><span class="required">商品主图</span></label>
+            <div class="col-sm-10">
+              <!-- <label class="btn btn-sm btn-primary pull-left m-r-20" ng-disabled="$ctrl.sync_check.item_main_img_list">上传图片
+                        <input type="file" min-size="640x640" see-file-select="uploadMain" class="hide" accept="image/*" multiple>
+                    </label> -->
+              <button class="btn btn-sm btn-primary pull-left m-r-20" type="button"
+                ng-disabled="$ctrl.sync_check.item_main_img_list"
+                ng-click="$ctrl.uploadMain()"
+              >添加图片</button>
+              <p class="text-info">尺寸不得低于640*640，要求正方形清晰照，图片优势：摆拍图>场景图>白底图，5张上限</p>
+              <div class="clear-fix">
+                <div style="display: flex;flex-wrap: wrap;">
+                  <div class="img-preview detailImages" see-viewer ng-repeat="img in $ctrl.form_data.spu_info.item_main_img_list track by img"
+                    ng-show="$ctrl.form_data.spu_info.item_main_img_list[$index]">
+                    <img width="100" class="img-viewer" see-src="$ctrl.form_data.spu_info.item_main_img_list[$index]" alt="" >
+                    <a href="" class="img-del-btn" ng-click="$ctrl.delImage('item_main_img_list',$index)" ng-hide="$ctrl.sync_check.item_img_list"></a>
+                    <div class="img-action" ng-hide="$ctrl.sync_check.item_main_img_list">
+                      <a href="" class="left-action" ng-click="$ctrl.changeOrder($index, $index-1, 'item_main_img')"><i class="fa fa-arrow-left"></i></a>
+                      <a href="" class="right-action" ng-click="$ctrl.changeOrder($index, $index+1, 'item_main_img')"><i class="fa fa-arrow-right"></i></a>
+                      <!-- <a href="" class="reset-action" ngf-select="$ctrl.resetImage($file, $index, 'item_main_img')" accept="image/*"><i class="fa fa-repeat"></i></a> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+            <label class="col-sm-2 control-label">
+                  <input type="checkbox" class="pull-left" ng-model="$ctrl.sync_check.item_img_list" ng-change="$ctrl.getSyncCheck('item_img_list')"><span class="required">商品细节图</span></label>
+            <div class="col-sm-10">
+              <label class="btn btn-sm btn-primary pull-left m-r-20" ng-disabled="$ctrl.sync_check.item_img_list">上传图片
+                        <input type="file" see-file-select="uploadDetail" class="hide" accept="image/jpg, image/jpeg, image/png" multiple>
+                    </label>
+              <p class="text-info">图片类别建议：搭配图（增加吸引力），实拍图（提供色差参考），多个规格的对比图（例如：一条围巾多个颜色，将多个颜色放在一起，用户可以作为参考），细节图至少两张，照片不能带有水印，15张上限</p>
+              <div class="clear-fix">
+                <div style="display: flex;flex-wrap: wrap;">
+                  <div class="img-preview detailImages" see-viewer ng-repeat="img in $ctrl.form_data.spu_info.item_img_list track by $index"
+                    ng-show="$ctrl.form_data.spu_info.item_img_list[$index]">
+                    <img width="100" class="img-viewer" see-src="$ctrl.form_data.spu_info.item_img_list[$index]" alt="">
+                    <a href="" class="img-del-btn" ng-click="$ctrl.delImage('item_img_list',$index)" ng-hide="$ctrl.sync_check.item_img_list"></a>
+                    <div class="img-action" ng-hide="$ctrl.sync_check.item_img_list">
+                      <a href="" class="left-action" ng-click="$ctrl.changeOrder($index, $index-1)"><i class="fa fa-arrow-left"></i></a>
+                      <a href="" class="right-action" ng-click="$ctrl.changeOrder($index, $index+1)"><i class="fa fa-arrow-right"></i></a>
+                      <a href="" class="reset-action" ngf-select="$ctrl.resetImage($file, $index)" accept="image/jpg, image/jpeg, image/png"><i class="fa fa-repeat"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="required">服务说明</span></label>
+            <div class="col-sm-8">
+              <label class="checkbox-inline">
+                <input type="checkbox" ng-disabled="true" class="seven_days_refund" ng-model="$ctrl.surport_seven_days_refund"/>
+                7天无理由退货
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" ng-disabled="true" class="seven_days_refund" ng-model="$ctrl.unsurport_seven_days_refund"/>
+                不支持7天无理由退货
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+                <input type="checkbox" class="pull-left" ng-model="$ctrl.sync_check.item_desc" ng-change="$ctrl.getSyncCheck('item_desc')"><span class="required">商品详情</span></label>
+            <div class="col-sm-8">
+              <div class="ueditor" config="$ctrl.ueditor.config" ng-model="$ctrl.form_data.spu_info.item_desc" ng-disabled="$ctrl.sync_check.item_desc"></div>
+              <!--<text-angular name="item_desc" ta-toolbar-button-class="btn btn-sm btn-info" required ta-toolbar="[['bold'], ['undo', 'redo'], ['html', 'charcount']]" ng-show="!$ctrl.sync_check.item_desc"
+                   ng-model="$ctrl.form_data.spu_info.item_desc" placeholder="请务必在此详细描述商品基本信息（例如服装的衣长，面料，采购渠道等），主要卖点，注意事项，商品交付形式和售后服务，要求字数大于20"></text-angular>-->
+              <!--<p class="bg-light p-10" ng-bind-html="$ctrl.form_data.spu_info.item_desc | trustHtml" ng-show="$ctrl.sync_check.item_desc && $ctrl.form_data.spu_info.item_desc"></p>-->
+            </div>
+          </div>
+          <div  ng-if="!$ctrl.isQuhaodian" ng-show="$ctrl.item.item_id">
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">价格属性</label>
+              <div class="table-scrollable col-xs-12" style="width: 1000px">
+                <table class="table table-bordered table-hover table-center">
+                  <thead>
+                    <tr>
+                      <th ng-repeat="(attr, value) in $ctrl.item.sku_list[0].sku_pros track by attr" ng-bind="attr"></th>
+                      <!--<th>母商品<br>成本价</th>-->
+                      <!--<th>母商品<br>日常售价/市场价</th>-->
+                      <th>
+                        <span class="required">供货价</span><br>
+                        <!-- 子商品禁止编辑供货价
+                             <input name="cost_price" class="form-control form-white w-80" type="number" min="0" ng-model="$ctrl.sameTriger.cost_price"
+                             ng-change="$ctrl.setSame('cost_price');$ctrl.onSkuChanged()"
+                             />-->
+                      </th>
+                      <th>最低建议零售价/最高建议零售价</th>
+                      <th>
+                        <span class="required">日常售价/市场价</span><br>
+                        <input name="sku_price" class="form-control form-white w-80" type="number" min="0"
+                               ng-model="$ctrl.sameTriger.sku_price"
+                               ng-change="$ctrl.setSame('sku_price');$ctrl.onSkuChanged(true)"
+                               ng-disabled="$ctrl.isInGroupon || $ctrl.isInSeckill"
+                        />&nbsp;&sol;&nbsp;
+                        <input name="sku_ori_price" class="form-control form-white w-80" type="number" min="0"
+                               ng-model="$ctrl.sameTriger.sku_ori_price"
+                               ng-change="$ctrl.setSame('sku_ori_price');$ctrl.onSkuChanged()"
+                               ng-disabled="$ctrl.isInGroupon"
+                        />
+                      </th>
+                      <th ng-if="$ctrl.type === 'add'">促销售价<br>
+                        <input name="promotion_price" class="form-control form-white w-80" type="number" min="0" ng-model="$ctrl.sameTriger.promotion_price"
+                               ng-change="$ctrl.setSame('promotion_price');$ctrl.changePromotion()" />
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="sku in $ctrl.item.sku_list track by sku.sku_id">
+                      <td ng-repeat="(attr, value) in $ctrl.item.sku_list[0].sku_pros track by attr" ng-bind="sku.sku_pros[attr]"></td>
+                      <td>
+                        <input w5c-dynamic-name="'cost_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control"
+                               ng-model="$ctrl.form_data.sku_list[$index].cost_price"
+                               ng-change="$ctrl.onSkuChanged()"
+                               ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"
+                               ng-disabled="true">
+                      </td>
+                      <td class="text-center">
+                        <input w5c-dynamic-name="'suggestedRetailPriceFrom' + $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80" type="number" min="0"
+                               ng-model="$ctrl.form_data.sku_list[$index].suggested_retail_price_from" disabled ng-change="vm.handleSkuError()" />
+                        &nbsp;&sol;&nbsp;
+                        <input w5c-dynamic-name="'suggestedRetailPriceTo' + $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80" type="number" min="0"
+                               ng-model="$ctrl.form_data.sku_list[$index].suggested_retail_price_to" disabled ng-change="vm.handleSkuError()" />
+                      </td>
+                      <td>
+                        <input w5c-dynamic-name="'sku_price' + $index" w5c-dynamic-element type="number" min="0"
+                               max="{{$ctrl.form_data.sku_list[$index].onsale > 0 ? $ctrl.form_data.sku_list[$index].sku_ori_price : false}}"
+                               class="form-control w-80" ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"
+                               ng-model="$ctrl.form_data.sku_list[$index].sku_price"
+                               ng-change="$ctrl.onSkuChanged(true)"
+                               ng-disabled="$ctrl.isInGroupon || $ctrl.isInSeckill"
+                        >&nbsp;&sol;&nbsp;
+                        <input w5c-dynamic-name="'sku_ori_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control w-80"
+                               ng-model="$ctrl.form_data.sku_list[$index].sku_ori_price"
+                               ng-change="$ctrl.onSkuChanged()"
+                               ng-disabled="$ctrl.isInGroupon"
+                               ng-required="$ctrl.form_data.sku_list[$index].onsale > 0">
+                      </td>
+                      <td ng-if="$ctrl.type === 'add'">
+                        <input w5c-dynamic-name="'promotion_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control" ng-trim="true"
+                               ng-model="$ctrl.form_data.sku_list[$index].promotion_price"
+                               ng-change="$ctrl.changePromotion()">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- 修改 -->
+          <div ng-if="$ctrl.isQuhaodian" ng-show="$ctrl.item.item_id">
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">价格属性</label>
+                <div class="table-scrollable col-xs-12" style="width: 1000px">
+                  <table class="table table-bordered table-hover table-center">
+                    <thead>
+                      <tr>
+                        <th style="width:120px" ng-repeat="(attr, value) in $ctrl.item.sku_list[0].sku_pros track by attr" ng-bind="attr"></th>
+                        <th style="width: 120px"><span>成本价</span></th>
+                        <th style="width: 120px"><span>趣好店供货价</span></th>
+                        <th style="width: 120px"><span class="required">券后价</span></th>
+                        <th style="width: 320px">
+                          <span class="required">日常售价/市场价</span>
+                        </th>
+                        <th style="width: 120px">
+                          <span class="required">一级佣金比率</span>
+                        </th>
+                        <th style="width: 120px">
+                          <span class="required">二级佣金比率</span>
+                        </th>
+                        <th style="width: 120px">公司利润比率</th>
+                        <th style="width: 200px">优惠券金额</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="sku in $ctrl.item.sku_list track by sku.sku_id">
+                        <td ng-repeat="(attr, value) in $ctrl.item.sku_list[0].sku_pros track by attr" ng-bind="sku.sku_pros[attr]"></td>
+                        <td>
+                          <input w5c-dynamic-name="'supply_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control"
+                                 ng-model="$ctrl.form_data.sku_list[$index].supply_price"
+                                 ng-disabled="true"
+                                 ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"/>
+                        </td>
+                        <td>
+                          <input w5c-dynamic-name="'center_supply_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control"
+                          ng-model="$ctrl.form_data.sku_list[$index].center_supply_price"
+                          ng-change="$ctrl.onSkuItemChanged($index,'center_supply_price')"
+                          ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"
+                          ng-disabled="true"/>
+                        </td>
+                        </td>
+                        <td>
+                            <input w5c-dynamic-name="'center_member_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control"
+                            ng-model="$ctrl.form_data.sku_list[$index].center_member_price"
+                            ng-change="$ctrl.onSkuItemChanged($index,'center_member_price')"
+                            ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"/>
+                        </td>
+                        <td style="white-space: nowrap">
+                            <input w5c-dynamic-name="'sku_price' + $index" w5c-dynamic-element type="number" min="0"
+                            class="form-control w-80" ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"
+                            ng-model="$ctrl.form_data.sku_list[$index].sku_price"
+                            ng-change="$ctrl.onSkuItemChanged($index,'sku_price',true)"
+                            ng-disabled="$ctrl.isInGroupon || $ctrl.isInSeckill"/>&nbsp;/
+                            <input w5c-dynamic-name="'sku_ori_price' + $index" w5c-dynamic-element type="number" min="0" class="form-control w-80"
+                            ng-model="$ctrl.form_data.sku_list[$index].sku_ori_price"
+                            ng-change="$ctrl.onSkuItemChanged($index,'sku_ori_price')"
+                            ng-disabled="$ctrl.isInGroupon"
+                            ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"/>
+                        </td>
+                        <td style="white-space: nowrap">
+                          <input w5c-dynamic-name="'first_level_refund_ratio' + $index" w5c-dynamic-element type="number"  class="form-control w-80"
+                                 ng-model="$ctrl.form_data.sku_list[$index].first_level_refund_ratio"
+                                 ng-change="$ctrl.onSkuItemChanged($index,'first_level_refund_ratio')"
+                                 ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"/> %
+                        </td>
+                        <td style="white-space: nowrap">
+                          <input w5c-dynamic-name="'second_level_refund_ratio' + $index" w5c-dynamic-element type="number" class="form-control w-80"
+                                 ng-model="$ctrl.form_data.sku_list[$index].second_level_refund_ratio"
+                                 ng-change="$ctrl.onSkuItemChanged($index,'second_level_refund_ratio')"
+                                 ng-required="$ctrl.form_data.sku_list[$index].onsale > 0"/> %
+                        <td style="white-space: nowrap">
+                          <input w5c-dynamic-name="'company_profit_ratio' + $index" w5c-dynamic-element type="number"  class="form-control w-80"
+                                 ng-model="$ctrl.form_data.sku_list[$index].company_profit_ratio"
+                                 ng-change="$ctrl.onSkuItemChanged($index,'company_profit_ratio')"
+                                 ng-disabled="true"/> %
+                        </td>
+                        <td>
+                          <input w5c-dynamic-name="'coupon_amount' + $index" w5c-dynamic-element type="number" min="0" class="form-control"
+                                 ng-model="$ctrl.form_data.sku_list[$index].coupon_amount"
+                                 ng-change="$ctrl.onSkuItemChanged($index,'coupon_amount')"
+                                 ng-disabled="true"/>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="batch-form">
+                    <label>批量设置:</label>
+                    <input style="width: 120px" w5c-dynamic-name="'sku_price" w5c-dynamic-element type="number"  class="form-control"
+                           ng-model="$ctrl.batchForm.center_member_price" placeholder="券后价" />
+                    <input style="width: 120px" w5c-dynamic-name="'sku_price" w5c-dynamic-element type="number"  class="form-control"
+                           ng-model="$ctrl.batchForm.sku_price" placeholder="日常售价"/>
+                    <input style="width: 120px" w5c-dynamic-name="'sku_price" w5c-dynamic-element type="number"  class="form-control"
+                           ng-model="$ctrl.batchForm.sku_ori_price" placeholder="市场价"/>
+                    <input style="width: 150px"  w5c-dynamic-name="'sku_price" w5c-dynamic-element type="number"  class="form-control"
+                           ng-model="$ctrl.batchForm.first_level_refund_ratio" placeholder="一级佣金比率 %"
+                           ng-change="$ctrl.onBatchItemChanged('first_level_refund_ratio')"
+                    />
+                    <input style="width: 150px" w5c-dynamic-name="'sku_price" w5c-dynamic-element type="number"  class="form-control"
+                           ng-model="$ctrl.batchForm.second_level_refund_ratio" placeholder="二级佣金比率 %"
+                           ng-change="$ctrl.onBatchItemChanged('second_level_refund_ratio')"
+                    />
+                    <a href="javascript:;" ng-click="$ctrl.batchSubmit()">确定</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-if="$ctrl.type === 'add'">
+              <label class="control-label col-sm-2" ng-class="{'required': $ctrl.promotion_required}">促销时段</label>
+              <div class="col-sm-8">
+                <div class="dropdown m-b-10" style="display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" name="promotion_start_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;"
+                           data-ng-model="$ctrl.form_data.spu_info.promotion_start_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker
+                      data-ng-model="$ctrl.form_data.spu_info.promotion_start_time"
+                      data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"
+                      data-on-set-time="$ctrl.checkPromotionStart(newDate, oldDate);$ctrl.changePromotion();"
+                    />
+                  </ul>
+                </div>
+                <div class="dropdown m-b-10" style="display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown4" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" name="promotion_end_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;"
+                           data-ng-model="$ctrl.form_data.spu_info.promotion_end_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker
+                      data-ng-model="$ctrl.form_data.spu_info.promotion_end_time"
+                      data-datetimepicker-config="{ dropdownSelector: '#dropdown4' }"
+                      data-on-set-time="$ctrl.checkPromotionEnd(newDate, oldDate);$ctrl.changePromotion();"
+                    />
+                  </ul>
+                </div>
+                <a href="" class="btn btn-primary m-0" ng-click="$ctrl.form_data.spu_info.promotion_start_time=null;$ctrl.form_data.spu_info.promotion_end_time=null;$ctrl.changePromotion()"><i class="fa fa-times"></i>清空</a>
+              </div>
+            </div>
+            <div class="col-sm-22 col-sm-offset-2" ng-if="$ctrl.isQuhaodian">
+               <div ng-if="$ctrl.in_warehouse === '1'"><i class="fa fa-exclamation-circle" style="color: red;font-size: 16px"></i>注意：该商品为囤货型商品，设置供货价时请考虑额外的运费成本</div>
+               <i class="fa fa-exclamation-circle" style="color: red;font-size: 16px"></i>注意：<br/>
+              <ul style="padding-left: 20px">
+                <li>1.价格设置需满足：成本价≤趣好店供货价≤券后价＜日常售价＜市场价</li>
+                <li>2.礼包的日常售价需与礼包类型匹配</li>
+                <li>3.趣好店供货价=成本价+公司利润</li>
+                <li>4.总佣金=券后价-成本价</li>
+                <li>5.公司利润=（券后价-成本价）x 公司利润比率</li>
+                <li>6.优惠券=日常售价-券后价</li>
+              </ul>
+                <ul ng-show="$ctrl.dealer_package_errors.length > 0 ">
+                    <li class="alert alert-danger" ng-repeat="err in $ctrl.dealer_package_errors track by err" ng-bind="err"></li>
+                </ul>
+            </div>
+            <div class="form-group">
+              <ul class="p-l-20" ng-show="$ctrl.promotion_errors.length">
+                <li class="alert alert-danger" ng-repeat="err in $ctrl.promotion_errors track by err" ng-bind="err"></li>
+              </ul>
+              <ul class="p-l-20" ng-show="$ctrl.price_table_errors.length" ng-if="$ctrl.is_kol">
+                <li class="alert alert-danger" ng-repeat="err in $ctrl.price_table_errors track by err" ng-bind="err"></li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">库存属性</label>
+              <div class="col-xs-12" style="width: 1000px">
+                <table class="table table-bordered table-hover table-center">
+                  <thead>
+                    <tr>
+                      <th ng-repeat="(attr, value) in $ctrl.item.sku_list[0].sku_pros track by attr" ng-bind="attr"></th>
+                      <th see-access="Super-Admin Elect-Admin">母商品<br>库存总量</th>
+                      <th see-access="New-Brand">库存</th>
+                      <th ng-if="$ctrl.is_admin">母商品<br>总锁定量</th>
+                      <th ng-if="$ctrl.is_admin">母商品<br>未锁定库存量</th>
+                      <th>是否售卖</th>
+                      <th ng-if="$ctrl.is_admin">分销库存设置<br>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" ng-model="$ctrl.sameTriger.share_parent_stock"
+                                 ng-true-value="1" ng-false-value="0"
+                                 ng-change="$ctrl.setSame('share_parent_stock');$ctrl.checkInventoryCheckbox('share_parent_stock')">读取闲置
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" ng-model="$ctrl.sameTriger.lock_quantitative_inventory"
+                                 ng-true-value="1" ng-false-value="0"
+                                 ng-change="$ctrl.setSame('lock_quantitative_inventory');$ctrl.checkInventoryCheckbox('lock_quantitative_inventory')"
+                          >锁定定量
+                        </label>
+                        <div class="dropdown" style="margin-bottom: 10px;display: inline-block;" ng-show="$ctrl.sameTriger.lock_quantitative_inventory">
+                          <a class="dropdown-toggle" id="dropdown5" role="button" data-toggle="dropdown" data-target="" href="" aria-expanded="false">
+                            <input type="text" name="same_triger_release_time" datetime="yyyy-MM-dd HH:mm:ss" class="form-control form-white" style="height: 34px;width: 170px;" placeholder="释放时间"
+                                   data-ng-model="$ctrl.sameTriger.release_time"
+                                   ng-disabled="!$ctrl.sameTriger.lock_quantitative_inventory">
+                          </a>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="$ctrl.sameTriger.release_time"
+                                            data-datetimepicker-config="{ dropdownSelector: '#dropdown5' }"
+                                            data-on-set-time="$ctrl.checkReleaseTimeIsValid(newDate, oldDate, 999);$ctrl.onTimeSet(newDate, oldDate)"
+                            />
+                          </ul>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="sku in $ctrl.item.sku_list track by sku.sku_id">
+                      <td ng-repeat="(attr, value) in $ctrl.item.sku_list[0].sku_pros track by attr" ng-bind="sku.sku_pros[attr]"></td>
+                      <td ng-bind="sku.total_stock"></td>
+                      <td ng-if="$ctrl.is_admin" ng-bind="sku.locked_stock"></td>
+                      <td ng-if="$ctrl.is_admin" ng-bind="sku.free_stock"></td>
+                      <td><input type="checkbox" ng-model="$ctrl.form_data.sku_list[$index].onsale" ng-true-value="1" ng-false-value="0" ng-disabled="$ctrl.isInGroupon || $ctrl.item.parent_apply_status == 4"></td>
+                      <td ng-if="$ctrl.is_admin">
+                        <label class="checkbox-inline">
+                          <input type="checkbox" ng-model="$ctrl.form_data.sku_list[$index].share_parent_stock"
+                                 ng-true-value="1" ng-false-value="0"
+                                 ng-change="$ctrl.checkInventoryCheckbox('share_parent_stock', $index)"
+                          >读取闲置库存
+                        </label>
+                        <label class="checkbox-inline">
+                          <input type="checkbox" ng-model="$ctrl.form_data.sku_list[$index].lock_quantitative_inventory"
+                                 ng-true-value="1" ng-false-value="0"
+                                 ng-change="$ctrl.checkInventoryCheckbox('lock_quantitative_inventory', $index)">锁定定量库存
+                        </label>
+                        <div ng-if="$ctrl.form_data.sku_list[$index].lock_quantitative_inventory">
+                          <input w5c-dynamic-name="'lock_number' + $index" w5c-dynamic-element ng-trim="true"
+                                 type="number" min="0" max="{{sku.free_stock + ($ctrl.type === 'edit' ? +$ctrl.item.sku_list[$index].sku_stock : 0)}}" class="form-control w-100" placeholder="锁定数量"
+                                 ng-model="$ctrl.form_data.sku_list[$index].sku_stock"
+                                 onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                 ng-disabled="!$ctrl.form_data.sku_list[$index].lock_quantitative_inventory">
+                          <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                            <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                              <input type="text" w5c-dynamic-name="'release_time' + $index" w5c-dynamic-element datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" placeholder="释放时间"
+                                     data-ng-model="$ctrl.form_data.sku_list[$index].release_time"
+                                     ng-disabled="!$ctrl.form_data.sku_list[$index].lock_quantitative_inventory">
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                              <datetimepicker data-ng-model="$ctrl.form_data.sku_list[$index].release_time"
+                                              data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"
+                                              data-on-set-time="$ctrl.checkReleaseTimeIsValid(newDate, oldDate, $index)"
+                              />
+                            </ul>
+                          </div>
+                          <a href="" class="btn btn-primary m-0" ng-click="$ctrl.form_data.sku_list[$index].release_time=null"><i class="fa fa-times"></i>清空</a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="form-group">
+              <p class="alert alert-danger" ng-repeat="err in $ctrl.store_table_errors" ng-bind="err"></p>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">自动下架时间</label>
+              <div class="col-sm-8">
+                <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" style="height: 34px;width: 170px;" data-ng-model="$ctrl.form_data.spu_info.expire_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="$ctrl.form_data.spu_info.expire_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" />
+                  </ul>
+                </div>
+                <a href="" class="btn btn-primary m-0" ng-click="$ctrl.form_data.spu_info.expire_time=null"><i class="fa fa-times"></i>清空</a>
+                <span ng-show="$ctrl.form_data.spu_info.old_expire_time">原来的下架时间:{{$ctrl.form_data.spu_info.old_expire_time}}</span>
+              </div>
+            </div>
+            <div ng-if="$ctrl.isQuhaodian" class="form-group">
+                <label class="col-sm-2 control-label required">标记礼包</label>
+                <div class="col-sm-8">
+                    <select class="form-control form-white" ng-model="$ctrl.form_data.dealer_package_type" required   ng-change="$ctrl.onSkuChanged()">
+                      <option ng-repeat="item in  $ctrl.dealerPackageList" ng-value="item.id" ng-bind="item.name"></option>
+                    </select>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2">
+              <span class="required">运费模版</span></label>
+            <div class="col-sm-8">
+              <div class="well">
+                <p ng-show="$ctrl.express_list.length === 0">你需要先完善商品的价格、发货地信息，才能进行运费模版的添加</p>
+                <div class="clear-fix m-t-10">
+                  <!-- <label class="control-label col-sm-3" ng-bind="path.value"></label> -->
+                  <div class="col-sm-9">
+                    <select class="form-control form-white" ng-model="$ctrl.form_data.spu_info.ex_id_list[0]" ng-change="$ctrl.showExpressDesc()" disabled>
+                      <option value="" selected>-- 请选择路线 --</option>
+                      <optgroup ng-repeat="path in $ctrl.express_list track by path.ex_type" label="--------------">
+                        <option ng-repeat="exp in path.list" value="{{exp.ex_id}}" ng-bind="exp.ex_name" ></option>
+                      </optgroup>
+                    </select>
+                    <!-- <select name="{{path.ex_type}}" class="form-control form-white" ng-model="$ctrl.form_data.item_info.ex_id_list[$index]" ng-change="$ctrl.showExpressDesc($index)">
+                         <option value="" selected>-- 请选择路线 --</option>
+                         <option ng-repeat="exp in path.list" value="{{exp.ex_id}}" ng-bind="exp.ex_name"></option>
+                         </select> -->
+                    <div class="alert bg-info m-t-5" ng-show="$ctrl.form_data.spu_info.ex_id_list[0]">
+                      <ul class="p-l-10">
+                        <li ng-repeat="desc in $ctrl.express_desc" ng-bind="desc"></li>
+                      </ul
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--<div class="clear-fix" see-access="Super-Admin Elect-Admin">-->
+                <!--<a  href="/goods/logistics/new/?page_from={{$ctrl.page_url}}" class="btn btn-sm btn-primary">创建物流模板</a>-->
+              <!--</div>-->
+            </div>
+          </div>
+          <div class="form-group" ng-show="genSubGoodsForm.$error.required.length > 0">
+            <div class="col-sm-offset-2 col-sm-8">
+              <p class="alert alert-danger">请检查必填项！</p>
+            </div>
+          </div>
+          <div class="form-group" ng-show="$ctrl.errors.length > 0 || $ctrl.suggest_price_errors.length > 0">
+            <ul class="col-sm-offset-2 col-sm-8">
+              <li class="alert alert-danger" ng-repeat="err in $ctrl.errors track by $index" ng-bind="err"></li>
+              <li class="alert alert-danger" ng-repeat="err in $ctrl.suggest_price_errors track by err" ng-bind="err"></li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+              <button type="button" w5c-form-submit="$ctrl.save()" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

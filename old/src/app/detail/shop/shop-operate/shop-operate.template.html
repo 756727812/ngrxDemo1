@@ -1,0 +1,94 @@
+<div class="shop-operate" ng-show="!$ctrl.isQuhaodian">
+  <div class="header">
+    <h2><strong>小电铺装修</strong></h2>
+    <div class="breadcrumb-wrapper">
+      <ol class="breadcrumb">
+        <li><a href="/">Seego后台</a></li>
+        <li><a href="/shop">小电铺</a></li>
+        <li class="active">小电铺装修</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel whole-wrap-panel">
+        <div class="panel-header bg-white p-t-13">
+          <h1 class="pull-left">小电铺装修</h1>
+          <div class="pull-right p-t-3">
+            <button type="button" class="btn btn-default m-b-0" ng-click="$ctrl.openEntireShow()">整体案例展示</button>
+            <button type="button" class="btn btn-primary m-b-0" ng-click="$ctrl.openShopAccessInfo()" id="lead_shop_show">线上效果</button>
+          </div>
+          <div class="clear-fix"></div>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col w-200 p-r-0 p-t-20">
+              <see-tabset vertical="true">
+                <see-tab
+                  ng-if="$ctrl.shouldShowTav(t)"
+                  ng-repeat="t in $ctrl.tabs"
+                  heading="{{t.heading}}"
+                  select="$ctrl.selectTab(target)"
+                  type="{{t.type}}">
+                </see-tab>
+              </see-tabset>
+            </div>
+            <div class="col border-left" style="width: calc(100% - 200px);">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 {{($ctrl.seckillcount > 0 && $ctrl.hash == 'seckill') || ($ctrl.grouponcount > 0 && $ctrl.hash == 'groupbuy') ? '':'col-md-6 col-lg-7'}}">
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.SHOP_BANNER)">
+                    <report-when-init name="PAGE_SHOP_OPERATE.PV_SHOP_BANNER">
+                      <shop-operate-shop-banner kol-id="$ctrl.kolId" dirty="$ctrl.shopBannerDirty"></shop-operate-shop-banner>
+                    </report-when-init>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.EVENT_BANNER)">
+                    <report-when-init name="PAGE_SHOP_OPERATE.PV_ACT_BANNER">
+                      <shop-operate-activity-banner kol-id="$ctrl.kolId" dirty="$ctrl.activityBannerDirty"></shop-operate-activity-banner>
+                    </report-when-init>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.COUPON)">
+                    <report-when-init name="PAGE_SHOP_OPERATE.PV_COUPON">
+                      <shop-operate-coupon></shop-operate-coupon>
+                    </report-when-init>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.EXPLOSIVE_GOODS)">
+                    <report-when-init name="PAGE_SHOP_OPERATE.PV_HOT_COMMODITY">
+                      <shop-operate-explosive-goods></shop-operate-explosive-goods>
+                    </report-when-init>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.GROUP)">
+                    <report-when-init name="PAGE_SHOP_OPERATE.PV_COMMODITY_GROUP">
+                      <shop-operate-group-config kol-id="$ctrl.kolId"></shop-operate-group-config>
+                    </report-when-init>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.GROUPBUY)">
+                    <shop-operate-group-buy grouponcount="$ctrl.grouponcount"></shop-operate-group-buy>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.SECKILL)">
+                    <shop-operate-seckill seckillcount="$ctrl.seckillcount"></shop-operate-seckill>
+                  </div>
+
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.VIDEO)">
+                    <shop-operate-video></shop-operate-video>
+                  </div>
+                  <div ng-if="$ctrl.isTabTypeActive($ctrl.TAB_TYPE.INTERLINK)">
+                    <shop-operate-interlink></shop-operate-interlink>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 aside-mobile-show" ng-hide="($ctrl.seckillcount > 0 && $ctrl.hash == 'seckill') || ($ctrl.grouponcount > 0 && $ctrl.hash == 'groupbuy')">
+                  <div ng-repeat="t in $ctrl.tabs" ng-show="t.type === $ctrl.hash">
+                    <h5 ng-bind="t.heading + '展示'"></h5>
+                    <p ng-bind="t.desc"></p>
+                    <div class="aside-mobile-show-img">
+                      <img see-src="t.img" thumbnail="290x594" alt="{{t.heading}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

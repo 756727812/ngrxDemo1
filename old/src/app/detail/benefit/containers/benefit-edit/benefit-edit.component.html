@@ -1,0 +1,220 @@
+<div class='page-wrap'>
+  <div class='page-head'>
+    <a (click)="toList($event)">
+      <i class='si si-arrow-left'></i>返回活动列表</a>
+    <p class='title'>编辑满减活动 </p>
+    <h2 style="display:none; left: 83%;position: fixed;">活动状态 ：{{this.data?.extra?.status}}</h2>
+  </div>
+  <div>
+    <div nz-row>
+      <div nz-col nzOffset='1'>
+        <p class='sub-title'>1.设置活动规则</p>
+        <form nz-form [formGroup]="aForm" style="width:800px;padding: 30px 0 30px 80px" [nzType]="'horizontal'" (ngSubmit)="_submitForm()">
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="2" [nzXs]="24" class='form-label'>
+              <label nz-form-item-required>活动名称</label>
+            </div>
+            <div nz-form-control nz-col nzSpan="12">
+              <nz-input nzSize='large' [nzDisabled]="isDisabled" formControlName='activityName' autocomplete="off" class='w374'></nz-input>
+              <div nz-form-explain *ngIf="aForm.controls.activityName.dirty && aForm.controls.activityName.errors">
+                <span *ngIf="aForm.controls.activityName.errors.required"><i class="si si-danger"></i>名称上限100字，建议控制15字以内</span>
+                <span *ngIf="aForm.controls.activityName.errors.maxlength"><i class="si si-danger"></i>名称上限100字，建议控制15字以内</span>
+                <span *ngIf="aForm.controls.activityName.errors.special"><i class="si si-danger"></i>名称不能包含特殊字符</span>
+              </div>
+            </div>
+          </div>
+
+          <!--<div nz-form-item nz-row>-->
+          <!--<div nz-form-label nz-col [nzSpan]="2" class='form-label'>-->
+          <!--<label>活动力度</label>-->
+          <!--</div>-->
+          <!--<div nz-form-control nz-col nzSpan="21">-->
+          <!--<div nz-row formGroupName="money">-->
+          <!--<div nz-col [nzSpan]="1" style="width: 24px;">-->
+          <!--<p nz-form-split>满</p>-->
+          <!--</div>-->
+          <!--<div nz-col nzSpan="6" class="w-80">-->
+          <!--<div nz-form-control-->
+          <!--[nzValidateStatus]="aForm.get('money').dirty && aForm.get('money').errors?'error':''">-->
+          <!--<nz-input-number (nzBlur)="padZero('targetPrice')" [nzDisabled]="!isEdit" [nzSize]="'large'" formControlName='targetPrice'-->
+          <!--nzPlaceHolder="门槛金额" [nzMin]="0" [nzMax]="999999.99" [nzStep]="1"></nz-input-number>-->
+          <!--<div nz-form-explain-->
+          <!--*ngIf="aForm.get('money').dirty && aForm.get('money').hasError('targetPriceLessOffPrice')">-->
+          <!--<i class="si si-danger"></i>满减门槛需要大于立减金额-->
+          <!--</div>-->
+          <!--<div nz-form-explain-->
+          <!--*ngIf="aForm.get('money.targetPrice').dirty && aForm.get('money.targetPrice').hasError('required')">-->
+          <!--<i class="si si-danger"></i>请设置门槛金额-->
+          <!--</div>-->
+          <!--<div nz-form-explain-->
+          <!--*ngIf="aForm.get('money.targetPrice').dirty && aForm.get('money.targetPrice').hasError('accuracy')">-->
+          <!--<i class="si si-danger"></i>小数位最多可输入2位-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--<div nz-col [nzSpan]="1" style="width: 24px;">-->
+          <!--<p nz-form-split>减</p>-->
+          <!--</div>-->
+          <!--<div nz-col nzSpan="6" class="w-80">-->
+          <!--<div nz-form-control-->
+          <!--[nzValidateStatus]="aForm.get('money.offPrice').dirty && aForm.get('money.offPrice').errors?'error':''">-->
+          <!--<nz-input-number  (nzBlur)="padZero('offPrice')" [nzDisabled]="!isEdit" [nzSize]="'large'" formControlName='offPrice'-->
+          <!--nzPlaceHolder="立减金额" [nzMin]="0" [nzMax]="999999.99" [nzStep]="1"></nz-input-number>-->
+          <!--<div nz-form-explain-->
+          <!--*ngIf="aForm.get('money.offPrice').dirty && aForm.get('money.offPrice').hasError('required')">-->
+          <!--<i class="si si-danger"></i>请设置立减金额-->
+          <!--</div>-->
+          <!--<div nz-form-explain-->
+          <!--*ngIf="aForm.get('money.offPrice').dirty && aForm.get('money.offPrice').hasError('accuracy')">-->
+          <!--<i class="si si-danger"></i>小数位最多可输入2位-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--<div nz-col nzSpan="4" class="p-l-10 p-r-10">-->
+          <!--<nz-tooltip nzPlacement='right'>-->
+          <!--<label nz-checkbox formControlName="capping" [nzDisabled]="!isEdit || isDisabled" >-->
+          <!--<span>上不封顶</span>-->
+          <!--<span class='icon fa fa-info-circle' nz-tooltip></span>-->
+          <!--<ng-template #nzTemplate>-->
+          <!--<p>上不封顶规则：每满1倍，减去金额增加1倍；例如：满99元减15元，满198元则减去30元，依次递增</p>-->
+          <!--</ng-template>-->
+          <!--</label>-->
+          <!--</nz-tooltip>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="2" class='form-label'>
+              <label nz-form-item-required>活动时间</label>
+            </div>
+            <div nz-col nzSpan="21">
+              <div nz-row formGroupName="date">
+                <div nz-col nzSpan="10" style='width:160px'>
+                  <div nz-form-control>
+                    <nz-datepicker *ngIf="isEdit" [nzSize]="'large'" [nzDisabled]="!isEdit" formControlName='startTime' nzShowTime [nzDisabledDate]="disabledDate"
+                      [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'开始时间'"></nz-datepicker>
+                    <nz-datepicker *ngIf="!isEdit" [nzSize]="'large'" [nzDisabled]="!isEdit" formControlName='startTime' nzShowTime [nzFormat]="'YYYY-MM-DD HH:mm:ss'"
+                      [nzPlaceHolder]="'开始时间'"></nz-datepicker>
+                    <div nz-form-explain *ngIf="aForm.get('date.startTime').dirty && aForm.get('date.startTime').invalid">
+                      <span *ngIf="aForm.get('date.startTime').hasError('required')"><i class="si si-danger"></i> 请设置活动开始时间!</span>
+                      <span *ngIf="aForm.get('date.startTime').hasError('startLessNow')"><i class="si si-danger"></i> 活动开始时间必须大于当前时间!</span>
+                    </div>
+                  </div>
+                </div>
+                <div nz-col [nzSpan]="1" style="width: 24px;">
+                  <p nz-form-split>至</p>
+                </div>
+                <div nz-col nzSpan="10" style='width:160px'>
+                  <div nz-form-control [nzValidateStatus]="aForm.get('date').dirty && aForm.get('date').invalid?'error':''">
+                    <nz-datepicker *ngIf="!isDisabled" [nzSize]="'large'" formControlName='endTime' nzShowTime [nzDisabledDate]="disabled45Date"
+                      [nzDisabled]="isDisabled" [nzFormat]="'YYYY-MM-DD HH:mm:ss'" [nzPlaceHolder]="'结束时间'"></nz-datepicker>
+                    <nz-datepicker *ngIf="isDisabled" [nzSize]="'large'" formControlName='endTime' nzShowTime [nzDisabled]="isDisabled" [nzFormat]="'YYYY-MM-DD HH:mm:ss'"
+                      [nzPlaceHolder]="'结束时间'"></nz-datepicker>
+                    <div nz-form-explain *ngIf="aForm.get('date.endTime').dirty && aForm.get('date.endTime').invalid">
+                      <span *ngIf="aForm.get('date.endTime').hasError('required')"><i class="si si-danger"></i> 请设置活动结束时间!</span>
+                      <span *ngIf="aForm.get('date.endTime').hasError('overMaxDay')"><i class="si si-danger"></i> 结束时间不能大于当前时间+45天!</span>
+                    </div>
+                    <div nz-form-explain *ngIf="aForm.get('date').dirty && aForm.get('date').invalid">
+                      <span *ngIf="aForm.get('date').hasError('startOverEndtime')"><i class="si si-danger"></i> 结束时间必须大于开始时间!</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="2" [nzXs]="24" class='form-label'>
+              <label nz-form-item-required>优惠规则</label>
+            </div>
+            <div nz-form-control nz-col nzSpan="12">
+              <!--<active-rules  [formControl]="rules"></active-rules>-->
+              <rules-form *ngIf="rulesData" [rulesData]="rulesData"></rules-form>
+            </div>
+          </div>
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="2" class='form-label'>
+              <label nz-form-item-required>费用承担</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="14">
+              <nz-radio-group formControlName='costBearer'>
+                <label nz-radio [nzValue]="0" nzDisabled>
+                  <span>SEE承担</span>
+                </label>
+                <label nz-radio [nzValue]="1" nzDisabled>
+                  <span>小电铺承担</span>
+                </label>
+              </nz-radio-group>
+            </div>
+          </div>
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="2" class='form-label'>
+              <label nz-form-item-required>叠加范围</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="12" class='w374'>
+              <nz-select formControlName="overRange" [nzSize]="'large'" [nzPlaceHolder]="'可叠加SEE承担优惠券'" nzDisabled>
+                <nz-option [nzLabel]="'可叠加SEE承担优惠券'" [nzValue]="'0'"></nz-option>
+                <nz-option [nzLabel]="'可叠加自己店铺承担优惠券'" [nzValue]="'1'"></nz-option>
+                <nz-option [nzLabel]="'可叠加全部优惠券'" [nzValue]="'2'"></nz-option>
+                <nz-option [nzLabel]="'可承担指定优惠券 '" [nzValue]="'3'"></nz-option>
+                <nz-option [nzLabel]="'不可叠加优惠券'" [nzValue]="'4'"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="2" class='form-label'>
+              <label nz-form-item-required>活动受众</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="12" class='w374'>
+              <nz-select formControlName="userType" [nzSize]="'large'" [nzPlaceHolder]="'所有用户'" nzDisabled>
+                <nz-option [nzLabel]="'所有用户'" [nzValue]="'0'"></nz-option>
+                <nz-option [nzLabel]="'老用户'" [nzValue]="'1'"></nz-option>
+                <nz-option [nzLabel]="'新用户'" [nzValue]="'2'"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div nz-row>
+            <div nz-col>
+              <button nz-button nzType='primary' [disabled]="!isEdit" nzGhost [nzLoading]="loading">保存信息</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col nzOffset='1'>
+        <p class='group-head sub-title'>2.设置活动商品</p>
+        <div class='group-info'>
+          <div nz-row  class='info-head'>
+            <div nz-form-label nz-col [nzSm]="2" [nzXs]="24" class='form-label'>
+              <label nz-form-item-required>活动商品</label>
+            </div>
+            <button nz-button nzType='primary'  [disabled]="isDisabled"  (click)="step=2">新建分组</button>
+          </div>
+          <div nz-row style='padding-bottom: 30px;' *ngIf='step===2'>
+            <div nz-col nzSpan='20' style="padding-left: 80px"
+                 [ngClass]="{'has-error':group.invalid && (group.dirty || group.touched) && group.invalid}">
+              <input style='width:240px' autocomplete="off" #group="ngModel" name='group' [(ngModel)]='groupName'
+                     placeholder="请输入分组名称"
+                     nz-input>
+              <button nz-button nzType='primary' (click)='addGroup(group)'>添加</button>
+              <p *ngIf=" group.dirty && (group.hasError('required') || group.hasError('maxlength'))" style='color:#f04134;font-size:12px'>分组名称上限20字，建议控制8字以内</p>
+              <p *ngIf=" group.dirty && group.hasError('special')" style='color:#f04134;font-size:12px'>分组名称包含特殊字符</p>
+            </div>
+          </div>
+          <div nz-row>
+            <div nz-col nzXs="24" style="margin-left: 80px"  nzSm="24" nzMd="18">
+              <benefit-group [xiaodianpuId]="xiaodianpuId" [data]="groupList" [isEdit]="isEditGroup" [loading]="loading" (groupRemoveEvent)="groupRemoveEvent($event)"
+                (detailGroupEvent)="detailGroupEvent($event)" (reloadEvent)="reloadEvent($event)" (OkAction)="OkAction($event)"
+                (groupEditEvent)="groupEditEvent($event)"></benefit-group>
+            </div>
+          </div>
+          <div nz-row style='text-align: left;padding: 30px 0' >
+            <button nz-button nzType='primary' style="width: 80px" [disabled]="groupList.length==0" (click)="confirmProducts()">完成
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

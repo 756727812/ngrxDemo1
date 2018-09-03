@@ -1,0 +1,125 @@
+<div class="header">
+  <h2><strong></strong></h2>
+</div>
+<div id="goods-group-list" class="clearfix">
+  <!-- 头部 -->
+  <div class="row header-block">
+    <!--
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+
+          <div class="see-h2">商品分组列表</div>
+        -->
+          <div class="right">
+            <div class="btns" id="lead_group_btn">
+              <div report="'PAGE_CM_COMMODITY_GROUP.BTN_ADD_MANNUAL_GROUP'"
+                class="button btn-add-manual" ng-click="$ctrl.toAppendManualGroup()">添加手动分组</div>
+              <div report="'PAGE_CM_COMMODITY_GROUP.BTN_ADD_AUTO_GROUP'"
+                class="button btn-add-auto" ng-click="$ctrl.toAppendAutoGroup()">添加自动分组</div>
+            </div>
+            <form novalidate
+            class="search-form"
+            ng-submit="$ctrl.search();$event.preventDefault()">
+              <input input-clear="submit"
+                    type="text"
+                    name="keyword"
+                    ng-model="$ctrl.formData.keyword"
+                    class="see-input-text"
+                    placeholder="商品分组名称">
+              <button type="submit"
+                      class="see-btn-search">
+                <i class="fa fa-search"></i>
+              </button>
+            </form>
+            <!--
+          </div>
+        </div>
+        </div> -->
+    </div>
+  </div>
+
+  <div class="toolbar">
+
+  </div>
+
+  <!--列表-->
+  <div class="row list-block">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>分组名称</th>
+              <th>创建时间</th>
+              <th>分组类型</th>
+              <th>商品数</th>
+              <th class="op">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in $ctrl.pageData.list">
+              <td class="name">
+                <span
+                  id="lead_group_td_{{$index}}"
+                  ng-show="!item._isEditStatus"
+                  class="edit-trigger"
+                  style="display: inline-block;"
+                  ng-click="$ctrl.onInlineGroupNameClick($event, item)"
+                  ng-class="{'can-edit':$ctrl.canEdit(item)}">
+                  {{item.categoryName}}<span ng-if="item.isSystem"></span><i
+                  ng-if="$ctrl.canEdit(item)" ng-click="$ctrl.toEditGroup()"
+                  class="si si-14-edit-cover"></i>
+                </span>
+                <input
+                  class="name-input"
+                  ng-keyup="$event.keyCode == 13 && $ctrl.onInlineGroupNameInputKeyEnter($event, item)"
+                  ng-show="item._isEditStatus"
+                  type="text" class="see-input-text">
+              </td>
+              <td class="date">{{$ctrl.formatDate(item.createTime)}}</td>
+              <td class="type">
+                <span class="tips-trigger">
+                  {{(item.type === 1||item.isSystem) ? '自动' : item.type === 2 ? '手动' : ''}}<i
+                  class="si si-info" ng-if="$ctrl.isCustomAutoGroup(item)"></i>
+                  <goods-group-group-info-tips item="item"
+                                               ng-if="$ctrl.isCustomAutoGroup(item)"></goods-group-group-info-tips>
+                </span>
+              </td>
+              <td>{{item.commodityCount}}</td>
+              <td class="op">
+                <ul class="btns">
+                  <li
+                    class="button add"
+                    ng-class="{'disabled':!$ctrl.isMannualGroup(item)}"
+                    ng-click="$ctrl.toAddGoods(item)"
+                  >添加商品
+                  </li>
+                  <!-- TODO 研究下更好的传值方式-->
+                  <li class="button view" ng-class="{disabled:!$ctrl.canView(item)}">
+                    <a ng-if="$ctrl.canView(item)" ng-href="{{$ctrl.getViewHref(item)}}">查看</a>
+                    <span ng-if="!$ctrl.canView(item)">查看</span>
+                  </li>
+                  <li class="button del"
+                      ng-click="$ctrl.delGroup(item)"
+                      ng-class="{'disabled':item.isSystem === 1}"
+                  >删除
+                  </li>
+                  <!--<li class="button operate"-->
+                      <!--ng-click="$ctrl.toShopOperate(item)"-->
+                      <!--ng-if="$ctrl.shouldShowShopOperate(item)"-->
+                  <!--&gt;店铺装修-->
+                  <!--</li>-->
+                </ul>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pagination total-items="$ctrl.pageData.count"
+              items-per-page="$ctrl.pageData.itemsPerPage"></pagination>
+</div>

@@ -1,0 +1,25 @@
+
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">修改实付金额</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="expressName" class="control-label col-sm-4 required">原实付金额</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" ng-model="total_fee" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="expressCode" class="col-sm-4 control-label required">新实付金额</label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" placeholder="请输入实付金额" ng-model="curr_total_fee">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

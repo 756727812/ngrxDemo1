@@ -1,0 +1,397 @@
+<div see-hide="Investors" class="datacenter-order">
+    <div class="header">
+        <h2><strong>订单数据</strong></h2>
+        <div class="breadcrumb-wrapper" ng-hide="true">
+            <ol class="breadcrumb">
+                <li><a href="/">Seego后台</a></li>
+                <li><a href="/datacenter">数据中心</a></li>
+                <li class="active">订单数据</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <style>
+                    .tooltip .tooltip-inner {
+                        white-space: initial;
+                    }
+                    </style>
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="widget-info">
+                                <div class="row">
+                                    <div class="left">
+                                        <i class="icon-basket bg-red"></i>
+                                    </div>
+                                    <div class="right">
+                                        <p class="number">{{$ctrl.totalStatData.total_count}}</p>
+                                        <p class="text">累积下单笔数</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <div class=" widget-info">
+                                <div class="row">
+                                    <div class="left">
+                                        <i class="icon-basket bg-orange"></i>
+                                    </div>
+                                    <div class="right">
+                                        <p class="number">{{$ctrl.totalStatData.success_count}}</p>
+                                        <p class="text">累积付款订单数</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="widget-info">
+                                <div class="row">
+                                    <div class="left">
+                                        <i class="fa fa-cny bg-yellow"></i>
+                                    </div>
+                                    <div class="right">
+                                        <p class="number">{{$ctrl.totalStatData.total_fee | currency: ''}}</p>
+                                        <p class="text">累积付款总金额</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="widget-info">
+                                <div class="row">
+                                    <div class="left">
+                                        <i class="fa fa-user bg-green"></i>
+                                    </div>
+                                    <div class="right">
+                                        <p class="number">{{$ctrl.totalStatData.total_user}}</p>
+                                        <p class="text">下单人数</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="widget-info">
+                                <div class="row">
+                                    <div class="left">
+                                        <i class="fa fa-user bg-aero"></i>
+                                    </div>
+                                    <div class="right">
+                                        <p class="number">{{$ctrl.totalStatData.success_user}}</p>
+                                        <p class="text">付款人数</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel month-panel" see-access='Super-Admin Elect-Admin'>
+                <div class="panel-content">
+                    <h4><label>月度数据</label></h4>
+                    <!--
+					<form class="form-inline m-t-20" ng-submit="$ctrl.statOrderMonthSearch()">
+						<label class="control-label">筛选月份</label>
+	          <input date-range-picker class="form-control date-picker" type="text" placeholder="请选择月份" ng-model="$ctrl.month_range" >
+						<button type="submit" class="btn btn-primary">搜索</button>
+					</form>
+					-->
+                    <div class="table-scrollable">
+                        <table class="table table-hover table-striped align-right">
+                            <thead>
+                                <tr>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;月份&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    <th>下单数&nbsp;<i class="fa fa-info-circle" uib-tooltip="按小订单"></i></th>
+                                    <th>付款订单数&nbsp;<i class="fa fa-info-circle" uib-tooltip="按小订单"></i></th>
+                                    <th>下单人数</th>
+                                    <!--<th>付款商品数</th>-->
+                                    <th>付款人数</th>
+                                    <th>付款SKU数</th>
+                                    <th>总交易额&nbsp;<i class="fa fa-info-circle" uib-tooltip="GMV"></i></th>
+                                    <!--<th>平均订单金额</th>-->
+                                    <th>总实付金额&nbsp;<i class="fa fa-info-circle" uib-tooltip="去掉优惠券等平台垫付的优惠金额"></i></th>
+                                    <th>笔单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="平均单笔小订单交易额，GMV/付款小订单数"></i></th>
+                                    <th>实付笔单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="平均单笔小订单实付金额，实际付款总金额/付款小订单数"></i></th>
+                                    <th>客单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="GMV/付款人数"></i></th>
+                                    <th>实付客单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="总实付金额/付款人数"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="order_info in $ctrl.trendMonthStatData">
+                                    <td>{{order_info.date}}</td>
+                                    <!--日期-->
+                                    <td>{{order_info.total_order_count}}</td>
+                                    <td>{{order_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>
+                                      <gmv-composition-tips data="order_info">{{order_info.pay_total_fee | currency: '￥'}}</gmv-composition-tips>
+                                    </td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                                <tr ng-if="$ctrl.trendMonthStatData.length > 0 && $ctrl.str_more_month_data !== ''">
+                                    <td colspan="111">
+                                        <center>
+                                            <!-- 只能查看2016年后的数据 -->
+                                            <span style="cursor:pointer" ng-click="$ctrl.statOrderMonthSearch()"> {{$ctrl.str_more_month_data}} </span>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-content">
+                    <h4><label>单日数据</label></h4>
+                    <form class="form-inline m-t-20" ng-submit="$ctrl.statOrderSearch()">
+                        <label class="control-label">搜索时间</label>
+                        <!--<input class="form-control" type="date" ng-model="$ctrl.range.begin_date" />&dash;
+						<input class="form-control" type="date" ng-model="$ctrl.range.end_date" />-->
+                        <input date-range-picker class="form-control date-picker" type="text" placeholder="请选择日期" ng-model="$ctrl.range">
+                        <button type="submit" class="btn btn-primary">搜索</button>
+                    </form>
+                    <div class="table-scrollable">
+                        <table class="table table-hover table-striped align-right">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>下单数&nbsp;<i class="fa fa-info-circle" uib-tooltip="按小订单"></i></th>
+                                    <th>付款订单数&nbsp;<i class="fa fa-info-circle" uib-tooltip="按小订单"></i></th>
+                                    <th>UV</th>
+                                    <th>阅读量</th>
+                                    <th>下单人数</th>
+                                    <!--<th>付款商品数</th>-->
+                                    <th>付款人数</th>
+                                    <th>付款SKU数</th>
+                                    <th>总交易额&nbsp;<i class="fa fa-info-circle" uib-tooltip="GMV"></i></th>
+                                    <!--<th>平均订单金额</th>-->
+                                    <th>总实付金额&nbsp;<i class="fa fa-info-circle" uib-tooltip="去掉优惠券等平台垫付的优惠金额"></i></th>
+                                    <th>笔单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="平均单笔小订单交易额，GMV/付款小订单数"></i></th>
+                                    <th>实付笔单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="平均单笔小订单实付金额，实际付款总金额/付款小订单数"></i></th>
+                                    <th>客单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="GMV/付款人数"></i></th>
+                                    <th>实付客单价&nbsp;<i class="fa fa-info-circle" uib-tooltip="总实付金额/付款人数"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="order_info in $ctrl.trendStatData">
+                                <tr ng-click="$ctrl.dataShow(order_info)" style="cursor: pointer;">
+                                    <td>{{order_info.date}}</td>
+                                    <!--日期-->
+                                    <td>{{order_info.total_order_count}}</td>
+                                    <td>{{order_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.uv_info.uv}}</td>
+                                    <td>{{order_info.uv_info.read}}</td>
+                                    <td>{{order_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>{{order_info.pay_total_fee | currency: '￥'}}</td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                                <tr ng-show="order_info.is_click"  see-access='Super-Admin Elect-Admin  KOL-Admin'>
+                                    <td>kol</td>
+                                    <!--日期-->
+                                    <td>{{order_info.kol_info.total_order_count}}</td>
+                                    <td>{{order_info.kol_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.kol_info.uv_info.uv}}</td>
+                                    <td>{{order_info.kol_info.uv_info.read}}</td>
+                                    <td>{{order_info.kol_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.kol_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.kol_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>{{order_info.kol_info.pay_total_fee | currency: '￥'}}</td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.kol_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.kol_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.kol_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.kol_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.kol_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                                <tr ng-show="order_info.is_click"  see-access='Super-Admin Elect-Admin  KOL-Admin'>
+                                    <td>商城</td>
+                                    <!--日期-->
+                                    <td>{{order_info.shop_info.total_order_count}}</td>
+                                    <td>{{order_info.shop_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.shop_info.uv_info.uv}}</td>
+                                    <td>{{order_info.shop_info.uv_info.read}}</td>
+                                    <td>{{order_info.shop_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.shop_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.shop_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>{{order_info.shop_info.pay_total_fee | currency: '￥'}}</td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.shop_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.shop_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.shop_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.shop_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.shop_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                                <tr ng-show="order_info.is_click"  see-access='Super-Admin Elect-Admin KOL-Admin'>
+                                    <td>小程序</td>
+                                    <!--日期-->
+                                    <td>{{order_info.xiaochengxu_info.total_order_count}}</td>
+                                    <td>{{order_info.xiaochengxu_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.xiaochengxu_info.uv_info.uv}}</td>
+                                    <td>{{order_info.xiaochengxu_info.uv_info.read}}</td>
+                                    <td>{{order_info.xiaochengxu_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.xiaochengxu_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.xiaochengxu_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>{{order_info.xiaochengxu_info.pay_total_fee | currency: '￥'}}</td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.xiaochengxu_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.xiaochengxu_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.xiaochengxu_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.xiaochengxu_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.xiaochengxu_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                                <tr ng-show="order_info.is_click"  see-access='Super-Admin Elect-Admin KOL-Admin'>
+                                    <td>App</td>
+                                    <!--日期-->
+                                    <td>{{order_info.app_info.total_order_count}}</td>
+                                    <td>{{order_info.app_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.app_info.uv_info.uv}}</td>
+                                    <td>{{order_info.app_info.uv_info.read}}</td>
+                                    <td>{{order_info.app_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.app_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.app_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>{{order_info.app_info.pay_total_fee | currency: '￥'}}</td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.app_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.app_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.app_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.app_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.app_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                                <tr ng-show="order_info.is_click"  see-access='Super-Admin Elect-Admin KOL-Admin'>
+                                    <td>测试</td>
+                                    <!--日期-->
+                                    <td>{{order_info.test_info.total_order_count}}</td>
+                                    <td>{{order_info.test_info.pay_order_count}}</td>
+                                    <!--下单数 -->
+                                    <td>{{order_info.test_info.uv_info.uv}}</td>
+                                    <td>{{order_info.test_info.uv_info.read}}</td>
+                                    <td>{{order_info.test_info.total_user}}</td>
+                                    <!-- 下单人数 -->
+                                    <!-- 付款订单数 -->
+                                    <!--<td>{{order_info.pay_item_count}}</td>  付款商品数 -->
+                                    <td>{{order_info.test_info.total_pay_user}}</td>
+                                    <!-- 付款人数 -->
+                                    <td>{{order_info.test_info.pay_sku_count}}</td>
+                                    <!-- 付款SKU数 -->
+                                    <td>{{order_info.test_info.pay_total_fee | currency: '￥'}}</td>
+                                    <!-- 总交易额 -->
+                                    <!--<td>{{order_info.pay_aver_fee | currency: '￥'}}</td>  平均订单金额 -->
+                                    <td>{{order_info.test_info.pay_real_total_fee | currency: '￥'}}</td>
+                                    <!-- 总实付金额 -->
+                                    <td>{{order_info.test_info.avr_buy_price | currency: '￥'}}</td>
+                                    <!-- 笔单价 -->
+                                    <td>{{order_info.test_info.avr_pay_price | currency: '￥'}}</td>
+                                    <!-- 实付笔单价 -->
+                                    <td>{{order_info.test_info.avr_user_price | currency: '￥'}}</td>
+                                    <!-- 客单价 -->
+                                    <td>{{order_info.test_info.avr_user_fee | currency: '￥'}}</td>
+                                    <!-- 实付客单价 -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="orderChart" class="CSSAnimationChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

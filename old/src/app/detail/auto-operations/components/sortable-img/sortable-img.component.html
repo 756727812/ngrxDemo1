@@ -1,0 +1,19 @@
+<div class="sortalble-container">
+  <div [sortablejs]="sortableItems" [sortablejsOptions]="sortableOptions" *ngIf="!disabledEdit else sortTargetTemplate">
+    <ng-container *ngTemplateOutlet="sortTargetTemplate"></ng-container>
+  </div>
+</div>
+<ng-template #sortTargetTemplate>
+  <div class="item-container" *ngFor="let item of sortableItems; index as index">
+    <div class="item-img-container">
+      <see-img-upload [uploadText]="'上传'"
+                      [disabledEdit]="disabledEdit"
+                      [initFileList]="imgFileList[item._imgId].data"
+                      [imgValid]="imgValid"
+                      (onUploadSuccess)="uploadImgSuccess($event, item._imgId)"
+                      (onUploadError)="uploadImgError($event, item._imgId)"
+                      (onRemoveImg)="removeImg($event, item._imgId)"></see-img-upload>
+      <div class="item-name">{{item.name}}</div>
+    </div>
+  </div>
+</ng-template>

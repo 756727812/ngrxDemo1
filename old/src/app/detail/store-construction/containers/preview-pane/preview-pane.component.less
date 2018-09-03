@@ -1,0 +1,111 @@
+// .preview-pane {
+//   width: 443px;
+//   position: relative;
+//   background: #fafafa;
+//   height: 100%;
+//   .canvas {
+//     background: #ffff;
+//     width: 375px;
+//     min-height: 600px;
+//     position: relative;
+//     top: 45px;
+//     left: 47px;
+//     ul {
+//       > li {
+//         border: 1px solid;
+//         margin-bottom: 10px;
+//       }
+//     }
+//   }
+// }
+
+.preview-wrap {
+  height: 100%;
+}
+
+.scroll-wrap {
+  padding-top: 43px;
+  height: 100%;
+  overflow-y: scroll;
+  position: relative;
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: #f8f8f8;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: white;
+  }
+
+  &::-webkit-scrollbar {
+    background-color: white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    width: 20px;
+    height: 173px;
+    background-color: #e5e5e5;
+  }
+}
+
+@previewWidth: 375px + 20px + 38px + 17px + 375px;
+
+.preview-pane {
+  position: absolute;
+  left: 50%;
+  display: inline-block;
+  width: @previewWidth;
+  margin-left: -@previewWidth/2;
+  background-color: #fafafa;
+
+  .innerwrap {
+    width: 375px;
+  }
+
+  ul.preview-list {
+    > li {
+      margin: 14px 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      // 优惠券上下距离大一点，避免侧边栏盖住下一个的侧边栏
+      &.preview-item-wrap-31 {
+        margin: 26px 0 36px;
+      }
+    }
+
+    .preview-item {
+      background: #fff;
+      box-shadow: 0 0 4px 1px rgba(218, 218, 218, 0.5);
+      border: 3px solid transparent;
+      box-sizing: border-box;
+      position: relative;
+
+      &.active {
+        border-color: #5958d2;
+      }
+
+      &:hover {
+        border-color: #8282e6;
+      }
+
+      &:hover,
+      &.active {
+        z-index: 99;
+      }
+    }
+
+    .init-warn {
+      display: block;
+      font-size: 14px;
+      line-height: 1.21;
+      color: #5971e8;
+      margin: 10px auto 0;
+      text-align: center;
+    }
+  }
+}

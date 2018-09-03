@@ -1,0 +1,184 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class=ortlet-title>账户详情</h3>
+</div>
+<form class="form-horizontal w5c-form" name="accountInfoForm" novalidate w5c-form-validate>
+    <div class="modal-body text-left">
+        <div class="table-scrollable">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="2">账户信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>账户id</td>
+                        <td ng-bind="vm.userInfo.id"></td>
+                    </tr>
+                    <tr>
+                        <td>注册邮箱</td>
+                        <td ng-bind="vm.userInfo.seller_email"></td>
+                    </tr>
+                    <tr>
+                        <td>第二联系邮箱</td>
+                        <td ng-bind="vm.userInfo.seller_second_email"></td>
+                    </tr>
+                    <tr>
+                        <td>绑定See账号</td>
+                        <td ng-bind="vm.userInfo.bind_see_account"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-scrollable">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="2">联系人信息<a ng-click="vm.startEdit()" class="font-red-mint">[编辑]</a></th></th>
+                    </tr>
+                </thead>
+                <tbody ng-if="!vm.is_edit">
+                    <tr>
+                        <td>联系人姓名</td>
+                        <td ng-bind="vm.userInfo.seller_name"></td>
+                    </tr>
+                    <tr>
+                        <td>手机号</td>
+                        <td ng-bind="vm.userInfo.seller_mobile"></td>
+                    </tr>
+                    <tr>
+                        <td>支付宝账号</td>
+                        <td ng-bind="vm.userInfo.alipay_account"></td>
+                    </tr>
+                    <tr>
+                        <td>微信账号</td>
+                        <td ng-bind="vm.userInfo.wx_account"></td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="vm.is_edit">
+                    <tr>
+                        <td>联系人姓名</td>
+                        <td>
+                            <input name="edit_seller_name" type="text" class="form-control" ng-model="vm.userInfo.edit_seller_name" ng-trim="true">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>手机号</td>
+                        <td>
+                            <input name="edit_seller_mobile" type="text" class="form-control" ng-model="vm.userInfo.edit_seller_mobile" ng-trim="true">
+                           
+                           </td>
+                    </tr>
+                    <tr>
+                        <td>支付宝账号</td>
+                        <td><input name="edit_alipay_account" type="text" class="form-control" ng-model="vm.userInfo.edit_alipay_account" ng-trim="true">
+                           </td>
+                    </tr>
+                    <tr>
+                        <td>微信账号</td>
+                        <td><input name="edit_wx_account" type="text" class="form-control" ng-model="vm.userInfo.edit_wx_account" ng-trim="true"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" type="button" ng-click="vm.saveEdit()">保存</button>
+                            <button class="btn dark btn-outline" type="button" ng-click="vm.cancelEdit()">取消</button>
+                        </td>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-scrollable" ng-if="vm.userInfo.seller_privilege!=24">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="2" ng-bind="vm.is_c2c ? '商户信息' : '达人信息'"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>公众号名称</td>
+                        <td ng-bind="vm.userInfo.service_name"></td>
+                    </tr>
+                    <tr>
+                        <td ng-bind="vm.is_c2c ? '商户标签' : '达人标签'"></td>
+                        <td>
+                            <select class="form-control" ng-model="vm.formData.u_tag" name="u_tag" ng-options="tag for tag in vm.defaultTags" required>
+                                <option value="" selected>-- 请选择 --</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr ng-if="vm.formData.u_tag=='其他'">
+                        <td>自定义标签</td>
+                        <td>
+                            <input type="text" class="form-control" name="customizer" w5c-dynamic-element ng-model="vm.formData.custom_tag" required ng-init="vm.formData.custom_tag = formData.u_tag" ng-disabled="!(vm.formData.u_tag=='其他')" w5c-customizer="vm.verifyLength(1,20)" uib-tooltip="注意：中文数字字母合计不超过20字符，每个中文等于两个字符" tooltip-placement="top-center" tooltip-trigger="'mouseenter focus'" placeholder="中文数字字母合计不超过20字符，每个中文等于两个字符" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td ng-bind="vm.is_c2c ? '商户标题' : '达人标题'"></td>
+                        <td ng-bind="vm.userInfo.u_username"></td>
+                    </tr>
+                    <tr>
+                        <td ng-bind="vm.is_c2c ? '商户描述' : '达人描述'"></td>
+                        <td ng-bind="vm.userInfo.daren_desc"></td>
+                    </tr>
+                    <tr ng-if="vm.is_c2c">
+                        <td>主营商品发货地</td>
+                        <td>
+                            <select name="seller_ship_country" class="form-control" required ng-model="vm.formData.seller_ship_country" ng-options="c.location_id as c.location for c in vm.country_list">
+                                <option value="" selected>-- 请选择 --</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-scrollable" ng-if="vm.userInfo.seller_privilege==24">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="2">平台信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="p in vm.userInfo.kol_platform">
+                        <td>{{p.platform_name}}信息</td>
+                        <td>
+                            <p>
+                                账号名称：{{p.account_name}}
+                                <br> 账号id:{{p.account_id}}
+                                <br> 当前粉丝数：{{p.fans_count}}
+                            </p>
+                        </td>
+                    </tr>
+                    <hr/>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-scrollable" ng-if="vm.is_c2c">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="2">个人信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>居住地所在国家</td>
+                        <td>
+                            <select name="seller_country" class=" form-control" ng-model="vm.formData.seller_country" ng-options="c.location_id as c.location for c in vm.country_list" required>
+                                <option value="" selected>-- 请选择 --</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确认</button>
+        <button class="btn dark btn-outline" type="button" ng-click="vm.cancel()">取消</button>
+    </div>
+</form>

@@ -1,0 +1,26 @@
+<ul class="list">
+  <div class="placeholder" *ngIf="!items || items.length === 0">
+    <app-preview-placeholder-item [width]="161" [imgHeight]="161"></app-preview-placeholder-item>
+    <app-preview-placeholder-item [width]="161" [imgHeight]="161"></app-preview-placeholder-item>
+  </div>
+  <li class="item" *ngFor="let item of items">
+    <div class="img-wrap">
+      <div class="group-tip">
+        <span class="txt">N人团</span>
+      </div>
+      <img alt="" [seeSrc]="item.mainImgUrl || item.bannerUrl" [thumbnail]="'332x332'" />
+    </div>
+    <div class="name">
+      {{item.itemName}}
+    </div>
+    <div class="price-line">
+      <div class="price-label">
+        <span class="text-label txt">{{item.type===5 ? "团长价":"拼团价"}}</span>
+      </div>
+      <div class="price">￥{{item.grouponPrice || item.minGrouponPrice}}</div>
+      <div class="daily-price">
+        <span class="txt">￥{{item.dailyPrice || item.itemPrice}}</span>
+      </div>
+    </div>
+  </li>
+</ul>

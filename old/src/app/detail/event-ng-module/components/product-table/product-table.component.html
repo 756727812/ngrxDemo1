@@ -1,0 +1,207 @@
+<div [ngClass]="{'unsubmitted':!submitted}">
+  <table *ngIf="skuList" class="table table-bordered table-center table-condensed">
+    <thead>
+    <tr>
+      <th>
+        <label nz-checkbox
+        name="cnkAllcheck"
+        [disabled]="itemStatus > 1 || isView"
+        [(ngModel)]="allChecked"
+        (ngModelChange)="updateAllChecked()"
+        [nzIndeterminate]="indeterminate"></label>
+      </th>
+      <th *ngFor="let key of skuList[0].skuSpecKeys">{{key}}</th>
+      <th>成本价/日常供货价/日常售价区间
+        <i nz-tooltip="当前所有子商品该sku的日常售价"
+        class="i-tips anticon anticon-exclamation-circle"></i>
+      </th>
+      <th>{{ isAttractNewType ? '团长促销供货价/团长拼团价/' : ''}}促销供货价/拼团价<br />
+        <!-- <input name="promotionPrice" class="form-control form-white w-80" type="number"
+          [(ngModel)]="sameTriger.promotionPrice"
+          (input)="setSame('promotionPrice')"
+          [disabled]="(itemStatus > 1 && formDataType !== 4) || isView"
+        />
+        <input name="price" class="form-control form-white w-80" type="number"
+          [(ngModel)]="sameTriger.price"
+          (input)="setSame('price')"
+          [disabled]="(itemStatus > 1 && formDataType !== 4) || isView"
+        /> -->
+      </th>
+      <th>库存</th>
+      <th>是否参加拼团活动</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of skuList; let i = index;trackBy: trackBySkus">
+        <td>
+          <label nz-checkbox
+          [disabled]="itemStatus > 1 || isView"
+          [(ngModel)]="item.checked"
+          (ngModelChange)="updateSingleChecked()"></label>
+        </td>
+        <td *ngFor="let val of item.skuSpecValues">{{val}}</td>
+        <td>
+          <span>
+            <span>{{item.productionCostPrice | currency: '￥'}}/</span>
+            {{item.supplyPrice | currency: '￥'}}/
+            </span>{{item.skuPriceStart | currency: '￥'}}~{{item.skuPriceEnd | currency: '￥'}}
+        </td>
+        <td>
+          <input type="number" class="w-100 pro-price-input"
+            *ngIf="isAttractNewType"
+            [name]="'grouponHeaderSkuCostPrice'+ item.skuId"
+            [required]="submitted && item.status === 1"
+            [(ngModel)]="item.grouponHeaderSkuCostPrice"
+            [disabled]="itemStatus > 1 || isView"
+            (input)="formatPrice(i, 'grouponHeaderSkuCostPrice')"
+            #headProPriceInput="ngModel"
+            [ngClass]="{'dirty': headProPriceInput.dirty || submitted,'invalid': item.status === 1 && !verifySKUItemPriceHead(item, 'grouponHeaderSkuCostPrice')}"
+          >
+          <input type="number" class="w-100 price-input"
+            *ngIf="isAttractNewType"
+            [name]="'grouponHeaderPrice'+ item.skuId"
+            [required]="submitted && item.status === 1"
+            [(ngModel)]="item.grouponHeaderPrice"
+            [disabled]="itemStatus > 1 || isView"
+            (input)="formatPrice(i, 'grouponHeaderPrice')"
+            #headPriceInput="ngModel"
+            [ngClass]="{'dirty': headPriceInput.dirty || submitted,'invalid': item.status === 1 && !verifySKUItemPriceHead(item, 'grouponHeaderPrice')}"
+          >
+          <input type="number" class="w-100 pro-price-input"
+            [name]="'promotionPrice'+ item.skuId"
+            [required]="submitted && item.status === 1"
+            [(ngModel)]="item.promotionPrice"
+            [disabled]="(itemStatus > 1 && formDataType !== 4) || isView"
+            (input)="formatPrice(i, 'promotionPrice')"
+            #proPriceInput="ngModel"
+            [ngClass]="{'dirty': proPriceInput.dirty || submitted,'invalid': item.status === 1 && !verifySKUItemPrice(item, 'promotionPrice')}"
+          >
+          <input type="number" class="w-100 price-input"
+            [name]="'price'+ item.skuId"
+            [required]="submitted && item.status === 1"
+            [(ngModel)]="item.price"
+            [disabled]="(itemStatus > 1 && formDataType !== 4) || isView"
+            (input)="formatPrice(i, 'price')"
+            #priceInput="ngModel"
+            [ngClass]="{'dirty': priceInput.dirty || submitted,'invalid': item.status === 1 && !verifySKUItemPrice(item, 'price')}"
+          >
+        </td>
+        <td>{{item.skuSellableStock}}</td>
+        <td>
+          <label class="radio-inline">
+            <input type="radio"
+             [name]="'status'+item.skuId"
+             [value]="1" [(ngModel)]="item.status" [disabled]="itemStatus > 1 || isView"
+             (change)="sendSkuList()"> 参加
+          </label>
+          <label class="radio-inline">
+            <input type="radio"
+             [name]="'status'+item.skuId"
+             [value]="2" [(ngModel)]="item.status" [disabled]="itemStatus > 1 || isView"
+             (change)="sendSkuList()"> 不参加
+          </label>
+        </td>
+      </tr>
+      <tr *ngIf="!(itemStatus > 1 || isView)">
+          <td colSpan="19">
+            <p>
+              批量设置：
+              <nz-popover *ngIf="isAttractNewType" [(nzVisible)]="isHeaderPromotionSupplyPriceTmpOpen" [nzTrigger]="'click'" [nzPlacement]="'bottom'">
+                <a nz-popover >团长促销供货价</a>
+                <ng-template #nzTemplate>
+                  <div class="p-10">
+                      <div class="d-inline-block w-100">
+                        <input [(ngModel)]="sameTriger.grouponHeaderSkuCostPrice" type="number" class="form-control" placeholder="请输入">
+                      </div>
+                      <a class="d-inline-block m-l-5" (click)="setSamePrice('grouponHeaderSkuCostPrice');">保存</a>
+                      <a class="d-inline-block m-l-5" (click)="isHeaderPromotionSupplyPriceTmpOpen = false">取消</a>
+                    </div>
+                </ng-template>
+              </nz-popover>
+
+              <nz-popover *ngIf="isAttractNewType" [(nzVisible)]="isHeaderGroupPriceTmpOpen" [nzTrigger]="'click'" [nzPlacement]="'bottom'">
+                <a nz-popover >团长拼团价</a>
+                <ng-template #nzTemplate>
+                  <div class="p-10">
+                    <div class="d-inline-block w-100">
+                      <input [(ngModel)]="sameTriger.grouponHeaderPrice" type="number" class="form-control" placeholder="请输入">
+                    </div>
+                    <a class="d-inline-block m-l-5" (click)="setSamePrice('grouponHeaderPrice');">保存</a>
+                    <a class="d-inline-block m-l-5" (click)="isHeaderGroupPriceTmpOpen = false">取消</a>
+                  </div>
+                </ng-template>
+              </nz-popover>
+
+              <nz-popover [(nzVisible)]="isShowPromotionPricePopOver" [nzTrigger]="'click'" [nzPlacement]="'bottom'">
+                <a nz-popover >促销供货价</a>
+                <ng-template #nzTemplate>
+                  <div class="p-10">
+                      <div class="d-inline-block w-100">
+                        <input [(ngModel)]="sameTriger.promotionPrice" type="number" class="form-control" placeholder="请输入">
+                      </div>
+                      <a class="d-inline-block m-l-5" (click)="setSamePrice('promotionPrice');">保存</a>
+                      <a class="d-inline-block m-l-5" (click)="isShowPromotionPricePopOver = false">取消</a>
+                    </div>
+                </ng-template>
+              </nz-popover>
+
+              <nz-popover [(nzVisible)]="isShowGroupPricePopOver" [nzTrigger]="'click'" [nzPlacement]="'bottom'">
+                <a nz-popover >拼团价</a>
+                <ng-template #nzTemplate>
+                  <div class="p-10">
+                    <div class="d-inline-block w-100">
+                      <input [(ngModel)]="sameTriger.price" type="number" class="form-control" placeholder="请输入">
+                    </div>
+                    <a class="d-inline-block m-l-5" (click)="setSamePrice('price');">保存</a>
+                    <a class="d-inline-block m-l-5" (click)="isShowGroupPricePopOver = false">取消</a>
+                  </div>
+                </ng-template>
+              </nz-popover>
+
+              <nz-popover [(nzVisible)]="isShowJoinPopOver" [nzTrigger]="'click'" [nzPlacement]="'bottom'">
+                <a nz-popover >是否参加拼团活动</a>
+                <ng-template #nzTemplate>
+                  <div class="p-10">
+                    <div class="d-inline-block">
+                      <label class="radio-inline">
+                        <input type="radio" name="batch-status"
+                        w5c-dynamic-element [value]="1" [(ngModel)]="sameTriger.status"> 参加
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="batch-status"
+                        w5c-dynamic-element [value]="2" [(ngModel)]="sameTriger.status"> 不参加
+                      </label>
+                      <label class="radio-inline p-0">
+                        <a class="d-inline-block" (click)="setSameJoin()">保存</a>
+                      </label>
+                      <label class="radio-inline p-0">
+                        <a class="d-inline-block" (click)="isShowJoinPopOver = false;">取消</a>
+                      </label>
+                    </div>
+                  </div>
+                </ng-template>
+              </nz-popover>
+            </p>
+
+          </td>
+        </tr>
+    </tbody>
+  </table>
+  <p class="text-info">拼团活动期间，商品将一律包邮包税，请注意价格设置</p>
+  <div class="custom-error-wrap">
+    <span class="custom-error block" *ngIf="!verifySKUStatusRequired()"><i class="si si-danger"></i>&nbsp;请至少选择1个商品SKU参加拼团活动</span>
+    <span class="custom-error block" *ngIf="!verifySKURequired() || !verifySKURequiredHead()"><i class="si si-danger"></i>&nbsp;请填写所有参加拼团活动商品规格的拼团价</span>
+    <span class="custom-error block" *ngIf="verifySKURequired() && !verifySKUCompare()">
+      <i class="si si-danger"></i>&nbsp;需满足 促销供货价＜拼团价，且注意考虑支付平台收取的0.6%交易手续费
+    </span>
+    <span class="custom-error block" *ngIf="isAttractNewType && verifySKURequiredHead() && !verifySKUCompareHead()">
+      <i class="si si-danger"></i>&nbsp;需满足 团长促销供货价＜团长拼团价，且注意考虑支付平台收取的0.6%交易手续费
+    </span>
+    <span class="custom-error block" *ngIf="isAttractNewType && verifySKURequiredHead() && !verifySKUCompareGrouponAndHead()">
+      <i class="si si-danger"></i>&nbsp;需满足 团长拼团价＜=拼团价，且注意考虑支付平台收取的0.6%交易手续费
+    </span>
+    <span class="custom-error block" *ngIf="isAttractNewType && verifySKURequiredHead() && !verifySKUCompareGrouponProAndHeadPro()">
+      <i class="si si-danger"></i>&nbsp;需满足 团长促销供货价＜=促销供货价，且注意考虑支付平台收取的0.6%交易手续费
+    </span>
+  </div>
+</div>

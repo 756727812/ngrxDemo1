@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">选择商品.</h3>
+</div>
+<div class="modal-body">
+    <div class="row" see-access="KOL New-Brand">
+        <div class="col-xs-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="grid-portfolio m-t-10">
+                        <uib-tabset active="active">
+                            <uib-tab heading="选品库" index="0"></uib-tab>
+                        </uib-tabset>
+                        <div class="" style="padding-top:-10px;" >
+                            <div class="grid moveupdown materialList" align="center">
+                                <div
+                                  ng-click="vm.clickGoods(good)" ng-disabled="good.alreadyChecked"
+                                  class="grid-item" ng-repeat="good in vm.selected_goods_list" id="{{'good' + good.item_id}}">
+                                    <i class="fa fa-check checked"
+                                      ng-show="good.isChecked||good.alreadyChecked"
+                                      ng-class="{'original-checked':good.alreadyChecked}"></i>
+                                    <img see-src="good.item_imgurl">
+                                    <label>
+                                    <p>
+                                      <span title="{{good.item_discount_price | currency: '￥'}} {{good.item_name}}">{{good.item_name}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="width:100px;margin:0 auto;">
+                                <select class="form-control" ng-model="vm.favour_page" ng-change="vm.materialFavorItemList()" ng-options="item for item in vm.list_page_favour">
+                                    <option value="" selected>-- 页数 --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+</div>

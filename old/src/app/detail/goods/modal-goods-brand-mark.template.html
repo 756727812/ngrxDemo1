@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">{{brand_info.brand_name}}品牌评分</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-4 text-center">
+            <img see-src="brand_info.brand_logo" thumbnail="imageView2/2/w/120" alt="brand_info.brand_name">
+            <h3 >总分：{{rate_info.score}}</h3>
+        </div>
+        <div class="col-sm-8">
+            <form class="form-inline">
+                <div class="form-group" ng-repeat="list in rate_info.list" style="margin-bottom:15px;">
+                    <label class="control-label">{{list.name}}：{{list.score_cur}}</label>
+                    <select id="{{list.id}}" ng-model="list.choice" class="form-control" ng-options="node as node for node in list.choice_list">
+                        <!-- <option ng-repeat="choice in list.choice_list" value="{{choice}}">{{choice}}</option> -->
+                    </select>
+                    <input type="text" placeholder="数量" class="form-control" ng-model="list.num"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">真实总分：{{rate_info.score_real}}</div>
+        <div class="col-sm-6" ng-repeat = "list in rate_info.list">
+            真实{{list.name}}：{{list.score_real}}
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

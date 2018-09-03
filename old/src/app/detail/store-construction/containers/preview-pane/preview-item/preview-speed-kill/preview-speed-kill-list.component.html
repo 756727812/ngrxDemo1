@@ -1,0 +1,85 @@
+<div class="preview-speed-kill-list">
+  <div class="list-title"
+       [hidden]="!icon && !data.mainTitle && !data.subTitle">
+    <div class="icon"
+         [hidden]="!icon">
+      <img [seeSrc]="icon" />
+    </div>
+    <div class="title">{{ data.mainTitle }}</div>
+    <div class="subtitle">{{ data.subTitle }} </div>
+  </div>
+
+  <div class="list-content" [ngClass]="config.styleType !== 2 ? '':'list-content-grid'">
+    <div class="placeholder" *ngIf="!config.targets || config.targets.length === 0">
+      <div *ngIf="config.styleType !== 2">
+        <app-preview-placeholder-item [width]="134" [imgHeight]="134"></app-preview-placeholder-item>
+        <app-preview-placeholder-item [width]="134" [imgHeight]="134"></app-preview-placeholder-item>
+        <app-preview-placeholder-item [width]="134" [imgHeight]="134"></app-preview-placeholder-item>
+      </div>
+      <div *ngIf="config.styleType === 2">
+        <app-preview-placeholder-item dir="h" [imgHeight]="108"></app-preview-placeholder-item>
+        <app-preview-placeholder-item dir="h" [imgHeight]="108"></app-preview-placeholder-item>
+      </div>
+    </div>
+
+    <div class="item"
+         *ngFor="let item of config.targets">
+
+      <ng-container *ngIf="item.distanceEndTime > 0">
+
+        <div class="main-img">
+          <img alt=""
+               [seeSrc]="item.mainImgUrl || item.itemImgurl" />
+        </div>
+        <div class="main-info">
+          <div class="item-info">
+            <!-- TODO  名称两行... 无效 why -->
+            <div class="activity-name">
+              {{item.itemName}}
+            </div>
+            <div class="price-line">
+              <div class="price">
+                <span class="seckill-price">￥{{item.seckillPrice || item.price/100}}</span>
+                <span class="daily-price">￥{{item.dailyPrice || item.skuPrice/100}}</span>
+              </div>
+              <span class="limit">限量N件</span>
+            </div>
+          </div>
+
+          <div class="item-status">
+
+            <ng-container *ngIf="item.distanceEndTime > 0 && item.distanceStartTime < 0">
+              <div class="time">
+                <div class="txt-line">
+                  <span>距结束仅剩</span>
+                  <span>{{item.distanceEndTime | date: 'dd天 HH:mm:ss'}}</span>
+                </div>
+              </div>
+              <div class="buy btn-action">
+                <img src="./images/speed-kill.png"
+                    alt="">
+                <div class="txt">马上抢</div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="item.distanceStartTime > 0">
+              <div class="time">
+                <div class="txt-line">
+                  <span>{{formatTime(item.startTime)}}</span>
+                  <span>准时开抢</span>
+                </div>
+              </div>
+              <div class="remind btn-action">
+                <img src="./images/wating.png"
+                    alt="">
+                <span class="txt">提醒我</span>
+              </div>
+            </ng-container>
+
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

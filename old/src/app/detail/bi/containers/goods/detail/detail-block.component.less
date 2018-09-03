@@ -1,0 +1,101 @@
+.main-content .page-content .panel-content {
+  padding: 20px 20px 10px 20px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.main {
+  width: 100%;
+}
+
+select {
+  margin-right: 20px;
+}
+
+select,
+input.keyword {
+  width: 138px;
+  height: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+}
+
+th {
+  text-align: center;
+
+  > .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    select {
+      height: 21px;
+      width: 56px;
+      margin-left: 4px;
+      border: 1px solid #e0e0e0;
+      border-radius: 2;
+      background: #fff;
+    }
+  }
+}
+
+// TODO not work
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:root :host ::ng-deep {
+  .ant-table-column-sorter .anticon-caret-up,
+  .ant-table-column-sorter .anticon-caret-down {
+    font-size: 15px;
+  }
+}
+
+th.sortable {
+  color: #5971e8;
+}
+
+td {
+  height: 80px;
+  text-align: center;
+}
+
+td.item_name {
+  width: 270px;
+
+  > a {
+    display: flex;
+    align-items: center;
+  }
+
+  img {
+    width: 63px;
+    height: 63px;
+    margin-right: 16px;
+    display: block;
+  }
+}
+
+td.created_date {
+  width: 130px;
+}
+
+input.keyword {
+  width: 148px;
+  height: 30px;
+  outline: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 2;
+}
+
+.see-btn-search {
+  height: 30px;
+  line-height: 30px;
+  width: 56px;
+  margin-right: 33px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+}

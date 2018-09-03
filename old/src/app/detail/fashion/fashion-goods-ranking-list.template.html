@@ -1,0 +1,181 @@
+<div class="header">
+	<h2><strong>单品排行榜</strong></h2>
+
+	<div class="breadcrumb-wrapper"  ng-hide="true">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/fashion">全球时尚</a></li>
+			<li class="hotgoods">单品排行榜</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<div class="clear-fix">
+						<div class="btn-group pull-left">
+							<button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.day_type==1}" ng-click="$ctrl.daytypeFilter(1)">近7天热门</button>
+							<button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.day_type==2}" ng-click="$ctrl.daytypeFilter(2)">近30天热门</button>
+							<button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.day_type==3}" ng-click="$ctrl.daytypeFilter(3)">单日销量榜</button>
+						</div>
+						<div class="input-group pull-right" style="width: 200px;" ng-show="$ctrl.day_type == 3">
+							<input type="text" class="form-control w-100" uib-datepicker-popup ng-model="$ctrl.day_id" is-open="$ctrl.opened" current-text="今天"
+								clear-text="清空" close-text="关闭" />
+							<span class="input-group-btn">
+                  <button type="button" class="btn btn-primary" ng-click="$ctrl.opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+						</div>
+					</div>
+					<form ng-submit="$ctrl.submitSearch()" class="form-inline">
+						<div class="form-group m-b-10" ng-if="false">
+			                <label class="control-label">品类
+			                  <div class="input-group">
+			                    <span class="form-control">{{ $ctrl.getSelectedClassName() }}</span>
+			                    <div class="btn btn-primary input-group-addon" type="button" ng-click="$ctrl.toSelectClass()">选择品类</div>
+			                  </div>
+			                </label>
+			              </div>
+
+
+						<div class="form-group m-b-10" >
+							<label class="control-label">选择品类</label>
+							<ui-select multiple ng-model="$ctrl.searchForm.filter_class_id" theme="bootstrap" close-on-select="false" title="选择品类" style="width: 300px;">
+								<ui-select-match placeholder="选择品类...">{{$item.value}}</ui-select-match>
+								<ui-select-choices repeat="cls.filter_class_id as cls in $ctrl.list_class | propsFilter: {value: $select.search}">
+									<div ng-bind-html="cls.value | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select>
+						</div>
+						<div class="form-group m-b-10">
+							<label class="control-label">选择国家</label>
+							<ui-select multiple ng-model="$ctrl.searchForm.filter_country_name" theme="bootstrap" close-on-select="false" title="选择国家" style="width: 300px;">
+								<ui-select-match placeholder="选择国家...">{{$item.value}}</ui-select-match>
+								<ui-select-choices repeat="country.filter_country_name as country in $ctrl.list_country | propsFilter: {value: $select.search}">
+									<div ng-bind-html="country.value | highlight: $select.search"></div>
+								</ui-select-choices>
+							</ui-select>
+						</div>
+						<div class="form-group m-b-10">
+							<label class="control-label">价格区间</label>
+							<input type="number" class="form-control" placeholder="￥" ng-model="$ctrl.searchForm.filter_price_start">&nbsp;-&nbsp;
+							<input type="number" class="form-control" placeholder="￥" ng-model="$ctrl.searchForm.filter_price_end">
+						</div>
+						<div class="form-group m-b-10">
+							<label class="control-label">关键词
+                  <input type="search" class="form-control" ng-model="$ctrl.searchForm.keyword" placeholder="商品名/品牌/商品ID/备注">
+              </label>
+						</div>
+						<button type="submit" class="btn btn-primary m-b-10"><i class="fa fa-search"></i>搜索</button>
+						<!--<button type="reset" class="btn btn-dark m-b-10" ng-click="$ctrl.clearSearch()"><i class="fa fa-refresh"></i>清空</button>-->
+						<a class="btn btn-primary m-b-10" target="_blank" download ng-href="/api/item/itemExport?day_type={{$ctrl.day_type}}&rank_type={{$ctrl.rank_type}}">
+							<i class="fa fa-file-excel-o"></i>导出列表</a>
+						<!-- <div class="btn-group font-size-25">
+							<a href="" ng-class="{ 'text-info disabled': $ctrl.show_type === 'table'}" ng-disabled="$ctrl.show_type === 'table'" ng-click="$ctrl.changeShowType('table')"><i class="fa fa-list"></i></a>&nbsp;|&nbsp
+							<a href="" ng-class="{ 'text-info disabled': $ctrl.show_type === 'grid'}" ng-disabled="$ctrl.show_type === 'grid'" ng-click="$ctrl.changeShowType('grid')"><i class="fa fa-table"></i></a>
+						</div> -->
+						<div class="btn-group font-size-25">
+							<a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'table'}" ng-disabled="$ctrl.show_type === 'table'" ng-click="$ctrl.changeShowType('table')"><i class="fa fa-list"></i></a>&nbsp;|&nbsp
+							<a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'grid'}" ng-disabled="$ctrl.show_type === 'grid'" ng-click="$ctrl.changeShowType('grid')"><i class="fa fa-table"></i></a>
+						</div>
+					</form>
+					<see-tabset>
+						<see-tab heading="浏览热度榜" select="$ctrl.selectTab()" type="1"></see-tab>
+						<see-tab heading="销量热度榜" select="$ctrl.selectTab()" type="2"></see-tab>
+					</see-tabset>
+					<div id="hotgoodsList" class="table-scrollable materialList" ng-if="$ctrl.show_type === 'table'">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>排名</th>
+									<th>商品图</th>
+									<th>商品名</th>
+									<th>商品ID</th>
+									<th>品类</th>
+									<th>品牌</th>
+									<th>国家</th>
+									<th>价格</th>
+									<th>货源</th>
+									<th>浏览量</th>
+									<th>销量</th>
+									<th>备注</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in $ctrl.hotgoods_list track by $index">
+									<td ng-bind="item.item_rank"></td>
+									<td>
+										<img see-src="item.item_imgurl" see-viewer width="100" alt="{{item.item_name}}">
+									</td>
+									<td ng-bind="item.item_name"></td>
+									<td ng-bind="item.item_id"></td>
+									<td ng-bind="item.class_name"></td>
+									<td ng-bind="item.brand_name"></td>
+									<td ng-bind="item.ship_country"></td>
+									<td ng-bind="item.price | currency: '￥'"></td>
+									<td ng-bind="item.ship_area"></td>
+									<td ng-bind="item.num_uv"></td>
+									<td ng-bind="item.num_sell"></td>
+									<td>
+										<a href="" editable-textarea="mt.tips" e-rows="7" e-cols="40" onbeforesave="$ctrl.saveNotes($data, item.item_id)"><i class="fa fa-pencil-square-o"></i>{{item.notes}}</a>
+									</td>
+									<td>
+										<a class="btn btn-sm btn-primary" ng-href="{{item.buyurl}}" target="_blank">商品详情</a>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.hideGoods(item.item_id, item.is_public)"
+											ng-bind="item.is_public === 1 ? '隐藏商品' : '显示商品'"></button>
+										<button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.materialSync(item.item_id)">同步</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="grid moveupdown materialList" ng-if="$ctrl.show_type === 'grid'">
+						<div class="grid-sizer"></div>
+						<div class="grid-item" ng-repeat="item in $ctrl.hotgoods_list track by item.item_id" id="{{'item' + item.item_id}}">
+							<div class="grid-item-image">
+								<img see-src="item.item_imgurl" width="100" class="img-viewer" alt="">
+								<div class="btn-group font-size-25 bottom">
+									<a href="" class="" ng-click="$ctrl.hideGoods(item.item_id, item.is_public, $index)" title="{{item.is_public === 1 ? '隐藏商品' : '显示商品'}}">
+										<i class="fa " ng-class="{ 'fa-eye-slash' : item.is_public === 1, 'fa-eye': item.is_public === 0}"></i>
+									</a>
+								</div>
+								<a ng-href="{{item.buyurl}}" class="goods-url" target="_blank"></a>
+							</div>
+							<div class="clear-fix p-5 m-0" style="font-size: 12px;">
+								<span class="pull-left">
+                    <span>ID&nbsp;<span ng-bind="item.item_id"></span></span>
+								</span>
+								<span style="text-align: center;" ng-bind="item.class_name"></span>
+								<span class="pull-right text-primary" ng-bind="item.price | currency: '￥'"></span>
+							</div>
+							<div class="clear-fix">
+								<div class="pull-left">
+									<img ng-if="item.brand_logo" class="img-circle" style="width: 30px;" see-src="item.brand_logo" alt="" />
+									<span class="text-info" ng-bind="item.brand_name"></span>
+								</div>
+								<div class="pull-right">
+									<img style="width: 25px;" see-src="item.location_logo" alt="" />
+									<span ng-bind="item.location_name"></a>
+                </div>
+              </div>
+              <a ng-href="{{item.buyurl}}" class="grid-item-desc m-b-10 text-primary" ng-bind="item.item_name" target="_blank"></a>
+              <div class="clear-fix">
+                <div class="pull-left">
+                  <span><i class="fa fa-fire text-primary"></i><span ng-bind="item.num_uv"></span></span>
+									<span><i class="fa fa-shopping-cart text-primary"></i><span ng-bind="item.num_sell"></span></span>
+								</div>
+								<div class="pull-right" ng-if="item.ship_area === '不稳定'">
+									<p>货源不稳定</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<pagination total-items="$ctrl.total_items"></pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

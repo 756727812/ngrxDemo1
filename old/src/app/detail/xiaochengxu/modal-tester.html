@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">体验者管理</h3>
+</div>
+<div class="modal-body">
+    <table class="table table-bordered table-hover">
+      <thead>
+          <tr>
+              <th>微信号</th>
+              <th>邀请时间</th>
+              <th>状态</td>
+              <th>操作</th>
+          </tr>
+      </thead>
+
+      <tbody>
+          <tr ng-repeat="config in vm.list">
+              <td>
+                  <span ng-if="config.id !== '0'">
+                     {{config.wechatid}}
+                  </span>
+                 <input ng-if="config.id === '0'" style="width:120px;" type="text" class="form-control" ng-model="config.wechatid">
+              </td>
+              <td>
+                <label ng-if="config.id !== '0'">
+                  {{config.create_time * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+                </label>
+              </td>
+              <td>
+                <label ng-if="config.id !== '0'">
+                  <font style='color:red' ng-if="config.status === '0'">邀请失败</font>
+                  <font style='color:green' ng-if="config.status === '1'">邀请成功</font>
+                </label>
+              </td>
+              <td>
+                <button ng-if="(config.id === '0') && config.wechatid !== ''" class="btn btn-sm btn-primary" ng-click="vm.weixin_bindTester(config.wechatid)">确认邀请</button>
+                <div ng-if="config.id !== '0'">
+                  <button ng-if="config.status === '0'" class="btn btn-sm btn-primary" ng-click="vm.weixin_bindTester(config.wechatid)">重新邀请</button>
+                  <button  class="btn btn-sm btn-primary" ng-click="vm.deleteTester(config.wechatid)">删除邀请</button>
+                </div>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="7">
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="vm.newBind()"><i class="fa fa-plus"></i>添加体验者</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+
+    <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+ 
+          <div class="modal-footer">
+            
+            <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">关闭</button>
+          <!--
+            <button class="btn btn-default" type="button" ng-click="vm.cancel()">关闭</button> -->
+          </div>
+    </form>
+</div>

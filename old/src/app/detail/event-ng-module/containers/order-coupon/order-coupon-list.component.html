@@ -1,0 +1,158 @@
+<div class="panel">
+  <div class="panel-content">
+    <p ng-hide="urlFrom === 'sidebar' || urlFrom === 'kolV2'">
+      <a routerLink="{{urlBack}}">
+        <i class="fa fa-chevron-left"></i>返回营销工具</a>
+    </p>
+
+    <!-- <p *ngIf="urlFrom === 'kolV2'">
+          <a routerLink='/kol-v2/kol-cooperation-management/{{ kolId }}/{{ wechatId }}/marketing-tools' class="text-primary">
+            <i class="fa fa-chevron-left"></i>返回营销工具</a>
+        </p> -->
+    <nz-spin [nzSpinning]="_isSpinning" class="loading-spin m-t-20">
+      <div class="tbar">
+        <div class="l">
+          <a [routerLink]="['/event2/coupon/add']" [queryParams]="queryParams" class="ant-btn ant-btn-primary m-r-20">
+            <i class="anticon anticon-plus"></i>
+            <span>新建下单返券</span>
+          </a>
+          <!-- <button nz-button (click)="selectKOLs()" [nzType]="'primary'">
+            <span>批量指派</span>
+          </button> -->
+        </div>
+        <div class="right search">
+          <label nz-checkbox [(ngModel)]="canBatchAssign" (ngModelChange)="checkStatus($event)" class="p-t-3 p-r-10" style="white-space:nowrap">
+            <span>可批量指派</span>
+          </label>
+          <nz-input class="keyword" [(ngModel)]="_keyword" [nzType]="'search'" (nzOnSearch)="searchClick($event)" [nzPlaceHolder]="'活动名称'"></nz-input>
+          <button nz-button [nzType]="'primary'" (click)="searchClick()">
+            <i class="anticon anticon-search"></i>
+            <span>搜索</span>
+          </button>
+        </div>
+      </div>
+      <!-- bar end -->
+      <!-- <div class="tableAlert">
+        <div data-show="true" class="ant-alert ant-alert-info">
+          <i class="anticon anticon-info-circle ant-alert-icon"></i>
+          <span class="ant-alert-message">已选择
+            <span class="count-num">{{selectedCount}}</span> 项&nbsp;&nbsp;
+            <a *ngIf="selectedCount" style="margin-left: 24px;" (click)="clearChecked()">清空</a>
+          </span>
+          <span class="ant-alert-description"></span>
+        </div>
+      </div> -->
+
+      <nz-table id="coupon-act-list" #tableRef nzShowSizeChanger [nzAjaxData]="dataSet" [nzLoading]="loading" [nzTotal]="total" [nzShowQuickJumper]="'true'"
+        [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)"
+        (nzDataChange)="_displayDataChange($event)">
+        <thead nz-thead>
+          <tr>
+            <!-- <th nz-th nzCheckbox>
+              <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)"></label>
+            </th> -->
+            <th nz-th>活动ID</th>
+            <th nz-th [nzWidth]="'300px'">活动名称</th>
+            <th nz-th>
+              <span>活动时间</span>
+              <nz-table-sort [(nzValue)]="sortType" (nzValueChange)="sortByTime($event)"></nz-table-sort>
+            </th>
+            <th nz-th>优惠券礼包</th>
+            <th nz-th>支付门槛</th>
+            <th nz-th>限制数量</th>
+            <th nz-th>
+              状态
+              <nz-dropdown [nzTrigger]="'click'">
+                <i class="anticon anticon-filter" nz-dropdown></i>
+                <ul nz-menu>
+                  <li nz-menu-item style="background:#FFF;padding-bottom: 0">
+                    <nz-radio-group [(ngModel)]="status" (ngModelChange)="searchData(true);">
+                      <div class="block h-30" nz-radio *ngFor="let filter of statusFilter" [nzValue]="filter.value">
+                        <span>{{filter.name}}</span>
+                      </div>
+                    </nz-radio-group>
+                  </li>
+                </ul>
+              </nz-dropdown>
+            </th>
+            <th nz-th>操作</th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr *ngFor="let item of tableRef.data;let i = index;">
+            <!-- <td nz-td nzCheckbox>
+              <label nz-checkbox [(ngModel)]="checkedMap[item.id]" (ngModelChange)="_refreshStatus($event)" [nzDisabled]="item.status != 1">
+              </label>
+            </td> -->
+            <td nz-td class="item-id">
+              {{item.id}}
+            </td>
+            <td nz-td class="item-name">
+              <ellipsis lines="3" style="max-width: 300px;">
+                {{item.activityName}}
+              </ellipsis>
+            </td>
+            <td nz-td>
+              {{item.startTime | date:'yyyy-MM-dd HH:mm:ss'}}
+              <br/> ~
+              <br/> {{item.endTime | date:'yyyy-MM-dd HH:mm:ss'}}
+            </td>
+            <td nz-td>
+              {{item.couponNum}}
+            </td>
+            <td nz-td>{{item.payLimitMoney}}</td>
+            <td nz-td>{{item.limitPer}}</td>
+            <td [ngSwitch]="item.status">
+              <span *ngSwitchCase='1'>待开始</span>
+              <span *ngSwitchCase='2'>进行中</span>
+              <span *ngSwitchCase='3'>已结束</span>
+              <span *ngSwitchDefault>--</span>
+            </td>
+            <!-- 1-待开始，2-进行中，3-结束 -->
+            <td [ngSwitch]="item.status">
+              <ng-container *ngSwitchCase="'1'">
+                <a [routerLink]="['add/']" [queryParams]="{id: item.id,action:'edit',kolId:queryParams.kolId,xdpId:queryParams.xdpId,wechat_id:queryParams.wechat_id,from:'kolV2'}">编辑</a>
+                <span nz-table-divider></span>
+                <a (click)="stopEvent(item.id, item.status)">强制结束</a>
+                <span nz-table-divider></span>
+                <a *ngIf="item.status == 1" (click)="selectKOLs(item.id)">批量指派</a>
+              </ng-container>
+              <ng-container *ngSwitchCase="'2'">
+                <a [routerLink]="['add/']" [queryParams]="{id: item.id,action:'view',kolId:queryParams.kolId,xdpId:queryParams.xdpId,wechat_id:queryParams.wechat_id,from:'kolV2'}">查看</a>
+                <span nz-table-divider></span>
+                <a (click)="stopEvent(item.id, item.status)">强制结束</a>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                  <a [routerLink]="['add/']" [queryParams]="{id: item.id,action:'view',kolId:queryParams.kolId,xdpId:queryParams.xdpId,wechat_id:queryParams.wechat_id,from:'kolV2'}">查看</a>
+                </ng-container>
+
+              <!-- <span *ngIf="item.status == 1 || item.status == 2">
+                <a (click)="stopEvent(item.id, item.status)">强制结束</a>
+                <span nz-table-divider></span>
+              </span>
+              <span *ngIf="item.status != 1">
+                <a [routerLink]="['add/']" [queryParams]="{id: item.id,action:'view',kolId:queryParams.kolId,xdpId:queryParams.xdpId,wechat_id:queryParams.wechat_id,from:'kolV2'}">查看</a>
+              </span>
+              <span *ngIf="item.status == 1">
+                <a [routerLink]="['add/']" [queryParams]="{id: item.id,action:'edit',kolId:queryParams.kolId,xdpId:queryParams.xdpId,wechat_id:queryParams.wechat_id,from:'kolV2'}">编辑</a>
+                <span nz-table-divider></span>
+                <a *ngIf="item.status == 1" (click)="selectKOLs(item.id)">批量指派</a>
+              </span> -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-spin>
+    <nz-modal [nzVisible]="modalVisible" [nzTitle]="'强制结束活动'" [nzContent]="modalContent" (nzOnCancel)="modalCancel($event)"
+      (nzOnOk)="modalOk($event)">
+      <ng-template #modalContent>
+        <p>{{modalText}}</p>
+
+        <p *ngIf="modalError">
+          <nz-alert [nzType]="'error'" [nzMessage]="modalError" nzShowIcon>
+          </nz-alert>
+        </p>
+      </ng-template>
+    </nz-modal>
+  </div>
+</div>

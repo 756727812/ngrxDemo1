@@ -1,0 +1,103 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title" ng-if="vm.status==30">审核通过</h3>
+    <h3 class="modal-title" ng-if="vm.status==20">拒绝审核</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+
+        <div class="form-group">
+            <label class="control-label col-sm-2 required">跟进人</label>
+            <div class="col-sm-10">
+                <input name="choice_seller" ng-disabled="vm.followUp" type="text" class="form-control" ng-model="vm.choice_seller" autocomplete="off" required uib-typeahead="cur_item as cur_item.title for cur_item in vm.list_user | filter:{title:$viewValue} | limitTo:8" />
+            </div>
+        </div>
+
+    <!--
+        <div class="form-group" ng-if="vm.status==30">
+            <label class="control-label col-sm-2 required">欠款分组</label>
+            <div class="col-sm-10">
+                <select class="form-control" ng-model="vm.choice_debt_group" ng-options="cur_item.debt_group as cur_item.title for cur_item in vm.list_debt" required>
+                    <option value="" selected>-- 请选择 --</option>
+                </select>
+            </div>
+        </div>-->
+
+         <div class="form-group" ng-if="vm.status==30">
+            <label class="control-label col-sm-2 required">欠款额度/￥</label>
+            <div class="col-sm-10">
+              <input name="ori_price" type="number" class="form-control" ng-model="vm.debt_group" ng-trim="true" required>
+            </div>
+        </div>
+
+
+        <div class="form-group" ng-if="vm.status==30">
+            <label class="control-label col-sm-2 required">保证金/￥</label>
+            <div class="col-sm-10">
+              <input name="ori_price" type="number" class="form-control" ng-model="vm.cash_deposit" ng-trim="true" required>
+            </div>
+        </div>
+
+
+        <div class="form-group" ng-if="vm.status==30">
+            <label class="control-label col-sm-2 required">是否缴纳</label>
+            <div class="col-sm-10">
+                <select class="form-control" ng-model="vm.choice_is_pay" ng-options="cur_item.is_pay as cur_item.title for cur_item in vm.list_pay" required >
+                    <option value="" selected>-- 请选择 --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="vm.status==30">
+            <label class="control-label col-sm-2 required">结算类型</label>
+            <div class="col-sm-10">
+                <div class="col-sm-4">
+                    <label class="radio-inline">
+                        <input type="radio" name="settlement_type" ng-value="1"
+                        ng-model="vm.settlement_type"
+                        ng-change="vm.changeSettlement_type()"
+                        >&nbsp;差额</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="settlement_type" ng-value="0"
+                        ng-model="vm.settlement_type"
+                        ng-change="vm.changeSettlement_type()"
+                        >&nbsp;比例</label>
+                    </div>
+                
+                <div class="col-sm-6" ng-show="vm.isProportion">
+                    <!-- <see-custom-select selected='vm.proportionSelected' options="vm.proportion" change="changeSelect()"></see-custom-select> -->
+                <input type="text" name="greeting" list="greetings" class="form-control">
+                <datalist id="greetings">
+                    <option value="20%">20%</option>
+                    <option value="25%">25%</option>
+                    <option value="30%">30%</option>
+                    <!-- <option ng-repeat="item in vm.proportion" value="item.label">{{item.label}}</option> -->
+                </datalist>
+                </div>
+                
+
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="vm.status==30">
+            <label class="control-label col-sm-2 required">SEE对外打款公司</label>
+            <div class="col-sm-10">
+                <select class="form-control" ng-model="vm.company" ng-options="item.id as item.label for item in vm.companyList" required disabled>
+                    <option value="" selected>-- 请选择 --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.errors.length > 0">
+            <ul class="col-sm-offset-2 col-sm-8">
+              <li class="alert alert-danger" ng-repeat="err in vm.errors track by $index" ng-bind="err"></li>
+            </ul>
+        </div>
+
+        <div class="modal-footer" ng-if="vm.list_debt.length>0">
+            <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()" ng-if="vm.status==30">通过审核</button>
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()"  ng-if="vm.status==20">拒绝审核</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

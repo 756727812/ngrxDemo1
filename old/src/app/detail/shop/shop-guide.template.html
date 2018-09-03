@@ -1,0 +1,71 @@
+<div class="shop-info">
+  <div class="header">
+
+  </div>
+
+  <div class="row my-shop">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>我的小电铺</strong><!--<a href="">&nbsp;<i class="fa fa-link"></i></a>--></h3>
+        </div>
+        <div class="panel-content my-shop-empty">
+          <div class="row">
+            <div class="col-xs-12" ng-if="$ctrl.show_type == 1">
+              <h1><i class="icon si si-emoji-happy"></i><span class="text-title-sm">快来开启 SEE 小电铺之旅吧</span></h1>
+              <center>
+                <span class="text-desc-sm">小电铺通过电商服务连接自媒体与品牌，为自媒体提供变现服务，
+                  <br />帮助品牌和零售商在微信生态实现品效合一，
+                  <br />让我们一同开启新营销和新零售之路吧！</span></center>
+              <div class="text-center">
+                <!--<a href="" class="btn btn-default">查看更多介绍</a>-->
+                <a href="/shop/create" class="btn btn-primary">开通小电铺</a>
+              </div>
+
+            </div>
+
+
+            <div class="col-xs-12" ng-if="$ctrl.show_type == 2">
+              <h1><i class="icon si si-emoji-happy"></i><span class="text-title-sm">你的小店铺正在审核中</span></h1>
+              <center><span class="text-desc-sm">你的小电铺目前正在审核中，请耐心等待</span></center>
+
+              <div class="text-center">
+                <a href="/dashboard/dashboard" class="btn btn-primary" style="margin-top:15px;margin-bottom:25px;">返回概况页</a>
+              </div>
+
+            </div>
+
+
+            <div class="col-xs-12" ng-if="$ctrl.show_type == 3">
+              <h1><i class="icon si si-emoji-happy"></i><span class="text-title-sm">你的小店铺可升级</span></h1>
+              <center><span class="text-desc-sm">此功能只有在小电铺升级后才可使用，快来升级小电铺，开启更多新功能吧！</span></center>
+
+              <div class="text-center">
+                <br />
+                <center><span class="text-desc-sm">扫二维码，联系管理员进行小电铺升级</span></center>
+                <img src="/api/xiaodianpu/headingHelpImg"  style="max-width:150px"/>
+              </div>
+
+            </div>
+
+            <div class="col-xs-12" ng-if="$ctrl.show_type == 4">
+              <h1><span class="text-title-sm">审核失败</span></h1>
+              <center><span class="text-desc-sm">你的小电铺由于提代的信息不符合规范，暂时不能通过，具体原因请扫码联系管理员进行咨询</span></center>
+
+              <div class="text-center">
+                <a href="/dashboard/dashboard" class="btn btn-primary" style="margin-top:15px;margin-bottom:25px;">返回概况页</a>
+                <br />
+                <center><span class="text-desc-sm">扫二维码联系管理员</span></center>
+                <img src="/api/xiaodianpu/headingHelpImg"  style="max-width:150px"/>
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

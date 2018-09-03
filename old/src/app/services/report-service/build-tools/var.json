@@ -1,0 +1,438 @@
+{
+  "1001": {
+    "cn": "官网首页",
+    "VAR": "PAGE_SITE",
+    "moduleMap": {
+      "1": {
+        "cn": "顶部-自媒体",
+        "VAR": "TOP_SELF_MEDIA"
+      },
+      "2": {
+        "cn": "顶部-品牌",
+        "VAR": "TOP_BRAND"
+      },
+      "3": {
+        "cn": "顶部-登录see",
+        "VAR": "TOP_LOGIN"
+      },
+      "4": {
+        "cn": "自媒体合作tab",
+        "VAR": "SELF_MEDIA_COOP_TAB"
+      },
+      "5": {
+        "cn": "品牌合作tab",
+        "VAR": "BRAND_COOP_TAB"
+      },
+      "6": {
+        "cn": "自媒体查看详情",
+        "VAR": "SELF_MEDIA_DETAIL"
+      },
+      "7": {
+        "cn": "品牌查看详情",
+        "VAR": "BRAND_DETAIL"
+      },
+      "8": {
+        "cn": "顶部-注册",
+        "VAR": "TOP_REGISTER"
+      },
+      "9": {
+        "cn": "一键创建小程序电商btn",
+        "VAR": "BTN_FAST_CREATE_SHOW"
+      },
+      "10": {
+        "cn": "快速申请",
+        "VAR": "QUICK_APPLY"
+      },
+      "11": {
+        "cn": "开通",
+        "VAR": "OPEN_SHOP"
+      },
+      "12": {
+        "cn": "注册",
+        "VAR": "REGISTER"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2001": {
+    "cn": "后台登陆页",
+    "VAR": "PAGE_ENTRY",
+    "moduleMap": {
+      "1": {
+        "cn": "后台注册页加载",
+        "VAR": "PV_ENTER_REGISTER",
+        "ext2": "refer"
+      },
+      "2": {
+        "cn": "信息收集页加载",
+        "VAR": "PV_INFO_FORM",
+        "ext2": "refer"
+      },
+      "3": {
+        "cn": "注册成功页加载",
+        "VAR": "PV_REGISTER_SUCC",
+        "ext2": "refer"
+      },
+      "4": {
+        "cn": "登录btn",
+        "VAR": "BTN_LOGIN",
+        "ext2": "refer"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV",
+        "ext2": "refer"
+      }
+    }
+  },
+  "2002": {
+    "cn": "小电铺创建页",
+    "VAR": "PAGE_CREATE_SHOP",
+    "moduleMap": {
+      "1": {
+        "cn": "基础版-开通btn",
+        "VAR": "BTN_OPEN_BASIC",
+        "ext2": "refer"
+      },
+      "2": {
+        "cn": "进阶版-开通btn",
+        "VAR": "BTN_OPEN_ADVANCE",
+        "ext2": "refer"
+      },
+      "3": {
+        "cn": "专业版-开通btn",
+        "VAR": "BTN_OPEN_PROFESSION",
+        "ext2": "refer"
+      },
+      "4": {
+        "cn": "选择SEE主体",
+        "VAR": "SEL_SUBJECT_SEE",
+        "ext2": "refer"
+      },
+      "5": {
+        "cn": "选择自己主体",
+        "VAR": "SEL_SUBJECT_OWN",
+        "ext2": "refer"
+      },
+      "6": {
+        "cn": "去注册btn",
+        "VAR": "BTN_TO_REGISTER",
+        "ext2": "refer"
+      },
+      "7": {
+        "cn": "去完善btn",
+        "VAR": "BTN_TO_COMPLETE_DATA",
+        "ext2": "refer"
+      },
+      "8": {
+        "cn": "去开通btn",
+        "VAR": "BTN_TO_OPEN",
+        "ext2": "refer"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV",
+        "ext2": "refer"
+      }
+    }
+  },
+  "2003": {
+    "cn": "后台概况页",
+    "VAR": "PAGE_OVERVIEW",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2004": {
+    "cn": "小电铺-概况页",
+    "VAR": "PAGE_SHOP_OVERVIEW",
+    "moduleMap": {
+      "1": {
+        "cn": "访问小电铺btn",
+        "VAR": "BTN_ACCESS_SHOP"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2005": {
+    "cn": "小电铺-装修页",
+    "VAR": "PAGE_SHOP_OPERATE",
+    "moduleMap": {
+      "1": {
+        "cn": "店铺banner",
+        "VAR": "PV_SHOP_BANNER"
+      },
+      "2": {
+        "cn": "活动banner",
+        "VAR": "PV_ACT_BANNER"
+      },
+      "3": {
+        "cn": "爆款商品",
+        "VAR": "PV_HOT_COMMODITY"
+      },
+      "4": {
+        "cn": "商品分组",
+        "VAR": "PV_COMMODITY_GROUP"
+      },
+      "5": {
+        "cn": "优惠券",
+        "VAR": "PV_COUPON"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2006": {
+    "cn": "小电铺-内容电商页",
+    "VAR": "PAGE_CONTENT_ELEC_MARKET",
+    "moduleMap": {
+      "1": {
+        "cn": "添加文章btn",
+        "VAR": "BTN_ADD_ARTICLE"
+      },
+      "2": {
+        "cn": "链接btn",
+        "VAR": "BTN_LINK"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      },
+      "305": {
+        "cn": "添加商品btn",
+        "VAR": "BTN_ADD_COMMODITY"
+      }
+    }
+  },
+  "2007": {
+    "cn": "小电铺-文章详情页",
+    "VAR": "PAGE_ARTICLE_DETAIL",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      },
+      "305": {
+        "cn": "添加商品btn",
+        "VAR": "BTN_ADD_COMMODITY"
+      }
+    }
+  },
+  "2008": {
+    "cn": "选品中心-热门单品页",
+    "VAR": "PAGE_HOT_COMMODITY",
+    "moduleMap": {
+      "2": {
+        "cn": "添加至小电铺btn",
+        "VAR": "BTN_ADD_TO_SHOP"
+      },
+      "4": {
+        "cn": "收藏btn",
+        "VAR": "BTN_FAVOR"
+      },
+      "5": {
+        "cn": "选品库",
+        "VAR": "PV_FAVOR_CART"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      },
+      "302": {
+        "cn": "商品点击",
+        "VAR": "CLICK_COMMODITY"
+      },
+      "306": {
+        "cn": "添加至仓库btn",
+        "VAR": "BTN_OFF_SALE"
+      }
+    }
+  },
+  "2009": {
+    "cn": "选品中心-主题选品页",
+    "VAR": "PAGE_THEME_LIST",
+    "moduleMap": {
+      "1": {
+        "cn": "主题点击",
+        "VAR": "CLICK_THEME"
+      },
+      "2": {
+        "cn": "添加至文章btn",
+        "VAR": "BTN_ADD_TO_ARTICLE"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      },
+      "306": {
+        "cn": "添加至仓库btn",
+        "VAR": "BTN_OFF_SALE"
+      }
+    }
+  },
+  "2010": {
+    "cn": "选品中心-主题详情页",
+    "VAR": "PAGE_THEME_DETAIL",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      },
+      "302": {
+        "cn": "商品点击",
+        "VAR": "CLICK_COMMODITY"
+      }
+    }
+  },
+  "2011": {
+    "cn": "商品管理-所有商品页",
+    "VAR": "PAGE_CM_ALL_COMMODITY",
+    "moduleMap": {
+      "1": {
+        "cn": "发布商品btn",
+        "VAR": "POST_COMMODITY"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2012": {
+    "cn": "商品管理-运费模板页",
+    "VAR": "PAGE_CM_FREIGHT_TPL",
+    "moduleMap": {
+      "1": {
+        "cn": "创建运费模板btn",
+        "VAR": "BTN_CREATE_FREIGHT_TPL"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2013": {
+    "cn": "商品管理-我的调价申请页",
+    "VAR": "PAGE_CM_ADJUST_PRICE",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2014": {
+    "cn": "商品管理-商品分组页",
+    "VAR": "PAGE_CM_COMMODITY_GROUP",
+    "moduleMap": {
+      "1": {
+        "cn": "添加手动分组btn",
+        "VAR": "BTN_ADD_MANNUAL_GROUP"
+      },
+      "2": {
+        "cn": "添加自动分组btn",
+        "VAR": "BTN_ADD_AUTO_GROUP"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2015": {
+    "cn": "订单管理-我的分销订单页",
+    "VAR": "PAGE_OM_MY_DIST",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2016": {
+    "cn": "订单管理-所有订单页",
+    "VAR": "PAGE_OM_ALL_ORDER",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2017": {
+    "cn": "订单管理-订单批量操作页",
+    "VAR": "PAGE_OM_ORDER_BATCH_OP",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2018": {
+    "cn": "资产管理-概况页",
+    "VAR": "PAGE_ASSET_OVERVIEW",
+    "moduleMap": {
+      "1": {
+        "cn": "提现btn",
+        "VAR": "BTN_WITHDRAW_CASH"
+      },
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2019": {
+    "cn": "资产管理-订单入账页",
+    "VAR": "PAGE_ASSET_ENTER_ACCOUNT",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2020": {
+    "cn": "资产管理-提现记录页",
+    "VAR": "PAGE_WITHDRAW_CASH",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2021": {
+    "cn": "帮助中心-物流说明",
+    "VAR": "PAGE_LOGISTICS_FAQ",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  },
+  "2022": {
+    "cn": "帮助中心-小电铺说明",
+    "VAR": "PAGE_FAQ",
+    "moduleMap": {
+      "101": {
+        "cn": "加载",
+        "VAR": "PV"
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+<div class="header">
+  <h2>
+    <strong>{{vm.title}}</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/goods">商品管理</a></li>
+		  <li class="active">商品调价审核</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4 ng-bind="circle.cir_name"></h4>
+        <div class="circle-container group">
+          <see-tabset cur-idex="0" id="lead_price_tab">
+            <see-tab heading="待审核" type="needVerify" see-access="C2C-Seller New-Brand"></see-tab>
+            <see-tab heading="已通过" type="approved" see-access="C2C-Seller New-Brand"></see-tab>
+            <see-tab heading="已拒绝" type="rejected" see-access="C2C-Seller New-Brand"></see-tab>
+          </see-tabset>
+          <div class="table-scrollable" see-viewer>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="120" rowspan="2">申请时间</th>
+                  <th rowspan="2">商品主图</th>
+                  <th rowspan="2">商品信息</th>
+                  <th rowspan="2">SKU</th>
+                  <th colspan="4">原价</th>
+                  <th colspan="4" style="color: #5971E8"><span style="display: inline-block;" id="lead_price_apply">调价申请</span></th>
+                  <th rowspan="2">审核状态</th>
+                  <th rowspan="2" ng-if="vm.status_type==2">被拒理由</th>
+                </tr>
+                <tr>
+                  <th>成本价</th>
+                  <th>日常售价</th>
+                  <th>市场价</th>
+                  <th>默认供货价</th>
+                  <th style="color: #5971E8">成本价</th>
+                  <th style="color: #5971E8">日常售价</th>
+                  <th style="color: #5971E8">市场价</th>
+                  <th style="color: #5971E8">默认供货价</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat-start="adjust in vm.priceAdjustList">
+                  <td rowspan="{{adjust.adjust_detail.length}}">{{adjust.apply_time  * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">
+                    <img alt="{{adjust.item_imgurl}}" class="img-thumbnail" width="100" height="100" see-src="adjust.item_imgurl" />
+                  </td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">ID:{{adjust.item_id}}
+                    <br>名称:{{adjust.item_name}}
+                  </td>
+                  <td>{{adjust.adjust_detail[0].attr_value}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_supply_price}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_sku_price}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_sku_ori_price}}</td>
+                  <td>{{adjust.adjust_detail[0].ori_cost_price}}</td>
+                  <td style="color: #5971E8">{{adjust.adjust_detail[0].supply_price}}</td>
+                  <td style="color: #5971E8">{{adjust.adjust_detail[0].sku_price}}</td>
+                  <td style="color: #5971E8">{{adjust.adjust_detail[0].sku_ori_price}}</td>
+                  <td style="color: #5971E8">{{adjust.adjust_detail[0].cost_price}}</td>
+                  <td rowspan="{{adjust.adjust_detail.length}}">
+                    <span ng-if="adjust.status==0">待审核</span>
+                    <span ng-if="adjust.status==1">已通过</span>
+                    <span ng-if="adjust.status==2">已拒绝</span>
+                  </td>
+                  <td ng-if="vm.status_type==2">
+                    {{adjust.reject_reason}}
+                  </td>
+                </tr>
+                <tr ng-repeat-end ng-repeat="detail in adjust.adjust_detail.slice(1)">
+                  <td>{{detail.attr_value}}</td>
+                  <td>{{detail.ori_supply_price}}</td>
+                  <td>{{detail.ori_sku_price}}</td>
+                  <td>{{detail.ori_sku_ori_price}}</td>
+                  <td>{{detail.cost_price}}</td>
+                  <td style="color: #5971E8">{{detail.supply_price}}</td>
+                  <td style="color: #5971E8">{{detail.sku_price}}</td>
+                  <td style="color: #5971E8">{{detail.sku_ori_price}}</td>
+                  <td style="color: #5971E8">{{detail.sku_ori_price}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination total-items="vm.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

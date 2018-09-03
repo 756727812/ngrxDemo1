@@ -1,0 +1,677 @@
+<kol-detail-base wechat-id="$ctrl.wechatId" ng-if="!$ctrl.isNewBrand"></kol-detail-base>
+<div class="row event-group-action">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-header">
+        <p class="p-10"><a href="" ng-click="$ctrl.backToGroupBuyList(groupForm)" class="text-primary"><i class="fa fa-chevron-left"></i>返回拼团活动列表</a></p>
+      </div>
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12" ng-class="{ 'col-md-6 col-lg-7': $ctrl.isNewBrand && ($ctrl.formData.type === 1 || $ctrl.formData.type === 2) }">
+            <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="groupForm">
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">拼团类型</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline" ng-repeat="type in $ctrl.groupTypeConst track by type.value">
+                    <input type="radio" name="type"
+                      ng-model="$ctrl.formData.type"
+                      ng-change="$ctrl.setLuckyGroup()"
+                      ng-value="type.value"
+                      ng-disabled="$ctrl.item.status > 0 || $ctrl.isNewBrandFormDisabled || type.disabled"
+                    >{{ type.label }}
+                  </label>
+                  <label class="radio-inline w-200" ng-if="$ctrl.isNewBrand">
+                    <i class="icon si si-info icon-gray"
+                    uib-tooltip="新人团的参与对象仅限在小电铺未发生过支付行为的新用户（仅支付过一分钱抽奖团的用户仍被视为新用户）。抽奖团和拉新福利团功能暂未对外开放，如有需要欢迎咨询SEE小电铺"
+                    tooltip-placement="top-center"
+                    tooltip-trigger="'mouseenter focus'"></i>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">商品</label>
+                <div class="col-sm-10"
+                  ng-class="{ 'has-custom-error': groupForm.$submitted && !$ctrl.product }"
+                >
+                  <div class="img-container">
+                    <div ng-show="$ctrl.product" class="position-relative">
+                      <img see-src="$ctrl.product.itemImgurl" thumbnail="150x150" see-viewer ng-cloak alt="">
+                      <a href="" class="img-del-btn" ng-click="$ctrl.resetProduct()" ng-hide="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled"></a>
+                    </div>
+                    <div ng-hide="$ctrl.product" class="add-button img-pointer" ng-cloak ng-click="$ctrl.addProduct(groupForm)">
+                      <i class="fa fa-plus"></i>
+                    </div>
+                  </div>
+                  <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.product"><i class="si si-danger"></i>&nbsp;请选择一个参与拼团的商品</span>
+                </div>
+              </div>
+              <div ng-show="$ctrl.product">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">商品名称</label>
+                  <label class="col-sm-10 control-label text-left font-weight-normal" ng-bind="$ctrl.product.itemName"></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">商品类型</label>
+                  <label class="col-sm-10 control-label text-left font-weight-normal" ng-bind="$ctrl.product.distribution ? '分销' : '自营'"></label>
+                </div>
+              </div>
+              <div class="form-group" ng-if="$ctrl.product">
+                <label class="col-sm-2 control-label required">设置价格</label>
+                <div class="col-sm-10">
+                  <table class="table table-bordered table-center table-condensed">
+                    <thead>
+                    <tr>
+                      <th>
+                          <!-- <input type="checkbox" name="allcheck"> -->
+                          <nz-checkbox
+                            ng-model="$ctrl.allChecked"
+                            ng-change="$ctrl.updateAllChecked()"
+                            [nz-indeterminate]="$ctrl.indeterminate"
+                            [nzDisabled]="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled">
+                          </nz-checkbox>
+                      </th>
+                      <th ng-repeat="(key, val) in $ctrl.product.sku[0].skuSpec track by key" ng-bind="key"></th>
+                      <th>{{ $ctrl.product.distribution ? $ctrl.isNewBrand ? '日常供货价/' : '成本价/日常供货价/' : ''}}日常售价</th>
+                      <th>{{ $ctrl.isAttractNewType() ? $ctrl.product.distribution ? '团长促销供货价/团长拼团价/' : '团长拼团价/' : ''}}{{ $ctrl.product.distribution ? '促销供货价/' : '' }}拼团价<br />
+                        <!-- <input name="promotionPrice" class="form-control form-white w-80" type="number"
+                          w5c-dynamic-element
+                          ng-show="$ctrl.product.distribution"
+                          ng-model="$ctrl.sameTriger.promotionPrice"
+                          ng-change="$ctrl.setSame('promotionPrice')"
+                          ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrand"
+                        />
+                        <input name="price" class="form-control form-white w-80" type="number"
+                          w5c-dynamic-element
+                          ng-model="$ctrl.sameTriger.price"
+                          ng-change="$ctrl.setSame('price')"
+                          ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                        /> -->
+                      </th>
+                      <th>库存</th>
+                      <th>是否参加拼团活动</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in $ctrl.product.sku track by item.skuId">
+                        <td>
+                          <nz-checkbox
+                          ng-model="item.checked"
+                          ng-change="$ctrl.updateSingleChecked()"
+                          [nzDisabled]="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled">
+                          </nz-checkbox>
+                        </td>
+                        <td ng-repeat="(key, val) in item.skuSpec track by key" ng-bind="val"></td>
+                        <td>
+                          <span ng-show="$ctrl.product.distribution">
+                            <span ng-if="$ctrl.isAdmin">{{item.productionCostPrice | currency: '￥'}}/</span>
+                            {{item.supplyPrice | currency: '￥'}}/
+                          </span>{{item.skuPrice | currency: '￥'}}
+                        </td>
+                        <td>
+                          <input type="number" class="form-control w-100"
+                            name="'grouponHeaderSkuCostPrice'+ item.skuId"
+                            ng-required="item.status === 1"
+                            ng-if="$ctrl.isAttractNewType() && $ctrl.product.distribution"
+                            ng-model="item.grouponHeaderSkuCostPrice"
+                            ng-disabled="$ctrl.item.status > 1 || $ctrl.isNewBrand"
+                            ng-change="$ctrl.formatPrice($index, 'grouponHeaderSkuCostPrice')"
+                            ng-class="{ 'price-error': groupForm.$submitted && !$ctrl.verifySKUItemPriceHead(item, 'grouponHeaderSkuCostPrice') && item.status == 1}"
+                          >
+                          <input type="number" class="form-control w-100"
+                            name="'grouponHeaderPrice'+ item.skuId"
+                            ng-required="item.status === 1"
+                            ng-if="$ctrl.isAttractNewType()"
+                            ng-model="item.grouponHeaderPrice"
+                            ng-disabled="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled"
+                            ng-change="$ctrl.formatPrice($index, 'grouponHeaderPrice')"
+                            ng-class="{'price-error':groupForm.$submitted && !$ctrl.verifySKUItemPriceHead(item, 'grouponHeaderPrice') && item.status == 1}"
+                          >
+                          <input type="number" class="form-control w-100"
+                            name="'promotionPrice'+ item.skuId"
+                            ng-required="item.status === 1"
+                            ng-if="$ctrl.product.distribution"
+                            ng-model="item.promotionPrice"
+                            ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrand"
+                            ng-change="$ctrl.formatPrice($index, 'promotionPrice')"
+                            ng-class="{ 'price-error': groupForm.$submitted && !$ctrl.verifySKUItemPrice(item, 'promotionPrice') && item.status == 1}"
+                          >
+                          <input type="number" class="form-control w-100"
+                            name="'price'+ item.skuId"
+                            ng-required="item.status === 1"
+                            ng-model="item.price"
+                            ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                            ng-change="$ctrl.formatPrice($index, 'price')"
+                            ng-class="{'price-error':groupForm.$submitted && !$ctrl.verifySKUItemPrice(item, 'price') && item.status == 1}"
+                          >
+                        </td>
+                        <!-- (groupForm.$submitted && !$ctrl.verifySKUItemPrice(item, 'price') && item.status == 1) -->
+                        <td ng-bind="item.skuSellableStock"></td>
+                        <td>
+                          <label class="radio-inline">
+                            <input type="radio" w5c-dynamic-name="'status'+ item.skuId"
+                            w5c-dynamic-element ng-value="1" ng-model="item.status" ng-disabled="$ctrl.item.status > 1"> 参加
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" w5c-dynamic-name="'status'+ item.skuId"
+                            w5c-dynamic-element ng-value="2" ng-model="item.status" ng-disabled="$ctrl.item.status > 1"> 不参加
+                          </label>
+                        </td>
+                      </tr>
+                      <tr ng-if="!$ctrl.formDisabled">
+                        <td colspan="{{ 5 + $ctrl.skuSpecKeys.length }}">
+                          <p>
+                            批量设置：
+                            <a href="" class="p-10" ng-show="$ctrl.isAdmin && $ctrl.product.distribution && $ctrl.isAttractNewType()"
+                              uib-popover-template="'headerPromotionSupplyPriceTmp.html'"
+                              popover-placement="auto bottom"
+                              popover-is-open="$ctrl.isHeaderPromotionSupplyPriceTmpOpen"
+                              ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                            >团长促销供货价</a>
+                            <a href="" class="p-10" ng-show="$ctrl.isAdmin && $ctrl.isAttractNewType()"
+                              uib-popover-template="'headerGroupPriceTmp.html'"
+                              popover-placement="auto bottom"
+                              popover-is-open="$ctrl.isHeaderGroupPriceTmpOpen"
+                              ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                            >团长拼团价</a>
+                            <a href="" class="p-10" ng-show="$ctrl.isAdmin && $ctrl.product.distribution"
+                              uib-popover-template="'promotionSupplyPriceTmp.html'"
+                              popover-placement="auto bottom"
+                              popover-is-open="$ctrl.isPromotionSupplyPriceTmpOpen"
+                              ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                            >促销供货价</a>
+                            <a href="" class="p-10" uib-popover-template="'groupPriceTmp.html'"
+                              popover-placement="auto bottom"
+                              popover-is-open="$ctrl.isGroupPriceTmpOpen"
+                              ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                            >拼团价</a>
+                            <a href=""
+                              uib-popover-template="'joinGroupTmp.html'"
+                              popover-placement="auto bottom"
+                              popover-is-open="$ctrl.isJoinGroupTmpOpen"
+                              ng-disabled="$ctrl.item.status > 1 && $ctrl.formData.type !== 4 || $ctrl.isNewBrandFormDisabled"
+                            >是否参加拼团活动</a>
+                          </p>
+                          <script type="text/ng-template" id="headerPromotionSupplyPriceTmp.html">
+                            <div class="p-10">
+                              <div class="d-inline-block w-100">
+                                <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.grouponHeaderSkuCostPrice">
+                              </div>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSame('grouponHeaderSkuCostPrice')">保存</a>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isHeaderPromotionSupplyPriceTmpOpen = false">取消</a>
+                            </div>
+                          </script>
+                          <script type="text/ng-template" id="headerGroupPriceTmp.html">
+                            <div class="p-10">
+                              <div class="d-inline-block w-100">
+                                <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.grouponHeaderPrice">
+                              </div>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSame('grouponHeaderPrice')">保存</a>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isHeaderGroupPriceTmpOpen = false;">取消</a>
+                            </div>
+                          </script>
+                          <script type="text/ng-template" id="promotionSupplyPriceTmp.html">
+                            <div class="p-10">
+                              <div class="d-inline-block w-100">
+                                <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.promotionPrice">
+                              </div>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSame('promotionPrice')">保存</a>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isPromotionSupplyPriceTmpOpen = false">取消</a>
+                            </div>
+                          </script>
+                          <script type="text/ng-template" id="groupPriceTmp.html">
+                            <div class="p-10">
+                              <div class="d-inline-block w-100">
+                                <input type="number" class="form-control" placeholder="请输入" ng-model="$ctrl.sameTriger.price">
+                              </div>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.setSame('price')">保存</a>
+                              <a href="" class="d-inline-block m-l-5" ng-click="$ctrl.isGroupPriceTmpOpen = false;">取消</a>
+                            </div>
+                          </script>
+                          <script type="text/ng-template" id="joinGroupTmp.html">
+                            <div class="p-10">
+                              <div class="d-inline-block">
+                                <label class="radio-inline">
+                                  <input type="radio" name="batch-status"
+                                  w5c-dynamic-element ng-value="1" ng-model="$ctrl.sameTriger.status"> 参加
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="batch-status"
+                                  w5c-dynamic-element ng-value="2" ng-model="$ctrl.sameTriger.status"> 不参加
+                                </label>
+                                <label class="radio-inline p-0">
+                                  <a href="" class="d-inline-block" ng-click="$ctrl.setSameJoin()">保存</a>
+                                </label>
+                                <label class="radio-inline p-0">
+                                  <a href="" class="d-inline-block" ng-click="$ctrl.isJoinGroupTmpOpen = false;">取消</a>
+                                </label>
+                              </div>
+                            </div>
+                          </script>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p class="text-info">拼团活动期间，商品将一律包邮包税，请注意价格设置</p>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                  <span class="custom-error block" ng-show="groupForm.$submitted && !$ctrl.verifySKUStatusRequired()"><i class="si si-danger"></i>&nbsp;请至少选择1个商品SKU参加拼团活动</span>
+                  <span class="custom-error block" ng-show="groupForm.$submitted && (!$ctrl.verifySKURequired() || !$ctrl.verifySKURequiredHead())"><i class="si si-danger"></i>&nbsp;请填写所有参加拼团活动商品规格的拼团价</span>
+                  <span class="custom-error block" ng-show="groupForm.$submitted && $ctrl.verifySKURequired() && !$ctrl.verifySKUCompare()">
+                    <i class="si si-danger"></i>&nbsp;{{ $ctrl.product.distribution ? '需满足 促销供货价＜拼团价＜日常售价，且注意考虑支付平台收取的0.6%交易手续费' : '需满足 0＜拼团价＜日常售价，且注意考虑支付平台收取的0.6%交易手续费'}}
+                  </span>
+                  <span class="custom-error block" ng-show="groupForm.$submitted && $ctrl.isAttractNewType() && $ctrl.verifySKURequiredHead() && !$ctrl.verifySKUCompareHead()">
+                    <i class="si si-danger"></i>&nbsp;{{ $ctrl.product.distribution ? '需满足 团长促销供货价＜团长拼团价＜日常售价，且注意考虑支付平台收取的0.6%交易手续费' : '需满足 0＜团长拼团价＜日常售价，且注意考虑支付平台收取的0.6%交易手续费'}}
+                  </span>
+                  <span class="custom-error block" ng-show="groupForm.$submitted && $ctrl.isAttractNewType() && $ctrl.verifySKURequiredHead() && !$ctrl.verifySKUCompareGrouponAndHead()">
+                    <i class="si si-danger"></i>&nbsp;需满足 团长拼团价＜=拼团价，且注意考虑支付平台收取的0.6%交易手续费
+                  </span>
+                  <span class="custom-error block" ng-show="groupForm.$submitted && $ctrl.isAttractNewType() && $ctrl.verifySKURequiredHead() && !$ctrl.verifySKUCompareGrouponProAndHeadPro()">
+                    <i class="si si-danger"></i>&nbsp;需满足 团长促销供货价＜=促销供货价，且注意考虑支付平台收取的0.6%交易手续费
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">活动名称</label>
+                <div class="col-sm-3">
+                  <div class="input-group">
+                    <input type="text" class="form-control w5c-error-not-show" name="activityName" ng-model="$ctrl.formData.activityName" required
+                      ng-disabled="$ctrl.item.status === 3 || $ctrl.isNewBrandFormDisabled"
+                      ng-change="$ctrl.formatInputName(0, 30, 'activityName')"
+                    >
+                    <span class="input-group-addon">{{$ctrl.verifyLength(0, 30, 'activityName').number}}/15</span>
+                  </div>
+                </div>
+                <div class="col-sm-10 col-sm-offset-2">
+                  <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.activityName"><i class="si si-danger"></i>&nbsp;请输入活动名称</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">活动封面图</label>
+                <div class="col-sm-8">
+                  <div class="img-container banner" ng-show="$ctrl.formData.bannerUrl">
+                    <img see-src="$ctrl.formData.bannerUrl" see-viewer alt="">
+                    <div class="bannber-group-action" ng-hide="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled">
+                      <button class="btn btn-primary" type="button" ngf-select="$ctrl.uploadBanner($file)" accept="image/jpg, image/jpeg, image/png">上传图片</button>
+                      <button class="btn btn-primary" type="button" ng-click="$ctrl.resetFormBanner()" ng-hide="$ctrl.isShowResetFormBannerButton">恢复默认</button>
+                    </div>
+                  </div>
+                  <div class="clear-fix">
+                    <p class="text-info m-t-10 m-b-0">&midast;&nbsp;默认使用商品主图作为活动封面图，您还可以将鼠标移动到图片上方上传图片，图片尺寸要求708X 416</p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                  <div class="col-sm-8 col-sm-offset-2">
+                    <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.bannerUrl"><i class="si si-danger"></i>&nbsp;请上传图片</span>
+                  </div>
+                </div>
+              <div class="form-group" ng-hide="$ctrl.isLuckyType()">
+                <label class="col-sm-2 control-label">限量标签</label>
+                <p class="col form-text w-50 p-l-15" style="text-align: left">限量</p>
+                <div class="col" style="width: 95px;">
+                  <input type="number" class="form-control w5c-error-not-show" name="productLimit"
+                    ng-model="$ctrl.formData.productLimit"
+                    ng-disabled="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled"
+                    ng-pattern="/^[0-9]*[1-9][0-9]*$/"
+                    onkeyup="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                    onafterpaste="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                  >
+                </div>
+                <p class="col form-text w-30">件</p>
+                <div class="col form-text" style="width: calc(83.3% - 175px);text-align: left;">
+                  <i class="icon si si-info icon-gray"
+                    uib-tooltip="限量标签将展示在拼团商品列表和商品详情页中，提示用户该商品为限量拼团。限量件数需手动填写，与实际库存无关。"
+                    tooltip-placement="top-center"
+                    tooltip-trigger="'mouseenter focus'"></i>
+                </div>
+                <div class="col-sm-10 col-sm-offset-2">
+                  <p class="text-info"></p>
+                  <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.verifyProductLimit()"><i class="si si-danger"></i>&nbsp;限量件数需为正整数</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">活动时间</label>
+                <style>
+                  .group-date-range .ant-input{height: 32px;padding:0 3px}
+                  .group-date-range .ant-calendar-range-picker-separator{line-height: 32px}
+                </style>
+                <div class="col-sm-3 group-date-range">
+                  <nz-rangepicker required
+                    [nz-size]="large"
+                    formControlName="rangeTime"
+                    ng-model="$ctrl.formData.dateRange"
+                    [nz-show-time]="true"
+                    [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                    [nz-disabled-date]="$ctrl.disabledStartDate"
+                    ng-change="$ctrl.dateRangeChange()"
+                    [nz-disabled]="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled">
+                  </nz-rangepicker>
+                  <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.dateRange[0]"><i class="si si-danger"></i>&nbsp;请选择有效期</span>
+                </div>
+                <!-- <div class="col-sm-10">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <nz-datepicker class="full-width"
+                        ng-class="{ disabled: $ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled }"
+                        ng-change="$ctrl.startValueChange()"
+                        ng-model="$ctrl.formData.startTime"
+                        [nz-disabled-date]="$ctrl.disabledStartDate"
+                        [nz-show-time]="true"
+                        [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                        [nz-place-holder]="'请选择开始时间'"
+                      ></nz-datepicker>
+                      <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.startTime"><i class="si si-danger"></i>&nbsp;请输入活动开始时间</span>
+                      <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.verifyStartNowTime()"><i class="si si-danger"></i>&nbsp;活动开始时间应晚于当前时间</span>
+                    </div>
+                    <div class="col-sm-3">
+                      <nz-datepicker class="full-width"
+                        ng-class="{ disabled: $ctrl.item.status === 3 || $ctrl.isNewBrandFormDisabled }"
+                        ng-change="$ctrl.endValueChange()"
+                        ng-model="$ctrl.formData.endTime"
+                        [nz-disabled-date]="$ctrl.disabledEndDate"
+                        [nz-show-time]="$ctrl.endTime"
+                        [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                        [nz-place-holder]="'请选择结束时间'"
+                      ></nz-datepicker>
+                      <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.endTime"><i class="si si-danger"></i>&nbsp;请输入活动结束时间</span>
+                      <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.verifyStartEndTime()"><i class="si si-danger"></i>&nbsp;活动结束时间应晚于开始时间</span>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+              <div class="form-group"
+                ng-class="{ 'has-custom-error': groupForm.$submitted && !$ctrl.termOfValidity.hours && !$ctrl.termOfValidity.minutes }"
+              >
+                <label class="col-sm-2 control-label required">成团有效期</label>
+                <div class="col" style="width: 95px;">
+                  <input type="number" class="form-control" name="termOfValidityHours"
+                    ng-model="$ctrl.termOfValidity.hours"
+                    ng-disabled="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled"
+                    ng-pattern="/^[0-9]*[1-9][0-9]*$/"
+                    onkeyup="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                    onafterpaste="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                  >
+                </div>
+                <p class="col form-text w-30">小时</p>
+                <div class="col" style="width: 95px;">
+                  <select name="termOfValidityMinutes" class="form-control"
+                    ng-model="$ctrl.termOfValidity.minutes"
+                    ng-disabled="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled"
+                    required
+                  >
+                    <option ng-repeat="n in $ctrl.minutes track by n" ng-value="n" ng-bind="n"></option>
+                  </select>
+                </div>
+                <p class="col form-text w-30">分</p>
+                <div class="col form-text" style="width: calc(43.3% - 80px);text-align: left;">
+                  <i class="icon si si-info icon-gray"
+                    uib-tooltip="参与用户必须在“成团有效期”内成团才算成功。"
+                    tooltip-placement="top-center"
+                    tooltip-trigger="'mouseenter focus'"></i>
+                </div>
+                <div class="clear-fix">
+                  <div class="col-sm-10 col-sm-offset-2">
+                    <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.termOfValidity.hours && !$ctrl.termOfValidity.minutes"><i class="si si-danger"></i>&nbsp;请输入拼团有效期</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{ 'has-custom-error': groupForm.$submitted && $ctrl.verifygrouponSuccessNumber() && $ctrl.formData.grouponSuccessNumber < 2}">
+                <label class="col-sm-2 control-label required">成团人数</label>
+                <div class="col" style="width: 95px;">
+                  <input type="number" class="form-control w5c-error-not-show" name="grouponSuccessNumber" required
+                    ng-model="$ctrl.formData.grouponSuccessNumber"
+                    ng-disabled="$ctrl.item.status > 1 || $ctrl.isNewBrandFormDisabled"
+                    ng-pattern="/^[0-9]*[1-9][0-9]*$/"
+                    onkeyup="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                    onafterpaste="if(this.value)this.value=Math.abs(parseInt(this.value, 10))"
+                  >
+                </div>
+                <p class="col form-text w-30">人</p>
+                <div class="col-sm-10 col-sm-offset-2">
+                  <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.verifygrouponSuccessNumber()"><i class="si si-danger"></i>&nbsp;请输入成团人数</span>
+                  <span class="custom-error" ng-show="groupForm.$submitted && $ctrl.verifygrouponSuccessNumber() && ($ctrl.formData.grouponSuccessNumber < 2)"><i class="si si-danger"></i>&nbsp;成团人数必须是大于1的正整数</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">模拟成团</label>
+                <div class="col">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" name="simulatedFlag" ng-model="$ctrl.simulatedFlagInfo[$ctrl.formData.type]" disabled>
+                    {{ $ctrl.simulatedFlagInfo[$ctrl.formData.type] ? '已开启' : '已关闭' }}
+                  </label>
+                </div>
+                <div class="col form-text" style="width: calc(83.33% - 100px);text-align: left;">
+                  <i class="icon si si-info icon-gray"
+                    uib-tooltip="开启模拟成团后，拼团有效期内人数未满的团，系统将会模拟“匿名买家”凑满人数，使该团成团。仅真实买家的订单可进行发货，并进行相关资金结算。"
+                    tooltip-placement="top-center"
+                    tooltip-trigger="'mouseenter focus'"></i>
+                </div>
+              </div>
+              <div ng-if="$ctrl.isSuperType()">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label required">KOL 推荐语</label>
+                  <div class="col" style="width: calc(40% + 30px);">
+                    <div class="input-group">
+                      <input type="text" class="form-control w5c-error-not-show" name="introduction"
+                        w5c-dynamic-element required
+                        ng-model="$ctrl.formData.introduction"
+                        ng-disabled="$ctrl.item.status === 3 || $ctrl.isNewBrandFormDisabled"
+                        ng-change="$ctrl.formatInputName(0, 80, 'introduction')"
+                      >
+                      <span class="input-group-addon">{{$ctrl.verifyLength(0, 80, 'introduction').number}}/40</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-10 col-sm-offset-2">
+                    <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.introduction"><i class="si si-danger"></i>&nbsp;请输入 KOL 推荐语</span>
+                  </div>
+                </div>
+              </div>
+              <div ng-show="$ctrl.isLuckyType()">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label required">开奖时间</label>
+                  <div class="col-sm-3">
+                    <div class="dropdown" style="margin-bottom: 10px;display: inline-block;width: 100%;">
+                      <a class="dropdown-toggle disabled" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false" disabled>
+                        <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" ng-model="$ctrl.formData.lotteryTime" disabled>
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="$ctrl.formData.lotteryTime"
+                          data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"
+                        />
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label required">二等奖优惠券</label>
+                  <div class="col col-sm-10">
+                    <button class="btn btn-primary m-0" type="button" ng-click="$ctrl.addCoupon()" ng-disabled="$ctrl.isNewBrandFormDisabled">添加优惠券</button>
+                    <div class="table-scrollable" ng-show="$ctrl.coupon">
+                      <table class="table-center table-condensed">
+                        <thead>
+                          <tr>
+                            <th>名称</th>
+                            <th>面额&amp;门槛</th>
+                            <th style="min-width: 104px">有效期</th>
+                            <th>发放量</th>
+                            <th style="min-width: 58px">状态</th>
+                            <th>操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td ng-bind="$ctrl.coupon.name"></td>
+                            <td>{{$ctrl.coupon.couponPrice | currency: '￥'}}&amp;{{$ctrl.coupon.limitMoney | currency: '￥'}}</td>
+                            <td>{{$ctrl.coupon.avaliableTimeStart | date: 'yyyy-MM-dd HH:mm:ss'}}至<br />{{$ctrl.coupon.avaliableTimeEnd | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td ng-bind="$ctrl.coupon.allCount"></td>
+                            <td ng-bind="$ctrl.coupon.status | couponStatus" ng-style="{ color: ($ctrl.coupon.status === 4 || $ctrl.coupon.status === 5) && '#FF6B6B' }"></td>
+                            <td>
+                              <a class="text-primary click" href=""
+                                ng-click="$ctrl.removeCouponItem()"
+                                ng-disabled="$ctrl.isNewBrandFormDisabled"
+                              >移除</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.couponId"><i class="si si-danger"></i>&nbsp;请添加优惠券</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">开奖助手</label>
+                  <div class="col w-120">
+                    <label class="radio-inline">
+                      <input type="radio" name="assistantFlag" ng-model="$ctrl.formData.assistantFlag" ng-value="0" ng-disabled="$ctrl.isNewBrandFormDisabled"> 关
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="assistantFlag" ng-model="$ctrl.formData.assistantFlag" ng-value="1" ng-disabled="$ctrl.isNewBrandFormDisabled"> 开
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">粉丝群</label>
+                  <div class="col w-120">
+                    <label class="radio-inline">
+                      <input type="radio" name="fansGroupFlag" ng-model="$ctrl.formData.fansGroupFlag" ng-value="0" ng-disabled="$ctrl.isNewBrandFormDisabled"> 关
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="fansGroupFlag" ng-model="$ctrl.formData.fansGroupFlag" ng-value="1" ng-disabled="$ctrl.isNewBrandFormDisabled"> 开
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group" ng-if="$ctrl.formData.fansGroupFlag === 1">
+                  <label class="col-sm-2 control-label required">群暗号</label>
+                  <div class="col-sm-3">
+                    <div class="input-group">
+                      <input type="text" class="form-control w5c-error-not-show" name="fansGroupName"
+                        w5c-dynamic-element ng-required="$ctrl.isLuckyType() && $ctrl.formData.fansGroupFlag === 1"
+                        ng-model="$ctrl.formData.fansGroupName"
+                        ng-change="$ctrl.formatInputName(0, 20, 'fansGroupName')"
+                        ng-disabled="$ctrl.isNewBrandFormDisabled"
+                      >
+                      <span class="input-group-addon">{{$ctrl.verifyLength(0, 20, 'fansGroupName').number}}/10</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-10 col-sm-offset-2">
+                    <span class="custom-error" ng-show="groupForm.$submitted && !$ctrl.formData.fansGroupName"><i class="si si-danger"></i>&nbsp;请输入群暗号</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-if="$ctrl.product.sku" ng-hide="$ctrl.item.status && !$ctrl.item.productShareImgUrl && !$ctrl.item.grouponShareImgUrlParticipate && !$ctrl.isAttractNewType()">
+                <label class="col-sm-2 control-label">分享图</label>
+                <div class="col-sm-8">
+                  <div class="share-img-flex-container">
+                    <div ng-hide="$ctrl.isAttractNewType()" id="productShareImgUrl" class="share-img-container">
+                      <img src="../../../../images/groupon_share_image_badge.svg" alt="" class="share-img-badge">
+                      <div class="share-goods-container">
+                        <div class="share-goods-mask">
+                          <img ng-src="{{$ctrl.base64Url}}" alt="">
+                        </div>
+                        <div class="share-goods-info">
+                          <h2 class="share-goods-info__origin-price">￥<span ng-bind="$ctrl.getSkuMinValue()[0]"></span></h2>
+                          <div class="share-goods-info__price">
+                            <h1>￥<span ng-bind="$ctrl.getSkuMinValue()[1]"></span></h1>
+                            <span class="share-groupon-number">
+                              {{ $ctrl.getGrouponSuccessNumber() }}人团
+                            </span>
+                          </div>
+                          <div class="share-button">
+                            <img src="../../../../images/iwannagroupon.png" alt="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div ng-hide="$ctrl.isAttractNewType()" id="grouponShareImgUrlParticipate" class="share-img-container">
+                      <img src="../../../../images/groupon_share_image_badge.svg" alt="" class="share-img-badge">
+                      <div class="share-goods-container">
+                        <div class="share-goods-mask">
+                          <img ng-src="{{$ctrl.base64Url}}" alt="">
+                        </div>
+                        <div class="share-goods-info">
+                          <h2 class="share-goods-info__origin-price">￥<span ng-bind="$ctrl.getSkuMinValue()[0]"></span></h2>
+                          <div class="share-goods-info__price">
+                            <h1>￥<span ng-bind="$ctrl.getSkuMinValue()[1]"></span></h1>
+                            <span class="share-groupon-number">
+                              {{ $ctrl.getGrouponSuccessNumber() }}人团
+                            </span>
+                          </div>
+                          <div class="share-button"><img src="../../../../images/iwannajoingroupon.png" alt=""></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div ng-if="$ctrl.isAttractNewType() && $ctrl.type !== 'view'" class="header-share-img-container">
+                      <img class="header-share-bgimg" see-src="$ctrl.grouponHeaderShareImg" alt="">
+                      <div class="header-save-text">立省{{$ctrl.getFloatSubtraction($ctrl.getSkuMinValue()[0], $ctrl.getSkuMinValue()[2])}}元</div>
+                      <img class="header-share-productimg" see-src="$ctrl.product.itemImgurl" alt="">
+                      <div class="header-detail-flex-container">
+                        <div class="header-product-name">
+                          <ellipsis lines="2"
+                                    style="width: 100%;">
+                            {{$ctrl.product.itemName}}
+                          </ellipsis>
+                        </div>
+                        <div class="header-price">
+                          <h1>￥<span ng-bind="$ctrl.getSkuMinValue()[2]"></span></h1>
+                          <h2>￥<span ng-bind="$ctrl.getSkuMinValue()[0]"></span></h2>
+                        </div>
+                      </div>
+                      <div class="header-btn-text">立即开团</div>
+                    </div>
+                    <div ng-if="$ctrl.isAttractNewType() && $ctrl.type !== 'view'" class="header-share-img-container">
+                      <img class="header-share-bgimg" see-src="$ctrl.grouponHeaderShareImg" alt="">
+                      <div class="header-save-text">立省{{$ctrl.getFloatSubtraction($ctrl.getSkuMinValue()[0], $ctrl.getSkuMinValue()[1])}}元</div>
+                      <img class="header-share-productimg" see-src="$ctrl.product.itemImgurl" alt="">
+                      <div class="header-detail-flex-container">
+                        <div class="header-product-name">
+                          <ellipsis lines="2"
+                                    style="width: 100%;">
+                            {{$ctrl.product.itemName}}
+                          </ellipsis>
+                        </div>
+                        <div class="header-price">
+                          <h1>￥<span ng-bind="$ctrl.getSkuMinValue()[1]"></span></h1>
+                          <h2>￥<span ng-bind="$ctrl.getSkuMinValue()[0]"></span></h2>
+                        </div>
+                      </div>
+                      <div class="header-btn-text">立即参团</div>
+                    </div>
+                    <div ng-if="$ctrl.isAttractNewType() && $ctrl.type === 'view'" class="header-share-img-container">
+                      <img class="header-share-bgimg" see-src="$ctrl.item.grouponShareImgUrlOpen" alt="">
+                    </div>
+                    <div ng-if="$ctrl.isAttractNewType() && $ctrl.type === 'view'" class="header-share-img-container">
+                      <img class="header-share-bgimg" see-src="$ctrl.item.grouponShareImgUrlParticipate" alt="">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                  <button type="submit" w5c-form-submit="$ctrl.save()" class="btn btn-primary m-0" ng-disabled="$ctrl.isSubmitting || ($ctrl.item.status === 3 && $ctrl.item.type !== 3) || $ctrl.isNewBrandFormDisabled">
+                      <i class="anticon anticon-spin anticon-loading" ng-show="$ctrl.isSubmitting"></i>确定</button>
+                  <button type="button" ng-click="$ctrl.backToGroupBuyList(groupForm)" class="btn btn-default m-b-0 m-l-20">取消</a>
+                  <div class="inline-block" ng-show="$ctrl.errors.length > 0">
+                    <p ng-repeat="err in $ctrl.errors track by $index"><i class="si si-danger invalid"></i>&nbsp;{{err}}</p>
+                  </div>
+                  <div class="inline-block" ng-show="seckillForm.$submitted && (seckillForm.$invalid || !$ctrl.getFormIsValid())">
+                    <p><i class="si si-danger invalid"></i>&nbsp;请检查必填项或填写错误项</p>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 aside-mobile-show" ng-show="$ctrl.isNewBrand && ($ctrl.formData.type === 1 || $ctrl.formData.type === 2)">
+            <div class="aside-mobile-show-img m-b-10">
+              <img see-src="$ctrl.introImages[0]" thumbnail="290x594" alt="">
+            </div>
+            <div class="aside-mobile-show-img">
+              <img see-src="$ctrl.introImages[1]" thumbnail="290x594" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

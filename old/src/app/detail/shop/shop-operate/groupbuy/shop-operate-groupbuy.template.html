@@ -1,0 +1,106 @@
+<div class="shop-operate-coupon">
+  <h2 class="shop-operate-coupon-title">拼团活动配置</h2>
+
+  <div class="clear-fix">
+    <button class="btn btn-primary addCouponAction" type="button" ng-click="$ctrl.openAddGroupBuyModal()">添加拼团活动</button>
+    <form ng-submit="$ctrl.submitSearch()" class="form-inline pull-right">
+
+      <div class="form-group">
+        <select class="form-control" ng-model="$ctrl.formData.type" ng-change="$ctrl.submitSearch()">
+          <option ng-value="0" selected>所有拼团类型</option>
+          <option ng-value="1">普通团</option>
+          <option ng-value="2">新人团</option>
+          <option ng-value="3">抽奖团</option>
+          <option ng-value="4">超级团</option>
+          <option ng-value="5">拉新团</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input type="text" placeholder="商品名称" class="form-control"
+          ng-model="$ctrl.formData.keyword"
+          ng-keyup="$event.keyCode == 13 && $ctrl.submitSearch()"
+          style="min-width: 230px"
+        >
+      </div>
+    </form>
+  </div>
+  <p class="text-center m-t-50" ng-if="$ctrl.groupBuy.list.length === 0">未配置任何拼团活动</p>
+  <div class="table-scrollable" ng-if="$ctrl.groupBuy.list.length > 0">
+    <table class="table table-hover table-center table-condensed m-t-20">
+      <thead>
+        <tr>
+          <th style="width: 150px">活动封面图</th>
+          <th style="width: 165px">活动名称</th>
+          <th style="width: 165px">活动商品</th>
+          <th style="width: 130px">活动时间</th>
+          <th>活动类型</th>
+          <th>商城显示</th>
+          <th>活动显示时间</th>
+          <th>排序</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in $ctrl.groupBuy.list track by item.id">
+          <td>
+            <div class="img-container">
+              <img see-src="item.bannerUrl" thumbnail="150x150" see-viewer alt="">
+            </div>
+          </td>
+          <td>
+            <ellipsis lines="2" style="width: 165px">
+              <span class="text-center m-0" ng-bind="item.activityName" title="{{item.activityName}}"></span>
+            </ellipsis>
+            <p class="text-center m-0" see-hide="New-Brand">ID:{{item.id}}</p>
+          </td>
+          <td>
+            <ellipsis lines="2" style="width: 165px">
+              <span class="text-center m-0" ng-bind="item.productName" title="{{item.productName}}"></span>
+            </ellipsis>
+            <p class="text-center m-0" see-hide="New-Brand">ID:{{item.productId}}</p>
+          </td>
+          <td>{{item.startTime | date: 'yyyy-MM-dd HH:mm'}}至<br />{{item.endTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+          <td ng-bind="item.type | groupBuyType"></td>
+          <td ng-bind="item.isShow === 1 && item.status < 3 ? '已显示' : '已隐藏'"></td>
+          <td>
+            <p class="text-center" ng-class="{ 'text-danger': !item.releaseTime }">
+              <a class="text-primary click block text-center" href="" ng-if="item.status < 3 && !$ctrl.showDate[$index]" ng-click="$ctrl.setDate($index)"><!-- ng-click="$ctrl.openSetShowTimeModal(item.id, item.endTime, item.releaseTime)" -->
+                {{item.releaseTime ? (item.releaseTime | date: 'yyyy-MM-dd HH:mm') : '未设置显示时间'}}<i class="fa fa-pencil-square-o p-l-5"></i>
+              </a>
+              <label class="text-muted" ng-if = "item.status == 3 || item.status == 4">{{item.releaseTime | date: 'yyyy-MM-dd HH:mm'}}</label>
+            </p>
+            <div class="show-date text-center" ng-if = "$ctrl.showDate[$index]">
+              <nz-datepicker style="width:160px"
+                ng-model="item.releaseTime"
+                [nz-show-time]="true"
+                [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                [nz-place-holder]="'请选择活动显示时间'"
+                [nz-disabled-date]="$ctrl.disabledDate"
+              ></nz-datepicker>
+              <button class="btn btn-sm btn-primary" ng-click="$ctrl.dateChange($index,item.id,item.releaseTime)"><i class="fa fa-check"></i></button>
+              <button class="btn btn-sm btn-danger" ng-click="$ctrl.unSetDate()"><i class="fa fa-times"></i></button>
+            </div>
+          </td>
+          <td>
+            <div class="action-group-container">
+              <button class="btn btn-sm" ng-click="$ctrl.updateGroupBuyListSort(item.id, 1)" ng-class="{ 'btn-primary': $index > 0 }" ng-disabled="$index === 0"><i class="fa fa-step-forward up" style="transform: rotate(-90deg)"></i></button>
+              <button class="btn btn-sm" ng-click="$ctrl.updateGroupBuyListSort(item.id, 2)" ng-class="{ 'btn-primary': $index > 0 }" ng-disabled="$index === 0"><i class="fa fa-chevron-up"></i></button>
+              <button class="btn btn-sm" ng-click="$ctrl.updateGroupBuyListSort(item.id, 3)" ng-class="{ 'btn-primary': $index < $ctrl.groupBuy.list.length - 1 }"
+                ng-disabled="$index === ($ctrl.groupBuy.list.length - 1)"><i class="fa fa-chevron-down"></i></button>
+              <button class="btn btn-sm" ng-click="$ctrl.updateGroupBuyListSort(item.id, 4)" ng-class="{ 'btn-primary': $index < $ctrl.groupBuy.list.length - 1 }"
+                ng-disabled="$index === ($ctrl.groupBuy.list.length - 1)"><i class="fa fa-step-forward down" style="transform: rotate(90deg)"></i></button>
+            </div>
+          </td>
+          <td>
+            <div class="text-center">
+              <a class="text-primary click text-center m-b-10" href="/event/group?kolId={{$ctrl.kolId}}&wechat_id={{$ctrl.wechatId}}&activityName={{item.activityName}}">拼团详情</a>
+
+              <a class="text-primary click text-center" href="" ng-click="$ctrl.removeGroupBuyItem(item.id)">移出</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination ng-if="$ctrl.groupBuy.count / 20 > 1" total-items="$ctrl.groupBuy.count"></pagination>
+</div>

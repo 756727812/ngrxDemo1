@@ -1,0 +1,67 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">文案配置</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+    <div class="form-group">
+      <label class="control-label col-sm-4">商城名称</label>
+      <div class="col-sm-7">
+        <input name="title_seckill" type="text" class="form-control" ng-model="vm.form_data.kol_info_u_name" ng-trim="true">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4">商城描述</label>
+      <div class="col-sm-7">
+        <input name="title_seckill" type="text" class="form-control" ng-model="vm.form_data.kol_info_u_desc" ng-trim="true">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4 ">商城头像</label>
+      <div class="col-sm-7">
+        <label class="btn btn-primary btn-sm">上传图片
+          <input type="file" see-file-select="vm.uploadHeading" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize>
+        </label>
+        <label ng-if="vm.can_reset_head == 1" class="btn btn-primary btn-sm" ng-click="vm.resetHead()">&nbsp;&nbsp;&nbsp;&nbsp;重置头像
+        </label>
+        <img ng-if="vm.form_data.kol_info_u_heading !== ''" id="mainImage" width="250" class="img-viewer" see-src="vm.form_data.kol_info_u_heading">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4">商城背景图</label>
+      <div class="col-sm-7">
+        <label class="btn btn-primary btn-sm">上传图片
+          <input type="file" see-file-select="vm.uploadBanner" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize>
+        </label>
+        <label ng-if="vm.can_reset_bandner == 1" class="btn btn-primary btn-sm"  ng-click="vm.resetBanner()">&nbsp;&nbsp;&nbsp;&nbsp;重置背景图
+        </label>
+        <br />
+        <font style="font-size:11px;font-color:#ccc">建议使用750*234尺寸图片做背景图</label>
+          <br />
+        <img ng-if="vm.form_data.kol_info_u_banner !== ''" id="mainImage" width="250" class="img-viewer" see-src="vm.form_data.kol_info_u_banner">
+      </div>
+    </div>
+    <div class="form-group" see-hide="KOL">
+      <label class="control-label col-sm-4">秒杀标题文案</label>
+      <div class="col-sm-7">
+        <input name="title_seckill" type="text" class="form-control" ng-model="vm.form_data.title_seckill" ng-trim="true">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4">商城推荐标题文案</label>
+      <div class="col-sm-7">
+        <input name="title_recommend" type="text" class="form-control" ng-model="vm.form_data.title_recommend" ng-trim="true">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4">商品列表标题文案</label>
+      <div class="col-sm-7">
+        <input name="title_more" type="text" class="form-control" ng-model="vm.form_data.title_more" ng-trim="true">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+      <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+    </div>
+  </form>
+</div>

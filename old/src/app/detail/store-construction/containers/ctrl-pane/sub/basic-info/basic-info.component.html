@@ -1,0 +1,187 @@
+<div class="basic-info">
+  <form nz-form [formGroup]="formGroup" [nzLayout]="'vertical'" class="ctrl-widget-form" (ngSubmit)="emitSave()">
+
+    <div style="display: none;">
+      <!--
+            为了屏蔽 chrome 自动填写表单
+
+            https://stackoverflow.com/questions/12374442/chrome-browser-ignoring-autocomplete-off#30873633
+            -->
+      <input type="text" id="HackPreventChromeAutocomplete" name="HackPreventChromeAutocomplete" />
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>页面名称</label>
+      </div>
+      <div nz-form-control>
+        <nz-input formControlName="name" (nzBlur)="emitSave($event)" inputLenPostfix="12" [nzPlaceHolder]="'页面名称'"></nz-input>
+        <div nz-form-explain *ngIf="formErrors.name">{{formErrors.name}}</div>
+      </div>
+    </div>
+
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>页面介绍</label>
+      </div>
+      <div nz-form-control>
+        <nz-input formControlName="introduct" (nzBlur)="emitSave($event)" inputLenPostfix="18" [nzPlaceHolder]="'页面介绍'"></nz-input>
+        <div nz-form-explain *ngIf="formErrors.introduct">{{formErrors.introduct}}</div>
+      </div>
+    </div>
+
+
+    <div nz-form-item nz-row>
+      <div nz-form-label class="">
+        <label>页面Logo</label>
+        <p class="title-explain">
+          建议上传图片尺寸为120*120
+        </p>
+      </div>
+      <div nz-form-control>
+
+        <app-logo-upload formControlName="logoImgUrl" (success)="emitSave($event)"></app-logo-upload>
+        <div nz-form-explain *ngIf="formErrors.logoImgUrl">{{formErrors.logoImgUrl}}</div>
+      </div>
+    </div>
+
+
+
+    <div class="mt-xl" nz-form-item nz-row>
+
+      <div nz-form-label class="">
+        <label>页面宣传图</label>
+        <p class="title-explain" *ngIf="formGroup.get('show').value==1">
+          建议上传图片宽度700PX，支持格式：png、jpeg、jpg
+        </p>
+      </div>
+      <div nz-form-control>
+        <nz-radio-group formControlName="show">
+          <label nz-radio [nzValue]="1">
+            <span>显示</span>
+          </label>
+          <label nz-radio [nzValue]="0">
+            <span>不显示</span>
+          </label>
+        </nz-radio-group>
+      </div>
+      <div nz-form-control class="banner-link-fc" *ngIf="formGroup.get('show').value==1">
+        <app-link-img-upload [multiple]="false" formControlName="bannerLinks" (valueChange)="emitSave($event)"></app-link-img-upload>
+        <div nz-form-explain *ngIf="formErrors.bannerLinks">{{formErrors.bannerLinks}}</div>
+      </div>
+    </div>
+
+    <div nz-form-item nz-row [hidden]="!isAdmin">
+      <div nz-form-label class="">
+        <label>顶部颜色</label>
+      </div>
+      <div nz-form-control>
+        <nz-input-group nzCompact>
+          <c-color-picker formControlName="topColor" (onChange)="emitSave($event)"></c-color-picker>
+          <input nz-input type="text" placeholder="点击左侧方块选择或直接输入Hex格式色值" formControlName="topColor" value="{{formGroup.value.topColor}}"
+            (blur)="resetColor('topColor')" style="width:70%;height: 33px;">
+        </nz-input-group>
+        <div *ngIf="formGroup.value.topColor">
+          <a (click)="resetToDefaultValue('tc')">恢复默认值</a>
+        </div>
+        <div nz-form-explain *ngIf="formErrors.topColor">{{formErrors.topColor}}</div>
+      </div>
+    </div>
+
+    <div nz-form-item nz-row [hidden]="!isAdmin">
+      <div nz-form-label class="">
+        <label>腾讯投资标识</label>
+        <p class="title-explain">
+          建议上传图片尺寸为248*72
+        </p>
+      </div>
+      <div nz-form-control>
+        <nz-radio-group formControlName="txInvestShow">
+          <label nz-radio [nzValue]="1">
+            <span>显示</span>
+          </label>
+          <label nz-radio [nzValue]="0">
+            <span>不显示</span>
+          </label>
+        </nz-radio-group>
+      </div>
+      <div nz-form-control class="txinvest">
+        <app-logo-upload formControlName="txInvestImg" (success)="emitSave($event)" [label]="'修改标识'"></app-logo-upload>
+        <div *ngIf="formGroup.value.txInvestImg">
+          <a  (click)="resetToDefaultValue('img')">恢复默认值</a>
+        </div>
+        <div nz-form-explain *ngIf="formErrors.txInvestImg">{{formErrors.txInvestImg}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row [hidden]="!isAdmin">
+      <div nz-form-label class="">
+        <label>优惠券颜色</label>
+      </div>
+      <div nz-form-control>
+        <nz-input-group nzCompact>
+          <c-color-picker formControlName="couponColor" (onChange)="emitSave($event)"></c-color-picker>
+          <input nz-input type="text" placeholder="点击左侧方块选择或直接输入Hex格式色值" formControlName="couponColor" value="{{formGroup.value.couponColor}}"
+            (blur)="resetColor('couponColor')" style="width:70%;height: 33px;">
+        </nz-input-group>
+        <div *ngIf="formGroup.value.couponColor">
+          <a  (click)="resetToDefaultValue('cc')">恢复默认值</a>
+        </div>
+        <div nz-form-explain *ngIf="formErrors.couponColor">{{formErrors.couponColor}}</div>
+      </div>
+    </div>
+    <div nz-form-item nz-row [hidden]="!isAdmin">
+      <div nz-form-label class="">
+        <label>券内文字颜色</label>
+      </div>
+      <div nz-form-control>
+        <nz-input-group nzCompact>
+          <c-color-picker formControlName="couponFontColor" (onChange)="emitSave($event)"></c-color-picker>
+          <input nz-input type="text" placeholder="点击左侧方块选择或直接输入Hex格式色值" formControlName="couponFontColor" value="{{formGroup.value.couponFontColor}}"
+            (blur)="resetColor('couponFontColor')" style="width:70%;height: 33px;">
+        </nz-input-group>
+        <div *ngIf="formGroup.value.couponFontColor">
+          <a (click)="resetToDefaultValue('cfc')">恢复默认值</a>
+        </div>
+        <div nz-form-explain *ngIf="formErrors.couponFontColor">{{formErrors.couponFontColor}}</div>
+      </div>
+    </div>
+    <button hidden></button>
+
+    <!-- <c-color-picker [(ngModel)]="color"></c-color-picker> -->
+
+  </form>
+
+
+  <div class="howto-trigger" (click)="isHowToUseVisible=true">
+    <img src="../../../../images/yq.png" alt="">
+    <a>如何用好页面宣传图</a>
+  </div>
+
+  <nz-modal [nzVisible]="isHowToUseVisible" [nzTitle]="'线上宣传图示例'" [nzContent]="modelHowToUse" (nzOnCancel)="isHowToUseVisible=false"
+    [nzWidth]="825" [nzFooter]="modalFooter">
+    <ng-template #modalFooter></ng-template>
+    <ng-template #modelHowToUse>
+      <div class="how-to-innerwrap">
+        <ul>
+          <li>
+            <div class="inner">
+              <img src="./images/how-to-1.jpg" alt="">
+              <div class="name">页面调性</div>
+            </div>
+          </li>
+          <li class="back">
+            <div class="inner">
+              <img src="./images/how-to-2.jpg" alt="">
+              <div class="name">活动预热</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+  </nz-modal>
+</div>
+
+<!--
+
+
+
+ -->

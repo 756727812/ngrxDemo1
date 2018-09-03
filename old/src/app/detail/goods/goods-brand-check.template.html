@@ -1,0 +1,69 @@
+<div class="header">
+  <h2><strong>重名检测</strong><span>--{{ brandName }}</span></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">重名检测</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <!-- 标准品牌 -->
+        <div ng-if="is_standard == 0 ? true:false" class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th><input type="checkbox" ng-click="selectAll($event)" ng-checked="isSelectedAll()"></th>
+                <th>品牌ID</th>
+                <th>品牌名称</th>
+                <th>商品数量</th>
+                <th width="200">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="brand in brandList" ng-class="getSelectedClass(brand.brand_id)">
+                <td><input type="checkbox" name="selected" ng-checked="isSelected(brand.brand_id)" ng-click="updateSelection($event, brand.brand_id)"></td>
+                <td ng-bind="brand.brand_id"></td>
+                <td ng-bind="brand.brand_name"></td>
+                <td ng-bind="brand.item_num"></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="mergeBrand(brand,1)">合并至标准品牌{{brandName}}</button></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">批量操作：<button type="button" class="btn btn-sm btn-primary" ng-click="mergeBrand(brand,2)">合并至标准品牌{{brandName}}</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div ng-if="is_standard == 1 ? true:false" class="table-scrollable">
+          <!-- 非标准品牌 -->
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>品牌LOGO</th>
+                <th>品牌ID</th>
+                <th>品牌名称</th>
+                <th width="120">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="brand in brandList">
+                <td><img see-src="brand.brand_logo?brand.brand_logo:'//static.seecsee.com/seego_backend/images/see_default.png'" width="120" height="120"></td>
+                <td ng-bind="brand.brand_id"></td>
+                <td ng-bind="brand.brand_name"></td>
+                <td><button type="button" class="btn btn-sm btn-primary" ng-click="mergeBrand(brand,0)">合并至该品牌</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

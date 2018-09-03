@@ -1,0 +1,10 @@
+<div class="auth-container forget-container fade-in">
+  <div class="auth-content forget-content">
+    <h1 class="title">找回密码</h1>
+    <time-line [steps]="steps" [currentStep]="currentStep"></time-line>
+    <div class="hr-line"></div>
+    <forget-step-one *ngIf="currentStep === 1"></forget-step-one>
+    <forget-step-two *ngIf="currentStep === 2"></forget-step-two>
+    <forget-step-three *ngIf="currentStep === 3"></forget-step-three>
+  </div>
+</div>

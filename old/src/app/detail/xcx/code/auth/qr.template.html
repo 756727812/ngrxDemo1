@@ -1,0 +1,24 @@
+<div id="xcx-code-auth-qr">
+  <div class="modal-header">
+    <button type="button"
+            class="close"
+            ng-click="$ctrl.dismiss()"
+            data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">二维码</h3>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <!-- 小程序码 -->
+      <li>
+        <div class="title">线上小程序码</div>
+        <img ng-src="{{$ctrl.online_qrcode_url}}" />
+      </li>
+      <!-- 体验二维码 -->
+      <li>
+        <div class="title">体验二维码</div>
+        <img ng-src="{{$ctrl.view_qrcode_url}}" />
+      </li>
+    </ul>
+  </div>
+
+</div>

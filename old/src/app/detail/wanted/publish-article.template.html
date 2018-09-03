@@ -1,0 +1,331 @@
+<div class="header">
+  <h2>
+    <strong>发布心愿</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">发布心愿</li>
+		</ol>
+	</div>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div style="padding-bottom: 200px;" >
+          <form class="form-horizontal w5c-form" role="form" novalidate w5c-form-validate name="publishArticleForm">
+            <div class="form-group" ng-hide="isPgc || isEdit">
+              <label class="col-sm-2 control-label required">设置发布者</label>
+              <div class="col-sm-8 col-md-7 ">
+                <select class="form-control" ng-model="form.upload_type" ng-required="!isPgc && !isEdit" name="upload_type">
+                  <option value="" selected>---请选择---</option>
+                  <option ng-value="{{0}}">0-随机马甲（所有-不包括兼职马甲）</option>
+                  <option value="1">1-随机马甲（普通-不包括兼职马甲）</option>
+                  <option value="2">2-随机马甲（达人）</option>
+                  <option value="3">3-指定用户(手机号)</option>
+                  <option value="6">6-See姨妈</option>
+                  <option value="7">7-心愿数大于5的马甲</option>
+                  <option value="8">8-指定用户随机</option>
+                  <option value="9">9-指定运营KOL</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" ng-show="form.upload_type === '3'">
+              <label class="col-sm-2 control-label required">用户手机号</label>
+              <div class="col-sm-8 col-md-7 ">
+                <input type="text" class="form-control" name="mobile"
+                       ng-required="form.author === '3'" ng-model="form.u_mobile" >
+              </div>
+            </div>
+            <div class="form-group" ng-show="form.upload_type === '9'">
+              <label class="col-sm-2 control-label required">KOL账号</label>
+              <div class="col-sm-8 col-md-7 ">
+                <select class="form-control" ng-required="form.author === '9'" ng-model="form.u_id"
+                        ng-options="kol.u_id as kol.u_username for kol in kolList" >
+                  <option value="" selected>-- 请选择 --</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">心愿类型</label>
+              <div class="col-sm-8 col-md-7 ">
+                <select class="form-control" ng-model="form.t_type" required name="t_type">
+                  <option value="" selected>---请选择---</option>
+                  <option value="1">求同款</option>
+                  <option value="2">分享</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">文字描述</label>
+              <div class="col-sm-8 col-md-7 ">
+                <textarea name="title" rows="5" class="form-control" ng-model="form.title" required></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">图片</label>
+              <div class="col-sm-8 col-md-7 ">
+                <label class="btn btn-primary btn-sm">上传图片
+                  <input type="file" see-file-select="upload" class="hide" accept="image/jpg, image/jpeg, image/png" ng-model="test" saveSize>
+                </label>
+                <img id="mainImage" width="250" class="img-viewer" style="cursor: crosshair;padding: 0;" ng-mousemove="getCoordinate($event)"
+                     ng-click="setCoordinate($event)" see-src="form.imgurl">
+                <p class="text-info" ng-show="form.imgurl">坐标：{{coordinate}}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">心愿附加图：</label>
+              <div class="col-sm-10">
+                <label class="btn btn-sm btn-primary pull-left m-r-20">上传图片
+                  <input type="file" see-file-select="uploadDetail" class="hide" accept="image/jpg, image/jpeg, image/png" multiple saveSize>
+                </label>
+                <div class="clear-fix">
+                  <div style="display: flex;flex-wrap: wrap;">
+                    <div class="img-preview detailImages" see-viewer ng-repeat="img in form.extra_imgurl track by $index"
+                         ng-show="form.extra_imgurl[$index]">
+                      <img width="100" class="img-viewer" see-src="form.extra_imgurl[$index]" alt=""
+                           >
+                      <a href="" class="img-del-btn"
+                         ng-click="delImage('extra_imgurl',$index)"></a>
+                      <div class="img-action">
+                        <a href="" class="left-action" ng-click="changeOrder($index, $index-1)"><i
+                                                                                                    class="fa fa-arrow-left"></i></a>
+                        <a href="" class="right-action" ng-click="changeOrder($index, $index+1)"><i
+                                                                                                     class="fa fa-arrow-right"></i></a>
+                        <a href="" class="reset-action" ngf-select="resetImage($file, $index)" accept="image/jpg, image/jpeg, image/png"><i
+                                                                                                                    class="fa fa-repeat"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h3>添加图片上的标签</h3>
+            <div class="well" ng-repeat="tag in form.tags track by $index" id="TAG_{{$index}}">
+              <div class="control-btn" ng-show="$index">
+                <a href="" ng-click="delTag($index)" class="panel-close"><i class="icon-trash"></i></a>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">标签{{::$index+1}}</label>
+                <div class="col-sm-8 col-md-7">
+                  <label class="radio-inline">
+                    <input type="radio" name='{{::"haveId_"+$index}}' ng-model="form.tags[$index].haveId" value="1">知道商品ID
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name='{{::"haveId_"+$index}}' ng-model="form.tags[$index].haveId" value="2">不知道商品ID
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" ng-show="form.tags[$index].haveId === '1'">
+                <label class="col-sm-2 control-label required">商品ID</label>
+                <div class="col-sm-8 col-md-7 ">
+                  <input type="text" name="mk_id" class="form-control form-white" placeholder="请填写一个商品Id（必填）"
+                         ng-required="form.tags[$index].haveId === '1'"
+                         ng-model="form.tags[$index].mk_id"
+                         ng-blur="sumIds($index)"
+                         w5c-dynamic-element
+                  >
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-8 col-md-7 ">
+                  <input type="text" class="form-control form-white tags_{{::$index}}" name="name" placeholder="请输入名称"
+                         ng-model="form.tags[$index].cl_class"
+                         ng-blur="removeClass($index);addToTags()"
+                  >
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">品牌</label>
+                <div class="col-sm-8 col-md-7 ">
+                  <input type="text" ng-model="form.tags[$index].cl_brand" placeholder="请输入品牌"
+                         uib-typeahead="brand.brand_name for brand in brandList | filter:$viewValue | limitTo:8"
+                         class="form-control form-white tags_{{::$index}}"
+                         ng-blur="removeClass($index);addToTags()"
+                  >
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">地点</label>
+                <div class="col-sm-8 col-md-7 ">
+                  <input type="text" ng-model="form.tags[$index].cl_area" placeholder="请输入地点"
+                         uib-typeahead="location.location for location in locationList | filter:$viewValue | limitTo:8"
+                         class="form-control form-white tags_{{::$index}}"
+                         ng-blur="removeClass($index)"
+                  >
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">坐标</label>
+                <div class="col-sm-8 col-md-7 ">
+                  <input type="text" class="form-control form-white" required name="coordinate" placeholder="点击这里再点击图片"
+                         ng-focus="setCurrentIndex($index)"
+                         ng-model="form.tags[$index].coordinate"
+                         w5c-dynamic-element
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-8 col-md-7 ">
+                <button type="button" ng-click="form.tags.push({haveId: '1'})" class="btn btn-primary btn-sm">增加标签</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">提及商品</label>
+              <div class="col-sm-8 col-md-7 ">
+                <input type="text" name="item_list" class="form-control form-white" ng-blur="unique()" ng-model="form.t_item_list">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">
+                <button type="button" class="btn btn-sm btn-primary m-0" ng-click="showGoods()">查看商品列表图片</button>
+              </label>
+              <div class="col-sm-8 col-md-7 ">
+                <div id="publishArticleGoodsImg" class="scrollable-table">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>图片</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="good in selectedGoods">
+                        <td ng-bind="good.item_id"></td>
+                        <td>
+                          <img style="width: 100px;" class="img-thumbnail"  see-src="good.item_imgurl" alt="{{::good.name}}">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">显示标签</label>
+              <div class="col-sm-8 col-md-7 ">
+                <!--<tags-input ng-model="tagsInputVal" placeholder="" min-length="1" ></tags-input>-->
+                <input type="text" name="t_tag_json" class="form-control form-white" ng-model="form.t_tag_json">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">基础风格(第一优先级)</label>
+              <div class="col-sm-8 col-md-7">
+                <label class="radio-inline">
+                  <input type="radio" name='style1' ng-model="form.recommend_style[0]" value="ea">欧美
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style1' ng-model="form.recommend_style[0]" value="jp">日本
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style1' ng-model="form.recommend_style[0]" value="kr">韩国
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style1' ng-model="form.recommend_style[0]" value="all">全部
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">基础风格(第二优先级)</label>
+              <div class="col-sm-8 col-md-7">
+                <label class="radio-inline">
+                  <input type="radio" name='style2' ng-model="form.recommend_style[1]" value="ea">欧美
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style2' ng-model="form.recommend_style[1]" value="jp">日本
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style2' ng-model="form.recommend_style[1]" value="kr">韩国
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style2' ng-model="form.recommend_style[1]" value="all">全部
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">基础风格(第三优先级)</label>
+              <div class="col-sm-8 col-md-7">
+                <label class="radio-inline">
+                  <input type="radio" name='style3' ng-model="form.recommend_style[2]" value="ea">欧美
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style3' ng-model="form.recommend_style[2]" value="jp">日本
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style3' ng-model="form.recommend_style[2]" value="kr">韩国
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name='style3' ng-model="form.recommend_style[2]" value="all">全部
+                </label>
+              </div>
+            </div>
+            <div class="form-group" ng-hide="isPgc">
+              <label class="col-sm-2 control-label">是否待上首屏</label>
+              <div class="col-sm-8 col-md-7">
+                <input type="checkbox" ng-model="form.is_anticipate_recommend" ng-true-value="1" ng-false-value="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">推荐备注</label>
+              <div class="col-sm-8 col-md-7">
+                <input type="text" class="form-control" ng-model="form.recommend_comment">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">预计上线时间</label>
+              <div class="col-sm-8 col-md-7">
+                <div class="dropdown">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" data-ng-model="form.recommend_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="form.recommend_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" data-on-set-time="onSetRecTime(newDate, oldDate)"/>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-show="isOK == 1">
+              <label class="col-sm-2 control-label">是否预约发布</label>
+              <div class="col-sm-8 col-md-7">
+                <input type="checkbox" ng-model="isPre" ng-true-value="1" ng-false-value="0">
+              </div>
+            </div>
+            <div class="form-group" ng-show="isOK == 1 && isPre == 1">
+              <label class="col-sm-2 control-label">预约发布时间</label>
+              <div class="col-sm-8 col-md-7">
+                <div class="dropdown">
+                  <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control pre-form-control" data-ng-model="form.t_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="form.t_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }" data-on-set-time="onSetPreTime(newDate, oldDate)"/>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-show="errors.length > 0">
+              <ul class="col-sm-offset-2 col-sm-8 col-md-7">
+                <li class="alert alert-danger" ng-repeat="err in errors track by $index" ng-bind="err"></li>
+              </ul>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-8 col-md-7 ">
+                <button type="button" w5c-form-submit="save($event)" class="btn btn-primary">保存</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

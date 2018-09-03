@@ -1,0 +1,156 @@
+<div class="header">
+  <h2><strong>首屏活动提报</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">首屏活动提报</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4>首屏活动提报</h4>
+        <div class="circle-container group">
+            <see-tabset cur-idex="0">
+                <see-tab heading="心愿列表" type="theme">
+                    <p>
+                        该模块中的信息将于对应的时间点展现至首屏推荐页面中，首页是See用户流量最大模块也是购买转化率最高模块，展现情况如图所示：
+                      <img ng-click="prompt()" class="event_wenhao" alt=""
+                           src="//static.seecsee.com/seego_backend/images/wenhao.png" style="width:30px"/>
+                    </p>
+                    <div>
+                        <form class="form-inline" ng-submit="searchTheme()" novalidate>
+                            <div class="form-group">
+                                <label class="control-label">搜索品类</label>
+                                <select name="type" class="form-control" ng-model="searchData.cy_id">
+                                    <option value="">-- 请选择 --</option>
+                                    <option ng-repeat="cy in categoryList" value="{{cy.cy_id}}">{{cy.cy_name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">搜索内容</label>
+                                <input type="text" class="form-control" ng-model="searchData.keyword">
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                搜索
+                            </button>
+                        </form>
+                        <div class="table-scrollable">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr class="title">
+                                        <th>ID</th>
+                                        <th>描述</th>
+                                        <th width="120">图片</th>
+                                        <th>期望价格</th>
+                                        <th>品类</th>
+                                        <th>标签</th>
+                                        <th>回答数</th>
+                                        <th>同求数</th>
+                                        <th>上线时间</th>
+                                        <th>截止时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="theme in themeList">
+                                    <tr>
+                                        <td>{{theme.t_id}}</td>
+                                        <td>{{theme.t_title}}</td>
+                                      <td>
+                                        <div class="img-container">
+                                          <img see-src="theme.t_imgurl" alt="{{theme.t_title}}" class="img-viewer"
+                                               see-viewer>
+                                        </div>
+                                      </td>
+                                        <td>{{theme.t_price}}</td>
+                                        <td>{{theme.cy_name}}</td>
+                                        <td>{{theme.tab}}</td>
+                                        <td>{{theme.t_findcount}}</td>
+                                        <td>{{theme.t_followcount}}</td>
+                                        <td>{{theme.t_push_time}}</td>
+                                        <td>{{theme.t_end_time}}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary" ng-href="/event/index-event-answer?t_id={{theme.t_id}}&ori={{ori}}"> <i class="fa fa-eye"></i>查看答案</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination total-items="total_items" items-per-page="10"></pagination>
+                        </div>
+                    </div>
+
+                </see-tab>
+                <see-tab heading="专题列表" type="topic">
+                    <p>
+                        该模块中的信息将于对应的时间点展现至首屏推荐页面中，首页是See用户流量最大模块也是购买转化率最高模块，展现情况如图所示：
+                      <img ng-click="prompt()" class="event_wenhao" alt=""
+                           src="//static.seecsee.com/seego_backend/images/wenhao.png" style="width:30px"/>
+                    </p>
+                    <div>
+                        <form class="form-inline" ng-submit="searchTopicQuestion()">
+                            <div class="form-group">
+                                <label class="control-label">搜索品类</label>
+                                <select name="type" class="form-control" ng-model="searchData.cy_name">
+                                    <option value="">-- 请选择 --</option>
+                                    <option ng-repeat="cy in categoryList" value="{{cy.cy_name}}">{{cy.cy_name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">搜索内容</label>
+                                <input type="text" class="form-control" ng-model="searchData.keyword">
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                搜索
+                            </button>
+                        </form>
+                        <div class="table-scrollable">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>发布者</td>
+                                        <td>所属圈子</td>
+                                        <td width="120">图片</td>
+                                        <td>品类</td>
+                                        <td>款式</td>
+                                        <td>原链接</td>
+                                        <td>备注</td>
+                                        <td>操作</td>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="question in questionList">
+                                    <tr>
+                                        <td>{{question.q_id}}</td>
+                                        <td>{{question.cir_detail.owner_username}}</td>
+                                        <td>{{question.cir_detail.cir_name}}</td>
+                                      <td>
+                                        <div class="img-container">
+                                          <img class="img-viewer" see-src="question.con_imgurl" see-viewer>
+                                        </div>
+                                      </td>
+                                        <td>{{question.category}}</td>
+                                        <td>{{question.style}}</td>
+                                        <td>{{question.ori_link}}</td>
+                                        <td>{{question.q_desc}}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-primary" ng-href="/wanted/answerPgcQuestion?q_id={{question.q_id}}&ori=eventPgcQuestion">
+                                                <i class="fa fa-plus-circle"></i>添加答案</a>
+                                            <a class="btn btn-sm btn-primary" ng-href="/wanted/pgcAnswer?q_id={{question.q_id}}"> <i class="fa fa-eye"></i>查看答案</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination total-items="total_items" items-per-page="10"></pagination>
+                        </div>
+                    </div>
+                </see-tab>
+            </see-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,90 @@
+<nz-card [nzBordered]="false">
+  <form nz-form [formGroup]="searchForm" class="ant-advanced-search-form" [nzLayout]="'inline'">
+    <div nz-row>
+      <div nz-form-item >
+        <div nz-form-label>
+          <label>母商品ID</label>
+        </div>
+        <div nz-form-control>
+          <nz-input  [nzPlaceHolder]="'英文逗号隔开'" formControlName="parentItemIds"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-label>
+          <label>子商品ID</label>
+        </div>
+        <div nz-form-control>
+          <nz-input [nzPlaceHolder]="'英文逗号隔开'" formControlName="itemIds"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-label>
+          <label>商品名</label>
+        </div>
+        <div nz-form-control>
+          <nz-input [nzPlaceHolder]="'请输入商品名'" formControlName="itemName"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item>
+        <button nz-button [nzType]="'primary'" (click)="search()">搜索</button>
+      </div>
+    </div>
+  </form>
+  <nz-table #nzTable nzShowSizeChanger nzShowQuickJumper [nzLoading]="loading" [nzAjaxData]="goods"
+    [nzTotal]="count" [(nzPageSize)]="pageSize" (nzPageSizeChange)="changePage()" [(nzPageIndex)]="page" (nzPageIndexChange)="changePage()">
+    <thead nz-thead>
+      <tr>
+        <th nz-th>
+          商品图
+        </th>
+        <th nz-th>
+          母商品ID
+        </th>
+        <th nz-th>
+          子商品ID
+        </th>
+        <th nz-th style="width: 180px">
+          商品名
+        </th>
+        <th nz-th style="width: 180px">
+          品类
+        </th>
+        <th nz-th style="width: 150px">
+          品牌
+        </th>
+        <th nz-th>
+          创建时间
+        </th>
+        <th nz-th>
+          售卖状态
+        </th>
+        <th nz-th>
+          销量
+        </th>
+        <th nz-th>
+          操作
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of nzTable.data; let index = index">
+        <td>
+          <img style="height: 80px;width: 80px" alt=""  [seeSrc]="item.imageUrl || ''">
+        </td>
+        <td>{{item.parentItemId}}</td>
+        <td>{{item.itemId}}</td>
+        <td style="width: 200px">{{item.itemName}}</td>
+        <td>{{item.className}}</td>
+        <td>{{item.brandName}}</td>
+        <td>{{item.createTime  | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>{{+item.saleStatus === 1 ? '在售':'不在售'}}</td>
+        <td>
+          {{item.saleCount}}
+        </td>
+        <td>
+          <a href="javascript:void(0)" (click)="showLink(item)">查看链接</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

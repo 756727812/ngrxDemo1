@@ -1,0 +1,255 @@
+@plusTriggerSize: 20px;
+
+.banner-upload {
+  *[hidden] {
+    display: none !important;
+  }
+}
+
+ul.item-list {
+  > li {
+    margin-bottom: 15px;
+  }
+}
+
+.init-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 48px;
+  width: 100%;
+  background-color: #fbfbfb;
+  border: dashed 1px #e5e5e5;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+
+  .trigger-txt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  i.plus {
+    position: relative;
+    width: @plusTriggerSize;
+    height: @plusTriggerSize;
+    margin-right: 10px;
+
+    &::before,
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: #d1d1d1;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    &::before {
+      width: @plusTriggerSize;
+      height: 3px;
+    }
+
+    &::after {
+      width: 3px;
+      height: @plusTriggerSize;
+    }
+  }
+}
+
+.main-wrap {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 50px;
+
+  .i-close-wrap {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff7070;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    i.close {
+      font-size: 11px;
+      color: #fff;
+      opacity: 1;
+      transform: scale(0.8);
+      transform-origin: center center;
+    }
+  }
+
+  &:hover {
+    background-color: #fafafa;
+
+    .i-close-wrap {
+      display: flex;
+    }
+  }
+
+  .setting {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 6px 0;
+
+    .line {
+      display: flex;
+      line-height: 12px;
+      font-size: 12px;
+
+      .labl {
+        flex: 1;
+        text-align: right;
+        display: inline-block;
+        font-size: 12px;
+        color: #999;
+      }
+
+      .right {
+        width: 170px;
+        margin-left: 26px;
+        color: #5971e8;
+
+        .text-wrap {
+          cursor: pointer;
+        }
+
+        .target-line {
+          display: inline-flex;
+          align-items: center;
+
+          .name {
+            color: #000;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 50px;
+            margin-right: 16px;
+          }
+        }
+
+        .date-display {
+          position: relative;
+          display: inline-block;
+          text-decoration: underline;
+          padding-right: 14px;
+
+          i {
+            position: absolute;
+            display: none;
+            top: 0;
+            right: 0;
+            font-size: 12px;
+            transform: scale(0.83);
+            transform-origin: right center;
+            color: #999;
+            opacity: 0.7;
+            cursor: pointer;
+
+            &:hover {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+
+          &:hover {
+            i {
+              display: block;
+            }
+          }
+        }
+
+        a {
+          text-decoration: none;
+          margin-right: 14px;
+        }
+      }
+    }
+  }
+}
+
+.spin-wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.1);
+
+  .spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.img-seat {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.pick-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep nz-spin {
+  z-index: 1;
+}
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+:host ::ng-deep span.ant-upload {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-trigger {
+  line-height: 12px;
+  font-size: 12px;
+  text-align: left;
+  color: #5971e8;
+  align-self: flex-end;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.triggers {
+  font-size: 0;
+
+  > * {
+    font-size: 12px;
+  }
+}

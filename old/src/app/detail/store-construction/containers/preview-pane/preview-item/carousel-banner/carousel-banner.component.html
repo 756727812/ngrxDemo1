@@ -1,0 +1,21 @@
+<div class="carousel-banner">
+  <nz-carousel *ngIf="!config.links || config.links.length === 0"
+               [nzAutoPlay]="true"
+               [nzAutoPlaySpeed]="4000">
+    <div nz-carousel-content
+         class="placeholder"
+         *ngFor="let index of array">
+      <img alt="" src="../../../../../../../images/banner-ph.png"/>
+    </div>
+  </nz-carousel>
+  <nz-carousel *ngIf="domReady && config.links && config.links.length > 0"
+               [nzAutoPlay]="true"
+               [nzAutoPlaySpeed]="4000">
+    <div nz-carousel-content
+         *ngFor="let link of config.links">
+      <img alt=""
+           [seeSrc]="link.imgUrl" />
+    </div>
+  </nz-carousel>
+
+</div>

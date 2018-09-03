@@ -1,0 +1,126 @@
+<div class="header">
+  <h2><strong>库存详情</strong></h2>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row" style="height:80px;">
+                    <div class="col-xs-2 text-center">
+                        <img src="{{$ctrl.item_info.item_imgurl}}" style="max-height:80px;">
+                    </div>
+                    <div class="col-xs-6" style="padding-top:-10px;">
+                        <h3 class="font-bold">ID: {{$ctrl.item_info.item_id}}</h3>
+                        <p class="m-b-0">{{$ctrl.item_info.item_name}}</p>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<font color="black" style="font-size:18px">总库存概况</font>
+<div class="row">
+    <div class="col-sm-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+            
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr>
+                  <td>总库存</td> <td> {{$ctrl.detail.totalStock}} </td>
+                  <td>非限制库存</td>  <td>  {{$ctrl.detail.unlimitedStock}}  </td>
+                  <td>限制库存</td> <td>  {{$ctrl.detail.limitStock}}  </td>
+                </tr>
+                <tr>
+                  <td>可售库存</td> <td>  {{$ctrl.detail.sellableStock}}  </td>
+                  <td>锁定库存</td>  <td>  {{$ctrl.detail.lockStock}}  </td>
+                  <td>闲置库存</td> <td> {{$ctrl.detail.idelStock}}  </td>
+                </tr>
+              </tbody>
+            </table>
+ 
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+<font color="black" style="font-size:18px">规格库存详情</font>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix"> 
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>SKUID</th>
+                  <th>货号/条码</th>
+                  <th ng-repeat="attr in $ctrl.sku_attr_list" ng-bind="attr.key"></th>
+                  <th>总库存</th>
+                  <th>可售库存</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="sku in $ctrl.detail.skuStockDetailVOList">
+                    <td ng-bind="sku.skuId"></td>
+                    <td><a href="/wms/stock-detail?page=1&productId={{$ctrl.productId}}&skuCode={{sku.skuCode}}">{{sku.skuCode}}</td>
+                    <td ng-repeat="attr in sku.specMap track by $index" ng-bind="attr"></td>
+                    <td ng-bind="sku.totalStock"></td>
+                    <td ng-bind="sku.sellableStock"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<font color="black" style="font-size:18px" ng-if="$ctrl.skuCode !== ''">库存变动历史</font>
+<div class="row" ng-if="$ctrl.skuCode !== ''">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix"> 
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>操作时间</th>
+                  <th>SKUID</th>
+                  <th>货号/条码</th>
+                  <th ng-repeat="attr in $ctrl.sku_attr_change" ng-bind="attr.key"></th>
+                  <th>库存变动</th>
+                  <th>成本价</th>
+                  <th>操作者</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="sku in $ctrl.list">
+                    <td>{{sku.createTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td ng-bind="sku.skuId"></td>
+                    <td ng-bind="sku.skuCode"></td>
+                    <td ng-repeat="attr in sku.specMap track by $index" ng-bind="attr"></td>
+                    <td>
+                      <font ng-if="sku.stockChange > 0">+{{sku.stockChange}}</font>
+                      <font ng-if="sku.stockChange <= 0">{{sku.stockChange}}</font>
+                    </td>
+                    <td><font>￥{{sku.costPrice}}</font></td>
+                    <td ng-bind="sku.handler"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+           
+        <pagination ng-if="$ctrl.total_items > 0" total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+<footer></footer>

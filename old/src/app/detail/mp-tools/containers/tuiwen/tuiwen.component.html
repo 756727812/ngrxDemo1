@@ -1,0 +1,52 @@
+<div class="wrap">
+  <p class="tips">小电铺底部tab链接更换</p>
+  <form nz-form [formGroup]="tForm" (ngSubmit)="_submitForm($event,tForm.value)" style="width:60%">
+    <table class="table">
+      <tr class="text-center" style="background:#EFF4F8;font-size:14px;">
+        <td style="width:15%">顺序</td>
+        <td style="width:35%">文案</td>
+        <td style="width:35%">链接</td>
+        <td style="width:15%"></td>
+      </tr>
+      <tr nz-form-item *ngFor="let control of fields;let i = index;first as isFirst;last as isLast"
+          [formGroupName]="control.group">
+        <td class="text-center" style="vertical-align: baseline;">{{i+1}}</td>
+        <td nz-form-control>
+          <input nz-input
+                 [nzSize]="'large'"
+                 placeholder="文案"
+                 [formControlName]="'field1'"
+          />
+          <div nz-form-explain
+               *ngIf="tForm.get('group'+control.id)?.dirty && !tForm.get('group'+control.id)?.valid">
+            <p [style.visibility]="getFormControl(control.id,'field1')?.errors ? 'visible':'hidden'">{{getFormControl(control.id,'field1')?.errors ? getFormControl(control.id,'field1')?.errors['message'] : "&nbsp;"}}</p>
+          </div>
+        </td>
+        <td nz-form-control>
+          <input nz-input
+                 [nzSize]="'large'"
+                 placeholder="链接"
+                 [formControlName]="'field2'"
+          />
+          <div nz-form-explain
+               *ngIf="tForm.get('group'+control.id)?.dirty && !tForm.get('group'+control.id)?.valid">
+            <p [style.visibility]="getFormControl(control.id,'field2')?.hasError('required') ? 'visible':'hidden'">文案链接不能为空</p>
+          </div>
+        </td>
+        <td style="vertical-align: baseline">
+          <p style="margin:4px 0">
+            <i class="anticon anticon-plus-circle-o dynamic-delete-button" (click)="addField($event)"
+               *ngIf="isLast && i<maxLimit-1"></i>
+            <i class="anticon anticon-minus-circle-o dynamic-delete-button" *ngIf="fields.length!==1"
+               (click)="removeField(control,$event)"></i>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" class="text-center p-t-30">
+          <button class="w-100" nz-button [nzType]="'primary'" [nzLoading]="loading" [nzSize]="'large'">发布</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>

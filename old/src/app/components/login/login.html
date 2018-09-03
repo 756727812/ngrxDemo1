@@ -1,0 +1,54 @@
+<div class="container" id="login-block">
+  <div class="row">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+      <div class="account-wall" ng-class="{ 'boxed': LoginForm.$dirty && LoginForm.$invalid}">
+        <h1>
+          <img src="//static.seecsee.com/seego_backend/global/images/logo/logo-see.png" alt="" ng-if="!(LoginForm.$dirty && LoginForm.$invalid)">
+          <img src="//static.seecsee.com/seego_backend/global/images/logo/logo-see-b.png" alt="" ng-if="LoginForm.$dirty && LoginForm.$invalid">
+
+        </h1>
+        <form name="LoginForm" class="form-signin w5c-form" role="form" novalidate w5c-form-validate>
+          <div class="append-icon">
+            <input type="text" name="username" class="form-control form-white" placeholder="用户名"
+              ng-trim="true"
+              ng-model="$ctrl.form_data.username"
+              ng-blur="$ctrl.checkGA($ctrl.form_data.username)"
+              required>
+            <i class="icon-user"></i>
+          </div>
+          <div class="append-icon">
+            <input type="password" name="password" class="form-control form-white" placeholder="密码"
+              ng-model="$ctrl.form_data.password" required>
+            <i class="icon-lock"></i>
+          </div>
+          <div id="GACode" class="append-icon" style="display: none;" ng-if="$ctrl.is_GA">
+            <input type="text" w5c-dynamic-name="'code'" class="form-control form-white" placeholder="验证码(开启两步验证后必填)"
+              ng-model="$ctrl.form_data.code" w5c-dynamic-element required>
+            <i class="icon-lock"></i>
+          </div>
+          <div class="option-group">
+            <label class="check m-t-10"><input type="checkbox" name="check" icheck ng-model="$ctrl.is_remember_account"  data-skin="icheckbox_square"/>&nbsp;记住账号</label>
+          </div>
+          <p id="error" class="alert alert-danger hidden m-b-10" ng-if="$ctrl.error" ng-bind="$ctrl.error"></p>
+          <button type="submit" id="submit-form" class="btn btn-lg btn-primary btn-block" ng-disabled="$ctrl.is_btn_disabled" w5c-form-submit="$ctrl.login()">登录</button>
+          <div class="clearfix">
+            <p class="pull-right m-t-20" style="color: #BDBDBD;">还没有账号?<a ng-href="{{$ctrl.getRegUrlPrefix()}}/register.html?type=c2c">商家注册</a>&nbsp;&nbsp;<a ng-href="{{$ctrl.getRegUrlPrefix()}}/register.html?type=kol">自媒体注册</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <p class="account-copyright">
+    <span>Copyright © 2017</span>&nbsp;<span>See</span>.<span>All Rights Reserved.</span>
+  </p>
+</div>
+<!--<div id="video_player" class="Vidage">
+  <div class="Vidage__image"></div>
+
+  <video id="VidageVideo" class="Vidage__video" preload="metadata" loop autoplay muted>
+    <source src="" type="video/webm">
+    <source src="" type="video/mp4">
+  </video>
+
+  <div class="Vidage__backdrop"></div>
+</div>-->

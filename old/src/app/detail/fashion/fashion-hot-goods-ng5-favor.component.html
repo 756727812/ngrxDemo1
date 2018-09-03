@@ -1,0 +1,136 @@
+<nz-spin [nzSpinning]="_isSpinning">
+  <div id="fashion-hot-goods">
+    <div class="fashion">
+      <div nz-row [nzGutter]="16">
+          <div nz-col [nzMd]="24" [ngClass]="{'no-select': !selectedCount, 'no-data': !favorIds.length}">
+              <a href="/fashion/hot-goods-v2"
+                class="btn-back-hot-list">返回单品库</a>
+              <nz-card>
+                <button nz-button [nzType]="'primary'" class="assign-btn" (click)="parentGoodsConfirm()">
+                  <span>批量指派</span>
+                </button>
+                <button nz-button [nzType]="'primary'" class="assign-all-btn" (click)="assignAllFavor()">
+                  <span>全部指派</span>
+                </button>
+                <app-event-table-alert-v2 [selectedCount]="selectedCount" (clearChecked)="clearChecked()">
+                </app-event-table-alert-v2>
+                <nz-table #nzTable
+                    [nzAjaxData]="hotgoods_list"
+                    [nzLoading]="loading"
+                    [nzTotal]="total_items"
+                    [(nzPageIndex)]="page"
+                    (nzPageIndexChangeClick)="searchNextPage($event)"
+                    nzShowSizeChanger
+                    [(nzPageSize)]="pageSize"
+                    (nzPageSizeChange)="searchNewPageSize()"
+                    [nzPageSizeSelectorValues]="[10, 20, 30]"
+                    (nzDataChange)="_displayDataChange($event)">
+                    <thead nz-thead>
+                      <tr>
+                        <th nz-th nzCheckbox>
+                          <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                          </label>
+                        </th>
+                        <th nz-th [nzWidth]="'100px'"><span>商品图</span></th>
+                        <th nz-th><span>商品名</span></th>
+                        <th nz-th *seeHide="'KOL New-Brand'" [nzWidth]="'70px'"><span>商品ID</span></th>
+                        <th nz-th><span>品类</span></th>
+                        <th nz-th [nzWidth]="'80px'"><span>品牌</span></th>
+                        <!-- <th nz-th><span>发货地</span></th> -->
+                        <!-- <th nz-th><span>可供规格</span></th> -->
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'65px'"><span>供货价</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"><span>日常售价区间</span></th>
+                        <!-- <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"><span>建议零售价</span></th> -->
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'55px'"><span>利润率</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'55px'"><span>销量</span></th>
+                        <th nz-th *seeHide="'KOL New-Brand'" [nzWidth]="'55px'"><span>库存</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'" [nzWidth]="'80px'"><span>创建时间</span></th>
+                        <th nz-th *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'"><span>商品文案</span></th>
+                        <th nz-th [nzWidth]="'150px'"><span>操作</span></th>
+                      </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let item of nzTable.data; index as index" (click)="selectMaterialItem($event,item.item_id)">
+                            <td nz-td nzCheckbox>
+                              <label nz-checkbox
+                                [(ngModel)]="checkedMap[item.item_id]" (ngModelChange)="_refreshStatus($event)">
+                              </label>
+                            </td>
+                            <td nz-td>
+                              <div class="img-container w-100 h-100">
+                                <img [seeSrc]="item.item_imgurl" seeViewer [alt]="item.item_name">
+                              </div>
+                            </td>
+                            <td nz-td>
+                              <ellipsis lines="3" style="max-width: 140px">
+                                <span [title]="item.item_name" [innerHtml]="item.item_name"></span>
+                              </ellipsis>
+                            </td>
+                            <td nz-td *seeHide="'KOL New-Brand'">
+                              <span [innerHtml]="item.item_id"></span>
+                            </td>
+                            <td nz-td>
+                              <ellipsis lines="4" style="max-width: 60px">
+                                <span [title]="item.class_name" [innerHtml]="item.class_name"></span>
+                              </ellipsis>
+                            </td>
+                            <td nz-td>
+                              <span [innerHtml]="item.brand_name"></span>
+                            </td>
+                            <!-- <td nz-td>
+                              <ellipsis lines="1" style="max-width: 200px">
+                                <span [title]="item.ship_country" [innerHtml]="item.ship_country"></span>
+                              </ellipsis>
+                            </td> -->
+                            <!-- <td nz-td>
+                              <ellipsis lines="1" style="max-width: 200px">
+                                <span [title]="item.sku_detail_str" [innerHtml]="item.sku_detail_str"></span>
+                              </ellipsis>
+                            </td> -->
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span *ngIf="item.supply_price_start">￥{{item.supply_price_start ? item.supply_price_start.toFixed(2) : ''}}</span>
+                              <span *ngIf="item.supply_price_start && item.supply_price_end">&nbsp;~&nbsp;</span>
+                              <span *ngIf="item.supply_price_end">￥{{item.supply_price_end ? item.supply_price_end.toFixed(2) : ''}}</span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span>{{item.sku_price_start ? item.sku_price_start.toFixed(2) : ''}}~{{item.sku_price_end ? item.sku_price_end.toFixed(2) : ''}}</span>
+                            </td>
+                            <!-- <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span *ngIf="item.suggested_retail_price_from != item.suggested_retail_price_to">{{item.suggested_retail_price_from}}~{{item.suggested_retail_price_to}}</span>
+                              <span *ngIf="item.suggested_retail_price_from == item.suggested_retail_price_to">{{item.suggested_retail_price_from}}</span>
+                            </td> -->
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span>{{ item.profit_price_end * 100 | number: '1.0-2' }}%</span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span [innerHtml]="item.order_num | number"></span>
+                            </td>
+                            <td nz-td *seeHide="'KOL New-Brand'">
+                              <span [innerHtml]="item.stock"></span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <span>{{item.item_created_at.split(' ')[0]}}</span>
+                            </td>
+                            <td nz-td *seeAccess="'KOL-Admin Super-Admin See-Admin Elect-Admin'">
+                              <ellipsis lines="1" style="max-width: 200px">
+                                <span [title]="item.word_link" [innerHtml]="item.word_link"></span>
+                              </ellipsis>
+                            </td>
+                            <td nz-td>
+                              <div>
+                                <nz-switch [ngModel]="item.is_favor" (ngModelChange)="changeFavor($event, item.item_id)"></nz-switch>收藏
+                              </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <app-event-quick-jumper *ngIf="showPaginaton"
+                                        [maxPage]="max_page"
+                                        (quickJumperFun)="quickJumperFun($event)">
+                </app-event-quick-jumper>
+              </nz-card>
+          </div>
+      </div>
+    </div>
+  </div>
+</nz-spin>

@@ -1,0 +1,101 @@
+<div class="header">
+  <h2><strong>资产管理</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="#">资产管理</a></li>
+      <li class="active">已入账</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+          <div class="form-group m-b-10">
+            <label class="control-label">交易号
+              <input class="form-control" type="text" ng-model="$ctrl.searchForm.orderId" placeholder="大中小订单号/入账单号">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">交易方
+              <input class="form-control" type="text" ng-model="$ctrl.searchForm.trackingNumber">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">商品信息
+              <input class="form-control" type="text" ng-model="$ctrl.searchForm.consignee" placeholder="商品名称/商品ID">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">时间
+              <see-date-range-picker ng-model="$ctrl.datePicker" placeholder="入账单创建时间"></see-date-range-picker>
+              <!-- <input date-range-picker class="form-control date-picker" type="text" ng-model="$ctrl.datePicker" placeholder="入账单创建时间"> -->
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-label">入账类型</label>
+            <select name="type" class="form-control" ng-model="$ctrl.searchForm.status">
+              <option value="">--全部--</option>
+              <option value="1">新建</option>
+              <option value="2">出库中</option>
+              <option value="3">出库成功</option>
+              <option value="4">出库失败</option>
+              <option value="5">已撤销</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fa fa-search f-16"></i>搜索</button>
+          <button type="button" ng-click="$ctrl.resetSearch()" class="btn btn-default">重置</button>
+          <button type="button" class="btn btn-primary" ng-click="$ctrl.report()" class="btn">批量导出</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>交易号</th>
+                  <th>名称</th>
+                  <th>交易方</th>
+                  <th>入账类型</th>
+                  <th>入账状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.list">
+                  <td ng-bind="item.createTime | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                  <td ng-bind="item.exWarehouseOrderId"></td>
+                  <td>
+                    {{item.billId}} <br/>
+                    {{item.litOrderId}}
+                    <a target="_blank" href="order/all?keyword={{item.midOrderId}}">{{item.midOrderId}}</a> <br/>
+                    {{item.bigOrderId}}<br/>
+                  </td>
+                  <td ng-bind="item.type"></td>
+                  <td>
+                    {{item.status}}<br/> {{item.status==4?item.exWarehouseErrMsg:''}}
+                  </td>
+                  <td class="text-center"><i class="fa {{item.isUnnormal==1?'fa-exclamation-triangle text-danger':''}}"><br/>{{item.isUnnormal==1?item.exceptionMsg:''}}</i></td>
+                  <td><a href="/order/detail/{{item.midOrderId}}">查看详情</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+          <pagination total-items="$ctrl.total_items"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>

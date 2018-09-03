@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">通过调价</h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form" role="form" name="rejectAdjust" novalidate w5c-form-validate>
+    <div class="form-group">
+      <label for="name" class="col-sm-3 control-label required">确认通过？</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="submit" w5c-form-submit="ok()">确定</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+    </div>
+  </form>
+</div>
+

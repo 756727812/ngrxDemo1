@@ -1,0 +1,85 @@
+@import "../../../styles/var.less";
+
+.modal-mall-goods-picker {
+  .modal-dialog {
+    width: 720px;
+  }
+
+  .tab-content {
+    padding: 10px 0;
+  }
+
+  .grid-item {
+    background-color: #fff;
+    width: 20%;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 0;
+    border: 2px solid transparent;
+    padding: 10px;
+    margin: 0;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    i.checked {
+      position: absolute;
+      top: 12px;
+      right: 19px;
+      font-size: 14px;
+      color: white;
+      background-color: @primary-color;
+      z-index: 1;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.original-checked {
+        background-color: #8d90a2;
+      }
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+    }
+
+    &:not([disabled]) {
+      &:hover {
+        border: 2px solid @primary-color;
+      }
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+    }
+
+    p {
+      margin: 0;
+      padding-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        display: inline-block;
+        font-size: 13px;
+        padding-top: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+.add-tips{
+  i{
+    color:red;
+    font-style: normal;
+  }
+}

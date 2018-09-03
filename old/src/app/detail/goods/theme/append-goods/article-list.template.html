@@ -1,0 +1,52 @@
+<div class="goods-theme-append-goods-article-list">
+  <form class="search-form" ng-submit="$ctrl.search()">
+    <input ng-model="$ctrl.formData.keyword" input-clear="submit" type="text" class="see-input-text" placeholder="文章名">
+    <button type="submit" class="see-btn-search">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+  <div class="sep-line"></div>
+  <div class="main-area" loading-mask="$ctrl.loading">
+    <table class="table table-hover" ng-show="!$ctrl.nonGoods">
+      <thead>
+      <tr>
+        <th>KOL名称</th>
+        <th>文章名</th>
+        <th>总订单</th>
+        <th>总GMV</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in $ctrl.pageData.list track by item.articleId">
+        <td>{{item.kolName}}</td>
+        <td>{{item.title}}</td>
+        <td>{{item.orderNum}}</td>
+        <td>￥{{item.gmv}}</td>
+        <td>
+            <span class="btn-add"
+                  type="button"
+                  ng-click="$ctrl.toAppend(item)">添加
+            </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-tips" ng-show="$ctrl.nonGoods">没有合适的商品</div>
+  </div>
+  <div class="see-pagination-wrap">
+    <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+    </div>
+    <ul uib-pagination
+        ng-if="$ctrl.pageData.count"
+        total-items="$ctrl.pageData.count"
+        items-per-page="$ctrl.pageData.pageSize"
+        ng-model="$ctrl.pageData.page"
+        ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+        max-size="5"
+        previous-text="上一页"
+        next-text="下一页"
+        boundary-link-numbers="true">
+    </ul>
+  </div>
+</div>

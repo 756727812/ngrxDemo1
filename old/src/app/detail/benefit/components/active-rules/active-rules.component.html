@@ -1,0 +1,48 @@
+<div class="active-rules">
+  <div class="radios">
+    <nz-radio-group [(ngModel)]="data.type">
+      <label nz-radio *ngFor="let m of types" [nzValue]="m.type" >
+        <span>{{m.label}}</span>
+      </label>
+    </nz-radio-group>
+  </div>
+  <div>
+    <ng-template  #discRuleBlock>
+      <table class="text-center rules-table">
+        <thead nz-thead style="background:#f7f7f7;">
+        <th nz-th>优惠层级</th>
+        <th nz-th>优惠门槛</th>
+        <th nz-th>折扣</th>
+        <th nz-th>操作</th>
+        </thead>
+        <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let m of rules;let index=index;let isFirst=first">
+          <td nz-td>{{m.rank}}</td>
+          <td nz-td>
+            满<input class="input1" nz-input [value]="m.num" (input)="validate($event.target,m,'num')"/>件
+          </td>
+          <td nz-td>
+            <input class="input1" nz-input [value]="m.discount"  (input)="validate($event.target,m,'discount')" />折
+            <span>下一层级门槛需高于上一层级</span>
+          </td>
+          <td nz-td><a *ngIf="rules.length>1 && !isFirst" (click)="rmRow($event,index)">删除</a></td>
+        </tr>
+        </tbody>
+      </table>
+      <a class="add-row" *ngIf="isFull" (click)="addRow()"><i class="anticon anticon-plus"></i>新增优惠层级</a>
+    </ng-template>
+    <div *ngIf="data.type==1;else discRuleBlock">
+      满 <input required class="input2" [(ngModel)]="money.targetPrice" nz-input /> 减 <input required [(ngModel)]="money.offPrice" class="input2" nz-input />
+        <nz-tooltip nzPlacement='right'>
+          <label nz-checkbox [(ngModel)]="money.capping">
+            <span>上不封顶</span>
+            <span class='icon fa fa-info-circle' nz-tooltip></span>
+            <ng-template #nzTemplate>
+              <p>上不封顶规则：每满1倍，减去金额增加1倍；例如：满99元减15元，满198元则减去30元，依次递增</p>
+            </ng-template>
+          </label>
+        </nz-tooltip>
+    </div>
+  </div>
+</div>
+

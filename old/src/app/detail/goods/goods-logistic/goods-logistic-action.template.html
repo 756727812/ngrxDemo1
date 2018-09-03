@@ -1,0 +1,393 @@
+<div class="header">
+  <h2><strong>{{ $ctrl.is_edit ? '编辑' : '新建' }}运费模版</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">{{ $ctrl.is_edit ? '编辑' : '新建' }}运费模版</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="logisticForm">
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">路线名称</label>
+            <div class="col-sm-8">
+              <input type="text" name="ex_name" ng-model="$ctrl.formData.ex_name" required class="form-control">
+            </div>
+          </div>
+          <div class="form-group" see-hide="C2C-Seller KOL New-Brand">
+            <label class="col-sm-2 control-label required">路线所有者</label>
+
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="is_seego" ng-model="$ctrl.formData.is_seego" ng-disabled="$ctrl.is_edit" ng-value="1">公共模板</label>
+              <br />
+              <div>
+                <label class="radio-inline">
+                  <input type="radio" name="is_seego" ng-model="$ctrl.formData.is_seego" ng-disabled="$ctrl.is_edit" ng-value="3">指派给小电铺用户</label>
+                <!-- <ui-select  ng-if="$ctrl.formData.is_seego == 3" ng-model="$ctrl.formData.backend_id" theme="select2" style="min-width: 300px;" title="选择小电铺用户" >
+                  <ui-select-match  placeholder="选择小电铺用户...">{{$select.selected.seller_name}}</ui-select-match>
+                  <ui-select-choices  repeat="item.id as item in $ctrl.new_brand_list | propsFilter: {seller_name: $select.search, seller_email: $select.search}">
+                    <div ng-bind-html="item.seller_name | highlight: $select.search"></div>
+                    <div ng-bind-html="item.seller_email | highlight: $select.search" style="color: grey"></div>
+                  </ui-select-choices>
+                </ui-select> -->
+                  <input ng-if="$ctrl.formData.is_seego == 3" type="text" ng-model="$ctrl.formData.backend_id" placeholder="请选择小电铺" class="form-control"
+                    ng-disabled="$ctrl.is_edit"
+                    uib-typeahead="xdp as xdp.seller_name for xdp in $ctrl.getXDPList($viewValue)"
+                    typeahead-loading="$ctrl.loadingXdpList"
+                    typeahead-no-results="$ctrl.noResults"
+                    typeahead-wait-ms="300"
+                    typeahead-template-url="goodsLogisticTypeaheadTemplate.html"
+                    typeahead-select-on-blur="true"
+                    typeahead-select-on-exact="true"
+                  >
+                  <i ng-show="$ctrl.loadingXdpList" class="glyphicon glyphicon-refresh spin p-0"></i>
+                  <div ng-show="$ctrl.noResults">
+                    <span class="custom-error"><i class="si si-danger"></i>&nbsp;没有符合搜索的小电铺</span>
+                  </div>
+                  <span class="custom-error" style="display: block" ng-if="logisticForm.$submitted && $ctrl.formData.is_seego == 3 && !$ctrl.formData.backend_id"><i class="si si-danger"></i>&nbsp;请选择小电铺</span>
+              </div>
+            </div>
+            <script type="text/ng-template" id="goodsLogisticTypeaheadTemplate.html">
+              <a>
+                <h5 ng-bind-html="match.label | uibTypeaheadHighlight:query" style="font-weight: normal"></h5>
+                <small>
+                  ID：{{match.model.id}}
+                  Email：<span ng-bind-html="match.model.seller_email | uibTypeaheadHighlight:query"></span>
+                </small>
+              </a>
+            </script>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">拼邮/直邮</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" ng-model="$ctrl.formData.mail_type"  value="1"> 直邮
+              </label>
+              <label class="radio-inline">
+                <input type="radio" ng-model="$ctrl.formData.mail_type"  value="2"> 拼邮
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <!-- <label class="col-sm-2 control-label required" ng-bind="$ctrl.formData.ex_type === 4 ? '国内物流快递公司' : '国际物流快递公司'"></label> -->
+            <label class="col-sm-2 control-label required">物流快递公司</label>
+            <div class="col-sm-8">
+              <select class="form-control" ng-model="$ctrl.formData.transport_code" name="transport_code" required ng-options="transport.transport_code as transport.transport_name for transport in $ctrl.showTransport($ctrl.formData.ex_type)">
+                <option value="" selected>-- 请选择 --</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">计费规则</label>
+            <div class="col-sm-8 ">
+              <div class="well m-b-0">
+                <label class="radio-inline">
+                  <input type="radio" ng-model="$ctrl.formData.charge_rule_type" ng-change="$ctrl.clearPriceForm()"  value="1"> 按重量
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" ng-model="$ctrl.formData.charge_rule_type" ng-change="$ctrl.clearPriceForm()"  value="2"> 按件数
+                </label>
+                <div class="table-scrollable">
+                  <table class="table-bordered table-center table-condensed w-100p">
+                    <thead>
+                      <tr>
+                        <th>可配送区域</th>
+                        <th class="w-80">
+                          {{ $ctrl.formData.charge_rule_type === '2' ? '首件': '首重' }}
+                          （{{ $ctrl.formData.charge_rule_type === '2' ? '个': 'Kg' }}）
+                        </th>
+                        <th class="w-80">运费（元）</th>
+                        <th class="w-80">
+                          {{ $ctrl.formData.charge_rule_type === '2' ? '续件': '续重' }}
+                          （{{ $ctrl.formData.charge_rule_type === '2' ? '个': 'Kg' }}）
+                        </th>
+                        <th class="w-80">续费（元）</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="item in $ctrl.formData.rule_list track by item.charge_rule_province">
+                        <td>
+                          <div class="logistic-action-areas-container">
+                            <p class="logistic-action-areas">
+                              {{ item.charge_rule_province_str }}
+                            </p>
+                            <div class="logistic-action-areas-options">
+                              <a href="" class="text-primary click" ng-click="$ctrl.openAddAreaModal($index, item.charge_rule_province)">编辑</a>
+                              <a href="" class="text-primary click" ng-click="$ctrl.removeThisAreas($index)">删除</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <input type="number"
+                            ng-if="$ctrl.formData.charge_rule_type === '1'"
+                            style="transition: none;"
+                            w5c-dynamic-element
+                            w5c-dynamic-name="'charge_rule_param_1' + item.charge_rule_province.join('_')"
+                            class="form-control w5c-error-not-show form-white w-50"
+                            ng-model="item.charge_rule_param_1"
+                            non-negative-only
+                            required
+                          >
+                          <input type="text"
+                            ng-if="$ctrl.formData.charge_rule_type === '2'"
+                            style="transition: none;"
+                            w5c-dynamic-element
+                            w5c-dynamic-name="'charge_rule_param_1' + item.charge_rule_province.join('_')"
+                            class="form-control w5c-error-not-show form-white w-50"
+                            ng-model="item.charge_rule_param_1"
+                            numbers-only
+                            required
+                          >
+                        </td>
+                        <td>
+                          <input type="text"
+                            w5c-dynamic-element
+                            w5c-dynamic-name="'charge_rule_param_2' + item.charge_rule_province.join('_')"
+                            class="form-control w5c-error-not-show form-white w-50"
+                            ng-model="item.charge_rule_param_2"
+                            numbers-only
+                            required>
+                        </td>
+                        <td>
+                          <input type="number"
+                            ng-if="$ctrl.formData.charge_rule_type === '1'"
+                            style="transition: none;"
+                            w5c-dynamic-element
+                            w5c-dynamic-name="'charge_rule_param_3' + item.charge_rule_province.join('_')"
+                            class="form-control w5c-error-not-show form-white w-50"
+                            ng-model="item.charge_rule_param_3"
+                            non-negative-only
+                            required>
+                          <input type="text"
+                            ng-if="$ctrl.formData.charge_rule_type === '2'"
+                            style="transition: none;"
+                            w5c-dynamic-element
+                            w5c-dynamic-name="'charge_rule_param_3' + item.charge_rule_province.join('_')"
+                            class="form-control w5c-error-not-show form-white w-50"
+                            ng-model="item.charge_rule_param_3"
+                            numbers-only
+                            required>
+                        </td>
+                        <td>
+                          <input type="text"
+                            w5c-dynamic-element
+                            w5c-dynamic-name="'charge_rule_param_4' + item.charge_rule_province.join('_')"
+                            class="form-control w5c-error-not-show form-white w-50"
+                            ng-model="item.charge_rule_param_4"
+                            numbers-only
+                            required>
+                        </td>
+                      </tr>
+                      <tr ng-show="$ctrl.getSelectedProvinces().length < 34">
+                        <td>
+                          <a href="" class="text-primary click" ng-click="$ctrl.openAddAreaModal(-1)">请添加可配送区域</a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="text-info">* 目前运费价格仅支持精确到“元”</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-show="logisticForm.$submitted && !$ctrl.isAreaFeesRequired()">
+            <div class="col-sm-10 col-sm-offset-2">
+              <p><i class="si si-danger invalid"></i>&nbsp;请完成所有省份邮费信息设置！</p>
+            </div>
+          </div>
+          <div class="form-group" see-access="Super-Admin Elect-Admin">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-8 ">
+              <div class="well">
+                <label class="checkbox-inline" style="margin-left: 10px; width:100px">
+                  <input name="" type="checkbox"  ng-model="$ctrl.is_free_mail" /> 满条件包邮
+                </label>
+                <div  ng-if="$ctrl.is_free_mail">
+                  <div class="clear-fix m-t-10">
+                    <label class="required" for="">包邮方式：</label>
+                    <label class="control-label require">
+                      <input type="radio" ng-model="$ctrl.formData.free_mail_method"  value="1"> 满额包邮&nbsp;
+                      <input type="radio" ng-model="$ctrl.formData.free_mail_method"  value="2"> 满件包邮&nbsp;
+                    </label>
+                  </div>
+                  <div class="clear-fix m-t-10">
+                    <label class="required" for="">包邮详情：</label>
+                    <label class="control-label">
+                      满
+                      <input
+                          type="number" name="free_mail_count" class="form-control form-white w-100"
+                          ng-model="$ctrl.formData.free_mail_count" />
+                      &nbsp; <b ng-bind="$ctrl.formData.free_mail_method == 2 ? '个': '元'"></b>包邮
+                    </label>
+                  </div>
+                  <label class="checkbox-inline">
+                    以下指定地区不包邮
+                  </label>
+                  <div class="clear-fix m-t-10">
+                    <label class="checkbox-inline" ng-repeat="prov in $ctrl.provinces" style="margin-left: 10px; width:72px">
+                      <input name="" type="checkbox"  ng-model="$ctrl.formData.province[prov.province]" />{{prov.province}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">限制条件</label>
+            <div class="col-sm-8 ">
+              <div class="well">
+                <div class="clear-fix" ng-repeat="limit_class in $ctrl.limit_classes track by $index" ng-style="{ 'padding-left': $first ? '' : '46px'}">
+                  <label class="col p-0 m-b-10" style="line-height: 35px;"><span ng-if="$first">品类：</span>
+                            <input type="checkbox" ng-model="limit_class.is_checked" class="m-r-5">
+                          </label>
+                  <div class="w-150 col p-0">
+                    <select class="form-control form-white" ng-model="limit_class.category[0]"
+                        ng-change="$ctrl.changeLimitClass($index)"
+                        ng-options="cls.class_id as cls.class_name for cls in $ctrl.class_tree">
+                                <option value="" selected>-- 全部一级品类 --</option>
+                            </select>
+                  </div>
+                  <div class="w-150 col p-0">
+                    <select class="form-control form-white" ng-model="limit_class.category[1]"
+                        ng-options="cls.class_id as cls.class_name for cls in $ctrl.class_tree[limit_class.category[0]].children">
+                                  <option value="" selected>-- 全部二级品类 --</option>
+                              </select>
+
+                  </div>
+                  <div class="w-150 col p-0">
+                    <select class="form-control form-white" ng-model="limit_class.category[2]"
+                        ng-options="cls.class_id as cls.class_name for cls in $ctrl.class_tree[limit_class.category[0]].children[limit_class.category[1]].children">
+                                <option value="" selected>-- 全部三级品类 --</option>
+                              </select>
+                  </div>
+                  <div class="p-0 col" ng-if="$last">
+                    <button type="button" class="btn btn-sm btn-primary m-5" ng-click="$ctrl.limit_classes.push({is_checked: true, category: []})"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div>
+                <div class="clear-fix m-b-10">
+                  <label class="col control-label p-0">价格：</label>
+                  <div class="col p-l-0">单件售价≤
+                    <input type="text"
+                      class="form-control form-white w-100"
+                      name="limit_price"
+                      ng-model="$ctrl.formData.limit_price"
+                      numbers-only>&nbsp;元
+                  </div>
+                </div>
+                <div class="clear-fix m-b-10F">
+                  <label class="col control-label p-0">重量：</label>
+                  <div class="col p-l-0">单件重量≤
+                    <input type="text"
+                      class="form-control form-white w-100"
+                      name="limit_weight"
+                      ng-model="$ctrl.formData.limit_weight"
+                      numbers-only>&nbsp;克
+                  </div>
+                </div>
+                <div class="clear-fix">
+                  <label class="col control-label p-0">发货地：</label>
+                  <div class="col p-l-0">
+                    <ui-select class=" form-white" multiple ng-model="$ctrl.limit_ship_country_arr" theme="bootstrap" close-on-select="false" title="选择发货地"
+                      style="width: 300px;">
+                      <ui-select-match placeholder="选择发货地...">{{$item.location}}</ui-select-match>
+                      <ui-select-choices repeat="country.location_id as country in $ctrl.countryList | propsFilter: {location: $select.search}">
+                        <div ng-bind-html="country.location | highlight: $select.search"></div>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" >
+            <label class="col-sm-2 control-label required">预计到货时长</label>
+            <div class="col-sm-10">
+              <input type="number" w5c-dynamic-element name="ship_recv_time1" class="form-control w5c-error-not-show w-80" min="1" max="{{$ctrl.formData.promise_goods_time_e}}"
+                onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" style="ime-mode:Disabled" ng-model="$ctrl.formData.promise_goods_time_s"
+                required>&nbsp;至
+              <input type="number" w5c-dynamic-element name="ship_recv_time2" class="form-control w5c-error-not-show w-80" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"
+                style="ime-mode:Disabled" min="{{$ctrl.formData.promise_goods_time_s}}" ng-model="$ctrl.formData.promise_goods_time_e"
+                required>&nbsp;天
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">关税</label>
+
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="tax_type" ng-model="$ctrl.formData.tax_type" ng-value="1">包税</label>
+                <label class="radio-inline">
+                  <input type="radio" name="tax_type" ng-model="$ctrl.formData.tax_type" ng-value="0">不包税</label>
+                  <button type="button" class="btn btn-sm btn-transparent btn-primary btn-circle-custom" style="padding:0 !important;position:relative;margin: 0;"
+                          uib-tooltip="国内发货商品请选择包税">
+                    <i class="fa fa-question text-primary"></i>
+                  </button>
+            </div>
+          </div>
+          <div class="form-group" ng-if="$ctrl.formData.tax_type === 0">
+            <div class="col-sm-8 col-sm-offset-2">
+              <label class="control-label">税率
+                        <input type="number"  min="0" w5c-dynamic-element name="tax_rate" class="form-control w-100" required
+                            onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" style="ime-mode:Disabled"
+                            ng-model="$ctrl.formData.tax_rate">%
+                      </label>
+              <br>
+              <label class="control-label">
+                        <input type="checkbox" ng-model="$ctrl.formData.tax_prepay" ng-true-value="1" ng-false-value="0">需要用户下单时预缴关税
+                      </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+              <label class="control-label">
+                      <input type="checkbox" ng-model="$ctrl.formData.is_need_idcard" ng-true-value="1" ng-false-value="0">身份证号为必填项
+                    </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">路线说明</label>
+            <div class="col-sm-8">
+              <textarea name="ex_desc" rows="10" class="form-control" ng-model="$ctrl.formData.ex_desc" ng-maxlength="150" required placeholder="该运费模版说明将在用户购买该商品、选择具体物流方案时，对用户进行物流方案的提示与说明，150字以内"></textarea>
+              <span ng-if="!!$ctrl.formData.is_youzan">* 已关联有赞运费模板</span>
+            </div>
+            <span class="col-sm-2">{{logisticForm.ex_desc.$viewValue.length || 0}}/150</span>
+          </div>
+          <div class="form-group"  see-access="Super-Admin Elect-Admin">
+            <div class="col-sm-8 col-sm-offset-2"  ng-if="$ctrl.is_edit && ($ctrl.privilege_id === 7 || $ctrl.privilege_id === 10)">
+              <label class="control-label">
+                      <input type="checkbox" ng-model="$ctrl.formData.is_seego" ng-disabled="$ctrl.is_edit && $ctrl.is_seego === 1" ng-true-value="1" ng-false-value="0">设置为公共运费模板
+                    </label>
+            </div>
+          </div>
+          <div class="form-group" >
+            <div class="col-sm-offset-2 col-sm-10" ng-show="logisticForm.$submitted && logisticForm.$invalid">
+              <p><i class="si si-danger invalid"></i>&nbsp;请检查必填项！</p>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10" ng-show="$ctrl.errors.length">
+              <p ng-repeat="err in $ctrl.errors track by err"><i class="si si-danger invalid"></i>&nbsp;{{err}}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+              <button type="submit" w5c-form-submit="$ctrl.save()" class="btn"
+                  ng-class="{'btn-primary': !($ctrl.is_edit && $ctrl.is_c2c && ($ctrl.privilege_id!=1 && $ctrl.privilege_id!=30))}"
+                  ng-disabled="$ctrl.is_edit && $ctrl.is_c2c && ($ctrl.privilege_id!=1 && $ctrl.privilege_id!=30)"> 保存</button>
+              <span class="text-info" ng-if="$ctrl.is_edit && $ctrl.is_c2c && ($ctrl.privilege_id!=1 && $ctrl.privilege_id!=30)">你无权限编辑此运费模版</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

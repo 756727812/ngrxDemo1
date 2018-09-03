@@ -1,0 +1,23 @@
+import { PreviewSpeedKillListComponent } from './preview-speed-kill/preview-speed-kill-list.component';
+import { PreviewBasicInfoComponent } from './preview-basic-info/preview-basic-info.component';
+import { SingleColGoodsListComponent } from './single-col-goods-list/single-col-goods-list.component';
+import { PreviewGroupBuyListComponent } from './preview-group-buy-list/preview-group-buy-list.component';
+import { CarouselBannerComponent } from './carousel-banner/carousel-banner.component';
+import { DoubleColGoodsListComponent } from './double-col-goods-list/double-col-goods-list.component';
+import { PreviewCouponListComponent } from './preview-coupon-list/preview-coupon-list.component';
+import { BigBannerComponent } from './big-banner/big-banner.component';
+import { PreviewMagicCubeComponent } from './preview-magic-cube/preview-magic-cube.component';
+import { PreviewSalesPromotionComponent } from './preview-sales-promotion/preview-sales-promotion.component';
+import { PreviewVideoInfoComponent } from './preview-video-info/preview-video-info.component';
+
+export * from './preview-basic-info/preview-basic-info.component';
+export * from './single-col-goods-list/single-col-goods-list.component';
+export * from './preview-group-buy-list/preview-group-buy-list.component';
+export * from './carousel-banner/carousel-banner.component';
+export * from './double-col-goods-list/double-col-goods-list.component';
+export * from './preview-coupon-list/preview-coupon-list.component';
+export * from './big-banner/big-banner.component';
+export * from './preview-speed-kill/preview-speed-kill-list.component';
+export * from './preview-magic-cube/preview-magic-cube.component';
+export * from './preview-sales-promotion/preview-sales-promotion.component';
+export * from './preview-video-info/preview-video-info.component';

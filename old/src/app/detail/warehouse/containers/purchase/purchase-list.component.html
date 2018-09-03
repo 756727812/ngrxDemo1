@@ -1,0 +1,190 @@
+<pro-header [title]="'采购管理'" [paths]="paths"></pro-header>
+<div id="purchase-list">
+  <nz-card [nzBordered]="false">
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitSearch()">
+      <standard-form-row grid last>
+        <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'" [nzAlign]="'center'">
+          <!-- <div nz-row [nzGutter]="16"> -->
+          <div nz-col nzXs="12" nzSm="12" nzMd="8">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="4">
+                <label>采购单号</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="18">
+                <nz-input nzType="text" [(ngModel)]="searchForm.purchaseOrderNo" name="purchaseOrderNo" [nzPlaceHolder]="'请输入'"></nz-input>
+              </div>
+            </div>
+          </div>
+          <div nz-col nzXs="12" nzSm="12" nzMd="8">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="6">
+                <label>商品信息</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="8">
+                <nz-input nzType="text" [(ngModel)]="searchForm.itemNo" name="itemNo" [nzPlaceHolder]="'货号'"></nz-input>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="9" [nzOffset]="1">
+                <nz-input nzType="text" [(ngModel)]="searchForm.itemName" name="itemName" [nzPlaceHolder]="'商品名'"></nz-input>
+              </div>
+            </div>
+          </div>
+          <div nz-col nzXs="12" nzSm="12" nzMd="8">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="6">
+                <label>供应商</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="18">
+                <nz-input nzType="text" [(ngModel)]="searchForm.supplier" name="supplier" [nzPlaceHolder]="'公司名称/联系人'"></nz-input>
+                <!-- <nz-select name="supplierId" nzAllowClear nzShowSearch [(ngModel)]="searchForm.supplierId" [nzFilter]="false" [nzPlaceHolder]="'公司名称'"
+                  (nzSearchChange)="supplierChange$.next($event)" [nzNotFoundContent]="'无法找到'">
+                  <nz-option *ngFor="let option of supplierOptions" [nzLabel]="option.companyName + '(' + option.contactInfo + ')'" [nzValue]="option.id">
+                  </nz-option>
+                </nz-select> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'" [nzAlign]="'center'">
+          <div nz-col nzXs="12" nzSm="12" nzMd="8">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="4">
+                <label>状态</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="18">
+                <nz-select [(ngModel)]="searchForm.status" name="status" [nzPlaceHolder]="'全部'" nzAllowClear>
+                  <nz-option *ngFor="let option of statusOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                  </nz-option>
+                </nz-select>
+              </div>
+            </div>
+          </div>
+          <div nz-col nzXs="12" nzSm="12" nzMd="8">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="6">
+                <label>创建时间</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="18">
+                <nz-rangepicker [nzFormat]="'YYYY-MM-DD'" [(ngModel)]="searchForm.dateRange" name="dateRange" [nzPlaceholder]="['起始时间', '结束时间']"></nz-rangepicker>
+              </div>
+            </div>
+          </div>
+          <div nz-col nzXs="12" nzSm="12" nzMd="8">
+            <div nz-row>
+              <div nz-form-label nz-col [nzSpan]="6">
+                <label>供应商类型</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="18">
+                <nz-select [(ngModel)]="searchForm.supplierType" name="supplierType" [nzPlaceHolder]="'全部'" nzAllowClear>
+                  <nz-option *ngFor="let option of supplierTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                  </nz-option>
+                </nz-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="12" nzSm="12" nzMd="8">
+          <div nz-row>
+            <div nz-form-label nz-col [nzSpan]="4">
+              <label>结款方式</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="18">
+              <nz-select [(ngModel)]="searchForm.settlementMethod" name="settlementMethod" [nzPlaceHolder]="'全部'" nzAllowClear>
+                <nz-option *ngFor="let option of settlementMethodOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="12" nzSm="12" nzMd="8">
+          <div nz-row>
+            <div nz-form-label nz-col [nzSpan]="6">
+              <label>采购申请人</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="18">
+              <nz-input nzType="text" [(ngModel)]="searchForm.applicant" name="applicant" [nzPlaceHolder]="'后台账号名/邮箱'"></nz-input>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="text-right purchase-list__btn-group">
+          <button nz-button type="submit" [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="loading">
+            <span>查询</span>
+          </button>
+          <button nz-button type="reset" [nzSize]="'large'" (click)="resetForm()">
+            <span>重置</span>
+          </button>
+        </div>
+        <div class="mb-md">
+          <a nz-button href="warehouse/purchaseOrder/new" [nzSize]="'large'" [nzType]="'primary'" target="_blank">
+            <i class="anticon anticon-plus"></i>
+            <span>新建</span>
+          </a>
+        </div>
+      </standard-form-row>
+    </form>
+    <div class="mb-md">
+      <nz-alert [nzType]="'info'">
+        <span alert-body>
+          共
+          <strong class="text-primary">{{ purchaseOrderData.count }}</strong> 个采购单
+        </span>
+      </nz-alert>
+    </div>
+    <div nz-row [nzGutter]="16">
+      <div nz-col [nzMd]="24">
+        <nz-table #nzTable [nzAjaxData]="purchaseOrderData.list" nzShowSizeChanger nzShowQuickJumper [(nzPageSize)]="pageSize" [nzTotal]="purchaseOrderData.count"
+          [(nzPageIndex)]="page" (nzPageIndexChange)="pageChange()" (nzPageSizeChange)="pageChange()">
+          <thead nz-thead>
+            <tr>
+              <th nz-th>
+                <span>采购单号</span>
+              </th>
+              <th nz-th>
+                <span>供应商</span>
+              </th>
+              <th nz-th>
+                <span>采购金额</span>
+              </th>
+              <th nz-th>
+                <span>采购商品</span>
+              </th>
+              <th nz-th>
+                <span>采购申请人</span>
+              </th>
+              <th nz-th>
+                <span>创建时间</span>
+              </th>
+              <th nz-th>
+                <span>状态</span>
+              </th>
+              <th nz-th>
+                <span>操作</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let item of nzTable.data; index as index">
+              <td nz-td>
+                {{item.purchaseOrderNo}}
+              </td>
+              <td nz-td>{{item.supplier}}</td>
+              <td nz-td>{{item.amount}}</td>
+              <td nz-td>
+                <span *ngFor="let i of item.items | slice:0:3">{{i}}
+                  <br>
+                </span>
+              </td>
+              <td nz-td>{{item.applicant}}</td>
+              <td nz-td>{{item.createTime}}</td>
+              <td nz-td>{{getStatusStr(item.status)}}</td>
+              <td nz-td>
+                <a [routerLink]="['./', item.id, 'detail']">查看详情</a>
+                <span nz-table-divider></span>
+                <a [href]="'warehouse/purchaseOrder/'+item.id + '/copy'" target="_blank">复制</a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </nz-card>
+</div>

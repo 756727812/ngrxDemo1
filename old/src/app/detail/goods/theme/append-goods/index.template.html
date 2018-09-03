@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <i type="button" class="si si-close close" ng-click="$ctrl.closeModal()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">添加商品</h3>
+</div>
+<div class="modal-body" loading-mask="$ctrl.loading">
+  <see-tabset cur-idex="0" use-hash="false" a="1">
+    <see-tab heading="从热门单品库添加">
+      <goods-theme-append-goods-hot
+        theme-id="$ctrl.resolve.themeId"
+        has-updated="$ctrl.hasUpdatedForHot"
+      ></goods-theme-append-goods-hot>
+    </see-tab>
+    <!--
+      <see-tab heading="从文章添加">
+        <goods-theme-append-goods-article-list
+        theme-id="$ctrl.resolve.themeId"
+        has-updated="$ctrl.hasUpdatedForArticle"
+        ></goods-theme-append-goods-article-list>
+      </see-tab>
+    -->
+  </see-tabset>
+</div>

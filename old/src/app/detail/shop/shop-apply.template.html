@@ -1,0 +1,196 @@
+<div class="header">
+  <h2>
+    <strong>申请列表</strong>
+  </h2>
+</div>
+<div class="row shop">
+  <div class="col-sm-12">
+    <div class="panel">
+      <div class="panel-content shop-manage">
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <label class="control-label">洽谈状态
+              <select class="form-control" ng-model="$ctrl.in_contact" ng-change="$ctrl.filterByKeyWord()">
+                <option value="-1" selected>所有</option>
+                <option value="0">未洽谈</option>
+                <option value="1">洽谈中</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label">审核状态
+              <select class="form-control" ng-model="$ctrl.manager_status" ng-change="$ctrl.filterByKeyWord()">
+                <option value="0" selected>所有</option>
+                <option value="10">审核中</option>
+                <option value="20">审核失败</option>
+                <option value="30">审核通过</option>
+                <option value="40">待授权</option>
+                <option value="50">待完善信息</option>
+                <option value="60">微信审核中</option>
+                <option value="70">微信已过审</option>
+                <option value="80">已上线</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label">认证状态
+              <select class="form-control" ng-model="$ctrl.auth_status" ng-change="$ctrl.filterByKeyWord()">
+                <option value="0" selected>所有</option>
+                <option value="1">首次待审核</option>
+                <option value="2">再次待审核</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label">粉丝数
+              <select class="form-control" ng-model="$ctrl.fans_count" ng-change="$ctrl.filterByKeyWord()">
+                <option value="" selected>所有</option>
+                <option value="少于5000">少于5000</option>
+                <option value="5000~2w">5000~2w</option>
+                <option value="2w~5w">2w~5w</option>
+                <option value="5w~10w">5w~10w</option>
+                <option value="10w~20w">10w~20w</option>
+                <option value="20w~50w">20w~50w</option>
+                <option value="50w~75w">50w~75w</option>
+                <option value="75w~100w">75w~100w</option>
+                <option value="100w以上">100w以上</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="control-label">用户类型
+              <select class="form-control" ng-model="$ctrl.seller_type" ng-change="$ctrl.filterByKeyWord()">
+                <option value="" selected>所有</option>
+                <option value="3">品牌</option>
+                <option value="4">自媒体</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-group">
+              <label class="control-label">结算类型
+                <select class="form-control" ng-model="$ctrl.settlement_type" ng-change="$ctrl.filterByKeyWord()">
+                  <option value="" selected>所有</option>
+                  <option value="3">差额</option>
+                  <option value="4">比例</option>
+                </select>
+              </label>
+            </div>
+
+          <div class="form-group">
+            <label class "control-label">关键词
+              <input type="search" class="form-control" id="keyword" placeholder="公众号名称、小电铺名称、对接人" style="width:240px;" ng-model="$ctrl.keyword">
+            </label>
+            <button type="submit" class="btn btn-primary" ng-click="$ctrl.filterByKeyWord()">搜索</button>
+          </div>
+        </form>
+
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>小电铺ID
+                  <br />设备ID</th>
+                <th>公众号名称</th>
+                <th>粉丝数</th>
+                <th>KOL信息</th>
+                <th>结算类型</th>
+                <th>用户类型</th>
+                <th>主体</th>
+                <th style="max-width: 300px;">小程序信息</th>
+                <th>状态</th>
+                <th>认证状态</th>
+                <th>时间</th>
+                <th>对接人</th>
+                <th>审核信息</th>
+                <th>认证审核</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody ng-if="$ctrl.lists.length">
+              <tr ng-repeat="item in $ctrl.lists">
+                <td>id:
+                  <br />{{item.id}}
+                  <br />device_type:
+                  <br />{{item.device_type}}
+                </td>
+                <td>{{item.wx_official_name}}</td>
+                <td>{{item.fans_count}}</td>
+                <td>
+                  {{item.seller_name}}
+                  <br /> {{item.seller_email}}
+                  <br />
+                </td>
+                <td> {{item.settlement_type||'差额'}} </td>
+                <td>{{item.seller_type_name}}</td>
+                <td> {{item.main_body_name}} </td>
+                <td style="max-width: 300px;"> {{item.app_title}}
+                  <br />
+                  <img ng-if="item.app_icon !== ''" src="{{item.app_icon}}" width="60" height="60" />
+                  <br />
+                  <ellipsis lines="2" style="max-width: 300px;">
+                    <span title="{{item.app_desc}}">{{item.app_desc}}</span>
+                  </ellipsis>
+                </td>
+                <td>
+                  <label ng-if="item.manager_status != 20">
+                    {{item.str_status}}
+                  </label>
+                  <label ng-if="item.manager_status == 20" style="color:red">
+                    {{item.str_status}}
+                  </label>
+                </td>
+                <td>{{item.auth_status | authStatus:item.is_first_auth}}</td>
+                <td> {{item.apply_time * 1000 | date: 'yyyy-MM-dd HH:mm'}} </td>
+                <td>{{item.connection_man_name || '无'}}</td>
+                <td>
+                  <label ng-if="item.check_backend_info !== false">
+                    审核邮箱：{{item.check_backend_info.seller_email}}
+                    <br /> 跟进人：{{item.check_backend_info.seller_name}}
+                    <br /> 欠款额度：{{item.str_debt_group}}
+                    <br /> 保证金：{{item.cash_deposit}}
+                    <br /> 是否缴纳：{{item.str_is_pay}}
+                  </label>
+                </td>
+                <td>
+                  <p>审核邮箱：{{item.trace_auth_email || '无'}}</p>
+                  <p>跟进人：{{item.trace_auth_name || '无'}}</p>
+                  <p ng-if="item.reject_reason">认证失败：{{item.reject_reason}}</p>
+                </td>
+                <td>
+                  <a ng-if="item.auth_url !== ''" class="btn btn-sm btn-primary" href="{{item.auth_url}}" target="_blank">补充授权</a>
+                  <button class="btn btn-sm btn-primary" ng-if="item.manager_status === 30" ng-click="$ctrl.modifyApplyStatus(item)">修改</button>
+                  <button class="btn btn-sm btn-primary" ng-if="item.manager_status === 10" ng-click="$ctrl.changeApplyStatus(item.id,30,'确认要通过审核？')">通过审核</button>
+
+                  <button class="btn btn-sm btn-primary" ng-if="item.manager_status === 10" ng-click="$ctrl.changeApplyStatus(item.id,20,'确认要拒绝审核？')">拒绝审核</button>
+                  <button class="btn btn-sm btn-primary" ng-if="!(item.manager_status == 10 || item.manager_status == 20) && item.auth_status == 2"
+                    ng-click="$ctrl.checkApplyInfo(item.id)">{{item.is_first_auth == 1 ? '首次认证审核' : '再次认证审核'}}</button>
+
+                  <a class="temp-detail-switch" href ng-if="item.in_contact === '0'" ng-click="$ctrl.changeInContact(item.id,1)">
+                    <div id="div1" class="close1">
+                      <div id="div2" class="close2"></div>
+                    </div>
+                    <span>洽谈中(否)</span>
+                  </a>
+                  <a class="temp-detail-switch" href ng-if="item.in_contact === '1'" ng-click="$ctrl.changeInContact(item.id,0)">
+                    <div id="div1" class="open1">
+                      <div id="div2" class="open2"></div>
+                    </div>
+                    <span>洽谈中(是)</span>
+                  </a>
+                  <a class="temp-detail-switch" style="font-size: 14px;color: #666666" href="" ng-click="$ctrl.openLog(item)" title="操作日志"><i class="anticon anticon-file-text"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div ng-if="!$ctrl.lists.length" class="text-center m-t-20">暂无数据</div>
+        </div>
+      </div>
+
+      <pagination total-items="$ctrl.total_items"></pagination>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,529 @@
+@primary-color:#5971e8;
+@white:#fff;
+
+.shop {
+  .text-warning {
+    color: #ff5972;
+  }
+
+  .panel .panel-content {
+    padding: 20px 20px 150px;
+  }
+
+  &-section {
+    margin-top: 40px;
+
+    h4 {
+      font-weight: bold;
+      color: #000 !important;
+    }
+    .btn-line{
+      margin:100px 0 40px 0;
+      button{
+        margin:0;
+        background-color: #ff634c;
+      }
+    }
+    .server{
+      color:#999;
+      padding-top: 15px;
+      span{
+        padding:0 15px 0 0;
+        i {
+          padding: 0;
+          &.fa-mobile{
+            font-size:16px;
+          }
+        }
+      }
+    }
+  }
+
+  &-title {
+    padding: 0 40px 20px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #f2f2f2;
+    font-weight: bold;
+  }
+
+  &-description {
+    padding: 30px 0 80px;
+
+    h4 {
+      font-weight: 700;
+      padding-bottom: 20px;
+    }
+  }
+
+  &-section-pannel {
+    text-align: center;
+    padding-bottom: 20px;
+    // width:360px;
+    .title {
+      margin: 0 0 15px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+
+      img {
+        display: block;
+        margin: -1px auto 10px;
+      }
+    }
+
+    ul {
+      width: 172px;
+      margin: 0 auto;
+      font-size: 14px;
+      color: #999;
+
+      li {
+        padding-left: 20px;
+
+        &.check {
+          padding-left: 0;
+          color: #000;
+
+          i {
+            color: #73cd8f;
+            font-size: 12px;
+          }
+
+          &.pre-version-end ~ li {
+            i {
+              color: #fbc80b;
+            }
+          }
+        }
+      }
+    }
+
+    .price {
+      text-align: center;
+      color: #ff6b6b;
+      font-size: 14px;
+      margin: 25px 0;
+
+      strong,
+      del {
+        font-family: "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+        font-size: 24px;
+      }
+
+      span {
+        position: relative;
+      }
+
+      &_mark {
+        position: absolute;
+        top: -28px;
+        right: -35px;
+        font-size: 12px;
+        font-style: normal;
+        color: #fff;
+        background: #ff6b6b;
+        padding: 0 4px !important;
+        font-weight: 600;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -3px;
+          display: block;
+          width: 0;
+          height: 0;
+          border-width: 6px 0 6px 6px;
+          border-style: solid;
+          border-color: transparent transparent transparent #ff6b6b;
+        }
+      }
+    }
+
+    .btn {
+      width: 100px;
+    }
+
+    &__basic,
+    &__advance,
+    &__professional {
+      .tips {
+        text-align: center;
+        color: #f60;
+        font-size: 12px;
+        padding-bottom: 5px;
+        font-weight: normal;
+      }
+    }
+
+    &__basic {
+      background-color: #fdfdfd;
+      border: solid 1px #ededed;
+    }
+
+    &__advance {
+      background-color: #fffef9;
+      border: solid 1px #ffe09f;
+    }
+
+    &__professional {
+      background-color: #fff7f3;
+      border: solid 1px #edbe72;
+
+      .tips {
+        color: #ff634c;
+      }
+    }
+  }
+
+  &-main-body {
+    .title {
+      padding: 20px 0 90px 55px;
+      font-weight: 700;
+    }
+
+    &__pannel {
+      background-color: #fbfbfb;
+      padding: 40px 38px 0;
+      color: #666;
+
+      h4 img {
+        margin-bottom: 20px;
+      }
+
+      ul {
+        min-height: 200px;
+        margin: 35px 0 50px;
+
+        li {
+          padding-bottom: 10px;
+        }
+      }
+
+      .check-area {
+        padding: 20px 0;
+        border-top: 1px solid #d6d6d6;
+      }
+    }
+
+    &__bottom {
+      padding: 50px 0 20px;
+      text-align: center;
+    }
+  }
+
+  &-main-see {
+    width: 90%;
+
+    .title {
+      text-align: left;
+      font-weight: 700;
+      padding-bottom: 30px;
+    }
+  }
+
+  &-main-self {
+    .title {
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    &__read {
+      ul li {
+        margin: 0 30px 20px 0;
+        background-color: #f9f9f9;
+
+        h5 {
+          font-weight: 700;
+          margin: 15px 0 5px;
+        }
+
+        a {
+          margin-top: 30px;
+          width: 100%;
+        }
+      }
+    }
+
+    &__help {
+      margin-top: 50px;
+      padding-left: 50px;
+      li {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+    }
+
+    &__app {
+      .title {
+        margin-bottom: 0;
+      }
+    }
+
+    &__pay {
+      margin-top: 30px;
+
+      p {
+        color: #999;
+      }
+    }
+
+    &__desc {
+      padding-right: 60px;
+
+      &.line-right::after {
+        height: 300px !important;
+      }
+
+      button {
+        margin-top: 50px;
+      }
+    }
+
+    &__decl {
+      padding-left: 50px;
+
+      ol {
+        color: #999;
+      }
+    }
+  }
+
+  .default-icon {
+    width: 95px;
+    height: 95px;
+    margin-top: 8px;
+    line-height: 95px;
+    text-align: center;
+    font-size: 64px;
+    color: #fff;
+    background-color: #d8d8d8;
+  }
+
+  .img-preview {
+    width: 250px;
+    float: none;
+  }
+
+  &-result {
+    background: url('//static.seecsee.com/seego_plus/images/icons/logo.png') 50% 0 no-repeat;
+    background-size: 67px;
+    padding-top: 100px;
+  }
+
+  .line-right {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 2px;
+      height: 560px;
+      background-color: #f4f4f4;
+    }
+  }
+}
+
+a.shop-btn-lg:hover {
+  color: #fff;
+}
+.shop-btn[disabled] {
+  background-color: #e5e8f5;
+  color: #787c92;
+}
+
+.shop-btn {
+  height: 40px;
+  line-height: 40px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  vertical-align: middle;
+
+  &-sm {
+    width: 110px;
+    background-color: #e5e8f5;
+    color: #787c92 !important;
+  }
+
+  &-lg {
+    width: 220px;
+    background-color: #5971e8;
+    color: #fff !important;
+  }
+
+  &-light {
+    background-color: #fff;
+    color: #5971e8 !important;
+    border: 1px solid #5971e8;
+  }
+}
+
+button.shop-btn {
+  line-height: 100%;
+}
+
+.shop {
+  textarea {
+    height: 120px !important;
+    width: 300px !important;
+  }
+
+  ul li {
+    list-style: none;
+  }
+
+  &-section {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  &-nav {
+    margin: 50px;
+    background: #f2f3fa;
+    // border-bottom: 1px solid #ddd;
+    li {
+      float: left;
+      width: 25%;
+      text-align: center;
+      position: relative;
+
+      i {
+        font-size: 42px;
+        color: @primary-color;
+        position: relative;
+        padding: 0 !important;
+        background-color: #fff;
+        z-index: 2;
+
+        &.default {
+          color: #333;
+        }
+      }
+
+      p {
+        text-align: center;
+      }
+
+      &::before,
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 20px;
+        height: 2px;
+        width: 50%;
+        background-color: #333;
+        z-index: 1;
+      }
+
+      &::after {
+        right: 0;
+      }
+
+      &:first-child::before,
+      &:last-child::after {
+        display: none;
+      }
+    }
+
+    &-see li {
+      width: 33.33%;
+    }
+  }
+
+  &-nav-new {
+    padding: 25px 40px 15px !important;
+    background-color: #f2f3fa;
+    margin: 50px 0 100px;
+
+    li {
+      display: inline-block;
+      width: 25%;
+
+      div {
+        height: 12px;
+        background-color: #c0c3d2;
+      }
+
+      &.finish,
+      &.current {
+        div {
+          background-color: #f6a623;
+        }
+      }
+
+      &.current p {
+        font-weight: bold;
+      }
+
+      p {
+        text-align: center;
+        padding: 15px 0 0;
+        margin: 0;
+      }
+    }
+
+    &-see li {
+      width: 33%;
+
+      &:nth-child(2) {
+        width: 34%;
+      }
+    }
+  }
+
+  &-manage {
+    &__cart {
+      border: 1px solid #a2a2a2;
+      padding: 10px;
+      margin-bottom: 10px;
+      height: 160px;
+
+      &-tip {
+        span {
+          display: inline-block;
+          width: 80%;
+          text-align: right;
+
+          &:first-child {
+            width: 20%;
+            text-align: left;
+
+            label {
+              background-color: @primary-color;
+              color: @white;
+              padding: 0 2px;
+            }
+          }
+        }
+      }
+
+      &-title {
+        padding: 20px 0;
+      }
+
+      &-btn {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .nav-step {
+    margin-bottom: 50px;
+  }
+}
+
+.shop-apply-modal .modal-content {
+  height: 800px;
+}
+
+.shop-section__progress-bar {
+  margin-bottom: 40px;
+}

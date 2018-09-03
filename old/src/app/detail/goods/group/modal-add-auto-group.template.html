@@ -1,0 +1,98 @@
+<div class="modal-header">
+  <i type="button" class="si si-close close" ng-click="$ctrl.cancelDialog()" data-dismiss="modal"></i>
+  <h3 class="modal-title">添加自动分组</h3>
+</div>
+<div class="modal-body">
+  <div>
+    <form ng-submit="$ctrl.submit()" name="$ctrl.form" novalidate>
+      <div style="display: none;">
+        <!--
+        为了屏蔽 chrome 自动填写表单
+
+        https://stackoverflow.com/questions/12374442/chrome-browser-ignoring-autocomplete-off#30873633
+        -->
+        <!-- <input type="text" id="PreventChromeAutocomplete" name="PreventChromeAutocomplete"
+             autocomplete="address-level4" /> -->
+      </div>
+      <div class="form-group">
+        <label>分组名称</label>
+        <div class="val-wrap">
+          <input name="categoryName" ng-model="$ctrl.formData.categoryName" autocomplete="off" type="text"
+                 class="see-input-text" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>分组规则</label>
+        <div class="val-wrap">
+          <see-select
+            required
+            options="$ctrl.ruleOptions"
+            name="rule"
+            ng-model="$ctrl.formData.rule"></see-select>
+        </div>
+      </div>
+      <div ng-if="$ctrl.formData.rule.id===3" class="form-group">
+        <label>售价区间 (元)</label>
+        <div class="val-wrap">
+          <input input-mask="POSITIVE_INTEGER" name="priceFrom" required autocomplete="false" type="number" class="see-input-text"
+                 ng-model="$ctrl.formData.priceFrom">
+          <span class="hyphen">—</span>
+          <input input-mask="POSITIVE_INTEGER" name="priceTo" required autocomplete="false" type="number" class="see-input-text"
+                 ng-model="$ctrl.formData.priceTo" min="{{$ctrl.formData.priceFrom}}">
+        </div>
+      </div>
+      <div ng-if="$ctrl.formData.rule.id===4" class="form-group">
+        <label>创建时间区间</label>
+        <div class="val-wrap">
+          <input class="see-input-text" name="rangeDate" ng-model="$ctrl.rangeDate" type="text" date-range-picker
+                 options="{locale: {format: 'YYYY/MM/DD'}}" required readonly
+          >
+        </div>
+      </div>
+
+      <div ng-if="$ctrl.formData.rule.id===1" class="form-group category">
+        <label>品类名称</label>
+        <div class="val-wrap">
+          <see-mul-check name="categoryVal" required items="$ctrl.categoryOptions"
+                         ng-model="$ctrl.formData.categoryVal"></see-mul-check>
+        </div>
+      </div>
+      <div ng-if="$ctrl.formData.rule.id===2" class="form-group brand">
+        <label>品牌名称</label>
+        <div class="val-wrap">
+          <see-mul-check name="brandVal" required items="$ctrl.brandOptions"
+                         ng-model="$ctrl.formData.brandVal"></see-mul-check>
+        </div>
+      </div>
+      <div class="form-group order">
+        <label>组内商品排序</label>
+        <div class="val-wrap">
+          <see-radio-group
+            items="$ctrl.orderTypeOptions"
+            ng-model="$ctrl.formData.orderType"
+          ></see-radio-group>
+        </div>
+      </div>
+      <!-- 错误信息 -->
+      <ul class="error-msgs" ng-if="$ctrl.form.$submitted && $ctrl.hasError()">
+        <li ng-repeat="item in $ctrl.form.$error.required track by $index">
+          <i class="si si-danger"></i>
+          <span ng-if="item.$name==='categoryName'">请填写分组名称</span>
+          <span ng-if="item.$name==='rule'">请选择分组规则</span>
+          <span ng-if="item.$name==='categoryVal'">请选择品类</span>
+          <span ng-if="item.$name==='brandVal'">请选择品牌</span>
+          <span ng-if="item.$name==='priceTo'">请填写售价区间上限</span>
+          <span ng-if="item.$name==='priceFrom'">请填写售价区间下限</span>
+          <span ng-if="item.$name==='rangeDate'">请选择创建时间区间</span>
+        </li>
+        <li ng-repeat="item in $ctrl.form.$error.min track by $index">
+          <i class="si si-danger"></i>
+          <span ng-if="item.$name==='priceTo'">售价区间下限不能高于上限</span>
+        </li>
+      </ul>
+      <div class="bottom">
+        <input type="submit" class="btn-submit" text="确定" />
+      </div>
+    </form>
+  </div>
+</div>

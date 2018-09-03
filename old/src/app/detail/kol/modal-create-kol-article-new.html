@@ -1,0 +1,94 @@
+<div class="modal-header" >
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 ng-if="!!vm.kol.wechat_id" class="modal-title">{{vm.modalTitle}}</h3>
+    <h3 ng-if="!vm.kol.wechat_id" class="modal-title">完善公众号信息</h3>
+</div>
+<div class="modal-body" ng-if="!!vm.kol.wechat_id" style="padding-top: 35px">
+  <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+    <div style="display: none;">
+      <!--
+      为了屏蔽 chrome 自动填写表单
+
+      https://stackoverflow.com/questions/12374442/chrome-browser-ignoring-autocomplete-off#30873633
+      -->
+      <input type="text" id="PreventChromeAutocomplete" name="PreventChromeAutocomplete"
+             autocomplete="address-level4" />
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3 required">文章标题</label>
+      <div class="col-sm-7">
+        <input name="title" type="text" class="form-control" ng-model="vm.form_data.title" ng-trim="true" required placeholder="公众号上即将发布或已发布的文章的标题">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3 required">上线时间</label>
+      <div class="col-sm-7">
+        <div class="dropdown" style="display: inline-block;">
+          <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+            <input type="text" name="start_time" datetime="yyyy-MM-dd" class="form-control" style="height: 34px;width: 170px;" data-ng-model="vm.form_data.start_time" required placeholder="填写文章发布时间">
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <datetimepicker data-ng-model="vm.form_data.start_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minView: 'day' }" />
+          </ul>
+        </div>
+        <!--
+             <div class="input-group">
+             <input  name="start_time"  type="text" class="form-control w-100" placeholder="eg: 2016-01-01" readonly
+             uib-datepicker-popup ng-model="vm.form_data.start_time" is-open="$ctrl.opened" current-text="今天"
+             clear-text="清空" close-text="关闭" required/>
+             <span class="input-group-btn">
+             <button type="button" class="btn btn-primary" ng-click="$ctrl.opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+             </span>
+             </div>
+           -->
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3 required">文章楼层</label>
+      <div class="col-sm-7">
+        <input input-mask="POSITIVE_INTEGER" name="floor_level" type="text" class="form-control" ng-model="vm.form_data.floor_level" placeholder="头条文章填1，次条填2，以此类推" ng-trim="true" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3">文章链接</label>
+      <div class="col-sm-7">
+        <input name="url" type="text" class="form-control" placeholder="填写文章的具体链接"
+               ng-model="vm.form_data.url" ng-trim="true">
+      </div>
+    </div>
+    <!--
+         <div class="form-group">
+         <label class="control-label col-sm-3 required">案例形式</label>
+         <div class="col-sm-7">
+         <select name="from_type" class="form-control" ng-model="vm.form_data.from_type" required>
+         <option value="" selected>-- 请选择 --</option>
+         <option value="1">原创</option>
+         <option value="2">转载</option>
+         </select>
+         </div>
+         </div>
+       -->
+    <div class="form-group" ng-if="vm.form_data.from_type === '2'">
+      <label class="control-label col-sm-3 required">转载来源（文章ID）</label>
+      <div class="col-sm-7">
+        <input name="from_article_id" type="text" class="form-control" placeholder="输入转载文章的ID"
+               ng-model="vm.form_data.from_article_id" ng-trim="true" required>
+      </div>
+    </div>
+
+    <br />
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+      <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+    </div>
+  </form>
+</div>
+<div class="modal-body" ng-if="!vm.kol.wechat_id">
+  <div>
+    完善公众号相关资料后，才能帮你追踪到文章的实际数据和效果哦~
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.gotoAddWechatId()">去完善</button>
+    <button class="btn btn-default" type="button" ng-click="vm.cancel()" data-dismiss="modal">取消</button>
+  </div>
+</div>

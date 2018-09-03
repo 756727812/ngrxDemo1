@@ -1,0 +1,8 @@
+<div class="sell-point"
+     ng-class="{ellipsis: $ctrl.isEllipsis}">
+  <div class="txt">{{$ctrl.content}}</div>
+  <i class="si si-text-expand trigger"
+     ng-mouseenter="$ctrl.showTips()"
+     ng-mouseleave="$ctrl.onMouseLeave($event)"
+     ng-show="$ctrl.isEllipsis"></i>
+</div>

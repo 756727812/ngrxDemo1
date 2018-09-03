@@ -1,0 +1,52 @@
+<div class="header">
+  <h2>
+    <strong>{{ $ctrl.order_title }}</strong>
+    <label style="font-weight:normal">(共{{$ctrl.order_data.count}})</label>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">订单管理</a></li>
+      <li class="active">{{ $ctrl.order_title }}</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel" ng-if="$ctrl.type === '10' || $ctrl.type === '7'">
+      <div class="panel-content text-left" style="padding-top: 5px; padding-bottom: 0px;">
+        <order-search-btn-group ng-if="$ctrl.type === '10' " list-api="orderv2_searchOrderByLogistics" count-api="orderv2_getOrderCountLogistics"
+                                group="$ctrl.need_finish_btn_group" on-get-order-data="$ctrl.getOrderData(order_data)" should-update="$ctrl.should_update">
+        </order-search-btn-group>
+        <order-search-btn-group ng-if="$ctrl.type === '7'" list-api="orderv2_getSelledOrderByType" count-api="orderv2_getSelledOrderCountByType"
+                                group="$ctrl.after_sale_btn_group" on-get-order-data="$ctrl.getOrderData(order_data)" should-update="$ctrl.should_update"></order-search-btn-group>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-content p-b-0">
+        <order-search-normal type="$ctrl.type" on-get-order-data="$ctrl.getOrderData(order_data)" should-update="$ctrl.should_update"></order-search-normal>
+        <order-search-area type="$ctrl.type" on-get-order-data="$ctrl.getOrderData(order_data)" should-update="$ctrl.should_update" ng-hide="$ctrl.hideOrderSearchArea"></order-search-area>
+        <div see-hide="New-Brand" ng-if="$ctrl.type === '5'" class="btn-group inline-block" style="margin-top: -10px;" uib-dropdown>
+          <button type="button" class="btn btn-primary" uib-dropdown-toggle>
+            {{ $ctrl.withdraw_text || '提现状态'}} <span class="caret"></span>
+          </button>
+          <ul uib-dropdown-menu>
+            <li role="menuitem"><a href="" ng-click="$ctrl.withdrawFilter('0')">全部</a></li>
+            <li role="menuitem"><a href="" ng-click="$ctrl.withdrawFilter('1')">已提现</a></li>
+            <li role="menuitem"><a href="" ng-click="$ctrl.withdrawFilter('2')">未提现</a></li>
+          </ul>
+        </div>
+        <!--
+             <div see-hide="New-Brand" class="pull-right" >
+             <a class="btn btn-primary" target="_blank" ng-click="$ctrl.exportOrderNew()">导出订单</a>
+             </div> -->
+
+        <order-search-seller ng-if="$ctrl.type === '0' || $ctrl.type === '10' || $ctrl.type === '11'" type="$ctrl.type" on-get-order-data="$ctrl.getOrderData(order_data)" should-update="$ctrl.should_update"></order-search-seller>
+
+      </div>
+    </div>
+    <order-table type="$ctrl.type" order-data="$ctrl.order_data" on-update="$ctrl.onUpdate()"></order-table>
+    <pagination total-items="$ctrl.order_data.count" items-per-page="$ctrl.order_data.items_per_page"></pagination>
+  </div>
+</div>
+

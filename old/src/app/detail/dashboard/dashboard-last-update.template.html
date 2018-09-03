@@ -1,0 +1,29 @@
+<div class="panel">
+  <div class="panel-header bg-white">
+    <h3><strong>近期更新</strong></h3>
+  </div>
+  <div class="panel-content">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="data-icon-beyond-title">
+          <i class="icon si si-yen"></i>
+        </div>
+        <div class="data-item">
+          <span class="data-item-title">30日商品上新数</span>
+          <dashboard-arrow-icon flag="$ctrl.lastUpdated.new_item.flag"></dashboard-arrow-icon>
+          <span class="data-item-detail" ng-bind="$ctrl.lastUpdated.new_item.num | number"></span>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="data-icon-beyond-title">
+          <i class="icon si si-profile-round"></i>
+        </div>
+        <div class="data-item">
+          <span class="data-item-title">30日内容电商次数</span>
+          <dashboard-arrow-icon flag="$ctrl.lastUpdated.content.flag"></dashboard-arrow-icon>
+          <span class="data-item-detail" ng-bind="$ctrl.lastUpdated.content.num | number"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

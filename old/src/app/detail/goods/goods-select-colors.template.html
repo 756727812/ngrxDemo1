@@ -1,0 +1,27 @@
+<div class="goods-select-colors">
+  <input type="text" class="form-control goods-select-colors-input"
+    ng-disabled="$ctrl.disabled"
+    ng-model="$ctrl.value.attr_value"
+    ng-click="$ctrl.isShowPop = !$ctrl.isShowPop">
+  <div id="{{$ctrl.id}}" class="goods-select-colors-pop" ng-show="$ctrl.isShowPop">
+    <div class="color-title">
+      <ul>
+        <li ng-repeat="(key, attrGroup) in $ctrl.attrs track by key"
+          ng-class="{ 'current-group': $ctrl.currentGroupID === key }"
+          ng-bind="attrGroup.group_name"
+          ng-mouseover="$ctrl.currentGroupID = key"
+        ></li>
+      </ul>
+    </div>
+    <div class="color-content">
+      <h2>常用标准颜色</h2>
+      <div class="color-content-details">
+        <span class="color-content-details-item"
+          ng-repeat="(key, item) in $ctrl.attrs[$ctrl.currentGroupID].values track by key"
+          ng-bind="item.attr_value"
+          ng-click="$ctrl.handleSelect(key);$ctrl.isShowPop = false"
+        ></span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="single-col-goods-list">
+  <div class="list-title" [hidden]="!icon && !data.mainTitle && !data.subTitle">
+    <div class="icon" [hidden]="!icon">
+      <img [src]="icon" />
+    </div>
+    <div class="title">{{ data.mainTitle }}</div>
+    <div class="subtitle">{{ data.subTitle }}</div>
+  </div>
+  <div class="list-content" [ngClass]="config.styleType === 2 ? 'list-content-grid':config.styleType === 3?'list-content-double':''">
+    <!-- <div class="item placeholder" *ngIf="!config.targets || config.targets.length === 0">
+      <div class="item-image">
+        <img alt="" src="../../../../../../../images/goods.png" />
+      </div>
+      <div class="item-detail">
+        <span class="brand"></span>
+        <span class="name"></span>
+        <span class="price">
+        </span>
+      </div>
+      <div class="triangle"></div>
+    </div> -->
+    <div  *ngIf="!config.targets || config.targets.length === 0">
+      <ng-container *ngIf="config.styleType === 2">
+        <app-preview-placeholder-item [width]="120" [imgHeight]="120"></app-preview-placeholder-item>
+        <app-preview-placeholder-item [width]="120" [imgHeight]="120"></app-preview-placeholder-item>
+        <app-preview-placeholder-item [width]="120" [imgHeight]="120"></app-preview-placeholder-item>
+      </ng-container>
+      <ng-container *ngIf="config.styleType === 3">
+        <app-preview-placeholder-item [bottomBarH]="15" [width]="178" [imgHeight]="178"></app-preview-placeholder-item>
+        <app-preview-placeholder-item [bottomBarH]="15" [width]="178" [imgHeight]="178"></app-preview-placeholder-item>
+      </ng-container>
+      <div *ngIf="config.styleType === 1" class="placeholder item">
+        <div class="item-image">
+          <img alt="" src="../../../../../../../images/goods.png" />
+        </div>
+        <div class="item-detail">
+          <span class="brand"></span>
+          <span class="name"></span>
+          <span class="price">
+          </span>
+        </div>
+        <div class="triangle"></div>
+      </div>
+    </div>
+    <ng-container *ngFor="let item of config.targets">
+      <div class="item">
+        <div class="item-image">
+          <img [seeSrc]="item.mainImgUrl+'?imageDiv2/5/w/320/h/320'" />
+          <!-- <div class="sold-out" wx:if="{{item.stock == 0}}">
+               <div class="sold-out__con">
+               <text class="zh">已售罄</text>
+               <text class="en">Sold out</text>
+               </div>
+               </div> -->
+        </div>
+        <div class="item-detail">
+          <ellipsis lines="1" *ngIf="config.styleType === 1">
+            <span class="name">{{item.brandName}}</span>
+          </ellipsis>
+          <ellipsis lines="1">
+            <span class="sellpoint">{{item.sellPoint}}</span>
+          </ellipsis>
+          <div class="price-div">
+            <span class="daily-price">￥{{item['dailyPrice']}}</span>
+            <span class="ori-price"> ¥{{item['oriPrice']}}</span>
+          </div>
+        </div>
+        <div class="triangle"></div>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="modal-picture-center">
+  <div class="modal-header bg-primary">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">图片库</h3>
+  </div>
+  <div class="modal-body">
+    <button type="button" class="btn btn-sm btn-primary m-0 m-l-10" multiple accept="image/*" ngf-select="$ctrl.uploadImages($files)">本地上传</button>
+    <span ng-if="$ctrl.resolve.type !== 3" class="m-l-5">图片已选择{{ $ctrl.checkedImagesID.length }}/{{$ctrl.availablePictureCount}}张</span>
+    <div class="p-t-20 p-l-10 p-r-10">
+      <div class="picture-center-container">
+        <div class="picture-center-item" ng-repeat="item in $ctrl.items.list track by item.id">
+          <div class="img-container">
+            <img see-src="item.pictureUrl" see-viewer alt="">
+          </div>
+          <a href="" class="img-del-btn" ng-click="$ctrl.removeFromPictureCenter(item.id)"></a>
+          <input type="checkbox" name="picturecenter" class="css-checkbox" id="{{item.id}}"
+            ng-model="item.checked"
+            ng-change="$ctrl.addToCheckedImagesID(item.checked, item.id, $index)"
+            ng-disabled="item.disabled || !item.checked && ($ctrl.availablePictureCount - $ctrl.checkedImagesID.length === 0)">
+          <label for="{{item.id}}" class="css-label"></label>
+        </div>
+      </div>
+      <div class="text-center" ng-if="$ctrl.items.count / 12 > 1">
+        <ul uib-pagination total-items="$ctrl.items.count" items-per-page="12" ng-model="$ctrl.items.page" ng-change="$ctrl.getPictureList($ctrl.items.page)"
+          max-size="5" class="pagination-sm m-t-0 m-b-0" previous-text="上一页" next-text="下一页" boundary-link-numbers="true">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="$ctrl.ok()">添加</button>
+    <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">取消</button>
+  </div>
+</div>

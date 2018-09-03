@@ -1,0 +1,55 @@
+clone:
+  git:
+    image: plugins/git
+    depth: 1
+
+pipeline:
+  restore-cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount:
+      - ./.yarn-cache
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
+
+  build:
+    image: node:8.9.2
+    commands:
+      - node -v
+      - npm -v
+      - yarn --version
+      - yarn config set cache-folder .yarn-cache
+      - yarn install --pure-lockfile --registry "https://registry.npm.taobao.org"
+      - yarn run build
+
+  rsync:
+    image: drillster/drone-rsync
+    hosts:
+      # backend.devcdn.seecsee.com  backend.publish.seecsee.com
+      - 119.29.20.128
+      # backend-test.seecsee.com  backend-test-pb.seecsee.com
+      # - 111.230.31.56
+    port:
+      - 37500
+    source: ./dist/*
+    # backend.devcdn.seecsee.com  backend-test.seecsee.com
+    target: /data/backend/xiaodianpu_sass
+    # backend.publish.seecsee.com  backend-test-pb.seecsee.com
+    # target: /data/backend_publish/xiaodianpu_sass
+    include:
+      - "**.*"
+    exclude:
+      - "static"
+    secrets: [ rsync_user, rsync_key ]
+
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - ./.yarn-cache
+      - ./node_modules
+    volumes:
+      - /tmp/cache:/cache
+    when:
+      branch: master

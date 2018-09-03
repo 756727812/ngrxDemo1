@@ -1,0 +1,9 @@
+<div class="highlight-keyword">
+  <span ng-if="!isMatch()"
+        ng-bind="text"></span>
+  <div ng-if="isMatch()">
+    <span ng-repeat="item in splitWords track by $index"
+          ng-class="{em:item.match}"
+          ng-bind="item.text"></span>
+  </div>
+</div>

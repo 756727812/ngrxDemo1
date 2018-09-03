@@ -1,0 +1,223 @@
+@import "../../../styles/var";
+
+@paddingLeft: 55px;
+@height: 48px;
+@loginPanelHeight: 45px;
+
+@media screen and (max-width: 1024px) {
+  .sidebar-show.fixed-topbar .topbar {
+    left: 204px !important;
+    overflow: hidden;
+  }
+}
+
+// Start sidebar width related
+
+.sidebar .logopanel h1 img {
+  margin: 0;
+}
+
+.sidebar {
+  top: @loginPanelHeight;
+}
+
+.sidebar,
+.sidebar .logopanel {
+  width: @navBarWidth;
+}
+
+.sidebar .sidebar-inner .nav-sidebar {
+  > li > a,
+  .children > li > a {
+    // TODO 某些子标签带有 span.badge.pull-right，使用 flex 就会显示在左侧
+    // 后面重构菜单渲染之后在考虑统一换成 flex
+    //height: @height;
+    //padding-left: @paddingLeft;
+    //display: flex;
+    //align-items: center;
+    padding: 13px 20px 13px @paddingLeft;
+    height: auto;
+
+    i {
+      display: inline-block;
+      width: 18px;
+      text-align: right;
+      font-size: 12px !important;
+      padding: 0;
+      margin-right: 8px;
+
+      &.fa {
+        font-size: 14px !important;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+// End sidebar width related
+
+.sidebar .sidebar-inner .nav-sidebar {
+  // 一级菜单
+  > li {
+    margin-bottom: 1px;
+    background-color: #565967;
+
+    > a {
+      color: #fff;
+
+      span:not(.badge) {
+        opacity: 1;
+      }
+    }
+  }
+
+  .arrow {
+    //margin-top: 0;
+    &::before {
+      content: "\f0da" !important;
+    }
+
+    &.active::before {
+      content: "\f0da" !important;
+    }
+  }
+
+  .children {
+    > li {
+      background: #434655;
+      border: solid 1px #35394d;
+      border-top: none;
+
+      &::before {
+        display: none;
+      }
+
+      > a {
+        color: #8d90a2;
+      }
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.sidebar .logopanel {
+  height: @loginPanelHeight;
+  padding: 8px 12px;
+
+  h1 {
+    font-family: @font-family !important;
+
+    a {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      position: relative;
+      background-image: none !important;
+      //background-image: url(//static.seecsee.com/seego_backend/global/images/logo/logo-white-z.png) !important;
+      &::before {
+        position: absolute;
+        top: 0;
+        left: -75%;
+        z-index: 2;
+        display: block;
+        content: '';
+        width: 50%;
+        height: 80%;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+        transform: skewX(-25deg);
+      }
+
+      &:hover::before {
+        animation: shine 0.75s;
+      }
+    }
+
+    i {
+      font-size: 26px;
+      color: #fff;
+      margin-right: 5px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+
+/////////////////////////////////////////////////////////////////
+//  Start 菜单 hover 高亮样式调整
+////////////////////////////////////////////////////
+
+.sidebar .sidebar-inner .nav-sidebar {
+  > li:not(.active) {
+    &:hover {
+      background-color: @daken-primary-color;
+    }
+  }
+
+  > li > a {
+    &:hover {
+      background-color: @daken-primary-color;
+    }
+  }
+  // 一级菜单（下的菜单）被选中，则左侧竖线高亮
+  > li.nav-active > a {
+    //background-color: @primary-color;
+    background-color: transparent;
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background-color: @primary-color;
+    }
+
+    &:hover {
+      background-color: @daken-primary-color;
+    }
+
+    &:focus,
+    &:active {
+      background: transparent;
+    }
+  }
+}
+
+// 二级菜单选中高亮
+.sidebar .sidebar-inner .nav-sidebar .children {
+  > li > a {
+    padding: 13px 20px 13px 75px;
+    margin-left: 0;
+  }
+
+  > li.active > a {
+    padding: 12px 20px 12px 75px;
+    background-color: @primary-color;
+    margin-top: 1px;
+    margin-bottom: 1px;
+
+    .badge-primary,
+    .badge-primary:hover {
+      color: @primary-color;
+      background: #fff;
+    }
+  }
+}
+
+/////////////////////////////////////////////////////////////////
+// End 菜单 hover 高亮样式调整
+////////////////////////////////////////////////////

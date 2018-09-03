@@ -1,0 +1,98 @@
+<div class="modal-goods-shopping-notes-add-xdp">
+  <div class="modal-header bg-primary">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">指定小电铺</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <label class="col-sm-2 control-label">运营类型</label>
+      <div class="col-sm-8">
+        <div class="listbox-with-button-group">
+          <div class="button-group-container">
+            <div class="btn-group btn-group-vertical">
+              <div
+                ng-repeat="item in $ctrl.operateStatus"
+                ng-class="{ btn: true, 'btn-primary': $ctrl.currentType === item.type }"
+                ng-click="$ctrl.onSelectType(item.type)"
+              >
+                <div class="ui-chkbox ui-widget" ng-click="$ctrl.onCheckOperateStatus($event, item.type)">
+                  <div class="ui-helper-hidden-accessible">
+                    <input type="checkbox" ng-checked="$ctrl.isTypeSelected(item.type)">
+                  </div>
+                  <div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"
+                    ng-class="{'ui-state-active': $ctrl.isTypeSelected(item.type)}">
+                    <span class="ui-chkbox-icon ui-clickable" ng-class="{'fa fa-check': $ctrl.isTypeSelected(item.type)}"></span>
+                  </div>
+                </div>
+                <span>{{item.label}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="listbox-container">
+            <div class="ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all">
+              <div class="ui-widget-header ui-corner-all ui-listbox-header ui-helper-clearfix ui-listbox-header-w-checkbox">
+                <div class="ui-listbox-filter-container">
+                  <input type="text" role="textbox"
+                    ng-change="$ctrl.onFilter()"
+                    ng-model="$ctrl.keyword"
+                    ng-model-options='{ debounce: 300 }'
+                    class="ui-inputtext ui-widget ui-state-default ui-corner-all"
+                  >
+                  <span class="fa fa-search"></span>
+                </div>
+              </div>
+              <div class="ui-listbox-list-wrapper">
+                <ul class="ui-listbox-list" style="max-height: 250px;">
+                  <li
+                    ng-repeat="option in $ctrl.options.list"
+                    ng-class="{'ui-listbox-item ui-corner-all': true, 'ui-state-highlight': option.checked}"
+                    ng-click="$ctrl.onOptionClick(option)"
+                  >
+                    <div class="ui-chkbox ui-widget" style="vertical-align: top">
+                      <div class="ui-helper-hidden-accessible">
+                        <input type="checkbox" ng-checked="option.checked">
+                      </div>
+                      <div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default" ng-class="{'ui-state-active': option.checked}">
+                        <span class="ui-chkbox-icon ui-clickable" ng-class="{'fa fa-check': option.checked}"></span>
+                      </div>
+                    </div>
+                    <div class="inline-block">
+                      <h5 class="m-b-0 m-t-0" style="font-weight: normal" ng-bind="option.app_title"></h5>
+                      <small>
+                        <p class="m-0">Email：{{ option.seller_email }}</p>
+                        <p class="m-0">手机号：{{ option.seller_mobile }}</p>
+                      </small>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="text-center">
+              <ul uib-pagination ng-if="$ctrl.options.count / 10 > 1"
+                total-items="$ctrl.options.count"
+                items-per-page="$ctrl.pageSize"
+                ng-model="$ctrl.options.page"
+                ng-change="$ctrl.getPaginatedList($ctrl.options.page)"
+                max-size="5"
+                class="pagination-sm m-t-0"
+                previous-text="&lsaquo;"
+                next-text="&rsaquo;"
+                boundary-link-numbers="true"
+              ></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p class="col-sm-offset-2 col-sm-8">
+        已选中 <span class="text-primary" ng-bind="$ctrl.getSelectedShopIDList().length"></span> 个小电铺
+      </p>
+    </div>
+  </div>
+  <p>{{ $ctrl.result | json }}</p>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()" ng-disabled="">确定</button>
+    <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">取消</button>
+  </div>
+</div>

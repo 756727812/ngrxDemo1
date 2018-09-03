@@ -1,0 +1,84 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">配置策略</h3>
+</div>
+<div class="modal-body">
+    <table class="table table-bordered table-hover">
+      <thead>
+          <tr>
+              <th>限制方式</th>
+              <th>分钟</th>
+              <th>次数</th>
+              <th>报警数</th>
+              <th>接口请求限制</th>
+              <th>状态</th>
+              <th>操作</th>
+          </tr>
+      </thead>
+
+      <tbody>
+          <tr ng-repeat="config in vm.list_config">
+              <td>
+                  <select name="type" class="form-control" ng-model="config.type" required>
+                    <option value="" selected>请选择</option>
+                    <option value="1">用户</option>
+                   <!-- <option value="2">IP</option> -->
+                  </select>
+              </td>
+              <td>
+                  <span ng-if="config.is_edit == 0">
+                     {{config.minutes}}
+                  </span>
+                  <input ng-if="config.is_edit == 1" style="width:50px;" type="text" class="form-control" ng-model="config.minutes">
+              </td>
+              <td>
+                  <span ng-if="config.is_edit == 0">
+                     {{config.num}}
+                  </span>
+                 <input ng-if="config.is_edit == 1" style="width:50px;" type="text" class="form-control" ng-model="config.num">
+              <td>
+                  <span ng-if="config.num_warning > 0">
+                    <font color=red>{{config.num_warning}}</font>
+                  </span>
+                  <span ng-if="config.num_warning == 0">
+                     {{config.num_warning}}
+                  </span>
+              </td>
+              <td>
+                 对<font color=red>{{config.type == 1 ? '用户' :'IP'}}</font><br />
+                 每<font color=red>{{config.minutes}}</font>分钟<br />
+                 限制<font color=red>{{config.num}}</font>次请求
+              </td>
+              <td>
+                <font color=blue ng-if="config.is_ingore == 0">生效中</font>
+                <font color=red ng-if="config.is_ingore > 0">未激活</font>
+              </td>
+              <td>
+                <button ng-if="config.config_id > 0 && config.is_edit == 0" class="btn btn-sm btn-primary" ng-click="vm.startEdit(config,1)">编辑</button>
+
+                <button ng-if="(config.config_id == 0 || config.is_edit == 1) && config.minutes > 0 && config.num > 0 " class="btn btn-sm btn-primary" ng-click="vm.saveEdit(config)">确认保存</button>
+
+                 <button ng-if="(config.config_id > 0 && config.is_edit == 1) " class="btn btn-sm btn-danger" ng-click="vm.startEdit(config,0)">取消保存</button>
+                
+                <button ng-if="config.config_id > 0 && config.is_ingore == 1 && config.is_edit == 0" ng-click="vm.setConfigIngore(config,'激活','确认要激活该策略？激活后马上生效',0)" class="btn btn-sm btn-primary">激活策略</button>
+
+                <button ng-if="config.config_id > 0 && config.is_ingore == 0 && config.is_edit == 0" ng-click="vm.setConfigIngore(config,'屏蔽','确认要屏蔽该策略？',1)" class="btn btn-sm btn-danger">屏蔽策略</button>
+          </tr>
+          <tr>
+              <td colspan="7">
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="vm.newConfig()"><i class="fa fa-plus"></i>添加策略</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+
+    <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+ 
+          <div class="modal-footer">
+            
+            <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">关闭</button>
+          <!--
+            <button class="btn btn-default" type="button" ng-click="vm.cancel()">关闭</button> -->
+          </div>
+    </form>
+</div>

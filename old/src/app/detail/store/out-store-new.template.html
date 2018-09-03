@@ -1,0 +1,113 @@
+<div class="header">
+	<h2><strong>创建实际出库记录</strong></h2>
+
+	<div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/store">库存管理</a></li>
+			<li class="active">创建实际出库记录</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<form class="form-horizontal w5c-form" name="outStoreForm" novalidate>
+						<div class="form-group">
+							<label class="col-sm-2 control-label required">出库时间</label>
+							<div class="col-sm-8">
+								<div class="dropdown">
+									<a class="dropdown-toggle" id="dropdown2" data-toggle="dropdown" data-target="#" href="">
+										<input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control" data-ng-model="$ctrl.dateTimePicker">
+									</a>
+									<ul class="dropdown-menu">
+										<datetimepicker data-ng-model="$ctrl.dateTimePicker" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" data-on-set-time="$ctrl.onSetTime(newDate, oldDate)"
+										/>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label required">选择分销渠道</label>
+							<div class="col-sm-8">
+								<select name="to_backend_id" class="form-control" required
+									ng-model="$ctrl.to_backend_id"
+									ng-options="seller.id as seller.seller_name for seller in $ctrl.seller_list"
+									ng-change="$ctrl.getStoreLockRecords($ctrl.to_backend_id)">
+                  <option value="" selected>-- 请选择 --</option>
+                </select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">出库情况</label>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12">
+								<div class="table-scrollable">
+									<table class="table table-hover table-striped">
+										<thead>
+											<tr>
+												<th>创建时间</th>
+												<th>库存锁定条目ID</th>
+												<th>所在仓库</th>
+												<th>商品名</th>
+												<th>SKU囤货码</th>
+												<th>颜色&示意图</th>
+												<th>尺码</th>
+												<th>库存锁定总量</th>
+												<th>已出库量</th>
+												<th>剩余锁定量</th>
+												<th><label class="required">出库数量</label></th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="log in $ctrl.store_lock_records track by log.storage_allot_id">
+												<td>{{log.create_time}}</td>
+												<td>{{log.storage_allot_id}}</td>
+												<td>{{log.store_info.name}}</td>
+												<td>
+													<p class="three-lines">{{log.spu_name}}</p>
+												</td>
+												<td>{{log.storage_sku_id}}</td>
+												<td>
+													<span class="text-info">{{log.color_value}}</span>
+													<div class="img-container">
+														<img ng-if="log.sku_imgurl" see-src="log.sku_imgurl" alt="{{log.spu_name}}" see-viewer>
+													</div>
+												</td>
+												<td>{{log.size_value}}</td>
+												<td>
+													<span ng-if="log.auto_sync === '1'">实时闲置库存：</span>{{log.stock_locked_all}}
+												</td>
+												<td>{{log.stock_sell}}</td>
+												<td>{{log.stock_locked_remain}}</td>
+												<td>
+													<input type="number" class="form-control" ng-model="log.buy_num" required>
+												</td>
+												<td>
+													 <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.saveSingle($index)">保存</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<p ng-if="$ctrl.store_lock_records.length === 0">暂时还没有库存锁定记录哦！</p>
+								</div>
+								<ul uib-pagination total-items="$ctrl.pagination.count" items-per-page="$ctrl.pagination.page_size"
+									ng-model="$ctrl.pagination.page" ng-change="$ctrl.changePage()"
+									max-size="5" class="pagination-sm" previous-text="上一页" next-text="下一页" boundary-link-numbers="true"></ul>
+							</div>
+						</div>
+						<div class="form-group" ng-show="$ctrl.errors.length > 0">
+							<ul class="col-sm-offset-2 col-sm-8">
+								<li class="alert alert-danger" ng-repeat="err in $ctrl.errors track by $index" ng-bind="err"></li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

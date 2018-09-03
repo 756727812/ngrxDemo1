@@ -1,0 +1,38 @@
+<div class="row flow-chart-block">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-header panel-link-header">
+        <strong>流量趋势</strong><i class="si si-arrow-right"></i>
+      </div>
+      <div class="panel-content">
+        <div class="chart-header">
+          <div class="title"><strong>近7日数据</strong></div>
+          <div class="toggle-wrap">
+            <ul class="channel-tags tags">
+              <li ng-repeat="tag in $ctrl.channelTags"
+                  ng-class="{
+                    disabled: tag.disabled,
+                    active:$ctrl.chartToggleOption.saleChannel[tag.id]
+                  }"
+                  ng-click="$ctrl.onToggleChanelTag(tag)"
+              >
+                <span class="tag">{{tag.label}}</span>
+              </li>
+            </ul>
+            <ul class="app-tags tags">
+              <li ng-repeat="tag in $ctrl.appTags"
+                  ng-class="{
+                    disabled: tag.disabled,
+                    active:$ctrl.chartToggleOption.appType[tag.id]
+                  }"
+                  ng-click="$ctrl.onToggleAppTag(tag)"
+              >
+                <span class="tag">{{tag.label}}</span></li>
+            </ul>
+          </div>
+        </div>
+        <div echarts="$ctrl.chart" class="echart-ct"></div>
+      </div>
+    </div>
+  </div>
+</div>

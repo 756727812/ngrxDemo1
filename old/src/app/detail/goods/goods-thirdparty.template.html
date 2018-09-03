@@ -1,0 +1,111 @@
+<div class="header">
+  <h2><strong>第三方商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">第三方商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+          <div class="form-group m-b-10">
+            <label class="control-label">关键词
+                      <input type="search" class="form-control" style="width: 235px;" ng-model="$ctrl.searchData.keyword" placeholder="支持商品名、商品ID、货号">
+                  </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">
+                      <input date-range-picker class="form-control date-picker" type="text" placeholder="创建时间" ng-model="$ctrl.datePicker" />
+                  </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">商品状态</label>
+            <select class="form-control" ng-model="$ctrl.searchData.item_insale">
+                      <option value="-1" selected>所有</option>
+                      <option value="1" selected>上架中</option>
+                      <option value="0" selected>下架中</option>
+                  </select>
+          </div>
+
+          <div class="form-group m-b-10">
+            <label class="control-label"></label>
+            <select class="form-control" ng-model="$ctrl.searchData.platform" ng-options="platform.platform_id as platform.platform_name for platform in $ctrl.platforms">
+                      <option value="" selected>-- 请选择第三方平台 --</option>
+                  </select>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">发货地</label>
+            <select class="form-control" ng-model="$ctrl.searchData.ship_country" ng-options="ship_info.location as ship_info.location for ship_info in $ctrl.countryList">
+                      <option value="" selected>-- 请选择发货地 --</option>
+                  </select>
+          </div>
+          <button type="submit" class="btn btn-primary m-0 m-b-10"><i class="fa fa-search"></i>搜索</button>
+          <button type="button" class="btn btn-primary m-0 m-b-10" ng-click="$ctrl.importGoods()">导入商品</button>
+        </form>
+        <div id="thirdpartyImageContainer" class="table-scrollable" see-viewer>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>商品ID</th>
+                <th>第三方平台</th>
+                <th>第三方ID（链接）</th>
+                <!--<th>所属商城</th>-->
+                <th style="min-width: 120px;">商品主图</th>
+                <th width="40%">商品名</th>
+                <th>商品售价</th>
+                <th>库存</th>
+                <th>发货地</th>
+                <th style="min-width: 100px;">创建时间</th>
+                <th style="min-width: 100px;">最后更新时间</th>
+                <th>状态</th>
+                <th width="120">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="good in $ctrl.goodsList track by good.item_id">
+                <td>
+                  <span ng-bind="good.item_id"></span>
+                  <p ng-show="skuMark(good)">货号:<span>{{skuMark(good)}}</span></p>
+                </td>
+                <td ng-bind="good.platform_name"></td>
+                <td>
+                  <a ng-href="{{good.ori_url}}" target="_blank" ng-bind="good.platform_item_id"></a>
+                </td>
+                <!--<td ng-bind="good.platform_name"></td>-->
+                <td>
+                  <img style="width: 100px;" class="img-viewer" see-src="good.item_imgurl">
+                </td>
+                <td ng-bind="good.item_name"></td>
+                <td ng-bind="good.item_price | currency: '￥'"></td>
+                <td ng-bind="good.stock"></td>
+                <td ng-bind="good.ship_country"></td>
+                <td ng-bind="good.item_created_at"></td>
+                <td ng-bind="good.item_update_time"></td>
+                <td ng-bind="+good.item_insale ? '已上架' : '已下架'"></td>
+                <td>
+                  <a class="btn btn-sm btn-primary" ng-href="{{good.buy_url}}" target="_blank">
+                    <i class="icon-screen-smartphone"></i>预览
+                  </a>
+                  <a class="btn btn-sm btn-primary"  href="/goods/posted/{{good.class_id}}/{{good.item_id}}?page_from=thirdparty">
+                    <i class="fa fa-edit"></i>编辑
+                  </a>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.readyToSell(good.item_id)" ng-if="!+good.item_insale"><i class="fa fa-cart-plus"></i>上架</button>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.removeGoods(good.item_id)" ng-if="+good.item_insale">
+                    <i class="fa fa-trash-o"></i>下架
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination total-items="total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

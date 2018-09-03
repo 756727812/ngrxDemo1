@@ -1,0 +1,59 @@
+<div class="row data-block">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-header panel-link-header">
+        <strong>{{$ctrl.caption}}</strong><i class="si si-arrow-right"></i>
+      </div>
+      <div class="panel-content">
+        <ul class="row">
+          <li class="col-sm-3">
+            <div class="item">
+              <div class="top-part">
+                <div class="label-wrap">
+                  <i class="si si-yen"></i>
+                  <div class="txt">7日流量</div>
+                </div>
+                <div class="value" ng-bind="$ctrl.data.enter_num | number">
+                  <div class="tips"  ng-if="false">{{$ctrl.data.percent_enter_num}}%推广</div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-sm-3">
+            <div class="item">
+              <div class="top-part">
+                <div class="label-wrap">
+                  <i class="si si-profile-round"></i>
+                  <div class="txt">7日用户数</div>
+                </div>
+                <div class="value">{{$ctrl.data.user_num || 0}}</div>
+              </div>
+            </div>
+          </li>
+          <li class="col-sm-3">
+            <div class="item">
+              <div class="top-part">
+                <div class="label-wrap">
+                  <i class="si si-stats"></i>
+                  <div class="txt">7日成交商品量</div>
+                </div>
+                <div class="value">{{$ctrl.data.deal_item_num || 0}}</div>
+              </div>
+            </div>
+          </li>
+          <li class="col-sm-3">
+            <div class="item">
+              <div class="top-part">
+                <div class="label-wrap">
+                  <i class="si si-shopping-cart"></i>
+                  <div class="txt">在售商品数</div>
+                </div>
+                <div class="value">{{$ctrl.data.onsale_item_num || 0}}</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <i type="button" class="si si-close close" ng-click="$ctrl.closeModal()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">添加到文章合集</h3>
+</div>
+<div class="modal-body" loading-mask="$ctrl.loading">
+  <div class="top-bar">
+    <span class="button btn-create-article" ng-click="$ctrl.toCreateArticle()">创建文章</span>
+    <form novalidate ng-submit="$ctrl.search()">
+      <input ng-model="$ctrl.formData.keyword" type="text" class="see-input-text" placeholder="文章名">
+      <button type="submit" class="see-btn-search">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </div>
+  <div class="sep-line"></div>
+
+  <div class="main">
+    <table class="table table-hover" ng-show="!$ctrl.nonResult">
+      <thead>
+      <tr>
+        <th class="title">文章名</th>
+        <th class="time">上线时间</th>
+        <th class="op">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in $ctrl.pageData.list track by item.article_id">
+        <td class="title" title="{{item.title}}">{{item.title}}</td>
+        <td class="time">{{$ctrl.formatDate(item.start_time)}}</td>
+        <td class="op">
+            <span class="btn-add"
+                  type="button"
+                  ng-click="$ctrl.select(item)">选择
+            </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-tips" ng-show="$ctrl.noneSearchResult">没有搜索到任何文章</div>
+    <div class="empty-tips" ng-show="$ctrl.noArticleYet">你还没有创建文章</div>
+  </div>
+  <div class="see-pagination-wrap">
+    <div class="pre-txt">共 {{$ctrl.pageData.totalPageNum}} 页，每页 {{$ctrl.pageData.pageSize}} 条
+    </div>
+    <ul uib-pagination
+        ng-if="$ctrl.pageData.count"
+        total-items="$ctrl.pageData.count"
+        items-per-page="$ctrl.pageData.pageSize"
+        ng-model="$ctrl.pageData.page"
+        ng-change="$ctrl.getPageData($ctrl.pageData.page)"
+        max-size="5"
+        previous-text="上一页"
+        next-text="下一页"
+        boundary-link-numbers="true">
+    </ul>
+  </div>
+</div>

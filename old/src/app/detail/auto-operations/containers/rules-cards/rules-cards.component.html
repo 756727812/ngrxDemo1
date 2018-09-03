@@ -1,0 +1,40 @@
+<div class="see-page-wrapper">
+  <div class="see-page-header">
+    <div class="panel">
+      <div class="panel-content">
+        <div nz-row [nzType]="'flex'" [nzAlign]="'middle'">
+          <div nz-col [nzSpan]="12">
+            <div class="title">自动化运营 <i class="anticon anticon-exclamation-circle" nz-tooltip="将 KOL 添加至规则卡片中，后台程序会根据以往数据积累自动为 KOL 完成商城装修、商品选品、营销活动创建等工作，并实现周期内自动轮转。"></i></div>
+            <!-- <div class="desc"><a href="javascript:void(0);" (click)="openRulesTips($event)">详细规则</a></div> -->
+          </div>
+          <div nz-col [nzSpan]="12" class="extra">
+            <div class="ao-kol-list-btn" (click)="openRulesKolList($event)">
+              <!-- <div><i class="anticon anticon-android-o"></i></div> -->
+              <div class="ao-kol-list-img"><img [seeSrc]="robotImgUrl" /></div>
+              <div class="ao-kol-list-text">自动化KOL总表</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="see-page-content">
+    <div class="grid-list">
+      <div class="grid-list-content">
+        <div class="list-item add" (click)="addRules()">
+          <div class="add-body"><i class="anticon anticon-plus"></i> 新增规则卡片</div>
+        </div>
+        <div class="list-item" *ngFor="let item of rulesListData">
+          <app-rules-card [data]="item" (onUpdate)="onCardUpdate($event)"></app-rules-card>
+        </div>
+      </div>
+
+      <div class="grid-list-pagination" style="display: none;">
+        <nz-pagination [nzPageIndex]="3" [nzTotal]="500" nzShowSizeChanger [nzPageSize]="10"></nz-pagination>
+      </div>
+    </div>
+  </div>
+
+</div>
+

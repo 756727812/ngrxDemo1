@@ -1,0 +1,132 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.close()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">{{$ctrl.isForEdit() ? '编辑主题' : '添加主题'}}</h3>
+</div>
+<div class="modal-body"
+     loading-mask="$ctrl.loading">
+  <form ng-submit="$ctrl.submit()"
+        name="$ctrl.form"
+        novalidate>
+    <div class="control-wrap">
+      <div class="line">
+        <span class="labe">主题名称</span>
+        <div class="val-wrap">
+          <textarea textarea-autosize
+                    name="title"
+                    ng-model="$ctrl.formData.title"
+                    rows="1"
+                    class="see-input-text"
+                    maxlength="14"
+                    required></textarea>
+        </div>
+      </div>
+      <div class="line">
+        <span class="labe">主题描述</span>
+        <div class="val-wrap">
+          <textarea textarea-autosize
+                    name="description"
+                    ng-model="$ctrl.formData.description"
+                    rows="1"
+                    maxlength="64"
+                    class="see-input-text"
+                    required></textarea>
+        </div>
+      </div>
+      <div class="line">
+        <span class="labe">主题文章名</span>
+        <div class="val-wrap">
+          <input type="text"
+                 class="see-input-text"
+                 name="articleName"
+                 maxlength="64"
+                 ng-model="$ctrl.formData.articleName"
+                 ng-required="$ctrl.formData.articleUrl">
+        </div>
+      </div>
+      <div class="line">
+        <span class="labe">文章链接</span>
+        <div class="val-wrap">
+          <input class="see-input-text"
+                 name="articleUrl"
+                 ng-pattern="/^\s*https?:\/\/mp.weixin.qq.com\/s\/\w{22}\s*$/"
+                 ng-model="$ctrl.formData.articleUrl"
+                 ng-required="$ctrl.formData.articleName">
+        </div>
+      </div>
+      <div class="line">
+        <span class="labe">主题背景图</span>
+        <div class="val-wrap bg-img-src">
+          <see-radio-group items="$ctrl.bgImgSrcOptions"
+                           name="bgImgSrc"
+                           ng-model="$ctrl.bgImgSrc"></see-radio-group>
+        </div>
+      </div>
+      <!-- 默认图片列表 -->
+      <div class="line"
+           ng-if="$ctrl.bgImgSrc===0">
+        <span class="labe">&nbsp;</span>
+        <div class="val-wrap bg"
+             name="defaultImgId"
+             ng-model="$ctrl.formData.defaultImgId"
+             required>
+          <ul class="bg"
+              ng-repeat="(groupIndex, i) in [1,1] track by $index">
+            <li ng-repeat="item in $ctrl.GOODS_THEME_BG"
+                ng-class="{active: $ctrl.isSelBgItem(item)}"
+                ng-style="{'background-image':'url({{item.img}})'}"
+                ng-if="$index<(groupIndex+1)*3 && $index>=groupIndex*3"
+                ng-click="$ctrl.selDefaultBg(item)"></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 图片上传区域 -->
+      <div class="line"
+           ng-if="$ctrl.bgImgSrc===1">
+        <span class="labe">&nbsp;</span>
+        <div class="val-wrap">
+          <shop-operate-img-uploader name="imgurl"
+                                     required
+                                     ng-model="$ctrl.formData.imgurl"></shop-operate-img-uploader>
+          <div class="input-tips">
+            <p class="star">建议上传图片尺寸为 660*470</p>
+          </div>
+        </div>
+      </div>
+      <div class="line"
+           ng-if="$ctrl.form.$submitted && $ctrl.hasError()">
+        <span class="labe">&nbsp;</span>
+        <div class="val-wrap">
+          <ul class="see-form-errors">
+            <!-- required -->
+            <li ng-repeat="item in $ctrl.form.$error.required track by $index"
+                ng-if="item.$name!=='articleUrl'&&item.$name!=='articleName'">
+              <!-- articleUrl 和 articleName 必填错误只显示一个  -->
+              <i class="fa fa-info-circle"></i>
+              <span ng-if="item.$name==='title'">请填写主题名称</span>
+              <span ng-if="item.$name==='description'">请填写主题描述</span>
+              <span ng-if="item.$name==='defaultImgId'">请选择默认背景图</span>
+              <span ng-if="item.$name==='imgurl'">请上传主题背景图</span>
+            </li>
+            <li ng-if="$ctrl.hasArticleRequiredError()">
+              <i class="fa fa-info-circle"></i>
+              <span>请完善文章信息</span>
+            </li>
+
+            <!-- url -->
+            <li ng-repeat="item in $ctrl.form.$error.pattern track by $index">
+              <i class="fa fa-info-circle"></i>
+              <span ng-if="item.$name==='articleUrl'">格式不正确，请复制包含 weixin.qq.com 的完整链接</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-btns">
+      <button type="submit"
+              class="button ok">确定</button>
+    </div>
+  </form>
+</div>

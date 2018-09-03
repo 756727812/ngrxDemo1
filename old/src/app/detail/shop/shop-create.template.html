@@ -1,0 +1,557 @@
+<div class="header">
+  <h2>
+    <strong>小电铺</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Seego后台</a>
+      </li>
+      <li>
+        <a href="#">小电铺</a>
+      </li>
+      <li class="active">创建小电铺</li>
+    </ol>
+  </div>
+</div>
+<div class="row shop">
+  <div class="col-sm-12">
+    <div class="panel" style="min-width:1300px;">
+      <div class="panel-content">
+        <div class="shop-title" ng-if="$ctrl.step==1">创建小电铺</div>
+        <div class="shop-title" ng-if="$ctrl.step==2">{{$ctrl.shopTitle}}</div>
+        <div class="shop-title" ng-if="$ctrl.step==3">
+          <span>开通{{$ctrl.shopType == 1 ? '基础版' : ($ctrl.shopType == 2?'进阶版':'专业版')}}小电铺</span>
+        </div>
+        <div class="row shop-section" style="width:90%;" ng-if="$ctrl.step == 1">
+          <div class="col-sm-12 shop-description">
+            <h4 class="text-center f-24 p-t-20">小电铺核心服务</h4>
+            <p class="text-center">
+              <img src="https://m.seeapp.com/images/index/server-94edbb8fea.png" width="1200px" alt="小电铺核心服务">
+            </p>
+            <div class="btn-line text-center">
+              <button report="'PAGE_CREATE_SHOP.BTN_OPEN_PROFESSION'" class="btn btn-danger btn-lg" ng-click="$ctrl.selectShopType(3)">开通小电铺</button>
+            </div>
+            <p class="server text-center">
+              <span>服务咨询</span>
+              <span>
+                <i class="fa fa-wechat"></i>xiaozhushousee</span>
+              <span>
+                <i class="fa fa-mobile"></i>17304466321</span>
+            </p>
+          </div>
+          <div class="col-sm-12" hidden>
+            <div class="row">
+              <div class="col-xl-3 col-md-2 col-sm-1"></div>
+              <div class="col-xl-3 col-md-4 col-sm-12">
+                <div class="shop-section-pannel shop-section-pannel__basic">
+                  <div class="title">
+                    <img src="../../../images/icons/s-ag.svg">基础版
+                    <div class="tips">非小程序版</div>
+                  </div>
+                  <ul>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>H5版基础商城</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>仅支持售卖小电铺商品</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>定制化智能商品推荐</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>后台自主选品</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>后台自主提现</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>内容电商效果监控</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>官方微信客服</li>
+                    <!-- <li>小程序专属商城</li>
+                    <li>小程序数据分析工具</li>
+                    <li>专属服务经理</li>
+                    <li>自主商品上架</li>
+                    <li>多渠道分销</li>
+                    <li>优质自媒体分销系统</li>
+                    <li>新功能内测优先体验</li> -->
+                  </ul>
+                  <div class="price">
+                    <span>
+                      <strong>免费</strong>
+                      <!-- <i class="price_mark">限时折扣</i> -->
+                    </span>
+                    <!-- <br/><span>请联系运营确认</span> -->
+                  </div>
+
+                  <button report="'PAGE_CREATE_SHOP.BTN_OPEN_BASIC'" class="btn btn-primary" ng-click="$ctrl.selectShopType(1)">开通</button>
+                </div>
+              </div>
+              <div class="col-sm-4 hide">
+                <div class="shop-section-pannel shop-section-pannel__advance">
+                  <div class="title">
+                    <img src="../../../images/icons/s-cu.svg">进阶版
+                    <div class="tips">建议自媒体开通</div>
+                  </div>
+                  <ul>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>网页版基础商城</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>定制化智能商品推荐</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>后台自主选品</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>后台自主提现</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>内容电商效果监控</li>
+                    <li class="check pre-version-end">
+                      <i class=" fa fa-check"></i>官方微信客服</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>小程序专属商城</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>小程序数据分析工具</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>专属服务经理</li>
+                    <li>自主商品上架</li>
+                    <li>多渠道分销</li>
+                    <li>优质自媒体分销系统</li>
+                    <li>新功能内测优先体验</li>
+                  </ul>
+                  <div class="price">
+                    <span>
+                      <strong>&yen;599</strong>/年
+                      <!-- <i class="price_mark">限时折扣</i> -->
+                    </span>
+                  </div>
+
+                  <button report="'PAGE_CREATE_SHOP.BTN_OPEN_ADVANCE'" class="btn btn-warning" ng-click="$ctrl.selectShopType(2)">开通</button>
+                </div>
+              </div>
+              <div class="col-xl-3 col-md-4 col-sm-12">
+                <div class="shop-section-pannel shop-section-pannel__professional">
+                  <div class="title">
+                    <img src="../../../images/icons/s-an.svg">专业版
+                    <div class="tips">小程序版
+                      <!-- 建议品牌开通 -->
+                    </div>
+                  </div>
+                  <ul>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>基础版本所有功能</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>专属小程序商城</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>支持自主上架商品售卖</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>自主小程序装修</li>
+                    <li class="check">
+                      <i class=" fa fa-check"></i>营销玩法配置</li>
+                    <li class="check">&nbsp;</li>
+                    <li class="check">&nbsp;</li>
+                    <!-- <li class="check"><i class=" fa fa-check"></i>网页版基础商城</li>
+                    <li class="check"><i class=" fa fa-check"></i>定制化智能商品推荐</li>
+                    <li class="check"><i class=" fa fa-check"></i>后台自主选品</li>
+                    <li class="check"><i class=" fa fa-check"></i>后台自主提现</li>
+                    <li class="check"><i class=" fa fa-check"></i>内容电商效果监控</li>
+                    <li class="check"><i class=" fa fa-check"></i>官方微信客服</li>
+                    <li class="check"><i class=" fa fa-check"></i>小程序专属商城</li>
+                    <li class="check"><i class=" fa fa-check"></i>小程序数据分析工具</li>
+                    <li class="check pre-version-end"><i class=" fa fa-check"></i>专属服务经理</li>
+                    <li class="check"><i class=" fa fa-check"></i>自主商品上架</li>
+                    <li class="check"><i class=" fa fa-check"></i>多渠道分销</li>
+                    <li class="check"><i class=" fa fa-check"></i>优质自媒体分销系统</li>
+                    <li class="check"><i class=" fa fa-check"></i>新功能内测优先体验</li> -->
+                  </ul>
+                  <div class="price">
+                    <span>
+                      <strong>&yen;899</strong>/年
+                      <!-- <i class="price_mark">限时折扣</i> -->
+                    </span>
+
+                  </div>
+
+                  <button report="'PAGE_CREATE_SHOP.BTN_OPEN_PROFESSION'" class="btn btn-danger" style="background-color: #ff634c" ng-click="$ctrl.selectShopType(3)">开通</button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 m-t-20 text-center">
+                <i class="fa fa-info-circle" style="color: #ff6b6b"></i>小电铺助手联系方式
+                <br/>微信：xiaozhushousee
+                <br/>手机：17304466321&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            </div>
+          </div>
+        </div>
+        <!-- 非基础版本 -->
+        <div class="row shop-selection shop-main-body" ng-if="$ctrl.step == 2 && $ctrl.shopType != 1">
+          <p class="title">小电铺主体用于微信小程序注册，是用户使用微信小程序各项服务和功能唯一的法律主体信息</p>
+          <div class="row shop-section">
+            <div class="col-sm-6">
+              <div class="shop-main-body__pannel">
+                <h4 class="text-center">
+                  <img src="../../../images/icons/favicon.png" width="101px">
+                  <br/>选择SEE为小电铺主体</h4>
+                <ul>
+                  <li>对于不具有开通微信支付的非企业型小电铺主，也可以直接享受到微信支付的便捷以及相关功能，推荐自媒体使用</li>
+                </ul>
+                <div class="check-area">
+                  <label>
+                    <input type="radio" name="type" value="2" ng-model="$ctrl.mainBody" icheck data-skin="iradio_square-blue">{{$ctrl.mainBody == 2 ? '已选择':'请选择'}}</label>
+                </div>
+                <!-- <div><label class="check m-t-10"><input type="radio" name="type" value="2" ng-model="$ctrl.mainBody" icheck data-skin="iradio_square-blue" ></label>{{$ctrl.mainBody == 2 ? '已选择':'未选择'}}</div> -->
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="shop-main-body__pannel">
+                <h4 class="text-center">
+                  <img src="../../../images/icons/person.png" width="101px">
+                  <br/>选择自己为小电铺主体</h4>
+                <ul>
+                  <li>仅限于具有开通微信支付能力的企业型小电铺主，推荐品牌方及个体商户使用</li>
+                </ul>
+                <div class="check-area">
+                  <label>
+                    <input type="radio" name="type" id="personal-sort-type-1" value="1" ng-model="$ctrl.mainBody" icheck data-skin="iradio_square-blue">{{$ctrl.mainBody == 1 ? '已选择':'请选择'}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 shop-main-body__bottom">
+              <p class="text-warning text-center">主体选择之后不可以修改，请慎重选择</p>
+              <!-- <a  href="" class="btn btn-sm btn-primary" ng-click="$ctrl.toPrev(1)">上一步</a>  -->
+              <button class="shop-btn shop-btn-lg" ng-disabled="$ctrl.mainBody == 0" ng-click="$ctrl.selectMainBody()">确认</button>
+            </div>
+          </div>
+        </div>
+        <!-- 主体为kol\brand -->
+        <div class="row shop-section shop-main-self" ng-if="$ctrl.step == 3 && $ctrl.mainBody == 1">
+          <div class="col-sm-12">
+            <!-- <ul class="clear-fix shop-nav">
+              <li ng-repeat="item in $ctrl.navList"><i class="fa {{item.status == 0 ? 'fa-circle-o default' : (item.status ==1 ? 'fa-circle-o' : 'fa-check-circle')}}"></i><p ng-bind-html="item.text"></p></li>
+            </ul> -->
+            <ul class="shop-nav-new">
+              <li ng-repeat="item in $ctrl.navList" class="default {{item.status == 0 ? '':(item.status ==1 ? 'current' : 'finish')}}">
+                <div></div>
+                <p ng-bind-html="item.text"></p>
+              </li>
+            </ul>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 1">
+            <div class="col-sm-7 shop-main-self__read line-right">
+              <h4 class="title">前期准备</h4>
+              <p>在开通小电铺之前，你需要在
+                <a href="https://mp.weixin.qq.com/">微信公众号平台</a>完成以下三件准备工作</p>
+              <ul>
+                <li class="row">
+                  <div class="col-sm-8">
+                    <h5>第一步</h5>
+                    <p>在微信公众平台注册微信小程序</p>
+                    <p>
+                      <label>
+                        <input type="radio" name="isReg" ng-model="$ctrl.prev.isReg" ng-value="0" checked icheck data-skin="iradio_square-blue">未注册</label>
+                      <label>
+                        <input type="radio" name="isReg" ng-model="$ctrl.prev.isReg" ng-value="1" icheck data-skin="iradio_square-blue">已注册</label>
+                    </p>
+                  </div>
+                  <div class="col-sm-3 m-l-30">
+                    <a report="'PAGE_CREATE_SHOP.BTN_TO_REGISTER'" href="https://mp.weixin.qq.com/" target="_blank" class="shop-btn shop-btn-sm">去注册</a>
+                  </div>
+                </li>
+                <li class="row">
+                  <div class="col-sm-8">
+                    <h5>第二步</h5>
+                    <p>在微信公众平台基础信息页，完善小程序基本信息</p>
+                    <p>
+                      <label>
+                        <input type="radio" name="isAll" ng-model="$ctrl.prev.isAll" ng-value="0" checked icheck data-skin="iradio_square-blue">未完善</label>
+                      <label>
+                        <input type="radio" name="isAll" ng-model="$ctrl.prev.isAll" ng-value="1" icheck data-skin="iradio_square-blue">已完善</label>
+                    </p>
+                  </div>
+                  <div class="col-sm-3 m-l-30">
+                    <a report="'PAGE_CREATE_SHOP.BTN_TO_COMPLETE_DATA'" href="https://mp.weixin.qq.com/" target="_blank" class="shop-btn shop-btn-sm">去完善</a>
+                  </div>
+                </li>
+                <li class="row">
+                  <div class="col-sm-8">
+                    <h5>第三步</h5>
+                    <p>在微信公众平台微信支付页，为小程序开通微信支付</p>
+                    <p>
+                      <label>
+                        <input type="radio" name="isOpen" ng-model="$ctrl.prev.isOpen" ng-value="0" checked icheck data-skin="iradio_square-blue">未开通</label>
+                      <label>
+                        <input type="radio" name="isOpen" ng-model="$ctrl.prev.isOpen" ng-value="1" icheck data-skin="iradio_square-blue">已开通</label>
+                    </p>
+                  </div>
+                  <div class="col-sm-3 m-l-30">
+                    <a report="'PAGE_CREATE_SHOP.BTN_TO_OPEN'" href="https://mp.weixin.qq.com/" target="_blank" class="shop-btn shop-btn-sm">去开通</a>
+                  </div>
+                </li>
+              </ul>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button class="shop-btn shop-btn-sm m-r-10" ng-click="$ctrl.toPrev(2)">上一步</button>
+                  <button class="shop-btn shop-btn-lg" ng-disabled="!($ctrl.prev.isReg&&$ctrl.prev.isAll&&$ctrl.prev.isOpen)" ng-click="$ctrl.newApply()">一键申请</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 shop-main-self__help">
+              <ol>
+                <li>
+                  <div>如何注册微信小程序后台</div>
+                  <faq-link name="how-to-register-xcx-backend">点击查看</faq-link>
+                </li>
+                <li>
+                  <div>如何完善小程序基本信息</div>
+                  <faq-link name="how-to-complete-xcx-info">点击查看</faq-link>
+                </li>
+                <li>
+                  <div>如何为小程序开通微信支付</div>
+                  <faq-link name="how-to-open-wechat-pay">点击查看</faq-link>
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 2">
+            <div class="col-sm-12 ">
+              <div class="text-center shop-result" ng-if="!$ctrl.navStepStatus.step2">
+                <!-- <div ng-if = "$ctrl.shopType != 3">
+                  <p class="text-center">申请已提交，工作人员稍后会通过<br/>你注册时留下的联系方式与你取得联系</p>
+                  <a href="/dashboard/dashboard" class="shop-btn shop-btn-lg m-t-20">返回概况页</a>
+                </div> -->
+                <p class="text-center">申请已提交，请耐心等待
+                  <br/>小电铺相关功能的使用需要相应认证
+                  <br/>你可以提前在个人中心进行小电铺认证</p>
+                <a href="/personalInfo/account#4" class="shop-btn shop-btn-lg m-t-20">去认证</a>
+              </div>
+              <div class="text-center shop-result" ng-if="$ctrl.navStepStatus.step2">
+                <p class="text-center">小电铺申请已通过审核</p>
+                <a  href="" ng-click="$ctrl.confirmApply()" class="shop-btn shop-btn-lg">下一步</a>
+              </div>
+            </div>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 3">
+            <div class="col-sm-7 shop-main-self__desc line-right">
+              <h4 class="title">小电铺授权</h5>
+                <p>通过将小电铺代码开发权限授权给SEE，SEE会自动帮你生成小电铺小程序，提交微信审核，并完成后续版本的更新迭代，省时省力</p>
+                <button class="shop-btn shop-btn-lg" ng-click="$ctrl.accredit()">一键授权</button>
+            </div>
+            <div class="col-sm-5 shop-main-self__decl">
+              <h4 class="title">声明</h4>
+              <ol>
+                <li>授权不会对你的小电铺小程序正常功能造成任何影响！</li>
+                <li>小程序授权需要小程序的管理员扫码完成，请确保你是管理员或可以联系他协助你完成授权</li>
+                <li>为了保证你能正常使用小电铺小程序的所有功能，请在授权登录时请直接点击底部【授权】按钮，不要自定义授权的权限，避免出现后续功能使用异常</li>
+              </ol>
+            </div>
+          </div>
+          <div class="row nav-step " ng-if="$ctrl.navStep == 4">
+            <div class="col-sm-7 shop-main-self__app line-right">
+              <h4 class="title">完善支付信息</h4>
+              <p class="m-t-10">通过完善以下支付信息，使你的小电铺小程序可以正常使用微信支付进行交易</p>
+              <form name="createAccountForm" class="form-horizontal w5c-form" role="form" novalidate w5c-form-validate>
+                <div class="form-body">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label required">App ID</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-white" placeholder="" required ng-model="$ctrl.payFormData.app_id || 123" disabled="disabled"
+                        name="app_id">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label required">App密钥</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-white" required ng-model="$ctrl.payFormData.app_key" name="app_key">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label required">商户号</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-white" placeholder="" required ng-model="$ctrl.payFormData.mch_id" name="mch_id">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label required">API密钥</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-white" placeholder="请输入32位API密钥" required ng-model="$ctrl.payFormData.mch_sign"
+                        name="mch_sign">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label required">退款证书</label>
+                    <div class="col-sm-8">
+                      <button type="button" class="shop-btn shop-btn-sm" accept=".zip" ngf-select="$ctrl.uploadCET($file)">上传退款证书</button>
+                      <span class="c-gray f-12 p-l-10">请上传格式为.zip的压缩包文件</span>
+                      <p>{{$ctrl.fileName}}</p>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-actions">
+                  <div class="row">
+                    <div class="col-sm-offset-2 col-sm-6">
+                      <button type="button" class="shop-btn shop-btn-lg" w5c-form-submit="$ctrl.editPayInfo()">下一步</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-5 shop-main-self__pay">
+              <h4 class="title f-16" style="font-weight: normal;">
+                <p style="color: #000;">从哪里获得支付信息</p>
+                <a href="/contact/shop#2-4" target="_blank" class="m-t-20" style="font-size: 14px;">点击查看</a>
+              </h4>
+              <h4 class="title m-t-40 f-16" style="font-weight: normal;">声明</h4>
+              <p>通过下列信息，SEE只能获取到该小电铺小程序的下单信息、支付结果信息以及申请退款的相关信息，仅用作后台展示使用，方便小电铺及时获取相关经营数据
+              </p>
+            </div>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 5">
+            <div class="col-sm-12 text-center shop-result">
+              <p class="text-center" ng-if="!$ctrl.navStepStatus.step3">你的小电铺会在一天内
+                <br/>提交微信审核，审核通过后即可使用</p>
+              <a href="/dashboard/dashboard" class="shop-btn shop-btn-lg m-t-20">完成</a>
+            </div>
+          </div>
+        </div>
+        <!-- 主体为SEE -->
+        <div class="row shop-section shop-main-see" ng-if="$ctrl.step == 3 && $ctrl.mainBody == 2">
+          <div class="col-sm-12 shop-section__progress-bar">
+            <!-- <ul class="clear-fix shop-nav shop-nav-see">
+              <li ng-repeat="item in $ctrl.navListSee"><i class="fa {{item.status == 0 ? 'fa-circle-o default' : (item.status ==1 ? 'fa-circle-o' : 'fa-check-circle')}}"></i><p ng-bind-html="item.text"></p></li>
+            </ul> -->
+            <ul class="shop-nav-new shop-nav-new-see">
+              <li ng-repeat="item in $ctrl.navListSee" class="default {{item.status == 0 ? '':(item.status ==1 ? 'current' : 'finish')}}">
+                <div></div>
+                <p ng-bind-html="item.text"></p>
+              </li>
+            </ul>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 1">
+            <div class="col-sm-7 line-right">
+              <h4 class="title" style="padding-left: 10%">小电铺申请</h4>
+              <form name="createAccountForm" class="form-horizontal w5c-form" role="form" novalidate w5c-form-validate>
+                <div class="form-body">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label required">小电铺名称</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-white" placeholder="小电铺名称最多可支持15个汉字" required ng-model="$ctrl.applyFormData.name"
+                        name="name" ng-pattern="/^[\u4e00-\u9fa5\dA-Za-z_]{1,15}$|^[\dA-Za-z_]{1,30}$/">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label required">小电铺头像</label>
+                    <div class="col-sm-8">
+                      <label class="shop-btn shop-btn-sm">上传图片
+                        <input type="file" see-file-select="$ctrl.uploadSizeImg" class="hide" accept="image/jpg, image/jpeg, image/png">
+                      </label>
+                      <span class="c-gray f-12">建议上传为144px*144px的png图片</span>
+                      <div class="img-preview size_table_imgurl" ng-show="$ctrl.applyFormData.heading">
+                        <img width="250" class="img-viewer" see-viewer see-src="$ctrl.applyFormData.heading" alt="">
+                        <a href="" class="img-del-btn" ng-show="$ctrl.applyFormData.heading" ng-click="$ctrl.applyFormData.heading = ''"></a>
+                      </div>
+                      <div ng-show="!$ctrl.applyFormData.heading" class="default-icon icon si si-profile-round"></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label required">小电铺简介</label>
+                    <div class="col-sm-8">
+                      <textarea class="form-control form-white" required ng-model="$ctrl.applyFormData.content" name="content" rows="3" placeholder="请在这里输入你的简介（120字以内）"
+                        maxlength="120"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <div class="row">
+                    <div class="col-sm-8 col-sm-offset-3 m-t-20">
+                      <!-- <button class="m-r-10 shop-btn shop-btn-sm" ng-click="$ctrl.toPrev($ctrl.seller_info.is_skip_main_body == 1 && $ctrl.shopType == 2 ? 1 : 2)">上一步</button> -->
+                      <button class="shop-btn shop-btn-lg" w5c-form-submit="$ctrl.newApply()">一键申请</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-5 p-l-40">
+              <h4 class="title">帮助中心</h4>
+              <img src="../../../images/help_new.jpg" alt="小电铺信息展示" style="width:400px;margin-top:-13px;">
+            </div>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 2">
+            <div class="col-sm-12 ">
+              <div class="text-center shop-result">
+                <!-- <p class="text-center">申请已提交，工作人员稍后会通过<br/>你注册时留下的联系方式与你取得联系</p>
+                <a href="/dashboard/dashboard" class="shop-btn shop-btn-lg m-t-20">返回概况页</a> -->
+                <p class="text-center">申请已提交，请耐心等待
+                  <br/>小电铺相关功能的使用需要相应认证
+                  <br/>你可以提前在个人中心进行小电铺认证</p>
+                <a href="/personalInfo/account#4" class="shop-btn shop-btn-lg m-t-20">去认证</a>
+              </div>
+            </div>
+          </div>
+          <div class="row nav-step" ng-if="$ctrl.navStep == 3">
+            <div class="col-sm-12 ">
+              <div class="text-center shop-result">
+                <p class="text-center ">小电铺申请已通过,你的开通小电铺会
+                  <br/>在一天内提交微信审核，审核通过后即可使用</p>
+                <a href="/dashboard/dashboard" class="shop-btn shop-btn-lg m-t-20">完成</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 基础版本 -->
+        <div class="row shop-section shop-selection" ng-if="$ctrl.step == 2 && $ctrl.shopType == 1">
+          <div class="col-sm-12" ng-if="$ctrl.baseStep == 1">
+            <!-- <h4 class="text-center m-b-10">小电铺申请</h4> -->
+            <form name="applyBaseForm" class="form-horizontal w5c-form p-t-20" role="form" novalidate w5c-form-validate>
+              <div class="form-body">
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">小电铺名称</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control form-white" placeholder="小电铺名称最多可支持15个汉字" required ng-model="$ctrl.applyBaseFormData.name"
+                      name="name" ng-pattern="/^[\u4e00-\u9fa5\dA-Za-z_]{1,15}$|^[\dA-Za-z_]{1,30}$/" style="width:300px">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">小电铺头像</label>
+                  <div class="col-sm-4">
+                    <label class="shop-btn shop-btn-sm">上传图片
+                      <input type="file" see-file-select="$ctrl.uploadSizeImg" class="hide" accept="image/jpg, image/jpeg, image/png">
+                    </label>
+                    <span class="c-gray f-12">建议上传144px*144px的png图片</span>
+                    <div class="img-preview size_table_imgurl" ng-show="$ctrl.applyBaseFormData.heading">
+                      <img width="250" class="img-viewer" see-viewer see-src="$ctrl.applyBaseFormData.heading" alt="">
+                      <a href="" class="img-del-btn" ng-show="$ctrl.applyBaseFormData.heading" ng-click="$ctrl.applyBaseFormData.heading = ''"></a>
+                    </div>
+                    <div ng-show="!$ctrl.applyBaseFormData.heading" class="default-icon icon si si-profile-round"></div>
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label required">小电铺简介</label>
+                  <div class="col-sm-3">
+                    <div class="input-group">
+                      <textarea class="form-control form-white" placeholder="请在这里输入你的简介（120字以内）" maxlength="120" required ng-model="$ctrl.applyBaseFormData.content"
+                        name="content" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="col-sm-offset-4 col-sm-8">
+                  <button class="shop-btn shop-btn-sm m-r-10" ng-click="$ctrl.toPrev(1)">上一步</button>
+                  <button class="shop-btn shop-btn-lg" w5c-form-submit="$ctrl.newBaseApply()">一键申请</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-12" style="padding:50px 0" ng-if="$ctrl.baseStep == 2">
+            <div class="text-center shop-result">
+              <p class="text-center">申请已提交，请耐心等待
+                <br/>小电铺相关功能的使用需要相应认证
+                <br/>你可以提前在个人中心进行小电铺认证</p>
+              <a href="/personalInfo/account#4" class="shop-btn shop-btn-lg m-t-20">去认证</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

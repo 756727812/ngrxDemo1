@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">添加已有商品</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-12 portlets">
+      <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+          <div class="form-group">
+              <label class="control-label col-sm-4">{{vm.name}}名</label>
+              <div class="col-sm-7">
+                <label class="control-label col-sm-4">{{vm.title}}</label>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="control-label col-sm-4 required">从以下文章或商城添加</label>
+              <div class="col-sm-7">
+                <select class="form-control" ng-model="vm.cur_article" ng-change="vm.changArticle()" ng-options="item.title for item in vm.list_article">
+                   <option value="" selected>-- 请选择 --</option>
+                </select>
+              </div>
+          </div>
+          <div class="grid-portfolio m-t-10">
+            <div class="grid-portfolio m-t-10" ng-if="vm.item_length > 0">
+              <button type="button" class="btn btn-primary" ng-click="vm.checkAll()">全选</button>
+              <button type="button" class="btn btn-primary" ng-click="vm.checkReverse()">反选</button>
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-xlg-2 m-t-10" ng-repeat="good in vm.list_item" style="width:135px;height:180px;">
+                  <img see-src="good.item_imgurl"  style="max-height: 120px;">
+                  <label>
+                              <input type="checkbox" ng-model="good.isChecked" ng-change="selectedChanged()">{{good.item_id}}&nbsp;&nbsp;&nbsp;&nbsp;{{good.item_discount_price | currency: '￥'}}</label>
+                  <p>{{good.brand_name}}&nbsp;&nbsp;&nbsp;&nbsp;<span title="{{good.item_name}}">{{good.item_name}}</span></p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+                <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

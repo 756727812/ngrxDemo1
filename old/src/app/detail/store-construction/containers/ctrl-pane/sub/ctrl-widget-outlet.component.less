@@ -1,0 +1,132 @@
+.ctrl-widget {
+  width: 375px;
+  background: #fff;
+
+  .head {
+    height: 40px;
+    background-color: #5971e8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    color: #fff;
+    font-size: 13px;
+
+    .title {
+      font-weight: bold;
+      letter-spacing: -0.1px;
+    }
+
+    i {
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+
+  .body {
+    padding: 29px 14px 50px 17px;
+  }
+
+  .has-error .ant-form-explain {
+    display: none !important;
+    cursor: pointer;
+  }
+}
+
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .ant-input,
+  .ant-input:hover {
+    border-color: #e5e5e5;
+  }
+
+  .has-error .ant-form-explain {
+    display: none;
+  }
+
+  .has-error .ant-input,
+  .has-error .ant-input:hover,
+  .has-error .ant-input:focus,
+  .has-error .ant-input:not([disabled]):hover {
+    border-color: #e5e5e5;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .has-error .ant-input:focus {
+    box-shadow: 0 0 0 2px rgba(89, 113, 232, 0.2);
+  }
+
+  //  保存之后
+  .global-save-error-visible {
+    .has-error .ant-form-explain {
+      display: block;
+    }
+    .has-error {
+      .coupon-add-btn, .add-item-btn, .category-add-btn, .init-trigger {
+        border-color: red;
+      }
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .has-error .ant-input,
+    .has-error .ant-input:hover,
+    .has-error .ant-input:focus,
+    .has-error .ant-input:not([disabled]):hover {
+      border-color: #f04134;
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .has-error .ant-input:focus {
+      box-shadow: 0 0 0 2px rgba(240, 65, 52, 0.2);
+    }
+  }
+
+  // LABEL >>
+  .module-title {
+    &-action {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        font-size: 14px;
+        text-align: left;
+        color: #000;
+        font-weight: bold;
+      }
+    }
+
+    label {
+      font-weight: normal;
+    }
+  }
+
+  .ant-form-item-label {
+    p.title-explain {
+      font-size: 12px;
+      color: #999;
+      margin-top: -5px;
+    }
+  }
+
+  // 字段 label
+  .ant-form-item-label label,
+  .module-title-action > h2 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  // 副标题
+  .fieldset {
+    .ant-form-item-label {
+      label {
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+  }
+  // LABEL <<
+
+  .mt-xl{
+    margin-top: 42px;
+  }
+}

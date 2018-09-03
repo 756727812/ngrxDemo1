@@ -1,0 +1,83 @@
+<div id="faq-page">
+  <div class="aside"
+       ng-show="!$ctrl.showingSearchResult">
+    <!-- <div class="mark">
+      <i class="fa fa-question-circle"></i> 帮助
+    </div> -->
+    <ul class="topics">
+      <li ng-class="{active: $ctrl.activeIndex===$index}"
+          ng-click="$ctrl.select(item, $index)"
+          ng-repeat="item in $ctrl.list track by $index">
+        {{item.title}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="content-ct">
+    <form class="search-form"  ng-show="$ctrl.isShowSearchForm"
+          ng-submit="$ctrl.submitSearch();$event.preventDefault()">
+      <div class="inner-wrap">
+        <input ng-model="$ctrl.keyword"
+               input-clear="submit"
+               type="text"
+               class="see-input-text"
+               placeholder="请输入要查找的内容">
+        <button type="submit"
+                class="see-btn-search">
+       <i class="fa fa-search"></i>
+     </button>
+      </div>
+    </form>
+
+    <!-- 二级跳转列表 -->
+    <dl class="items"
+        ng-show="!$ctrl.showingSearchResult&&!$ctrl.showingTpl">
+      <dd ng-if="$ctrl.activeItem"
+          ng-repeat="subItem in $ctrl.activeItem.items track by $index">
+        <a ng-href="{{$ctrl.getDocHref(subItem)}}"
+           target="_blank">{{subItem.title}}</a>
+      </dd>
+    </dl>
+
+    <!-- 搜索结果 -->
+    <div ng-if="$ctrl.showingSearchResult">
+      <ul class="result"
+          ng-if="$ctrl.searchResultList&&$ctrl.searchResultList.length">
+        <li ng-class="{'redirect-tpl':$ctrl.isTplItem(item)}"
+            ng-repeat="item in $ctrl.searchResultList track by $index">
+          <i class="si si-14-fileboard"
+             ng-if="!$ctrl.isTplItem(item)"></i>
+          <div class="text-wrap"
+               ng-click="$ctrl.onSearchResultTplItemClick(item)">
+            <h4 class="level-1">
+              <highlight-keyword text="item.title"
+                                 keyword="$ctrl.submitedKeyword"></highlight-keyword>
+            </h4>
+
+
+            <dl class="sub-items">
+              <dd ng-repeat="(subIndex, subItem) in item.items track by subIndex">
+                <h5 class="level-2">
+                  <a ng-href="{{$ctrl.getDocHref(subItem)}}"
+                     target="_blank">
+                    <highlight-keyword text="subItem.title"
+                                       keyword="$ctrl.submitedKeyword"></highlight-keyword>
+                  </a>
+                </h5>
+              </dd>
+            </dl>
+          </div>
+        </li>
+      </ul>
+      <div ng-show="!$ctrl.searchResultList||!$ctrl.searchResultList.length"
+           class="empty-tips">
+        没有搜索到相关信息
+      </div>
+    </div>
+
+    <!-- 模板内容 -->
+    <div ng-show="$ctrl.showingTpl&&!$ctrl.showingSearchResult"
+         class="tpl-ct">
+    </div>
+  </div>
+</div>

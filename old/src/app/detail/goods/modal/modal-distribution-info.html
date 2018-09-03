@@ -1,0 +1,256 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title" ng-switch on="vm.modalType">
+    <span ng-switch-when="1">供货商品快速申请</span>
+    <span ng-switch-when="2">供销商品审核</span>
+    <span ng-switch-when="3">供销商品调价</span>
+    <span ng-switch-when="4">供销商品调价审核</span>
+    <span ng-switch-when="5">供销商品快速申请</span>
+  </h3>
+</div>
+<form class="form-horizontal w5c-form distribute-modal-form" name="distributionForm" novalidate w5c-form-validate>
+  <div class="modal-body distr-modal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label required">商品名称</label>
+      <div class="col-sm-8">
+        <input class="form-control" type="text" name="item_name" ng-model="vm.product.item_info.item_name" required disabled />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2 required" see-access="C2C-Seller New-Brand">规格表</label>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <table class="table table-bordered table-center table-hover" style="background-color: #fff;">
+          <thead>
+            <tr class="title">
+              <th ng-repeat="attr in vm.product.sku_attr_list.sell" ng-bind="attr.attr_name"></th>
+              <th>小店铺日常售价</th>
+              <th>市场价</th>
+              <th>成本价 <i class="fa fa-info-circle invalid" ng-if="$ctrl.is_new_brand" uib-tooltip="若您需供货该商品至热门单品库，并给分销商进行销售，需要填写成本价，SEE需要对您的供货商品进行审核"></i><br />
+                <input name="cost_price" class="form-control form-white w-80" type="number" min="0"
+                       w5c-dynamic-element
+                       ng-hide="vm.modalType==2"
+                       ng-model="vm.sameTrigger.cost_price"
+                       onkeyup="if(this.value<0){this.value = ''}"
+                       onafterpaste="if(this.value<0){this.value = ''}"
+                       ng-keyup="vm.setSame('cost_price');vm.handleSkuError();vm.recalculateSupplyPriceAll()"
+                       ng-disabled="vm.modalType==4 || vm.inWarehouse == 1" />
+              </th>
+              <th ng-if="vm.is_admin">供货价<br />
+                <!-- <input name="supply_price" class="form-control form-white w-80" type="number" min="0"
+                     w5c-dynamic-element
+                     ng-model="vm.sameTrigger.supply_price"
+                     ng-change="vm.setSame('supply_price');vm.handleSkuError()" /> -->
+              </th>
+              <th see-access="Super-Admin Elect-Admin">SEE利润率(%)<br />
+                <!-- <input name="cost_price" class="form-control form-white w-80" type="number" min="0"
+                     w5c-dynamic-element
+                     ng-model="vm.sameTrigger.profit_rate"
+                     ng-change="vm.setSame('profit_rate');vm.handleSkuError()" /> -->
+              </th>
+              <th><span ng-if="vm.modalType != 3">&ast;</span>建议零售价<br>
+                <input name="suggested_retail_price_from" class="form-control form-white w-80" type="number" min="0"
+                       ng-model="vm.sameTrigger.suggestedRetailPriceFrom"
+                       ng-hide="vm.modalType==2"
+                       ng-class="{'price-changed': sku.beforeDetail && sku.cost_price != sku.beforeDetail.costPrice && vm.modalType==4}"
+                       ng-disabled="vm.modalType==4"
+                       onkeyup="if(this.value<0){this.value = ''}"
+                       onafterpaste="if(this.value<0){this.value = ''}"
+                       ng-change="vm.setSame('suggestedRetailPriceFrom');vm.handleSkuError()"/>
+                <span ng-hide="vm.modalType==2">&nbsp;&sol;&nbsp;</span>
+                <input name="sku_ori_price" class="form-control form-white w-80" type="number" min="0"
+                       ng-model="vm.sameTrigger.suggestedRetailPriceTo"
+                       ng-hide="vm.modalType==2"
+                       ng-disabled="vm.modalType==4"
+                       ng-class="{'price-changed': sku.beforeDetail && sku.cost_price != sku.beforeDetail.costPrice && vm.modalType==4}"
+                       onkeyup="if(this.value<0){this.value = ''}"
+                       onafterpaste="if(this.value<0){this.value = ''}"
+                       ng-change="vm.setSame('suggestedRetailPriceTo');vm.handleSkuError()"/>
+              </th>
+              <th ng-if="(!$ctrl.is_edit && !$ctrl.is_c2c) || $ctrl.is_c2c">&ast;库存<br />
+                <input name="sku_stock" class="form-control form-white w-80" type="number" min="0"
+                       ng-disabled="$ctrl.is_disabled_sku_new"
+                       ng-if="$ctrl.inWarehouse == 0 && (!$ctrl.is_edit || ($ctrl.is_edit && $ctrl.formData.item_info.is_stored === '0') )"
+                       ng-model="$ctrl.formData.sameTriger.sku_stock"
+                       ng-change="$ctrl.setSame('sku_stock');$ctrl.handleSkuError()"
+                       onkeyup="if(this.value<0){this.value = ''}"
+                       onafterpaste="if(this.value<0){this.value = ''}"/>
+              </th>
+              <!--<th ng-hide="$ctrl.is_sku_disabled">操作</th>-->
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="sku in vm.product.sku_list track by $index">
+              <td ng-repeat="attr in vm.product.sku_attr_list.sell track by $index">
+                {{sku.attr_value_map[attr.attr_id].attr_value_text}}
+              </td>
+              <td>
+                <div class="inline-block">
+                  <div class="input-group">
+                    <span class="input-group-addon">¥</span>
+                    <input type="number" min="0" w5c-dynamic-name="'sku_price'+ $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80" ng-model="sku.sku_price" ng-change="vm.handleSkuError()" required disabled>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="inline-block">
+                  <div class="input-group">
+                    <span class="input-group-addon">¥</span>
+                    <input type="number" min="0" w5c-dynamic-name="'sku_ori_price'+ $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80" ng-model="sku.sku_ori_price" ng-change="vm.handleSkuError()" required disabled>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="inline-block">
+                  <div class="input-group">
+                    <span class="input-group-addon">¥</span>
+                    <input type="number" min="0"
+                           w5c-dynamic-name="'cost_price'+ $index"
+                           w5c-dynamic-element
+                           class="form-control w5c-error-not-show w-80"
+                           ng-model="sku.cost_price"
+                           ng-change="vm.handleSkuError()"
+                           ng-required="!(vm.inWarehouse == 1 && vm.modalType == 3 && sku.sku_stock === 0)"
+                           ng-disabled="vm.modalType==2 || vm.modalType==4 || vm.inWarehouse == 1"
+                           ng-class="{'price-changed': sku.beforeDetail && sku.cost_price != sku.beforeDetail.costPrice && vm.modalType==4}"
+                           ng-keyup="vm.recalculateSupplyPrice(sku)"
+                           onkeyup="if(this.value<0){this.value = ''}"
+                           onafterpaste="if(this.value<0){this.value = ''}">
+                  </div>
+                </div>
+
+                <!-- 错误小标 -->
+                <i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long" uib-tooltip-template="'costPriceErr.html'" ng-if="vm.skuErrors[sku.sku_id]['cost_price'].length > 0"></i>
+                <script type="text/ng-template" id="costPriceErr.html">
+                  <ul ng-repeat="(type, error) in vm.skuErrors[sku.sku_id]['cost_price']">
+                    <li ng-if="error!=''">{{error}}</li>
+                  </ul>;
+                </script>
+                <br/>
+                <span ng-if="sku.beforeDetail && vm.modalType==4">{{sku.beforeDetail.costPrice}}</span>
+              </td>
+              <td ng-if="vm.is_admin">
+                <div class="inline-block">
+                  <div class="input-group">
+                    <span class="input-group-addon">¥</span>
+                    <input type="number" min="0"
+                           w5c-dynamic-name="'supply_price'+ $index"
+                           w5c-dynamic-element
+                           class="form-control w5c-error-not-show w-80"
+                           ng-model="sku.supply_price"
+                           ng-change="vm.handleSkuError()"
+                           ng-required="!(vm.inWarehouse == 1 && vm.modalType == 3 && sku.sku_stock === 0)"
+                           ng-change="vm.handleSkuError()"
+                           ng-class="{'price-changed': sku.beforeDetail && sku.supply_price != sku.beforeDetail.supplyPrice && vm.modalType==4}"
+                           onkeyup="if(this.value<0){this.value = ''}"
+                           onafterpaste="if(this.value<0){this.value = ''}"
+                           ng-keyup="vm.recalculateSupplyRate(sku)">
+                  </div>
+                </div>
+
+                <!-- 错误小标 -->
+                <i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long" uib-tooltip-template="'supplyPriceErr.html'" ng-if="vm.skuErrors[sku.sku_id]['supply_price'].length > 0"></i>
+                <script type="text/ng-template" id="supplyPriceErr.html">
+                  <ul ng-repeat="(type, error) in vm.skuErrors[sku.sku_id]['supply_price']">
+                    <li ng-if="error!=''">{{error}}</li>
+                  </ul>;
+                </script>
+                <br/>
+                <span ng-if="sku.beforeDetail && vm.modalType==4">{{sku.beforeDetail.supplyPrice}}</span>
+              </td>
+              <td ng-if="vm.is_admin">
+                <div class="inline-block">
+                  <div class="input-group">
+                    <span class="input-group-addon">%</span>
+                    <input type="number" w5c-dynamic-name="'profit_rate'+ $index" w5c-dynamic-element  class="form-control w5c-error-not-show w-80"
+                           ng-model="sku.profit_rate" required ng-keyup="vm.recalculateSupplyPrice(sku)" ng-change="vm.handleSkuError()">
+                  </div>
+                </div>
+                <br/>
+                <span ng-if="sku.beforeDetail && vm.modalType==4">{{sku.beforeDetail.profit_rate}}</span>
+              </td>
+              <td class="text-center">
+                <div class="inline-block">
+                  <div class="input-group">
+                    <span class="input-group-addon">¥</span>
+                    <input w5c-dynamic-name="'suggestedRetailPriceFrom' + $index" w5c-dynamic-element class="form-control w5c-error-not-show w-80"
+                           type="number"
+                           min="0"
+                           ng-disabled="vm.modalType==2 || vm.modalType==4"
+                           ng-model="sku.suggestedRetailPriceFrom"
+                           ng-required="!(vm.inWarehouse == 1 && vm.modalType == 3 && sku.sku_stock === 0)"
+                           ng-change="vm.handleSkuError()"
+                           onkeyup="if(this.value<0){this.value = ''}"
+                             onafterpaste="if(this.value<0){this.value = ''}"
+                             ng-class="{'price-changed': sku.beforeDetail && sku.suggestedRetailPriceFrom != sku.beforeDetail.suggestedRetailPriceFrom && vm.modalType==4}"/>
+                  <!-- 错误小标 -->
+                      <i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long"
+                         uib-tooltip-template="'suggestedRetailPriceFromErr.html'"
+                         ng-if="vm.skuErrors[sku.sku_id]['suggestedRetailPriceFrom'].length > 0"></i>
+                      <script type="text/ng-template" id="suggestedRetailPriceFromErr.html">
+                    <ul ng-repeat="(type, error) in vm.skuErrors[sku.sku_id]['suggestedRetailPriceFrom']">
+                      <li ng-if="error!=''">{{error}}</li>
+                    </ul>;
+                      </script>
+                    <span class="input-group-addon">/</span>
+                    <span class="input-group-addon">¥</span>
+                    <input w5c-dynamic-name="'suggestedRetailPriceTo' + $index" w5c-dynamic-element
+                           class="form-control w5c-error-not-show w-80"
+                           type="number"
+                           min="0"
+                           ng-model="sku.suggestedRetailPriceTo"
+                           ng-required="!(vm.inWarehouse == 1 && vm.modalType == 3 && sku.sku_stock === 0)"
+                           ng-disabled="vm.modalType==2 || vm.modalType==4"
+                           ng-change="vm.handleSkuError()"
+                           onkeyup="if(this.value<0){this.value = ''}"
+                           onafterpaste="if(this.value<0){this.value = ''}"
+                           ng-class="{'price-changed': sku.beforeDetail && sku.suggestedRetailPriceTo != sku.beforeDetail.suggestedRetailPriceTo && vm.modalType==4}"/>
+                  </div>
+                </div>
+                <!-- 错误小标 -->
+                <i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long" uib-tooltip-template="'suggestedRetailPriceToErr.html'" ng-if="vm.skuErrors[sku.sku_id]['suggestedRetailPriceTo'].length > 0"></i>
+                <script type="text/ng-template" id="suggestedRetailPriceToErr.html">
+                  <ul ng-repeat="(type, error) in vm.skuErrors[sku.sku_id]['suggestedRetailPriceTo']">
+                    <li ng-if="error!=''">{{error}}</li>
+                  </ul>;
+                </script>
+                <br/>
+                <span ng-if="sku.beforeDetail && vm.modalType==4">{{sku.beforeDetail.suggestedRetailPriceFrom}}/{{sku.beforeDetail.suggestedRetailPriceTo}}</span>
+              </td>
+              <td>
+                <input w5c-dynamic-name="'sku_stock'+ $index" type="number" min="0" class="form-control w5c-error-not-show w-80" w5c-dynamic-element required
+                       disabled
+                       ng-model="sku.sku_stock">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p ng-if="vm.noChange"><i class="si si-danger invalid"></i>&nbsp;没有修改任何价格，操作将不生效</p>
+      </div>
+    </div>
+    <div class="form-group" see-access="Super-Admin Elect_Admin">
+      <label class="col-sm-2 control-label required">项目标签</label>
+      <div class="col-sm-2">
+          <label class="checkbox-inline" ng-repeat="(key, opt) in vm.checkOptions">
+            <input type="checkbox" ng-model="vm.checkedArr[key]" ng-change="vm.setAttrValue(key, vm.checkedArr[key])">{{opt.label}}&nbsp;&nbsp;&nbsp;&nbsp;
+          </label>
+          <span class="w5c-error" ng-if="vm.is_setProject"><i class="si si-danger"></i>&nbsp;请选择商品的项目标签</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn dark btn-outline" type="button" ng-click="vm.cancel()">取消</button>
+    <a ng-href="/goods/posted/{{vm.product.item_info.class_id}}/{{vm.product.item_info.item_id}}?needClose=true"  class="btn btn-primary" target="_blank" type="button" ng-if="vm.modalType!=2 && vm.modalType!=3 && vm.modalType!=1" ng-click="vm.cancel(true)">商品信息编辑</a>
+    <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()" ng-if="vm.modalType==1">
+      <span ng-if="!vm.is_admin">立即申请</span>
+      <span ng-if="vm.is_admin">确定</span>
+    </button>
+    <button class="btn btn-primary" type="button" ng-click="vm.reject()" ng-if="vm.modalType==2 || vm.modalType==4">拒绝</button>
+    <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()" ng-if="vm.modalType==2 || vm.modalType==4">通过</button>
+    <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()" ng-if="vm.modalType==3" see-access="New-Brand">申请调价</button>
+    <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()" ng-if="vm.modalType==3" see-access="Super-Admin Elect-Admin">确定</button>
+  </div>
+  <!-- {{distributionForm}} -->
+</form>

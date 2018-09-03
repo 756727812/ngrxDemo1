@@ -1,0 +1,94 @@
+<div class="header">
+	<h2><strong>热度榜单</strong></h2>
+
+	<div class="breadcrumb-wrapper"  ng-hide="true">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/fashion">全球时尚</a></li>
+			<li class="active">热度榜单</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-2 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<div class="list-group">
+						<a href="" class="list-group-item bg-info color-white">开放平台</a>
+						<a href="" class="list-group-item" ng-repeat="lib in $ctrl.public_libs" ng-click="$ctrl.searchLib(lib.platform)" ng-class="{'active': $ctrl.platform === lib.platform}"
+							ng-bind="lib.platform"></a>
+					</div>
+					<div class="list-group" see-access="Super-Admin See-Admin">
+						<a href="" class="list-group-item bg-info color-white">内部平台</a>
+						<a href="" class="list-group-item" ng-repeat="lib in $ctrl.inner_libs" ng-click="$ctrl.searchLib(lib.platform)" ng-class="{'active': $ctrl.platform === lib.platform}"
+							ng-bind="lib.platform"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-10 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<div class="clear-fix">
+						<p class="input-group pull-left" style="width: 200px;">
+							<input type="text" class="form-control" uib-datepicker-popup ng-model="$ctrl.dt" is-open="$ctrl.opened" current-text="今天" clear-text="清空"
+								close-text="关闭" />
+							<span class="input-group-btn">
+                  <button type="button" class="btn btn-primary" ng-click="$ctrl.opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+						</p>
+						<p class="text-info m-t-5 pull-left">榜单周期：<span ng-bind="$ctrl.calcPeriod()"></span></p>
+					</div>
+					<see-tabset>
+						<see-tab heading="今日榜" type="today"></see-tab>
+						<see-tab heading="日榜单" type="daily"></see-tab>
+						<see-tab heading="周榜单" type="weekly"></see-tab>
+						<see-tab heading="月榜单" type="monthly"></see-tab>
+					</see-tabset>
+					<div id="hotList" class="table-scrollable">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>描述</th>
+									<th>博主</th>
+									<!--<th>平台</th>-->
+									<th>浏览数</th>
+									<th>点赞数</th>
+									<th>发布时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="mt in $ctrl.hotlist track by mt._id">
+									<td>
+										<img see-src="mt.item.img_url" see-viewer width="100" class="img-viewer" alt="">
+									</td>
+									<td ng-bind-html="mt.item.desc | trustHtml"></td>
+									<td>
+										<a ng-href="/fashion/material?blogger={{mt.author.blogger}}" ng-bind="mt.author.blogger"></a>
+									</td>
+									<!--<td ng-bind="mt.platform"></td>-->
+									<td ng-bind="mt.item.visits"></td>
+									<td ng-bind="mt.item.likes"></td>
+									<td ng-bind="+mt.item.publish_time * 1000 | date:'yyyy-MM-dd HH:mm:ss'"></td>
+									<td>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.removeFavoriteItem(mt._id)" ng-show="mt.isfavorite === true"><i class="fa fa-heart"></i>已收藏</button>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.addToFavorite(mt._id)" ng-show="mt.isfavorite === false"><i class="fa fa-heart-o"></i>收藏</button>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.seeDetail(mt)">查看详情</button>
+										<a ng-href="{{mt.item.img_url}}" target="_blank" class="btn btn-sm btn-primary" download>下载图片</a>
+										<button type="button" class="btn btn-sm btn-primary" see-access="See-Admin Super-Admin" ng-click="$ctrl.generateWish(mt._id)">生成心愿</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="text-info" ng-if="$ctrl.hotlist.length === 0">暂时还没有数据哦！</p>
+						<pagination total-items="$ctrl.total_items"></pagination>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.closeDlg()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">访问小电铺</h3>
+</div>
+<div class="modal-body">
+  <div class="modal-shop-access-info">
+    <div class="qr-part">
+      <span class="left-txt">微信扫码</span>
+      <ul class="qrs">
+        <li>
+          <div class="qr-box">
+            <img see-src="$ctrl.resolve.data.h5_img">
+
+            <div class="non-lay" ng-if="$ctrl.resolve.data.xdp_info.manager_status <= 20">
+              <span>{{$ctrl.str_status}}</span>
+              <div class="opacity-bg"></div>
+            </div>
+
+          </div>
+          <span class="desc">H5</span>
+        </li>
+        <li>
+          <div class="qr-box">
+            <img see-src="$ctrl.resolve.data.xdp_img">
+            <div
+              ng-if="!$ctrl.hasXiaoChengXu()"
+              class="non-lay"
+              ng-click="$ctrl.onNonXiaoChengXuClick()"
+            >
+              <span>未开通</span>
+              <div class="opacity-bg"></div>
+            </div>
+            <div style="cursor: default;"
+              ng-if="!$ctrl.is_online && $ctrl.hasXiaoChengXu()"
+              class="non-lay"
+            >
+              <span>{{$ctrl.str_status}}</span>
+              <div class="opacity-bg"></div>
+            </div>
+          </div>
+          <span class="desc">小程序</span>
+        </li>
+      </ul>
+    </div>
+    <div class="bottom">
+      <span class="left-txt">其他方式</span>
+
+      <!--ng-disabled好像不生效-->
+      <a    ng-if="$ctrl.resolve.data.xdp_info.manager_status > 20" class="button" ng-href="{{$ctrl.resolve.data.h5_url}}" target="_blank">PC上查看</a>
+      <span ng-if="$ctrl.resolve.data.xdp_info.manager_status > 20" ng-disabled="$ctrl.resolve.data.h5_url === ''" class="button" ngclipboard data-clipboard-text="{{$ctrl.resolve.data.h5_url}}"
+            ngclipboard-success="$ctrl.onCopySuccess()">复制H5链接</span>
+
+      <a    ng-if="$ctrl.resolve.data.xdp_info.manager_status <= 20" disabled="true"  class="button" style="background-color:gray;cursor: not-allowed;" >PC上查看</a>
+      <span ng-if="$ctrl.resolve.data.xdp_info.manager_status <= 20"  disabled="true"  class="button" style="background-color:gray;cursor: not-allowed;">复制H5链接</span>
+
+      <span ng-if="$ctrl.hasXiaoChengXu() && $ctrl.is_online"
+            class="button"
+            ngclipboard
+            data-clipboard-text="{{$ctrl.resolve.data.xdp_url}}"
+            ngclipboard-success="$ctrl.onCopySuccess()">复制小程序链接</span>
+      <span ng-if="$ctrl.hasXiaoChengXu() && !$ctrl.is_online"
+            class="button"
+            disabled="true" style="background-color:gray;cursor: not-allowed;">复制小程序链接</span>
+    </div>
+  </div>
+</div>

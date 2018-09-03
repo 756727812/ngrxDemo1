@@ -1,0 +1,45 @@
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .caption {
+    .btn-export {
+      margin-left: 6px;
+    }
+  }
+}
+
+.left.chart-ct {
+  .caption {
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    margin-top: 37px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .chart.bar {
+    width: 500px;
+    height: 306px;
+  }
+}
+
+.right.chart-ct {
+  position: relative;
+
+  .caption {
+    position: absolute;
+    top: 37px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .chart.pie {
+    width: 540px;
+    height: 400px;
+  }
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,23 @@
+<div id="xcx-code">
+  <div class="row">
+    <div class="col-sm-12 portlets">
+      <div class="panel">
+        <div class="panel-content">
+          <see-tabset active-type="1">
+            <see-tab heading="授权列表"
+                     type="1">
+              <xcx-code-auth-list ng-if="$ctrl.hash==1"></xcx-code-auth-list>
+            </see-tab>
+            <see-tab
+              see-access="Super-Admin Elect-Admin"
+              heading="模板列表"
+              type="2">
+                <xcx-code-tpl-list ng-if="$ctrl.hash==2"></xcx-code-tpl-list>
+            </see-tab>
+          </see-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

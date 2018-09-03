@@ -1,0 +1,106 @@
+<div class="modal-header">
+	<h3 class="modal-title">选择库存条目码</h3>
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+</div>
+<div class="modal-body">
+	<h4>已绑定</h4>
+	<div class="table-scrollable">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>创建时间</th>
+					<th>库存锁定条目ID</th>
+					<th>所在仓库</th>
+					<th>商品名</th>
+					<th>SKU囤货码</th>
+					<th>颜色&示意图</th>
+					<th>尺码</th>
+					<th>库存锁定总量</th>
+					<th>已出库量</th>
+					<th>剩余锁定量</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in vm.bind_allot_list  track by $index">
+					<td>{{item.create_time}}</td>
+					<td>{{item.storage_allot_id}}</td>
+					<td>{{item.store_info.name}}</td>
+					<td>
+						<p class="three-lines">{{item.spu_name}}</p></td>
+					<td>{{item.storage_sku_id}}</td>
+					<td>
+						<span>{{item.color_value}}</span>
+						<img ng-if="item.sku_imgurl" see-src="item.sku_imgurl" alt="{{item.spu_name}}" height="150" see-viewer>
+					</td>
+					<td>{{item.size_value}}</td>
+					<td align="center">{{item.stock_locked_all}}</td>
+					<td align="center">{{item.stock_sell}}</td>
+					<td align="center">{{item.stock_locked_remain}}</td>
+					<td>
+						<button type="button" class="btn btn-sm btn-primary" ng-click="vm.bind_allot_list.splice($index, 1)">解绑</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h4>新增绑定“库存锁定条目”</h4>
+	<form class="form-inline"  novalidate>
+		<div class="form-group">
+			<label class="control-label">
+                <input type="search" class="form-control" style="min-width: 200px" ng-model="vm.filter_info.keyword" placeholder="SPUID，SKU囤货码，商品名">
+            </label>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-primary" type="submit" ng-click="vm.getAllotByBackendId()">搜索</button>
+		</div>
+	</form>
+	<div class="table-scrollable">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>创建时间</th>
+					<th>库存锁定条目ID</th>
+					<th>所在仓库</th>
+					<th>商品名</th>
+					<th>SKU囤货码</th>
+					<th>颜色&示意图</th>
+					<th>尺码</th>
+					<th>库存锁定总量</th>
+					<th>已出库量</th>
+					<th>剩余锁定量</th>
+					<th style="min-width: 60px">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in vm.unbind_allot_list track by $index">
+					<td>{{item.create_time}}</td>
+					<td>{{item.storage_allot_id}}</td>
+					<td>{{item.store_info.name}}</td>
+					<td>
+						<p class="three-lines">{{item.spu_name}}</p>
+					</td>
+					<td>{{item.storage_sku_id}}</td>
+					<td>
+						<span>{{item.color_value}}</span>
+						<img ng-if="item.sku_imgurl" see-src="item.sku_imgurl" alt="{{item.spu_name}}" height="150" see-viewer>
+					</td>
+					<td>{{item.size_value}}</td>
+					<td align="center">{{item.stock_locked_all}}</td>
+					<td align="center">{{item.stock_sell}}</td>
+					<td align="center">{{item.stock_locked_remain}}</td>
+					<td>
+						<label><input type="checkbox" ng-model="item.is_checked"
+							ng-disabled="vm.storage_sku_id && (item.storage_sku_id !== vm.storage_sku_id)"
+							ng-change="vm.setStorageSkuId($index)"
+							>选择</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="vm.ok()">保存</button>
+	<button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+</div>

@@ -1,0 +1,528 @@
+<section>
+  <!-- BEGIN SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="logopanel">
+      <h1>
+        <a href="">
+          <img style="width:181px;" class="logo" src="data:image/png;base64,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">
+        </a>
+      </h1>
+    </div>
+    <div class="sidebar-inner">
+      <div class="sidebar-top">
+        <div class="userlogged clearfix">
+          <img ng-src="{{$ctrl.headimg}}" alt="{{$ctrl.userName}}">
+          <div class="text-center txt-icon-wrap">
+            <h4 class="text-center" ng-bind="$ctrl.userName"></h4>
+            <div class="dropdown user-login">
+              <i class="fa fa-caret-down dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" data-delay="300" aria-expanded="true"></i>
+              <ul class="dropdown-menu">
+                <li see-hide="Investors">
+                  <a href="" ng-click="$ctrl.goToAccountPage()"><i class="icon-settings"></i><span>&nbsp;账户设置</span></a>
+                </li>
+                <li>
+                  <a href="" ng-click="$ctrl.logout()"><i class="icon-logout"></i><span>&nbsp;退出</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新品牌后台 导航栏-->
+      <ul class="nav nav-sidebar" see-access="New-Brand" ng-style="{ 'margin-bottom':($ctrl.user_privilege == 7 ? 0 : '')}">
+        <li class="nav-parent as-route" ng-class="{ active  : $ctrl.isActive('/dashboard/dashboard') }">
+          <a href="/dashboard/dashboard"><i class="si si-list"></i><span>概况</span></a>
+        </li>
+
+        <li class="nav-parent">
+          <a href=""><i class="si si-shop-center-round"></i><span>小电铺</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/shop/info')}"><a href="/shop/info">小电铺概况</a></li>
+              <li  ng-repeat="kol_info in $ctrl.list_kol" ng-class="{ active  : $ctrl.isActive('/shop/operate')}"><a href="/shop/operate?kolId={{kol_info.kol_id}}">小电铺装修</a></li>
+              <li class="nav-item-content-business" ng-repeat="kol_info in $ctrl.list_kol" ng-class="{ active  : $ctrl.isActive('/kol/kol-cooperation-management/{{kol_info.kol_id}}?wechat_id')}" >
+                <a see-url-sign href="/kol/kol-cooperation-management/{{kol_info.kol_id}}?wechat_id={{kol_info.weixin_id}}#1"><span> 内容电商</span></a>
+              </li>
+              <li class="nav-item-content-business" ng-repeat="kol_info in $ctrl.list_kol" ng-class="{ active  : $ctrl.isActive('/kol/kol-cooperation-management/{{kol_info.kol_id}}/marketing-tools')}" >
+                <a see-url-sign href="/kol/kol-cooperation-management/{{kol_info.kol_id}}/marketing-tools?wechat_id={{kol_info.weixin_id}}"><span> 营销工具</span></a>
+              </li>
+              <!-- <li ng-class="{ active  : $ctrl.isActive('/event/couponv2')}"><a href="/event/couponv2"> 优惠券</a></li> -->
+          </ul>
+        </li>
+
+
+  		<li class="nav-parent" ng-hide="$ctrl.hideHotItemNav && $ctrl.hideTopicItemNav">
+        <a href=""><i class="si si-14-grid-system"></i><span>选品中心</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-class="{ active  : $ctrl.isActive('/fashion/hot-goods-v2')}" ng-hide="$ctrl.hideHotItemNav"><a href="/fashion/hot-goods-v2?page=1"> 热门单品</a></li>
+           <li ng-class="{ active  : $ctrl.isActive('/goods-theme-list')}" ng-hide="$ctrl.hideTopicItemNav"><a href="/goods-theme-list"> 主题选品</a></li>
+        </ul>
+      </li>
+
+
+      <li class="nav-parent">
+        <a href=""><i class="si si-14-edit-cover"></i><span>商品管理</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+      		<li ng-class="{ active  : $ctrl.isActive('/goods/all')}"><a href="/goods/all"> 所有商品</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/goods/distribute/list')}" ><a href="/goods/distribute/list"> 供货商品管理</a></li>
+      		<li ng-class="{ active  : $ctrl.isActive('/goods/logistics')}" ng-if="$ctrl.isShowOrder"><a see-url-sign href="/goods/logistics"> 运费模板</a></li>
+          <!-- <li ng-class="{ active  : $ctrl.isActive('/goods/myPriceAdjustApply')}" ng-if="$ctrl.isShowOrder"><a href="/goods/myPriceAdjustApply"> 我的调价申请</a></li> -->
+          <li ng-class="{ active  : $ctrl.isActive('/goods/groups')}"><a href="/goods/groups"> 商品分组</a></li>
+        </ul>
+      </li>
+
+  			<li class="nav-parent" ng-if="$ctrl.isShowOrder">
+  				<a href=""><i class="si si-14-cart-round"></i><span>订单管理</span><span class="fa arrow"></span></a>
+  				<ul class="children collapse">
+  					<li ng-class="{ active  : $ctrl.isActive('/order/mine')}"><a href="/order/mine"><span>我的分销订单</span></a></li>
+  					<li ng-class="{ active  : $ctrl.isActive('/order/all')}"><a href="/order/all">所有订单</a></li>
+  					<li ng-class="{ active  : $ctrl.isActive('/order/need-pay')}"><a href="/order/need-pay"><span>待付款订单</span></a></li>
+
+  					<li ng-class="{ active  : $ctrl.isActive('/order/stock')}">
+  						<a href="/order/stock"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.waitbuy"></span><span>待备货订单</span></a>
+  					</li>
+  					<li ng-class="{ active  : $ctrl.isActive('/order/needfinish')}">
+  						<a href="/order/needfinish?filter_type=1"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.needfinish"></span><span>待完成订单</span></a>
+  					</li>
+  					<li ng-class="{ active  : $ctrl.isActive('/order/finished')}"><a href="/order/finished"><span>已完成订单</span></a></li>
+  					<li ng-class="{ active  : $ctrl.isActive('/order/close')}"><a href="/order/close"><span>已关闭订单</span></a></li>
+  					<li ng-class="{ active  : $ctrl.isActive('/order/after-sale')}">
+  						<a href="/order/after-sale?filter_type=1"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.selled"></span><span>售后订单</span></a>
+  					</li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/order-in-batch')}"><a href="/order/order-in-batch">订单批量操作</a></li>
+  				</ul>
+  			</li>
+
+        <li class="nav-parent" ng-if="!$ctrl.isShowOrder">
+          <a href=""><i class="si si-cart-round"></i><span>订单管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/order/mine')}"><a href="/order/mine"><span>我的分销订单</span></a></li>
+          </ul>
+        </li>
+
+  			<!-- <li class="nav-parent" ng-if="$ctrl.isOldC2C"> -->
+        <!-- <li class="nav-parent">
+  				   <a href=""><i class="si si-14-money-round"></i><span>原资产管理</span><span class="fa arrow"></span></a>
+  				   <ul class="children collapse">
+  					 <li ng-class="{ active  : $ctrl.isActive('/asset/settle')}"><a href="/asset/settle"> 商家账单</a></li>
+  				   </ul>
+  			     </li> -->
+    		<li class="nav-parent" see-hide="Elect-Admin">
+  				<a href=""><i class="si si-14-money-round"></i><span>资产管理</span><span class="fa arrow"></span></a>
+  				<ul class="children collapse">
+  					<li ng-class="{ active  : $ctrl.isActive('/assetNew/info')}"><a href="/assetNew/info"> 概况</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/assetNew/record')}"><a href="/assetNew/record"> 订单入账</a></li>
+  					<!-- <li ng-class="{ active  : $ctrl.isActive('/assetNew/recording')}"><a href="/assetNew/recording"> 待入账</a></li>
+  					     <li ng-class="{ active  : $ctrl.isActive('/assetNew/recorded')}"><a href="/assetNew/recorded"> 已入账</a></li> -->
+  					<li ng-class="{ active  : $ctrl.isActive('/assetNew/list')}"><a href="/assetNew/list"> 资金记录</a></li>
+  				</ul>
+  			</li><!--
+  				<a href=""><i class="si si-14-fileboard"></i><span>财务管理</span><span class="fa arrow"></span></a>
+  				<ul class="children collapse">
+  					<li ng-class="{ active  : $ctrl.isActive('/financialNew/recorded')}"><a href="/financialNew/recorded"> 订单入账管理</a></li>
+  					<li ng-class="{ active  : $ctrl.isActive('/financialNew/withdraw')}"><a href="/financialNew/withdraw"> 客户提现管理</a></li>
+  				</ul>
+        </li> -->
+        <li class="nav-parent as-route" ng-class="{ active  : $ctrl.isActive('/seedata/index') }">
+          <a href="/seedata/index"><i class="icon si si-see"></i><span>SEE数</span></a>
+        </li>
+        <li class="nav-parent as-route" ng-class="{ active  : $ctrl.isActive('/faq') }">
+          <a href="/faq"><i class="fa fa-question-circle"></i><span>帮助中心</span></a>
+        </li>
+  			<li class="nav-parent" see-hide="C2C_Seller KOL">
+  				<a href=""><i class="si si-profile-image-plus"></i><span>信息中心</span><span class="fa arrow"></span></a>
+  				<ul class="children collapse">
+  					<li ng-class="{ active  : $ctrl.isActive('/personalInfo/account')}"><a href="/personalInfo/account"> 账号信息</a></li>
+  				</ul>
+  			</li>
+      </ul>
+
+      <!-- KOL 导航栏-->
+      <ul class="nav nav-sidebar" see-access="KOL">
+  			<li class="nav-parent" ng-if="$ctrl.pri_spe_kol == 0">
+        <a href=""><i class="si si-14-pc-display"></i><span>合作管理</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-if="$ctrl.isKolHome" ng-repeat="kol_info in $ctrl.list_kol" ng-class="{ active  : $ctrl.isActive('/kol/kol-cooperation-management/{{kol_info.kol_id}}')}" ><a see-url-sign href="/kol/kol-cooperation-management/{{kol_info.kol_id}}?wechat_id={{kol_info.weixin_id}}#1"><span>KOL主页({{kol_info.kol_name}}）</span></a></li>
+          <li ng-if="$ctrl.isHotItem" ng-class="{ active  : $ctrl.isActive('/fashion/hot-goods-v2')}"><a href="/fashion/hot-goods-v2?page=1"> 热门单品</a></li>
+          <li ng-if="$ctrl.isHotItem" ng-class="{ active  : $ctrl.isActive('/fashion/selected-goods')}"><a href="/fashion/selected-goods">  <span ng-if="$ctrl.dataService.getGlobalParams({}).g_favor_count > 0"  class="pull-right badge badge-primary" ng-bind="$ctrl.dataService.getGlobalParams({}).g_favor_count"  see-hide="Hide-DD"></span><span>选品库</span></a> </li>
+          <li ng-class="{ active  : $ctrl.isActive('/order/mine')}"><a href="/order/mine"><span>订单详情</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-parent" ng-if="$ctrl.isFashion || $ctrl.pri_spe_kol == 1">
+        <a href=""><i class="si si-14-resource"></i><span>素材库</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-class="{ active  : $ctrl.isActive('/fashion/material')}" ><a href="/fashion/material"> 全球时尚公共素材库</a></li>
+          <li ng-if="$ctrl.pri_spe_kol == 0" ng-class="{ active  : $ctrl.isActive('/fashion/favorite')}" ><a href="/fashion/favorite"> 素材收藏夹</a></li>
+          <li ng-if="$ctrl.pri_spe_kol == 1"  ng-class="{ active  : $ctrl.isActive('/fashion/hotlist')}" ><a href="/fashion/hotlist"> 热度榜单</a></li>
+        </ul>
+      </li>
+
+      <li class="nav-parent"  ng-if="$ctrl.pri_spe_kol == 0 && ($ctrl.isWeKOL || $ctrl.isYuqing)">
+        <a href=""><i class="si si-14-star-favorite"></i><span>微信趋势</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-if="$ctrl.isWeKOL" ng-class="{ active  : $ctrl.isActive('/wechat/media')}"><a href="/wechat/media"> 自媒体榜单</a></li>
+          <li ng-if="$ctrl.isWeKOL" ng-class="{ active  : $ctrl.isActive('/wechat/article')}"><a href="/wechat/article"> 内容榜单</a></li>
+          <li ng-if="$ctrl.isYuqing" ng-class="{ active  : $ctrl.isActive('/wechat/yuqing')}"><a href="/wechat/yuqing#newest" > 微信舆情</a></li>
+        </ul>
+      </li>
+
+      <li class="nav-parent" ng-if="$ctrl.pri_spe_kol == 0" see-hide="C2C_Seller KOL">
+        <a href=""><i class="si si-profile-image-plus"></i><span>信息中心</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-class="{ active  : $ctrl.isActive('/personalInfo/account')}"><a href="/personalInfo/account"> 账号信息</a></li>
+        </ul>
+      </li>
+    </ul>
+
+
+      <!-- 以下导航栏直接屏蔽了koL，独立定义KOL导航栏-->
+      <ul class="nav nav-sidebar" see-hide="KOL New-Brand">
+ 				<!-- 模板商城二期分支提前上线，要屏蔽
+      			<li class="nav-parent" see-access="KOL" ng-if="$ctrl.list_kol.length > 0">
+          <a href=""><i class="si si-14-pc-display"></i><span>合作管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse" ng-repeat="kol_info in $ctrl.list_kol">
+            <li ng-class="{ active  : $ctrl.isActive('/kol/kol-cooperation-management/{{kol_info.kol_id}}?wechat_id={{kol_info.weixin_id}}')}" ><a see-url-sign href="/kol/kol-cooperation-management/{{kol_info.kol_id}}?wechat_id={{kol_info.weixin_id}}#1"><span>{{kol_info.weixin_id}}（{{kol_info.kol_name}}）</span></a></li>
+          </ul>
+        </li>
+      -->
+
+
+      			<!-- 投次人权限，只能看数据中心的订单数据 -->
+      			<li class="nav-parent" see-access="Investors" ng-if="!$ctrl.isRuHan">
+          <a href=""><i class="si si-stats1"></i><span>数据中心</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/datacenter/order-detail')}" see-access='Investors'><a href="/datacenter/order-detail"> 订单数据</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-parent" ng-if="$ctrl.isRuHan">
+          <a href=""><i class="si si-14-edit-cover"></i><span>商品管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/goods/list1688')}"><a href="/goods/list1688"> 1688货源库</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-parent" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin KOL">
+          <a href=""><i class="si si-cart-round"></i><span>订单管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/order/order-in-batch')}" see-access='Super-Admin Elect-Admin C2C-Seller'><a href="/order/order-in-batch">订单批量操作</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/all')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin"><a href="/order/all">所有订单</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/need-pay')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin"><a href="/order/need-pay"><span>待付款订单</span></a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/needdispatch')}" see-access="B2C-Service Fin-Admin Oper Super-Admin Elect-Admin">
+              <a href="/order/needdispatch"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.needdispatch" see-hide="Hide-DD"></span><span>待派发订单</span></a>
+            </li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/stock')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin">
+              <a href="/order/stock"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.waitbuy"  see-hide="Hide-DD"></span><span>待备货订单</span></a>
+            </li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/needfinish')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin">
+              <a href="/order/needfinish?filter_type=1"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.needfinish"  see-hide="Hide-DD"></span><span>待完成订单</span></a>
+            </li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/finished')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin"><a href="/order/finished"><span>已完成订单</span></a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/close')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin"><a href="/order/close"><span>已关闭订单</span></a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/after-sale')}" see-access="C2C-Seller B2C-Service Fin-Admin Oper Super-Admin Elect-Admin">
+              <a href="/order/after-sale?filter_type=1"> <span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.selled"  see-hide="Hide-DD"></span><span>售后订单</span></a>
+            </li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/starred')}" see-access="Super-Admin Elect-Admin">
+              <a href="/order/starred"><span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.markstar"  see-hide="Hide-DD"></span><span>星标订单</span></a>
+            </li>
+            <li ng-class="{ active  : $ctrl.isActive('/order/timeout')}" see-access="Super-Admin Elect-Admin">
+              <a href="/order/timeout"><span class="pull-right badge badge-primary" ng-bind="$ctrl.operateOrderCount.notsendgood"  see-hide="Hide-DD"></span><span>48h未发货订单</span></a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin">
+          <a href=""><i class="si si-14-grid-system"></i><span>选品中心</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/hot-goods-v2')}"><a href="/fashion/hot-goods-v2?page=1"> 热门单品</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods-theme-list')}"><a href="/goods-theme-list"> 主题选品</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-parent" see-access="Fin-Admin C2C-Seller Part-time Super-Admin See-Admin Oper Elect-Admin PGC-Part Interact-Part">
+          <a href=""><i class="si si-14-edit-cover"></i><span>商品管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/goods/bulletin')}" see-access="Super-Admin Elect-Admin"><a href="/goods/bulletin"> 商详公告</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/announcementList')}" see-access="Super-Admin Elect-Admin"><a href="/goods/announcementList"> 商详公告（旧）</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/shopping-notes')}" see-access="Super-Admin Elect-Admin"><a href="/goods/shopping-notes"> 购物须知</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/distribute/list')}" see-access="Super-Admin Elect-Admin"><a href="/goods/distribute/list"> 供货商品管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/list1688')}" see-access="Super-Admin Elect-Admin"><a href="/goods/list1688"> 1688货源库</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/category')}" see-access="Super-Admin Elect-Admin"><a href="/goods/category"> 品类管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/attribute')}" see-access="Super-Admin Elect-Admin"><a see-url-sign href="/goods/attribute"> 属性管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/brand')}" see-access="Super-Admin See-Admin Elect-Admin PGC-Part"><a see-url-sign href="/goods/brand"> 品牌管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/logistics')}" see-access="Super-Admin C2C-Seller Elect-Admin"><a see-url-sign href="/goods/logistics"> 运费模版</a></li>
+            <!-- <li ng-class="{ active  : $ctrl.isActive('/goods/priceAdjust')}" see-access="Super-Admin Elect-Admin"><a href="/goods/priceAdjust"> 商品调价审核</a></li> -->
+            <li ng-class="{ active  : $ctrl.isActive('/goods/myPriceAdjustApply')}" see-access="C2C-Seller"><a href="/goods/myPriceAdjustApply"> 我的调价申请</a></li>
+
+            <!--<li ng-class="{ active  : $ctrl.isActive('/goods/Post')}"><a href="/goods/Post"> 发布商品</a></li>-->
+            <li ng-class="{ active  : $ctrl.isActive('/goods/publish')}" see-access="Super-Admin Elect-Admin C2C-Seller"><a href="/goods/publish"> 发布商品</a></li>
+            <!-- <li ng-class="{ active  : $ctrl.isActive('/goods/generate-sub-goods')}" see-access="Super-Admin Elect-Admin"><a href="/goods/generate-sub-goods"> 生成子商品</a></li> -->
+            <li ng-class="{ active  : $ctrl.isActive('/goods/posted')}"><a href="/goods/posted"> 已上架商品</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/Off')}" see-access="C2C-Seller Super-Admin See-Admin Elect-Admin Oper PGC-Part"><a href="/goods/Off"> 已下架商品</a></li>
+            <!--<li ng-class="{ active  : $ctrl.isActive('/goods/WaitPost')}" see-access="Super-Admin See-Admin Elect-Admin Oper Part-time"><a href="/goods/WaitPost"> 待编辑商品</a></li>-->
+            <li ng-class="{ active  : $ctrl.isActive('/goods/thirdparty')}" see-access="Super-Admin Elect-Admin See-Admin"><a href="/goods/thirdparty"> 第三方商品</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/hidden')}" see-access="Super-Admin Elect-Admin See-Admin Oper"><a href="/goods/hidden"> 全局隐藏商品</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/collection') || $ctrl.isActive('/wanted/myCircle/createCollection')}" see-access="C2C-Seller Super-Admin"><a href="/goods/collection"> 我的合集</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/search')}" see-access="Elect-Admin Super-Admin"><a href="/goods/search"> 搜索管理</a></li>
+            <!--<li ng-class="{ active  : $ctrl.isActive('/goods/fusion')}" see-access="Elect-Admin Super-Admin"><a href="/goods/fusion"> 复制商品</a></li>-->
+            <li ng-class="{ active  : $ctrl.isActive('/goods/goods-in-batch')}" see-access="Elect-Admin Super-Admin"><a href="/goods/goods-in-batch"> 批量管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/goods/lock-item-list')}" see-access="Elect-Admin Super-Admin"><a href="/goods/lockItemList"> 锁定库存被扣消息</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin KOL-Admin Fin-Admin">
+          <a href=""><i class="si si-14-profile-round"></i><span>KOL管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/kol/order-all')}"><a see-url-sign href="/kol/order-all" see-access="Super-Admin Elect-Admin KOL-Admin Fin-Admin">订单管理</a></li>
+              <li ng-class="{ active  : $ctrl.isActive('/kol/kol-cooperation-management', '/event/group', '/event/seckill')}" see-access="Super-Admin Elect-Admin KOL-Admin Oper"><a see-url-sign href="/kol/kol-cooperation-management"> KOL合作管理</a></li>
+              <li ng-class="{ active  : $ctrl.isActive('/kol/kol-rank')}" see-access="Super-Admin Elect-Admin KOL-Admin Oper"><a see-url-sign href="/kol/kol-rank"> 总榜</a></li>
+          </ul>
+        </li>
+        <!--
+
+          <li class="nav-parent" see-access="Super-Admin Elect-Admin KOL-Admin">
+            <a href=""><i class="si si-14-cart-round"></i><span>商城管理</span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+              <li ng-class="{ active  : $ctrl.isActive('/mall/temp-list') || $ctrl.isActive('mall/temp-info')}"><a href="/mall/temp-list">模板管理</a></li>
+              <li ng-class="{ active  : $ctrl.isActive('/mall/list')}"><a href="/mall/list"> 商城列表</a></li>
+            </ul>
+          </li>
+        -->
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin KOL-Admin">
+          <a href=""><i class="si si-shop-center-round"></i><span>小电铺</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+
+      					<li ng-class="{ active  : $ctrl.isActive('/shop/apply') || $ctrl.isActive('/shop/apply')}"><a href="/shop/apply"> 申请列表</a></li>
+
+                <li ng-class="{ active  : $ctrl.isActive('/xiaochengxu/list') }"><a href="/xiaochengxu/list">代码管理</a></li>
+
+      					<li ng-class="{ active  : $ctrl.isActive('/shop/store-construction') }" ng-if="$ctrl.showStoreConstructionDemo"><a href="/shop/store-construction">小电铺装修</a></li>
+          </ul>
+        </li>
+        <!--
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin KOL-Admin">
+          <a href=""><i class="icon-screen-smartphone"></i><span>微信小程序</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/xiaochengxu/list') }"><a href="/xiaochengxu/list">小程序授权管理</a></li>
+          </ul>
+        </li>
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin KOL-Admin">
+          <a href=""><i class="si si-14-browser"></i><span>第三方平台</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/open/xiaoe') }"><a href="/open/xiaoe">小鹅通</a></li>
+          </ul>
+        </li>
+        -->
+
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin">
+          <a href=""><i class="si si-14-shopping-cart"></i><span>库存管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/wms/out-stock-list')}"><a href="/wms/out-stock-list"> 出库管理</a></li>
+
+            <!--
+            <li ng-class="{ active  : $ctrl.isActive('/store/goods-list')}"><a href="/store/goods-list"> 库存商品</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/store/distribution-list')}"><a href="/store/distribution-list"> 分销渠道</a></li>
+          -->
+          </ul>
+        </li>
+        <li class="nav-parent" ng-if="false" see-access="Super-Admin See-Admin PGC-Service Oper PGC-Part C2C-Seller">
+          <a href=""><i class="fa fa-file-text-o"></i><span>专题管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/topic/createTopic')}" see-access="Super-Admin PGC-Service See-Admin Oper"><a href="/topic/createTopic">发布专题</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/topic/topicList')}" see-access="Super-Admin See-Admin Oper PGC-Part"><a href="/topic/topicList"> 所有专题</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/topic/myTopics')}" see-access="Super-Admin See-Admin Oper PGC-Service"><a href="/topic/myTopics"> 我的专题</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/topic/pgcContent')}" see-hide="PGC-Service"><a href="/topic/pgcContent"> PGC内容回答</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/topic/topicSalesAll')}" see-access="Super-Admin See-Admin"><a href="/topic/topicSalesAll">所有专题销售情况</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/topic/topicSalesMine')}" see-access="Super-Admin PGC-Service"><a href="/topic/topicSalesMine"> 我的专题销售情况</a></li>
+          </ul>
+        </li>
+        <!--
+
+        <li class="nav-parent" see-access="Super-Admin See-Admin PGC-Service Oper PGC-Part KOL">
+          <a href=""><i class="si si-14-star-favorite"></i><span see-hide="C2C-Seller">心愿管理</span> <span see-access="C2C-Seller">心愿列表</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/publish-article')}" see-access="Super-Admin See-Admin Oper PGC-Part"><a href="/wanted/publish-article"> 发布心愿</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/myCircle')}" see-access="Super-Admin PGC-Service See-Admin Oper PGC-Part KOL"><a href="/wanted/myCircle"> 我的圈子</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/pgcCircle')}" see-access="Super-Admin See-Admin Oper PGC-Part"><a href="/wanted/pgcCircle"> PGC圈子</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/themeList')}" see-access="Super-Admin See-Admin Oper"><a href="/wanted/themeList"> 所有心愿</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/myThemeList')}" see-access="Super-Admin See-Admin Oper PGC-Part C2C-Seller"><a href="/wanted/myThemeList"> 我发布过的心愿</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/themeList')}" see-access="C2C-Seller C2C-Service"><a href="/wanted/themeList"> 普通用户心愿</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/themeClassified')}" see-access="Super-Admin See-Admin Oper"  see-hide="Hide-DD"><a href="/wanted/themeClassified"> 用户心愿分类</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/pgc-content-answer')}" see-hide="C2C-Seller PGC-Service KOL"><a href="/wanted/pgc-content-answer"> PGC内容回答</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/pgc-content-answer')}" see-access="C2C-Seller"><a href="/wanted/pgc-content-answer"> 达人心愿和专题</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/replyList')}" see-access="Super-Admin See-Admin Oper"><a href="/wanted/replyList"> 回答列表</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/replyList')}" see-access="C2C-Seller"><a href="/wanted/replyList"> 我的回答列表</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/pgc-part')}" see-access="Super-Admin See-Admin Oper"  see-hide="Hide-DD"><a href="/wanted/pgc-part"> 内容兼职管理</a></li>
+             <li ng-class="{ active  : $ctrl.isActive('/parttime/recommendTheme')}" see-access="Super-Admin See-Admin Oper Interact-Part"><a href="/parttime/recommendTheme"> 首屏求同款列表</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/wanted/user-reply')}" see-access="C2C-Seller"><a href="/wanted/user-reply"> 我的用户评论</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-parent" see-access="Super-Admin See-Admin Oper Elect-Admin">
+          <a href=""><i class="si si-14-tag"></i><span>标签管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/tag/list')}" hidden><a href="/tag/list"> 标签列表</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/tag/test')}"><a href="/tag/test"> 用户评测</a></li>
+          </ul>
+        </li>
+      -->
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin C2C-Seller See-Admin Oper">
+          <a href=""><i class="si si-14-event"></i><span>营销工具</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/event/lottery-group-setting')}" see-access="Super-Admin Elect-Admin"><a href="/event/lottery-group-setting"> 抽奖团设置</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/event/couponv2')}" see-access="Super-Admin Elect-Admin"><a href="/event/couponv2?from=sidebar"> 优惠券</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/event/couponv1')}" see-access="Super-Admin"><a href="/event/couponv1"> 优惠券（旧）</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/event/couponv1/apply-new-coupon')}" see-access="C2C-Seller"><a href="/event/couponv1/apply-new-coupon"> 申请优惠券</a></li>
+          </ul>
+        </li>
+        <li class="nav-parent" see-access="C2C-Seller B2C-Service Super-Admin Data-BI Elect-Admin PGC-Service See-Admin KOL-Admin">
+          <a href=""><i class="si si-stats1"></i><span>数据中心</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/datacenter/order-data')}" see-access='Super-Admin Elect-Admin C2C-Seller'><a href="/datacenter/order-data"> 订单数据</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/datacenter/goods-data')}" see-access='Super-Admin Elect-Admin See-Admin KOL-Admin'><a href="/datacenter/goods-data"> 商品数据</a></li>
+            <!-- <li ng-class="{ active  : $ctrl.isActive('/datacenter/pgc-goods-data')}" see-access="PGC-Service Super-Admin See-Admin KOL"><a href="/datacenter/pgc-goods-data"> 专题商品数据</a></li> -->
+            <li ng-class="{ active  : $ctrl.isActive('/datacenter/brands-data')}" see-access='Super-Admin Elect-Admin See-Admin KOL-Admin'><a href="/datacenter/brands-data"> 品牌数据</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/datacenter/collection-data')}" see-access='Super-Admin Elect-Admin See-Admin KOL-Admin'><a href="/datacenter/collection-data"> 合集数据</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/datacenter/data-collection-data')}" see-access='Super-Admin Elect-Admin'><a href="/datacenter/data-collection-data"> 电商月度数据</a></li>
+          </ul>
+        </li>
+        <li class="nav-parent" see-access="Super-Admin Fin-Admin Elect-Admin"
+          see-hide="Hide-DD-Super-Admin Hide-DD-Fin-Admin">
+          <a href=""><i class="si si-14-fileboard"></i><span>财务中心（旧）</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/financial/needpay')}"><a href="/financial/needpay"> 待打款列表</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/financial/alreadypay')}" see-hide="Elect-Admin"><a href="/financial/alreadypay"> 已打款列表</a></li>
+          </ul>
+        </li>
+        <li class="nav-parent" see-hide="Elect-Admin" see-access="New-Brand C2C-Seller">
+        <a href=""><i class="si si-14-money-round"></i><span>资产管理</span><span oclass="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-class="{ active  : $ctrl.isActive('/assetNew/info')}"><a href="/assetNew/info"> 概况</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/assetNew/recording')}"><a href="/assetNew/recording"> 待入账</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/assetNew/recorded')}"><a href="/assetNew/recorded"> 已入账</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/assetNew/list')}"><a href="/assetNew/list"> 提现记录</a></li>
+        </ul>
+      </li>
+      <li class="nav-parent" see-access="Super-Admin Fin-Admin"
+          see-hide="Hide-DD-Super-Admin Hide-DD-Fin-Admin">
+        <a href=""><i class="si si-14-fileboard"></i><span>财务管理</span><span class="fa arrow"></span></a>
+        <ul class="children collapse">
+          <li ng-class="{ active  : $ctrl.isActive('/financialNew/recorded')}"><a href="/financialNew/recorded"> 订单入账管理</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/financialNew/withdraw')}"><a href="/financialNew/withdraw"> 客户提现管理</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/financialNew/recharge')}"><a href="/financialNew/recharge"> 充值记录</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/financial/pending-refund')}" see-hide="Elect-Admin"><a href="/financial/pending-refund"> 待审核退款</a></li>
+          <li ng-class="{ active  : $ctrl.isActive('/financialNew/accountFix')}"><a href="/financialNew/accountFix" see-access="Fin_Admin"> 创建入账单</a></li>
+        </ul>
+      </li>
+        <li class="nav-parent" see-access="Super-Admin Elect-Admin See-Admin KOL-Admin Fin_Admin">
+          <a href=""><i class="si si-profile-image-plus"></i><span>账号管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/account/create')}" see-hide="See-Admin  KOL-Admin Fin_Admin"><a href="/account/create"> 新建账号</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/account/list')}"><a href="/account/list"> 账号列表</a></li>
+          </ul>
+        </li>
+        <li class="nav-parent" see-access="Super-Admin">
+          <a href=""><i class="si si-14-target"></i><span>安全管理</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/security/log')}"><a href="/security/log">访问日志</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/security/warn')}"><a href="/security/warn">报警日志</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/security/config')}"><a href="/security/config">策略列表</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/security/api')}"><a href="/security/api">接口管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/security/ctrl')}"><a href="/security/ctrl">模块管理</a></li>
+
+
+          </ul>
+        </li>
+<!--
+        <li class="nav-parent" see-access="KOL See-Admin Super-Admin PGC-Part Elect-Admin Oper KOL-Admin">
+          <a href=""><i class="fa fa-globe"></i><span>全球时尚</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/parttime/userTheme')}" ng-if="$ctrl.showPhoto"><a href="/parttime/userTheme?from=sidebar&is_all=1"> 图片搜索&求同款</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/material')}" see-access="KOL See-Admin Super-Admin Elect-Admin PGC-Part Oper KOL-Admin"><a href="/fashion/material"> 时尚素材&热点趋势</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/hotlist')}" see-access="See-Admin Super-Admin Elect-Admin Oper KOL-Admin"><a href="/fashion/hotlist"> 热度榜单</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/goods-ranking-list')}" see-access="See-Admin Super-Admin Elect-Admin Oper KOL-Admin"><a href="/fashion/goods-ranking-list"> 单品排行榜</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/hot-goods-v2')}" see-access="KOL See-Admin Super-Admin Elect-Admin Oper KOL-Admin"><a href="/fashion/hot-goods-v2?page=1"> 热门单品</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/selected-goods')}" see-access="KOL See-Admin Super-Admin Elect-Admin Oper KOL-Admin"><a href="/fashion/selected-goods"> <span ng-if="$ctrl.dataService.getGlobalParams({}).g_favor_count > 0"  class="pull-right badge badge-primary" ng-bind="$ctrl.dataService.getGlobalParams({}).g_favor_count"  see-hide="Hide-DD"></span><span>选品库</span></a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/fashion/favorite')}" see-access="KOL See-Admin Super-Admin Elect-Admin PGC-Part Oper"><a href="/fashion/favorite"> 收藏夹</a></li>
+          </ul>
+        </li>
+        <li class="nav-parent" see-access="Super-Admin KOL-Admin Elect-Admin Super-Admin See-Admin" >
+          <a href=""><i class="si si-14-star-favorite"></i><span>微信趋势</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-if="$ctrl.isWeKOL" ng-class="{ active  : $ctrl.isActive('/wechat/media')}"><a href="/wechat/media"> 自媒体</a></li>
+            <li ng-if="$ctrl.isWeKOL" ng-class="{ active  : $ctrl.isActive('/wechat/article')}"><a href="/wechat/article"> 文章</a></li>
+            <li ng-if="$ctrl.isYuqing" ng-class="{ active  : $ctrl.isActive('/wechat/yuqing')}"><a href="/wechat/yuqing#newest" see-access="Super-Admin KOL KOL-Admin Elect-Admin" > 微信舆情</a></li>
+          </ul>
+        </li>
+-->
+        <li class="nav-parent" see-hide="B2C-Service Investors">
+          <a href=""><i class="si si-profile-image-round"></i><span>个人信息</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/personalInfo/account')}"><a href="/personalInfo/account"> 账号信息</a></li>
+            			<li ng-class="{ active  : $ctrl.isActive('/personalInfo/msgCenter')}" see-hide="C2C-Seller"><a href="/personalInfo/msgCenter"> 消息中心</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/personalInfo/circle')}" see-hide="Data-BI KOL KOL-Admin"><a href="/personalInfo/circle"> 圈子信息</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/personalInfo/flow')}" see-hide="Data-BI KOL KOL-Admin"><a href="/personalInfo/flow"> 我的Seego物流</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/personalInfo/im')}" see-access="Super-Admin C2C-Seller"><a href="/personalInfo/im"> IM公告</a></li>
+          </ul>
+        </li>
+        <!--
+        <li class="nav-parent" see-access="Super-Admin See-Admin Oper Elect-Admin KOL-Admin">
+          <a href=""><i class="si si-14-toggle-slides"></i><span>工具</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/tools/virtual-order')}" ><a href="/tools/virtual-order"> 虚拟订单管理</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/tools/qrc')}" ><a href="/tools/qrc"> 二维码生成</a></li>
+          </ul>
+        </li>
+         -->
+        <li class="nav-parent" see-access="C2C-Seller B2C-Service Super-Admin Elect-Admin Oper">
+          <a href=""><i class="si si-folder"></i><span>帮助中心</span><span class="fa arrow"></span></a>
+          <ul class="children collapse">
+            <li ng-class="{ active  : $ctrl.isActive('/contact/daily')}"><a href="/contact/daily">日常规范</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/contact/logistic')}"><a href="/contact/logistic"> 物流说明</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/faq')}"><a href="/faq"> 小电铺说明</a></li>
+            <li ng-class="{ active  : $ctrl.isActive('/contact/center')}"><a href="/contact/center"> 买家服务</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- SIDEBAR WIDGET FOLDERS -->
+      <div class="sidebar-footer clearfix" ng-show="false">
+        <a class="pull-left toggle_fullscreen" data-target="#" data-rel="tooltip" data-placement="top" data-original-title="全屏">
+          <i class="icon-size-fullscreen"></i>
+        </a>
+        <!--<a class="pull-left" href="lockscreen.html" data-rel="tooltip" data-placement="top" data-original-title="锁屏">
+            <i class="icon-lock"></i>
+        </a>-->
+        <a class="pull-left btn-effect" href="" ng-click="$ctrl.logout()" data-modal="modal-1" data-rel="tooltip" data-placement="top"
+          data-original-title="退出">
+          <i class="icon-power"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- END SIDEBAR -->
+  <div class="main-content app-main-content">
+    <!-- BEGIN PAGE CONTENT -->
+    <router-outlet></router-outlet>
+    <div ng-view class="at-view-slide page-content" style="overflow:initial">
+    </div>
+    <!-- BEGIN TOPBAR -->
+    <div class="topbar">
+      <div class="header-left">
+        <div class="topnav">
+          <a class="menutoggle" href="#" data-toggle="sidebar-collapsed"><span class="menu__handle"><span>Menu</span></span></a>
+        </div>
+      </div>
+    </div>
+    <!-- END TOPBAR -->
+    <footer></footer>
+    <!-- END PAGE CONTENT -->
+  </div>
+  <!-- END MAIN CONTENT -->
+
+</section>
+<div class="lead-cover" id="lead-cover" see-access="New-Brand"></div>
+<div class="lead-info" see-access="New-Brand">
+ <p>新手引导</p>
+ <a  href="" class="btn btn-sm">知道了</a>
+</div>

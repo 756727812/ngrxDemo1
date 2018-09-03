@@ -1,0 +1,11 @@
+<div role="tabpanel">
+  <ul class="nav nav-tabs m-b-10" ng-class="{'nav-stacked': seeTabset.vertical, 'nav-justified': seeTabset.justified}" role="tablist">
+    <li role="presentation" ng-repeat="tab in seeTabset.tabs" ng-class="{'active': tab.active}">
+      <a href="" role="tab" ng-click="seeTabset.select(tab)">{{tab.heading}}
+        <span class="badge badge-see ng-binding ng-scope">{{tab.count}}</span>
+      </a>
+      <span class="tab-sign"></span>
+    </li>
+  </ul>
+  <ng-transclude></ng-transclude>
+</div>

@@ -1,0 +1,71 @@
+<div class="header">
+	<h2><strong>收藏夹</strong></h2>
+
+	<div class="breadcrumb-wrapper"  ng-hide="true">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/fashion">全球时尚</a></li>
+			<li class="active">收藏夹</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<form ng-submit="$ctrl.submitSearch()" class="form-inline">
+						<div class="form-group">
+							<label class="control-label">
+                  <input type="search" class="form-control" ng-model="$ctrl.searchForm.keyword" placeholder="平台/类型/主描述/备注">
+              </label>
+						</div>
+						<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+					</form>
+
+					<div class="table-scrollable">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>平台 </th>
+									<th>图片</th>
+									<th>描述</th>
+									<th>博主</th>
+									<th>发布时间</th>
+									<th>备注</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="mt in $ctrl.favorite_list track by mt._id">
+									<td ng-bind="mt.platform"></td>
+									<td>
+										<img see-src="mt.item.img_url" see-viewer width="100" class="img-viewer" alt="">
+									</td>
+									<td ng-bind-html="mt.item.desc | trustHtml"></td>
+									<td>
+										<a ng-href="/fashion/material?blogger={{mt.author.blogger}}" ng-bind="mt.author.blogger"></a>
+									</td>
+									<td ng-bind="+mt.item.publish_time * 1000 | date:'yyyy-MM-dd HH:mm:ss'"></td>
+									<td>
+										<a href="" editable-textarea="mt.tips" e-rows="7" e-cols="40" onbeforesave="$ctrl.saveMark($data, mt._id)"><i class="fa fa-pencil-square-o"></i>{{mt.tips}}</a>
+									</td>
+									<td>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.removeFavoriteItem(mt._id)">删除收藏</button>
+										<button type="button" class="btn btn-sm btn-primary" ng-click="$ctrl.seeDetail(mt)">查看详情</button>
+										<a ng-href="{{mt.item.img_url}}" target="_blank" class="btn btn-sm btn-primary" download>下载图片</a>
+										<button type="button" class="btn btn-sm btn-primary" see-access="See-Admin Super-Admin" ng-click="$ctrl.generateWish(mt._id)">生成心愿</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="text-info" ng-if="!$ctrl.total_items">暂时还没有数据哦！</p>
+					</div>
+          <pagination total-items="$ctrl.total_items"></pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+

@@ -1,0 +1,46 @@
+<div id="xcx-code-auth-one-key">
+  <div class="modal-body" loading-mask="busy">
+    <ul>
+      <li *ngFor="let item of list">
+        <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="item.num<=0" (click)="onClick(item.name,item.num,item.tips)">
+          <span>{{item.title}}（{{item.num}}）</span>
+        </button>
+        <div class="desc-wrap" [innerHtml]="item.desc"></div>
+      </li>
+    </ul>
+  </div>
+</div>
+<nz-modal [nzVisible]="showConfirmModal" [nzTitle]="'确认提示'" [nzContent]="modalConfirm" (nzOnCancel)="ConfirmModalCancel($event)" (nzOnOk)="handleOk(curOperation)">
+  <ng-template #modalConfirm>
+    <p>{{modalTips}}</p>
+  </ng-template>
+</nz-modal>
+<nz-modal [nzVisible]="showResultModal" [nzTitle]="'批量操作'" [nzContent]="modalProgress" [nzFooter]="false" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk(curOperation)" [nzMaskClosable]="false">
+  <ng-template #modalProgress>
+    <p *ngIf="progressPercent < 100 && !batchErrMsg" class='cur-progress'><nz-progress [ngModel]="progressPercent" [nzType]="'circle'"></nz-progress></p>
+    <nz-table #nzTable [nzDataSource]="batchStatusList" [nzPageSize]="10" *ngIf="batchStatusList.length > 0"><!-- *ngIf="batchStatusList.length > 0" -->
+      <thead nz-thead>
+        <tr>
+          <th nz-th><span>小电铺名称</span></th>
+          <th nz-th><span>操作状态</span></th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+          <td nz-td>{{data.name}}</td>
+          <td nz-td>
+            <span *ngIf="data.status == '失败'" class="little-circle fail"></span>
+            <span *ngIf="data.status == '成功'" class="little-circle success"></span>
+            {{data.status}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <p class='text-right p-t-20' *ngIf="kolFailed">
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="filterKol()">
+        <span>筛查失败KOL</span>
+      </button>
+    </p>
+    <p *ngIf="batchErrMsg" class='batch-err'>{{batchErrMsg}}</p>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">补全资料</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+        <div class="form-group" ng-style="vm.style_block">
+            <label class="control-label col-sm-4 required">小程序名称</label>
+            <div class="col-sm-7">
+              <input name="app_title" type="text" trim="true" class="form-control" ng-model="vm.info.app_title" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="form-group" ng-style="vm.style_block">
+            <label class="control-label col-sm-4 required">默认合集ID</label>
+            <div class="col-sm-7">
+              <input name="collection_id" type="text" trim="true" class="form-control" ng-model="vm.info.collection_id" ng-trim="true" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">小程序AppID</label>
+            <div class="col-sm-7">
+              <input name="app_id" type="text" trim="true" class="form-control" ng-model="vm.info.app_id" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">小程序AppSecret</label>
+            <div class="col-sm-7">
+              <input name="app_secret" type="text" trim="true" class="form-control" ng-model="vm.info.app_secret" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="form-group" see-hide="Traffic_Buy">
+            <label class="control-label col-sm-4 required">微信支付商户号</label>
+            <div class="col-sm-7">
+              <input name="mch_id" type="text" trim="true" class="form-control" ng-model="vm.info.mch_id" ng-trim="true" required>
+            </div>
+        </div>
+
+        <div class="form-group" see-hide="Traffic_Buy">
+            <label class="control-label col-sm-4 required">微信支付密钥</label>
+            <div class="col-sm-7">
+              <input name="mch_sign_key" type="text" trim="true" class="form-control" ng-model="vm.info.mch_sign_key" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

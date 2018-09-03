@@ -1,0 +1,229 @@
+<div class="header">
+  <h2><strong>供销商品管理</strong></h2>
+</div>
+<div class="shop-info" see-access="New-Brand">
+  <div class="row data withdrawal-data">
+    <div class="col-sm-12">
+      <div class="panel">
+        <div class="panel-header bg-white">
+          <h3><strong>供货概况</strong></h3>
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-yen"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">总订单数</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.flow.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.profile.orderCount"></span>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-profile-round"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">总销量数</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.user.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.profile.saleCount"></span>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-stats"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">总交易额</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.order.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.profile.sum | currency: '￥'"></span>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="data-icon-beyond-title">
+                <i class="icon si si-stats"></i>
+              </div>
+              <div class="data-item">
+                <span class="data-item-title">供货商品数</span>
+                <dashboard-arrow-icon flag="$ctrl.newData.order.flag"></dashboard-arrow-icon>
+                <span class="data-item-detail" ng-bind="$ctrl.profile.supplyCount"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-content">
+    <form ng-submit="$ctrl.submitSearch()" class="form-inline m-b-10">
+      <div class="form-group m-b-10">
+        <label class="control-label">
+          <input type="search" class="form-control" ng-model="$ctrl.formData.keyWord" placeholder="搜索商品名/小店铺名/商户账号" see-access="Super-Admin Elect-Admin">
+          <input type="search" class="form-control" ng-model="$ctrl.formData.keyWord" placeholder="搜索商品名" see-access="New-Brand">
+        </label>
+      </div>
+      <div class="form-group">
+        <label class="control-label">筛选状态
+          <select id="" name="status" ng-model="$ctrl.formData.status" class="form-control">
+            <option value="">全部</option>
+            <option value="2">分销中</option>
+            <option value="1">审核中</option>
+            <option value="3">已拒绝</option>
+            <option value="5">调价成功</option>
+            <option value="4">调价审核中</option>
+            <option value="6">调价已拒绝</option>
+            <option value="7">不再分销</option>
+          </select>
+        </label>
+      </div>
+      <!-- <div class="form-group">
+           <div class="col-sm-10">
+           <input name="xdp_id" type="text" class="form-control" ng-model="$ctrl.searchXdp" autocomplete="off" uib-typeahead="xdp as (xdp.app_title + '---(' + xdp.seller_mobile + ')') for xdp in $ctrl.xdp_list | filter:$viewValue " placeholder="输入小电铺的名称/手机号" typeahead-show-hint="true" typeahead-min-length="0" typeahead-popup-template-url="customXdpPopupTemplate.html"/>
+           <script type="text/ng-template" id="customXdpPopupTemplate.html">
+           <div class="custom-popup-wrapper"
+           ng-style="{top: position().top+'px', left: position().left+'px'}"
+           style="display: block;"
+           ng-show="isOpen() && !moveInProgress"
+           aria-hidden="{{!isOpen()}}">
+           <ul class="dropdown-menu" role="listbox" style="display:block;max-height:500px;overflow-y:scroll">
+           <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }"
+           ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">
+           <a index="$index" match="match" query="query">
+           <span>{{match.label}}</span>
+           </a>
+           </li>
+           </ul>
+           </div>
+           </script>
+           </div>
+           </div> -->
+      <button type="submit" class="btn btn-primary"><i class="fa fa-search f-16"></i>搜索</button>
+      <button type="button" ng-click="$ctrl.resetSearch()" class="btn btn-default">重置</button>
+    </form>
+    <div class="row">
+      <div class="col-sm-12 portlets">
+        <div class="clear-fix">
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>商品图</th>
+                  <th>商品名称</th>
+                  <th>
+                    <span>成本价</span>
+                    <!--<a href="" ng-click="$ctrl.changeOrder(1)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-up"></i></a>-->
+                    <!--<a href="" ng-click="$ctrl.changeOrder(2)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a>-->
+                  </th>
+                  <th>建议零售价
+                    <!--<a href="" ng-click="$ctrl.changeOrder(3)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-up"></i></a>-->
+                    <!--<a href="" ng-click="$ctrl.changeOrder(4)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a>-->
+                  </th>
+                  <th>分销库存
+                    <!--<a href="" ng-click="$ctrl.changeOrder(5)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-up"></i></a>-->
+                    <!--<a href="" ng-click="$ctrl.changeOrder(6)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a>-->
+                  </th>
+                  <th>分销销量
+                    <!--<a href="" ng-click="$ctrl.changeOrder(7)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-up"></i></a>-->
+                    <!--<a href="" ng-click="$ctrl.changeOrder(8)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a>-->
+                  </th>
+                  <th see-access="Super-Admin Elect-Admin">保障证书</th>
+                  <th>商品状态</th>
+                  <th see-access="Super-Admin Elect-Admin">来源</th>
+                  <th>创建时间
+                    <!--<a href="" ng-click="$ctrl.changeOrder(9)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-up"></i></a>-->
+                    <!--<a href="" ng-click="$ctrl.changeOrder(10)" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a>-->
+                  </th>
+                  <th see-access="Super_Admin Elect_Admin">项目标签</th>
+                  <th see-access="Super_Admin Elect_Admin">审核人</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.distributeList" >
+                  <td>
+                    <a  ng-href="/goods/posted/{{item.classId}}/{{item.itemId}}" title="进入商品编辑" target="_blank"><img see-src="item.itemImgurl" class="img-viewer" style="width:150px;height:150px" alt=""></a>
+                  </td>
+                  <td><a  ng-href="/goods/posted/{{item.classId}}/{{item.itemId}}" class="text-info" title="进入商品链接"ng-bind="item.itemName" target="_blank"></a></td>
+                  <td>
+                    <!-- <span ng-if="item.minCostPrice != item.maxCostPrice">
+                         {{item.minCostPrice | currency: '￥'}}
+                         ~
+                         {{item.maxCostPrice | currency: '￥'}}
+                         </span>
+                         <span ng-if="item.minCostPrice == item.maxCostPrice">
+                         {{item.minCostPrice | currency: '￥'}}
+                         </span> -->
+                    {{item.minCostPrice | currency: '￥'}}
+                  </td>
+                  <td>
+                    <span ng-if="item.minSuggestedPrice != item.maxSuggestedPrice">
+                      {{item.minSuggestedPrice | currency: '￥'}}
+                      ~
+                      {{item.maxSuggestedPrice | currency: '￥'}}
+                    </span>
+                    <span ng-if="item.minSuggestedPrice == item.maxSuggestedPrice">
+                      {{item.minSuggestedPrice | currency: '￥'}}
+                    </span>
+                  </td>
+                  <td>
+                    {{item.distributionStock}}
+                  </td>
+                  <td>
+                    {{item.saleCount}}
+                  </td>
+                  <td see-access="Super-Admin Elect-Admin">
+                    {{item.guaranteeCertType == 2 ? "已上传" : ""}}
+                  </td>
+                  <td ng-switch on="item.applyStatus" class="text-center">
+                    <span ng-switch-when="1">审核中</span>
+                    <span ng-switch-when="2">分销中</span>
+                    <span ng-switch-when="3">已拒绝
+                      <i class="si si-info si-info-grey" uib-tooltip="拒绝理由：{{item.refuseReason}}" tooltip-placement="bottom"></i>
+                    </span>
+                    <span ng-switch-when="4">分销中<br>调价审核中</span>
+                    <span ng-switch-when="5">分销中<br>调价审核通过</span>
+                    <span ng-switch-when="6">
+                      分销中<br>调价审核拒绝
+                      <i class="si si-info si-info-grey" uib-tooltip="拒绝理由：{{item.refuseReason}}" tooltip-placement="bottom"></i>
+                    </span>
+                    <span ng-switch-when="7">不再分销</span>
+                  </td>
+                  <td see-access="Super-Admin Elect-Admin">
+                    小电铺：{{item.xiaodianpuName}} <br/>
+                    所属帐号：{{item.sellerEmail}}
+                  </td>
+                  <td ng-bind="item.createTime | date: 'yyyy-MM-dd HH:mm:ss'"></td>
+                  <td see-access="Super_Admin Elect_Admin">{{['','平台化','小便宜','平台化、小便宜',][item.projectFlag]}}</td>
+                  <td see-access="Super_Admin Elect_Admin">{{item.operateName}}</td>
+                  <td>
+                    <a class="btn btn-sm btn-primary"  ng-href="/goods/posted/{{item.classId}}/{{item.itemId}}" title="进入商品编辑" target="_blank" ng-if="item.applyStatus != 7 && item.applyStatus != 3 && item.applyStatus != 1">编辑</a>
+                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.adjustPrice(item)" ng-if="(item.applyStatus==2 || item.applyStatus==6 || item.applyStatus==5 || (item.applyStatus==4 && !$ctrl.is_admin)) && (item.inWarehouse == 0  || (item.inWarehouse == 1 && $ctrl.is_admin))">调价</button>
+                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.auditAdjustPrice(item)" see-access="Super-Admin Elect-Admin" ng-if="item.applyStatus==4">调价审核</button>
+                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.auditApply(item)" see-access="Super-Admin Elect-Admin" ng-if="item.applyStatus==1">审核</button>
+                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.reapply(item)" ng-if="item.applyStatus==3">重新申请</button>
+                    <button class="btn btn-sm btn-primary" ng-click="$ctrl.exitDistribution(item)" ng-if="item.applyStatus!=3 && item.applyStatus!=7">退出分销</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="panel-content my-shop-empty" ng-if="$ctrl.list.length == 0">
+              <div class="row">
+                <div class="col-xs-12">
+                  <h1 class="m-b-10"><i class="icon si si-emoji-sad"></i>没有符合条件的供销商品</h1>
+                  <div class="text-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <pagination total-items="$ctrl.count"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

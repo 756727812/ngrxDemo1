@@ -1,0 +1,137 @@
+<div class="header">
+  <h2>
+    <strong>财务管理入账管理</strong>
+  </h2>
+</div>
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline m-b-10">
+          <div class="form-group">
+            <label class="control-label">交易号</label>
+            <input class="form-control" type="text" ng-model="$ctrl.searchForm.transactionNo" placeholder="充值交易号">
+          </div>
+          <div class="form-group">
+            <label class="control-label">用户信息</label>
+            <input class="form-control" type="text" ng-model="$ctrl.searchForm.user" placeholder="小电铺名称/手机号/邮箱">
+          </div>
+          <div class="form-group">
+            <label class="control-label recharge-time">时间</label>
+            <see-date-range-picker ng-model="$ctrl.dateTime" placeholder="申请充值时间"></see-date-range-picker>
+          </div>
+          <div class="form-group">
+            <label class="control-label">充值状态</label>
+            <select name="type" class="form-control" ng-model="$ctrl.searchForm.status">
+              <option value="0">全部</option>
+              <option value="1">待支付</option>
+              <option value="2">充值成功</option>
+              <option value="3">充值失败</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">充值方式</label>
+            <select name="type" class="form-control" ng-model="$ctrl.searchForm.payBy">
+              <option value="1">支付宝</option>
+              <option value="2">微信</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">流水号</label>
+            <input class="form-control" type="text" ng-model="$ctrl.searchForm.tradeNo" placeholder="支付流水号">
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-search"></i>搜索</button>
+          <button type="button" ng-click="$ctrl.batchExport()" class="btn btn-primary">
+            批量导出</button>
+          <button type="button" ng-click="$ctrl.resetSearch()" class="btn">重置</button>
+          <!-- <a class="btn btn-primary" target="_blank" ng-click="$ctrl.exportRecord()">批量导出</a> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel">
+  <div class="panel-content financial">
+    <!-- <see-tabset>
+      <see-tab heading="所有" type="0"></see-tab>
+      <see-tab heading="待入账" type="1" count="{{$ctrl.listData[1].count}}">
+      </see-tab>
+      <see-tab heading="入账审核中" type="2" count="{{$ctrl.listData[2].count}}">
+
+      </see-tab>
+      <see-tab heading="已入账" type="3" count="{{$ctrl.listData[3].count}}">
+
+      </see-tab>
+    </see-tabset> -->
+
+    <div class="row">
+      <div class="col-sm-12 portlets">
+        <div class="clear-fix">
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>交易号
+                    <i class="fa fa-info-circle" tooltip-class="s-tooltip s-tooltip-long" uib-tooltip-template="'tipTmpl.html'"></i>
+                    <script type="text/ng-template" id="tipTmpl.html">
+                      <div>
+                        <p class="m-b-0">
+                          大订单号：即用户下单时的支付单号，一个大订单下有多个中订单，eg. BIGxxxx
+                        </p>
+                        <p class="m-b-0">
+                          中订单号：即为发货包裹单号，平台会根据供货商及物流路线的不同，将大订单拆分为中订单，eg. MIDxxxx
+                        </p>
+                        <p class="m-b-0">
+                          小订单号：中订单下同一个SKU商品将作为一个小订单，退款、退货、入账均将以小订单为单位，eg. LITxxxx
+                        </p>
+                        <p class="m-b-0">
+                          入账单号：小订单完成交易后将生成入账单号，计算至可用余额，eg. RZxxxx
+                        </p>
+                        <p class="m-b-0">
+                          提现账单号：即申请提现时生成的账单号，eg. TXZDxxxx
+                        </p>
+                      </div>
+                    </script>
+                  </th>
+                  <th>用户信息</th>
+                  <th>充值金额</th>
+                  <th>充值方式</th>
+                  <th>余额</th>
+                  <th>充值状态</th>
+                  <th width="90px">流水号</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.list">
+                  <td>{{item.createTime | dateFormat}}</td>
+                  <td>{{item.transactionNo}}</td>
+                  <td>
+                    {{item.sellerName}} <br>
+                    {{item.sellerEmail}}
+                  </td>
+                  <td>
+                    {{item.rechargeAmount/100 | currency:'￥'}}
+                  </td>
+                  <td>
+                    <span ng-if="item.payBy == 1">支付宝</span>
+                    <span ng-if="item.payBy == 2">微信</span>
+                  </td>
+                  <td>{{item.availableAmount/100 | currency: '￥'}}</td>
+                  <td>
+                    <span ng-if="item.status == 1">待支付</span>
+                    <span ng-if="item.status == 2">充值成功</span>
+                    <span ng-if="item.status == 3">充值失败</span>
+                  </td>
+                  <td>{{item.tradeNo}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination total-items="$ctrl.total_items" items-per-page="20"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

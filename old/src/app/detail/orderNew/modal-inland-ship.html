@@ -1,0 +1,57 @@
+
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title" ng-bind="logistics_type === 1 ? '国内拼邮中转发货' : '国内发货'"></h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="expressName" class="control-label col-sm-4 required">请选择物流公司:</label>
+            <div class="col-sm-7">
+                <select id="expressName" class=" form-control" ng-model="inlandExpress.name">
+                    <option value="" selected>-- 请选择国内发货的物流公司 --</option>
+                    <option ng-repeat="transport_info in transportList" value={{transport_info.transport_code}} >{{transport_info.transport_name}}</option>
+                </select>
+            </div>
+        </div>
+        <div ng-show="inlandExpress.name == 'other'">
+            <div class="form-group">
+                <label for="expressOther" class="col-sm-4 control-label required">添加物流公司:</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="expressOther" placeholder="" ng-model="inlandExpress.other">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="expressUrl" class="col-sm-4 control-label required">物流追踪网址:</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="expressUrl" placeholder="https://" ng-model="inlandExpress.url">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="expressCode" class="col-sm-4 control-label required">请输入物流单号:</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="expressCode" placeholder="请选择国内发货的物流单号" ng-model="inlandExpress.code">
+            </div>
+        </div>
+    </form>
+    <p class="alert alert-danger" ng-show="errMes">{{errMes}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>
+<div ng-if="logistic.express_desc_list">
+  <hr>
+  <span class="text-primary">用户所选路线提示：<span ng-bind="logistic.ex_name"></span></span>
+  <a href="" class="text-primary" ng-click="isCollapsed = !isCollapsed">展开详情</a>
+
+  <div uib-collapse="!isCollapsed">
+    <div class="alert bg-info m-t-5">
+      <ul class="p-l-10">
+        <li ng-repeat="desc in logistic.express_desc_list track by $index" ng-bind="desc"></li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+</div>

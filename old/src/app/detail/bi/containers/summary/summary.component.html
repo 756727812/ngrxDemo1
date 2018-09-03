@@ -1,0 +1,90 @@
+<div class="row top-part">
+  <div class="col-xs-12">
+    <div class="panel bi-panel">
+      <div class="panel-content">
+        <div class="h">
+          <div class="txt-h">
+            实时数据
+            <app-bi-mark-tip tipName="SUMMARY_REALTIME"></app-bi-mark-tip>
+          </div>
+        </div>
+        <div class="clearfix main"
+             nz-row>
+          <div class="left"
+               nz-col
+               [nzLg]="12">
+            <div class="caption">付款金额（元）</div>
+            <ul class="money-line">
+              <li class="l">
+                今日
+                <span class="val">{{tData.pay_price_sum | _currency}}</span>
+              </li>
+              <li class="sep"></li>
+              <li class="r">
+                昨日
+                <span class="val">{{yData.pay_price_sum | _currency}}</span>
+              </li>
+            </ul>
+            <nz-spin [nzSpinning]="chartLoading">
+              <div class="chart"
+                   #chart></div>
+            </nz-spin>
+          </div>
+          <div class="right"
+               nz-col
+               [nzLg]="12">
+            <div class="t">
+              <div class="labe">收益（元）</div>
+              <div class="r-wrap">
+                <div class="val">{{tData.profit_sum | _currency}}</div>
+                <div class="y-wrap">昨日全天：
+                  <span class="y-val">{{yData.profit_sum | _currency}}</span>
+                </div>
+              </div>
+            </div>
+            <ul>
+              <li>
+                <div class="labe">访客量</div>
+                <span class="t-val">{{tData.user_num | number}}</span>
+                <div class="y-wrap">
+                  昨日全天：
+                  <span class="y-val">{{yData.user_num | number}}</span>
+                </div>
+              </li>
+              <li>
+                <div class="labe">浏览量</div>
+                <span class="t-val">{{tData.pv | number}}</span>
+                <div class="y-wrap">
+                  昨日全天：
+                  <span class="y-val">{{yData.pv | number}}</span>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <div class="labe">付款订单数</div>
+                <span class="t-val">{{tData.pay_order_num | number}}</span>
+                <div class="y-wrap">
+                  昨日全天：
+                  <span class="y-val">{{yData.pay_order_num | number}}</span>
+                </div>
+              </li>
+              <li>
+                <div class="labe">付款人数</div>
+                <span class="t-val">{{tData.pay_user_num | number}}</span>
+                <div class="y-wrap">
+                  昨日全天：
+                  <span class="y-val">{{yData.pay_user_num | number}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-bi-summary-trade-block></app-bi-summary-trade-block>
+<app-bi-summary-top-sale-block></app-bi-summary-top-sale-block>
+<app-bi-summary-article-block></app-bi-summary-article-block>

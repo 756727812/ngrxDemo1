@@ -1,0 +1,120 @@
+<div class="shop-operate-coupon">
+  <h2 class="shop-operate-coupon-title">秒杀活动配置</h2>
+  <!-- <div class="clear-fix">
+    <form class="form-horizontal w5c-form" role="form" w5c-form-validate novalidate name="seckillForm">
+      <div class="form-group">
+        <label class="col control-label required">板块名称</label>
+        <div class="col" style="width: 280px;">
+          <div class="input-group">
+            <input type="text" class="form-control w5c-error-not-show" name="seckillName" ng-model="$ctrl.formData.seckillName" required
+              ng-change="$ctrl.formatInputName(0, 30)"
+            >
+            <span class="input-group-addon">{{$ctrl.verifyLength(0, 30).number}}/15</span>
+          </div>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary" type="submit" w5c-form-submit="$ctrl.save()">保存</button>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2">
+          <span class="custom-error" ng-show="seckillForm.$submitted && !$ctrl.formData.seckillName"><i class="si si-danger"></i>&nbsp;请输入板块名称</span>
+        </div>
+      </div>
+    </form>
+  </div> -->
+  <button class="btn btn-primary addCouponAction" type="button" ng-click="$ctrl.openAddSeckillModal()">添加秒杀活动</button>
+  <form ng-submit="$ctrl.submitSearch()" class="form-inline pull-right">
+    <div class="form-group">
+      <input type="text" placeholder="商品名称" class="form-control"
+        ng-model="$ctrl.formData.productName"
+        ng-keyup="$event.keyCode == 13 && $ctrl.submitSearch()"
+        style="min-width: 230px"
+      >
+    </div>
+  </form>
+  <p class="text-center m-t-50" ng-if="$ctrl.seckillData.list.length === 0 && $ctrl.searchParams.length > 0">没有符合条件的活动</p>
+  <p class="text-center m-t-50" ng-if="$ctrl.seckillData.list.length === 0 && $ctrl.searchParams.length === 0">未配置任何秒杀活动</p>
+  <div class="table-scrollable" ng-if="$ctrl.seckillData.list.length > 0">
+    <table class="table table-hover table-center table-condensed m-t-20">
+      <thead>
+        <tr>
+          <th style="width: 150px">商品主图</th>
+          <th style="width: 165px">活动名称</th>
+          <th style="width: 165px">活动商品</th>
+          <th style="width: 130px">活动时间</th>
+          <th>活动状态</th>
+          <th>商城显示</th>
+          <th>活动显示时间</th>
+          <th>排序</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in $ctrl.seckillData.list track by item.id">
+          <td>
+            <div class="img-container">
+              <img see-src="item.itemImgurl" thumbnail="150x150" see-viewer alt="">
+            </div>
+          </td>
+          <td>
+            <ellipsis lines="2" style="width: 165px">
+              <span class="m-0" ng-bind="item.activityName" title="{{item.activityName}}"></span>
+            </ellipsis>
+            <p class="m-0" see-hide="New-Brand">ID:{{item.id}}</p>
+          </td>
+          <td>
+            <ellipsis lines="2" style="width: 165px">
+                <span class="m-0" ng-bind="item.productName" title="{{item.productName}}"></span>
+            </ellipsis>
+            <p class="m-0" see-hide="New-Brand">ID:{{item.productId}}</p>
+          </td>
+          <td>{{item.startTime | date: 'yyyy-MM-dd HH:mm'}}至<br />{{item.endTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+          <td ng-bind="item.status | seckillStatus"></td>
+          <td ng-bind="item.isShow === 1 ? '已显示' : '已隐藏'"></td>
+          <td>
+
+            <!-- <p class="text-center" ng-class="{ 'text-danger': !item.releaseTime }">
+              <a class="text-primary click block text-center m-b-10" href="" ng-if="item.status < 3" ng-click="$ctrl.openSetPublishTimeModal(item.id, item.endTime, item.releaseTime)">
+                {{item.releaseTime ? (item.releaseTime | date: 'yyyy-MM-dd HH:mm') : '未设置显示时间'}}<i class="fa fa-pencil-square-o p-l-5"></i>
+              </a>
+              <label ng-if = "item.status == 3">{{item.releaseTime | date: 'yyyy-MM-dd HH:mm'}}</label>
+            </p> -->
+
+
+            <p class="text-center" ng-class="{ 'text-danger': !item.releaseTime }">
+              <a class="text-primary click block text-center" href="" ng-show="item.status < 3 && !$ctrl.showDate[$index]" ng-click="$ctrl.setDate($index)"><!-- ng-click="$ctrl.openSetShowTimeModal(item.id, item.endTime, item.releaseTime)" -->
+                {{item.releaseTime ? (item.releaseTime | date: 'yyyy-MM-dd HH:mm') : '未设置显示时间'}}<i class="fa fa-pencil-square-o p-l-5"></i>
+              </a>
+              <label class="text-muted" ng-show = "item.status == 3 || item.status == 4">{{item.releaseTime | date: 'yyyy-MM-dd HH:mm'}}</label>
+            </p>
+            <div class="show-date text-center" ng-show = "$ctrl.showDate[$index]">
+              <nz-datepicker style="width:160px"
+                ng-model="item.releaseTime"
+                [nz-show-time]="true"
+                [nz-format]="'YYYY-MM-DD HH:mm:ss'"
+                [nz-place-holder]="'请选择活动显示时间'"
+                [nz-disabled-date]="$ctrl.disabledDate"
+              ></nz-datepicker>
+              <button class="btn btn-sm btn-primary" ng-click="$ctrl.dateChange($index,item.id,item.releaseTime)"><i class="fa fa-check"></i></button>
+              <button class="btn btn-sm btn-danger" ng-click="$ctrl.unSetDate()"><i class="fa fa-times"></i></button>
+            </div>
+          </td>
+          <td>
+            <div class="action-group-container">
+              <button class="btn btn-sm" ng-click="$ctrl.updateSeckillListSort(item.id, 1)" ng-class="{ 'btn-primary': $index > 0 }" ng-disabled="$index === 0"><i class="fa fa-step-forward up" style="transform: rotate(-90deg)"></i></button>
+              <button class="btn btn-sm" ng-click="$ctrl.updateSeckillListSort(item.id, 2)" ng-class="{ 'btn-primary': $index > 0 }" ng-disabled="$index === 0"><i class="fa fa-chevron-up"></i></button>
+              <button class="btn btn-sm" ng-click="$ctrl.updateSeckillListSort(item.id, 3)" ng-class="{ 'btn-primary': $index < $ctrl.seckillData.list.length - 1 }"
+                ng-disabled="$index === ($ctrl.seckillData.list.length - 1)"><i class="fa fa-chevron-down"></i></button>
+              <button class="btn btn-sm" ng-click="$ctrl.updateSeckillListSort(item.id, 4)" ng-class="{ 'btn-primary': $index < $ctrl.seckillData.list.length - 1 }"
+                ng-disabled="$index === ($ctrl.seckillData.list.length - 1)"><i class="fa fa-step-forward down" style="transform: rotate(90deg)"></i></button>
+            </div>
+          </td>
+          <td>
+            <a class="text-primary click text-center d-block m-b-10" href="/event/seckill?kolId={{$ctrl.kolId}}&wechat_id={{$ctrl.wechatId}}&activityName={{item.activityName}}">秒杀详情</a>
+            <a class="text-primary click text-center d-block" href="" ng-if="item.toBanner === 1" ng-click="$ctrl.removeSeckillItem(item.id)">移出</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination ng-if="$ctrl.seckillData.count / 20 > 1" total-items="$ctrl.seckillData.count"></pagination>
+</div>

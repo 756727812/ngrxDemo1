@@ -1,0 +1,195 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+	<h3 class="modal-title">供应商发货</h3>
+</div>
+<div class="modal-body">
+	<uib-tabset>
+		<uib-tab heading="{{ logistics_type === 1 ? '直发用户' : '直邮' }}" select="select(1)" active="tab1">
+			<form class="form-horizontal mt20" novalidate>
+				<div class="form-group">
+					<label class="control-label required col-sm-4" for="storage">物流方式:</label>
+					<div class="col-sm-7">
+						<label class="radio-inline">
+                            <input type="radio" ng-model="express.method" value="1">Seego物流
+                        </label>
+						<label class="radio-inline">
+                            <input type="radio" ng-model="express.method" value="2">非Seego物流
+                        </label>
+					</div>
+				</div>
+				<div ng-show="express.method=='1'">
+					<div class="form-group">
+						<label class="control-label required col-sm-4" for="storage">收货仓库:</label>
+
+						<div class="col-sm-7">
+							<select name="storage" id="storage" class="form-control" ng-model="sendGood0.item_location" ng-change="getServiceData(sendGood0.item_location)">
+                                <option value="" selected>-- 请选择你包裹发往的转运仓 --</option>
+                                <option value="1">美国转运仓</option>
+                                <!--<option value="52" see-access="Super-Admin">波特兰仓(笨鸟转运)</option>-->
+                                <option value="5">澳洲转运仓</option>
+                                <!--<option value="51" see-access="Super-Admin">悉尼仓(笨鸟转运)</option>-->
+                                <!--<option value="6">德国仓(一号仓转运)</option>-->
+                                <option value="7">日本转运仓</option>
+                                <!--<option value="53" see-access="Super-Admin">日本仓(笨鸟转运)</option>-->
+                                <!--<option value="101">英国仓</option>-->
+                                <option value="102">韩国仓</option>
+                            </select>
+						</div>
+					</div>
+          <div class="form-group">
+            <label class="control-label required col-sm-4">物流路线：</label>
+            <div class="col-sm-7">
+              <select name="service_code" class="form-control" ng-model="sendGood0.service_code"
+                ng-options="s.service_code as s.service_name for s in service_data">
+                <option value="" selected>-- 请选择 --</option>
+              </select>
+            </div>
+          </div>
+          <p class="text-danger text-center">你的发货方式请注意和用户选择的路线相匹配</p>
+					<div class="form-group" ng-if="logistics_type === 1">
+            <label class="control-label col-sm-4 required">请选择物流公司:</label>
+            <div class="col-sm-6">
+              <select class="form-control" ng-model="sendGood0.transport_code_1" ng-options="t.transport_code as t.transport_name for t in transportList">
+                                <option value="" selected>-- 请选择官网发出包裹使用的物流公司 --</option>
+                            </select>
+            </div>
+          </div>
+          <div ng-if="logistics_type === 1" ng-show="sendGood0.transport_code_1 == 'other'">
+            <div class="form-group">
+              <label class="col-sm-4 control-label required">物流公司名称:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" placeholder="" ng-model="sendGood0.transport_name">
+              </div>
+            </div>
+						<div class="form-group">
+							<label class="control-label col-sm-4 required">物流追踪网址:</label>
+							<div class="col-sm-7">
+								<input type="text" class="form-control" ng-model="sendGood0.transport_url" />
+							</div>
+						</div>
+          </div>
+					<div class="form-group">
+						<label class="control-label required col-sm-4" for="num11">物流单号:</label>
+
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="num11" placeholder="请输入包裹发往转运仓时的物流单号" ng-model="sendGood0.transport_no" />
+						</div>
+					</div>
+					<label class="control-label required col-sm-4" for="storage">包裹情况:</label>
+					<div class="col-sm-7">
+						<label class="radio-inline">
+                            <input type="radio" ng-model="sendGood0.dispactchType0" value="1">只有一个订单
+                        </label>
+						<label class="radio-inline">
+                            <input type="radio" ng-model="sendGood0.dispactchType0" value="2">含有多个订单
+                        </label>
+					</div>
+					<div class="form-group" ng-show="sendGood0.dispactchType0 == '2'">
+						<div class="col-sm-offset-1 col-sm-10">
+
+							<textarea id="dispatchbox-orderid1" name="dispatchbox-orderid" rows="5" class="form-control mb20 mt20" ng-model="sendGood0.addOrderId"
+								placeholder="请输入该包裹包含的所有订单号，一行一个订单号"></textarea>
+						</div>
+					</div>
+				</div>
+				<div ng-show="express.method=='2'">
+					<div class="form-group">
+						<label class="control-label col-sm-4 required" for="transport_code12">物流公司:</label>
+
+						<div class="col-sm-7">
+							<select name="transport_code" id="transport_code12" class="form-control" ng-model="sendGood1.transport_code">
+                                <option value="" selected>-- 请选择包裹发往转运仓时使用的物流公司 --</option>
+                                <option ng-repeat="transport_info in transportList"
+                                        value={{transport_info.transport_code}}>{{transport_info.transport_name}}
+                                </option>
+                            </select>
+						</div>
+
+					</div>
+					<div class="form-group" ng-show="sendGood1.transport_code == 'other'">
+						<label class="control-label col-sm-4 required" for="add_transport_name12">物流公司名称:</label>
+
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="add_transport_name12" ng-model="sendGood1.transport_name" />
+						</div>
+
+					</div>
+					<div class="form-group" ng-show="sendGood1.transport_code == 'other'">
+						<label class="control-label col-sm-4 required" for="add_transport_url12">物流追踪网址:</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="add_transport_url12" ng-model="sendGood1.transport_url" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label required col-sm-4" for="num12">物流单号:</label>
+
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="num12" placeholder="请输入包裹发往转运仓时的物流单号" ng-model="sendGood1.transport_no" />
+						</div>
+					</div>
+				</div>
+			</form>
+			<p ng-if="!logistic.express_desc_list" class="col-sm-12 alert alert-info mt10 mb10" ng-show="infoMsg">{{infoMsg}}</p>
+
+		</uib-tab>
+		<uib-tab heading="拼邮(国内中转)" select="select(2)" active="tab2">
+			<div ng-if="logistics_type === 0">
+				<p class="m-t-10">特别提醒：此处要求填写<span class="font-red">从买手住处发往转运仓的物流单号</span>！</p>
+				<p>如果买手是直接发往国内（例如发邮政），此处可简单填写，确认后点击后续的“转运仓发货”，填入发往国内的快递单号</p>
+			</div>
+			<form class="form-horizontal mt20" novalidate>
+				<div class="form-group">
+					<label class="control-label col-sm-4 required" for="transport_code22">物流公司:</label>
+
+					<div class="col-sm-7">
+						<select name="transport_code" id="transport_code22" class="form-control" ng-model="sendGood2.transport_code">
+                            <option value="" selected>-- 请选择包裹发往转运仓时使用的物流公司 --</option>
+                            <option ng-repeat="transport_info in transportList"
+                                    value={{transport_info.transport_code}}>
+                                {{transport_info.transport_name}}
+                            </option>
+                        </select>
+					</div>
+				</div>
+				<div class="form-group" ng-show="sendGood2.transport_code == 'other'">
+					<label class="control-label col-sm-4 required" for="add_transport_name22">物流公司名称:</label>
+
+					<div class="col-sm-7">
+						<input type="text" class="form-control" id="add_transport_name22" ng-model="sendGood2.transport_name" />
+					</div>
+				</div>
+				<div class="form-group" ng-show="sendGood2.transport_code == 'other'">
+					<label class="control-label col-sm-4 required" for="add_transport_url22">物流追踪网址:</label>
+					<div class="col-sm-7">
+						<input type="text" class="form-control" id="add_transport_url22" ng-model="sendGood2.transport_url" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-4 required" for="num22">物流单号:</label>
+					<div class="col-sm-7">
+						<input type="text" class="form-control" id="num22" placeholder="请输入包裹发往转运仓时的物流单号" ng-model="sendGood2.transport_no" />
+					</div>
+				</div>
+			</form>
+		</uib-tab>
+	</uib-tabset>
+	<p class="alert alert-danger" ng-show="errMsg">{{errMsg}}</p>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+	<button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>
+<div ng-if="logistic.express_desc_list">
+	<hr>
+	<span class="text-primary">用户所选路线提示：<span ng-bind="logistic.ex_name"></span></span>
+	<a href="" class="text-primary" ng-click="isCollapsed = !isCollapsed">展开详情</a>
+
+	<div uib-collapse="!isCollapsed">
+		<div class="alert bg-info m-t-5">
+			<ul class="p-l-10">
+				<li ng-repeat="desc in logistic.express_desc_list track by $index" ng-bind="desc"></li>
+			</ul>
+		</div>
+	</div>
+	<hr>
+</div>

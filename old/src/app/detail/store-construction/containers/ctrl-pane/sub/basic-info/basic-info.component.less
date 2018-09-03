@@ -1,0 +1,136 @@
+.basic-info {
+}
+
+.capacity-tips {
+  font-size: 12px;
+  color: #999;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+// TODO 表单元素想一下怎么复用
+.input-control,
+.upload-control {
+  line-height: 16px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.input-control {
+  margin-bottom: 32px;
+
+  input[type='text'] {
+    line-height: 40px;
+    font-size: 12px;
+  }
+
+  label {
+    margin-bottom: 9px;
+  }
+}
+
+.upload-control {
+  label {
+    margin-bottom: 8px;
+  }
+
+  .tips {
+    line-height: 12px;
+    font-size: 12px;
+    text-align: left;
+    color: #999;
+    margin-bottom: 10px;
+  }
+}
+
+.banner-link-fc {
+  margin-top: 14px;
+}
+
+.upload-tips {
+  width: 240px;
+  color: #999;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.howto-trigger {
+  display: inline-flex;
+  align-items: center;
+
+  a {
+    display: inline-block;
+    margin-left: 7px;
+    font-size: 12px;
+    text-align: left;
+    color: #5971e8;
+    text-decoration: underline;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.how-to-innerwrap {
+  ul {
+    display: flex;
+
+    > li {
+      display: inline-block;
+      padding-right: 18px*2.2; // 不要问我为什么是 2.2 ^_^
+      flex: 1;
+      text-align: right;
+
+      &.back {
+        text-align: left;
+      }
+
+      .inner {
+        width: 110px*2.2;
+        display: inline-block;
+      }
+    }
+  }
+
+  img {
+    width: 110px*2.2;
+    height: 227px*2.2;
+    display: block;
+  }
+
+  .name {
+    padding-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+  }
+}
+
+//  TODO 全局cover
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown, selector-type-no-unknown */
+:host ::ng-deep {
+  .ant-modal-body {
+    padding: 32px 0 26px;
+  }
+
+  .ant-modal-header {
+    background-color: #5971e8;
+
+    .ant-modal-title {
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+    }
+  }
+
+  .ant-modal-close-x::before {
+    color: #fff;
+    font-size: 20px;
+  }
+
+  .ant-modal-footer {
+    display: none !important;
+  }
+}

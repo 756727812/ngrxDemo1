@@ -1,0 +1,45 @@
+<div class="container">
+  <i class="logo-icon si si-logo-hollow" *ngIf="!isSeeData"></i>
+  <i class="see-icon si si-see" *ngIf="isSeeData"></i>
+  <p class="success-txt">已注册成功</p>
+  <ul class="steps">
+    <li clas="step-item">
+      <div class="left">
+        <div class="no-txt">第一步</div>
+        <div *ngIf="!isSeeData">注册小电铺后台</div>
+        <div *ngIf="isSeeData">注册SEE数</div>
+      </div>
+      <div class="right">
+        已完成
+      </div>
+    </li>
+    <li class="active">
+      <div class="left">
+        <div>第二步</div>
+        <div *ngIf="!isSeeData">去电脑端开通小电铺套餐</div>
+        <div *ngIf="isSeeData">去电脑端 <b>领取三个月VIP</b> </div>
+      </div>
+      <div class="right">
+        未完成
+      </div>
+    </li>
+  </ul>
+  <p *ngIf="!isSeeData" class="site">portal.xiaodianpu.com</p>
+  <p *ngIf="isSeeData" class="site">data.xiaodianpu.com</p>
+  <button
+    type="button"
+    class="primary-btn"
+    *ngIf="!isSeeData"
+    ngxClipboard
+    cbContent="https://portal.xiaodianpu.com"
+    (cbOnSuccess)="onCopySuccess()"
+    style="color: #fff;">复制链接</button>
+  <button
+    type="button"
+    class="primary-btn"
+    *ngIf="isSeeData"
+    ngclipboard
+    cbContent="https://data.xiaodianpu.com/"
+    (cbOnSuccess)="onCopySuccess()">复制链接</button>
+  <a *ngIf="isSeeData"  class="go-link" href="https://data.xiaodianpu.com/">手机端先看看</a>
+</div>

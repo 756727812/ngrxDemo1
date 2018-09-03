@@ -1,0 +1,137 @@
+<div class="header">
+    <h2><strong>1688货源库</strong></h2>
+
+</div>
+<div class="row">
+    <div class="col-sm-12 portlets">
+        <div class="panel">
+
+        	<see-tabset>
+			     <see-tab heading="同步中" type="1" select="$ctrl.selectTab()"></see-tab>
+			     <see-tab heading="已终止同步" type="2" select="$ctrl.selectTab()"></see-tab>
+			    </see-tabset>
+            <div class="panel-content">
+                <form class="form-inline" ng-submit="$ctrl.submitSearch()">
+                    <div class="form-group m-b-10">
+                        <label class="control-label">
+                            <input type="text" class="form-control" style="min-width: 210px;" placeholder="商品名称" ng-model="$ctrl.filter_info.name" ng-trim="true">
+                        </label>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label">
+                            <input type="nnumber" class="form-control" style="min-width: 210px;" placeholder="商品ID" ng-model="$ctrl.filter_info.oriId" ng-trim="true">
+                        </label>
+                    </div>
+
+                    <div class="form-group m-b-10">
+                        <label class="control-label">关键词 </label>
+                          <ui-select ng-model="$ctrl.filter_info.kw" theme="select2" style="min-width: 300px;" title="选择关键词" >
+                          <ui-select-match  placeholder="选择关键词...">{{$select.selected.kw}}</ui-select-match>
+                          <ui-select-choices  repeat="item.kw as item in $ctrl.list_key | propsFilter: {kw: $select.search}">
+                            <div ng-bind-html="item.kw | highlight: $select.search"></div>
+                          </ui-select-choices>
+                        </ui-select>
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-group m-b-10">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>搜索</button>
+                    </div>
+                </form>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>关键词</th>
+                                <th>成交额</th>
+
+                                <th style="width:250px;">商品</th>
+
+                                <th>库存</th>
+                                <th style="width:180px;">批发价</th>
+                                <th style="width:150px;">代销价</th>
+                                <th style="width:150px;">物流价格</th>
+                                <th style="width:150px;">卖家</th>
+                                <th>信息同步状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $ctrl.list_item">
+                              	<td> {{item.searchKw}} </td>
+                              	<td> {{item.tradeAmount}}元 </td>
+
+                              	<td> ID：{{item.oriId}}<br />
+                                  品牌：{{item.brand}}<br />
+                                  <!-- | moreContent:10-->
+                              		 <a href="{{item.oriUrl}}" target="_blank">{{item.name}}</a>
+                              	</td>
+                              	<td> {{item.totalStock}} {{item.unit}}</td>
+                              	<td>
+                                  <div ng-repeat="price_info_item in item.wholesalePriceInfo">
+                                    {{price_info_item.type === 'spec' ? '按规格定价':'按起批量定价'}}
+                                    <br />
+                                    <label ng-if="price_info_item.minPrice === price_info_item.maxPrice ">
+                                      ￥{{price_info_item.minPrice}}
+                                    </label>
+                                    <label ng-if="price_info_item.minPrice !== price_info_item.maxPrice ">
+                                      ￥{{price_info_item.minPrice}} ~ ￥{{price_info_item.maxPrice}}
+                                    </label>
+                                  </div>
+                              	</td>
+
+                                <td>
+                                  <div ng-repeat="price_info_item in item.priceInfo">
+                                    {{price_info_item.type === 'spec' ? '按规格定价':'按起批量定价'}}
+                                    <br />
+                                    <label ng-if="price_info_item.minPrice === price_info_item.maxPrice ">
+                                      ￥{{price_info_item.minPrice}}
+                                    </label>
+                                    <label ng-if="price_info_item.minPrice !== price_info_item.maxPrice ">
+                                      ￥{{price_info_item.minPrice}} ~ ￥{{price_info_item.maxPrice}}
+                                    </label>
+                                  </div>
+                                </td>
+
+                              	<td>
+                              		<label ng-if="item.minShipFee === item.maxShipFee ">
+                              			￥{{item.maxShipFee}}
+                              		</label>
+                              		<label ng-if="item.minShipFee !== item.maxShipFee ">
+                              			￥{{item.minShipFee}} ~ ￥{{item.maxShipFee}}
+                              		</label>
+                              	</td>
+                                <td> {{item.vendor}} </td>
+                              	<td> {{item.statusStr}} </td>
+                              	<td>
+                              		<button ng-if="item.seeProductId == 0" class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.switchStatus(item.id)">
+                              			{{$ctrl.status == 1 ? '终止同步' : '开启同步'}}
+                              		</button>
+
+                              		<div ng-if="item.seeProductId > 0">
+                              			<a ng-href="{{item.goods_url}}" target="_blank" class="btn btn-sm btn-primary" ng-click="$ctrl.verifyPrivilege($event)">查看关联母商品</a>
+
+	                              		<button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.unlinkParentItem(item.id)">
+	                              			取消关联
+	                              		</button>
+	                              	</div>
+
+	                              	<div ng-if="item.seeProductId == 0 && $ctrl.status == 1">
+	                              		<button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.linkParentItem(item.id)">
+	                              			关联母商品
+	                              		</button>
+	                              	</div>
+
+                              	</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- </see-tab> -->
+                <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

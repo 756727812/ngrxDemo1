@@ -1,0 +1,102 @@
+<div class="header">
+  <h2><strong>我提报的活动</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">我提报的活动</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="circle-container group">
+            <see-tabset>
+                <see-tab heading="心愿列表" type="theme">
+                    <div class="table-scrollable">
+                        <table class="table table-hover table-striped" see-loading>
+                            <thead>
+                                <tr class="title">
+                                    <th>回答ID</th>
+                                    <th>心愿ID</th>
+                                    <th>心愿描述</th>
+                                    <th width="120">心愿图片</th>
+                                    <th>品类</th>
+                                    <th width="120">答案图</th>
+                                    <th>购买链接</th>
+                                    <th>答案描述</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="theme in themeList">
+                                    <td>{{theme.f_id}}</td>
+                                    <td>{{theme.t_id}}</td>
+                                    <td>{{theme.t_title}}</td>
+                                  <td>
+                                    <div class="img-container">
+                                      <img class="img-viewer" see-src="theme.t_imgurl" see-viewer>
+                                    </div>
+                                  </td>
+                                    <td>{{theme.cy_name}}</td>
+                                  <td>
+                                    <div class="img-container">
+                                      <img class="img-viewer" see-src="theme.f_imgurl" see-viewer>
+                                    </div>
+                                  </td>
+                                  <td><a ng-href="{{theme.f_buyurl}}" target="_blank">{{theme.f_buyurl}}</a></td>
+                                    <td>{{theme.f_comment}}</td>
+                                    <td>{{theme.f_disqualified}} </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination total-items="total_items" items-per-page="10"></pagination>
+                    </div>
+                </see-tab>
+                <see-tab heading="专题列表" type="topic">
+                    <!--这里并没有用户的提报活动的专题列表，给的controller是错的-->
+                    <!--<div class="table-scrollable" ng-controller="myPgcAnswerController">-->
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>回答者</th>
+                                    <th>描述</th>
+                                    <th width="120">图片</th>
+                                    <th>价格</th>
+                                    <th>回答时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="answer in answerList">
+                                    <td>{{answer.a_id}}</td>
+                                    <td>{{answer.backend_id}}</td>
+                                    <td>{{answer.item.item_desc}}</td>
+                                    <td>
+                                      <div class="img-container">
+                                        <img see-src="answer.item.item_imgurl" alt="" see-viewer/>
+                                      </div>
+                                    </td>
+                                    <td>{{answer.item.price}}</td>
+                                    <td>{{answer.submit_time * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" type="button" ng-click="deleteAnswer(answer.a_id)">删除</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination total-items="total_items" items-per-page="10"></pagination>
+                </see-tab>
+            </see-tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

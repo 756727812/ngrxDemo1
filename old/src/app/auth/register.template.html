@@ -1,0 +1,120 @@
+<div class="container" id="register-block" ng-if="$ctrl.current_step != 4">
+  <div class="contentContainer" ng-class="{mobile:$ctrl.isBoolMobile}" ng-style="{'width':($ctrl.isMobile<0?'590px':''),'marginTop':($ctrl.isMobile<0?'':'10px')}">
+    <div class="content">
+      <h1 class="color-000 p-t-20" ng-hide="($ctrl.current_step == 3 || $ctrl.current_step == 4) && $ctrl.isMobile >= 0">
+        <strong ng-hide="$ctrl.current_step == 3">{{$ctrl.isFromSeeData?'See数':'小电铺'}}注册</strong>
+      </h1>
+      <div ng-switch on="$ctrl.current_step">
+        <p class="text-center m-t-10" ng-switch-when="2">选择你的身份，以便得到SEE数据系统更好的服务</p>
+        <p class="text-center m-t-10 m-b-20" ng-switch-when="1" ng-if="$ctrl.isMobile < 0">已经有账号?
+          <a class="href" href="/auth.html#!/entry">点击登录</a>
+        </p>
+      </div>
+      <form ng-if="$ctrl.current_step == 1" name="registerForm" class="form-signup w5c-form" ng-class="$ctrl.isMobile<0?'form-horizontal':'form-mobile'"
+        role="form" w5c-form-validate novalidate>
+
+        <div class="form-group">
+          <label class="col-xs-4 control-label"> 手机号 </label>
+          <!-- <div class="col-xs-2">
+               <select name="country" class="form-control form-white" style="height: 34px" required
+               ng-model="$ctrl.validate_form.country_code"
+               ng-options="c.code as c.label group by c.letter for c in $ctrl.country_code_list"></select>
+               </div> -->
+          <div class="col-xs-12 col-md-6">
+            <input type="text" name="mobile" class="form-control form-white" placeholder="请输入手机号" ng-model="$ctrl.formData.seller_mobile"
+              ng-pattern="/^1[0-9]{10}$/" uib-tooltip="建议使用常用手机号" tooltip-placement="top-right" tooltip-trigger="'mouseenter focus'"
+              required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 col-xs-12 control-label"> 验证码 </label>
+          <div class="col-md-3 col-xs-6 m-p-r-0">
+            <input type="text" name="captcha" class="form-control form-white" placeholder="图像验证码" ng-model="$ctrl.validate_form.captcha"
+              ng-trim="true" required>
+          </div>
+          <div class="col-md-3 col-xs-4">
+            <a  href="" ng-click="$ctrl.getCaptcha()">
+              <img ng-src="{{$ctrl.codeImg}}">
+            </a>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-4 col-xs-12 control-label"> 短信验证 </label>
+          <div class="col-md-3 col-xs-6 m-p-r-0">
+            <input type="text" name="code" class="form-control form-white" placeholder="手机验证码" ng-model="$ctrl.validate_form.code" ng-trim="true"
+              required>
+          </div>
+          <div class="col-md-3 col-xs-6">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.sendSmsCode()" ng-disabled="registerForm.mobile.$invalid || registerForm.captcha.$invalid || $ctrl.verify_btn.is_msg_sended"
+              style="margin: 0">
+              {{ $ctrl.verify_btn.is_msg_sended ? $ctrl.verify_btn.seconds + 's' : $ctrl.verify_btn.text }}</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 col-xs-12 control-label"> 登录密码 </label>
+          <div class="col-md-6 col-xs-12">
+            <input type="password" name="password" class="form-control form-white" placeholder="请设置登录密码" autocomplete="off" required
+              ng-model="$ctrl.formData.seller_pwd" ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&_]{8,16}$/">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-4 control-label"> 确认密码 </label>
+          <div class="col-md-6 col-xs-12">
+            <input type="password" name="password2" class="form-control form-white" placeholder="再次输入登录密码" autocomplete="off" ng-model="$ctrl.formData.seller_confirm_pwd"
+              w5c-repeat="password" required>
+          </div>
+        </div>
+        <div class="form-group" ng-class="$ctrl.isMobile<0?'terms':''">
+          <label for="terms" class="col-md-offset-4 col-md-8 col-xs-12 m-t-20">
+            <input type="checkbox" name="terms" id="terms" icheck ng-model="$ctrl.is_term_checked" data-skin="icheckbox_square-blue"
+            />
+            <a href="//static.seecsee.com/static/seego/SEE%E5%B9%B3%E5%8F%B0%E5%90%88%E4%BD%9C%E5%8D%8F%E8%AE%AE.pdf" style="color: #000;font-weight: normal;"
+              target="_blank">同意《小电铺平台合作协议》</a>
+          </label>
+        </div>
+        <div class="form-group m-b-10 " ng-show="$ctrl.errors.length">
+          <p class="alert alert-danger" ng-repeat="error in $ctrl.errors track by $index" ng-bind="error"></p>
+        </div>
+        <div class="form-group text-center">
+          <button type="button" class="shop-btn shop-btn-lg m-t-20" ng-disabled="$ctrl.btn_disabled" w5c-form-submit="$ctrl.signup()">下一步</button>
+        </div>
+      </form>
+      <div ng-if="$ctrl.current_step == 2">
+        <uib-tabset justified="true">
+          <uib-tab type="kol" heading="我是自媒体">
+            <kol-signup></kol-signup>
+          </uib-tab>
+          <uib-tab type="c2c" heading="我是品牌">
+            <c2c-signup></c2c-signup>
+          </uib-tab>
+        </uib-tabset>
+      </div>
+      <div class="text-center m-b-20 regi-success" ng-if="$ctrl.current_step == 3 && $ctrl.isMobile < 0">
+        <p class="text-center f-16" style="padding:30px 0">
+          恭喜你，注册成功
+          <!-- <span ng-if="$ctrl.isFromSeeData"><br/>已获赠三个月VIP，将于1分钟内生效。</span> -->
+        </p>
+        <!-- <a class="shop-btn shop-btn-lg m-b-20" href="/seedata/index" style="color: #fff;">领取SEE数福利 --
+          <span class="red-tip">3个月VIP</span>
+        </a> -->
+        <a class="shop-btn shop-btn-lg m-b-20" href="/" ng-if="!$ctrl.isFromSeeData">进入小电铺后台</a>
+        <a class="shop-btn shop-btn-lg m-b-10" href="/auth.html#!/entry?see_data_callback=https%3A%2F%2Fdata.xiaodianpu.com%2F" style="color: #5971e8;background-color:#cad3fe;"
+          ng-if="$ctrl.isFromSeeData">进入 See数</a>
+      </div>
+      <!-- <div class="text-center m-b-20" ng-if="$ctrl.current_step == 3 && $ctrl.isMobile >= 0">
+           <div class="text-center m-t-50">
+           <img src="//seeapp.com/images/logo.png?v=ae121ff214" width="80" height="80">
+           <p class="text-center p-t-20 f-24" ng-if="$ctrl.current_step == 3">注册成功</p>
+           </div>
+           <p class="text-center m-b-50 m-t-40 f-16" style="line-height: 20px;">请前往电脑端<br/>申请你所需要的小电铺版本<br/><label class="c-primary" style="font-weight: 300">portal.xiaodianpu.com</label></p>
+           <a class="shop-btn shop-btn-lg m-b-20"  href="" ngclipboard data-clipboard-text="https://portal.xiaodianpu.com" ngclipboard-success="$ctrl.copySuccess()" style="color: #fff;">复制链接</a>
+           <a class="shop-btn shop-btn-lg shop-btn-light" href="https://m.seeapp.com">小电铺简介</a>
+           </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- 原来的写法完全没有考虑屏幕适配式，新逻辑解耦开，单独成组件，不要一堆 ifelse -->
+<auth-register-mobile-success ng-if="($ctrl.current_step == 3 || $ctrl.current_step == 4) && $ctrl.isBoolMobile">
+</auth-register-mobile-success>

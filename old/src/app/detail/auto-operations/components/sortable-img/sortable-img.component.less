@@ -1,0 +1,53 @@
+.sortalble-container > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.item {
+  &-name {
+    font-size: 12px;
+    text-align: center;
+    color: #999;
+    width: 96px;
+    border: 1px solid #d9d9d9;
+    border-top: 0;
+  }
+
+  &-container {
+    // width: 104px;
+    // height: 110px;
+    display: inline-block;
+    position: relative;
+    padding-top: 6px;
+    cursor: move;
+
+    &:hover {
+      background-color: #f1f1f1;
+
+      .del-btn {
+        display: inline-flex !important;
+      }
+
+      .item-name {
+        color: #5971e8;
+      }
+    }
+  }
+
+  &-img-container {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+:host ::ng-deep .ant-upload-list-picture-card .ant-upload-list-item, :host ::ng-deep .ant-upload.ant-upload-select-picture-card {
+  margin: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.sortalble-container {
+  display: flex;
+}

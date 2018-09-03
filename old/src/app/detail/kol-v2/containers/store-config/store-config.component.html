@@ -1,0 +1,22 @@
+<nz-card [nzBordered]="false" id="xdp-config">
+  <div class="shop-setting">
+    <ul class="sub-nav">
+      <li routerLinkActive="active">
+        <a #mainPageShare [routerLink]="['main-page-share']">首页分享</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['resource-niche-management', 'HOME_DIALOG']" [queryParams]="{ type: 'HOME_DIALOG', xdpId: kolInfo.xdpId, kolId: kolInfo.kolId, micropageId: (-2 - kolInfo?.xdpId) }">首页弹窗</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['resource-niche-management', 'SHOP_SUSPEND']" [queryParams]="{ type: 'SHOP_SUSPEND', xdpId: kolInfo.xdpId, kolId: kolInfo.kolId, micropageId: (-3 - kolInfo?.xdpId) }">商城悬浮框</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['resource-niche-management', 'ITEM_DETAIL_BANNER']" [queryParams]="{ type: 'ITEM_DETAIL_BANNER', xdpId: kolInfo.xdpId, kolId: kolInfo.kolId, micropageId: (-4 - kolInfo?.xdpId) }">商详页banner位</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['editor-post-pay']" [queryParams]="{ xdpId: kolInfo?.xdpId, kolId: kolInfo.kolId,micropageId: (-5 - kolInfo?.xdpId) }">支付完成页</a>
+      </li>
+    </ul>
+    <router-outlet></router-outlet>
+  </div>
+</nz-card>

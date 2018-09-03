@@ -1,0 +1,65 @@
+<div id="modal-edit-wechatid">
+  <div class="modal-header">
+    <button type="button"
+            class="close"
+            ng-click="$ctrl.cancel()"
+            data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">完善微信公众号</h3>
+  </div>
+  <div class="modal-body">
+    <div class="note">
+      完善你的公众号信息，通过公众号推文售卖商品，并实时追踪数据效果，下方信息可在信息中心进行编辑
+    </div>
+    <form class="form-horizontal w5c-form"
+          name="addKOLForm"
+          novalidate
+          w5c-form-validate
+          role="form">
+      <div class="form-group">
+        <label class="control-label col-sm-4 required">公众号名称</label>
+        <div class="col-sm-7">
+          <input name="wechat_name"
+                 type="text"
+                 class="form-control"
+                 ng-model="$ctrl.formData.wechat_name"
+                 ng-trim="true"
+                 required
+                 placeholder="暂时没有可填0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4 required">公众号微信号</label>
+        <div class="col-sm-7">
+          <input name="wechat_id"
+                 type="text"
+                 class="form-control"
+                 ng-model="$ctrl.formData.wechat_id"
+                 ng-trim="true"
+                 required
+                 placeholder="暂时没有可填0">
+          <div class="pop-tips-info-content"
+               style="position: absolute;top: 20%;right: -10px;">
+            <i class="icon-info"></i>
+            <div class="pop-content">
+              <div class="inner clearfix">
+                <img width="300px"
+                     class="img-viewer ng-isolate-scope"
+                     alt=""
+                     src="//static.seecsee.com/images/wechat_tips_info.jpg">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary"
+                type="button"
+                w5c-form-submit="$ctrl.ok()">确定</button>
+        <button class="btn btn-default"
+                type="button"
+                ng-click="$ctrl.cancel()">取消</button>
+      </div>
+    </form>
+  </div>
+
+</div>

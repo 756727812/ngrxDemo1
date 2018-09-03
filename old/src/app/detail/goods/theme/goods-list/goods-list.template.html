@@ -1,0 +1,162 @@
+<div class="header">
+  <!-- <goods-theme-list-btn-goods-mark></goods-theme-list-btn-goods-mark> -->
+</div>
+<div class="top-bar goods-theme-top-bar">
+  <div class="sorters">
+    <div class="sort-btn"
+         ng-class="{active:$ctrl.isSorterActive(item)}"
+         ng-click="$ctrl.sort(item)"
+         ng-repeat="item in $ctrl.sorters">
+      {{item.label}}
+      <div class="arrow-wrap">
+        <i class="up fa fa-sort-up"
+           ng-class="{active: $ctrl.isSorterVal(item, 1)}"></i>
+        <i class="down fa fa-sort-down"
+           ng-class="{active: $ctrl.isSorterVal(item, 2)}"></i>
+      </div>
+    </div>
+  </div>
+  <div>
+    <span class="btn-append-goods" see-access="Super_Admin Elect_Admin" ng-click="$ctrl.toExportGoods($ctrl.themeInfo.title)">商品导出</span>
+    <span ng-if="$ctrl.isAdmin()" class="btn-append-goods" ng-click="$ctrl.toAppendGoods()">添加商品</span>
+  </div>
+</div>
+<div id="goods-theme-goods-list-ct">
+  <div class="list-ct">
+    <div id="goods-theme-goods-list"
+         class="clearfix">
+      <div class="goods-block"
+           infinite-scroll="$ctrl.scrollLoadNextPage()"
+           infinite-scroll-container="'.list-ct'"
+           infinite-scroll-distance="1"
+           ng-if="!$ctrl.nonGoods">
+        <ul class="goods">
+          <li ng-repeat="item in $ctrl.pageData.list track by $index"
+              loading-mask="item._busy">
+            <ul ng-click="$event.stopPropagation();"
+                class="card-op-icons icons top-icons"
+                ng-if="$ctrl.isAdmin()">
+              <li ng-click="$ctrl.toEdit(item)">
+                <i class="si si-14-edit-cover icon-edit"></i>
+              </li>
+              <li ng-click="$ctrl.toRemove(item)">
+                <i class="si si-close2 icon-remove"></i>
+              </li>
+            </ul>
+            <div class="img-wrap">
+              <div class="recommend"
+                   ng-if="!item.topicItemIconDisplay">
+                <span class="txt">推荐</span>
+              </div>
+              <!--最好后台给  -->
+              <a report="PAGE_THEME_DETAIL.CLICK_COMMODITY"
+                 report-ext1="{{item.id}}"
+                 report-ext3="{{$ctrl.themeId}}"
+                 target="_blank"
+                 ng-href="{{$ctrl.getItemHrefUrl(item)}}"></a>
+              <img see-src="item.itemImgurl"
+                   thumbnail="!460x460r"
+                   crop="460x460"
+                   gravity="Center">
+              <!-- <div class="ad-word"
+                     ng-if="!$ctrl.isAdmin()&&item.wordLink">
+                  <a class="button"
+                     target="_blank"
+                     ng-href="{{item.wordLink | httpUrl}}">种草文案</a>
+                </div> -->
+            </div>
+            <div class="bottom">
+              <div class="goods-sell-point-wrap">
+                <div ng-if="item.topicItemSellPoint"
+                     class="innerwrap">
+                  <goods-theme-goods-list-sell-point content="item.topicItemSellPoint"
+                                                     append-to="#goods-theme-goods-list"></goods-theme-goods-list-sell-point>
+                </div>
+              </div>
+              <div class="name">{{item.itemName}}</div>
+              <div class="profit">
+                <span>最高利润：</span>
+                <span class="val">{{$ctrl.fmtPercent(item.priceProfit)}}</span>
+              </div>
+              <div class="price">
+                <span>供货价/建议零售价：</span>
+                <span>￥{{item.supplyPrice}}/￥{{item.salePrice}}</span>
+              </div>
+              <!-- 外部权限添加到xx按钮-->
+              <div class="v-btns"
+                   ng-if="!$ctrl.isAdmin()"
+                   ng-click="$event.stopPropagation();">
+
+                <div class="button btn-to-sell">
+                  <common-btn-sell-goods item-id="item.id"
+                                         theme-id="$ctrl.themeId"></common-btn-sell-goods>
+                </div>
+
+                <a class="word-link"
+                   ng-if="!$ctrl.isAdmin()&&item.wordLink"
+                   target="_blank"
+                   ng-href="{{item.wordLink | httpUrl}}">商品推荐文案</a>
+                <!-- <span ng-if="item.inXDP"
+                        class="button done">已添加到小电铺</span> -->
+                <!--TODO-->
+                <!-- <span ng-if="!item.inXDP&&!item.inStore"
+                        ng-click="$ctrl.toAppendToXDP(item)"
+                        class="button btn-to-xdp">添加到小电铺</span>
+                  <span ng-if="!item.inXDP&&!item.inStore"
+                        ng-click="$ctrl.toAppendToOff(item)"
+                        class="button btn-to-off">添加到仓库</span>
+
+                  <span ng-if="item.inStore"
+                        class="button done">已添加到仓库</span> -->
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div ng-if="$ctrl.hasLastPageLoaded"
+             class="all-load-tips">
+          -- 没有更多商品了 --
+        </div>
+      </div>
+
+      <div class="empty-tips"
+           ng-if="$ctrl.nonGoods">
+        该主题库未添加任何商品
+      </div>
+      <pagination total-items="$ctrl.pageData.count"
+                  items-per-page="$ctrl.pageData.pageSize"></pagination>
+    </div>
+  </div>
+  <div class="side-ct">
+    <div id="goods-themes-side">
+      <div class="title">{{$ctrl.themeInfo.title}}</div>
+      <div class="descr-block">
+        <div class="labe">主题描述</div>
+        <div class="txt">
+          <div ng-repeat="line in $ctrl.themeInfo.description.split('\n') track by $index">
+            {{line}}
+          </div>
+        </div>
+      </div>
+      <div class="articel-block clearfix"
+           ng-if="$ctrl.themeInfo.articleName && $ctrl.themeInfo.articleUrl ">
+        <div class="labe">主题相关文章</div>
+        <div>
+          <a class="link"
+             ng-href="{{$ctrl.themeInfo.articleUrl | httpUrl}}"
+             target="_blank">{{$ctrl.themeInfo.articleName}}</a>
+        </div>
+        <a ng-href="{{$ctrl.themeInfo.articleUrl | httpUrl}}"
+           target="_blank"
+           class="btn-preview">预览文章</a>
+      </div>
+      <div class="sell-block"
+           ng-if="!$ctrl.isAdmin()&& !$ctrl.nonGoods">
+        <div class="txt">
+          点击下方按钮，在公众号推文中售卖该主题全部商品
+        </div>
+        <span class="btn-sell"  ng-class="{'disabled':$ctrl.isQuhaodian}"
+              ng-click="$ctrl.toSell()">售卖商品</span>
+      </div>
+    </div>
+  </div>
+</div>

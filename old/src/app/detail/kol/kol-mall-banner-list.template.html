@@ -1,0 +1,88 @@
+<div class="header">
+  <h2>
+    <strong>{{vm.article_info.title}} -- Banner列表</strong>
+  </h2>
+  <a  href="/kol/kol-cooperation-management/{{vm.kol_id}}?wechat_id={{vm.wechat_id}}#5">[返回商城列表]</a>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4 ng-bind="circle.cir_name"></h4>
+        <div class="circle-container group">
+          <form class="form-inline m-b-10" ng-submit="vm.searchBanner()">
+            <div class="form-group">
+              <select name="type" class="form-control" ng-model="vm.searchData.status">
+                <option value="" >-- 请选择状态 --</option>
+                <option ng-repeat="st in vm.statusList" value="{{st.st_id}}" ng-selected="st.st_id==vm.searchData.status">
+                  {{st.st_name}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="search" ng-model="vm.searchData.keyword" class="form-control" placeholder="搜索标题">
+            </div>
+            <button class="btn btn-primary">查询</button>
+            <div class="pull-right">
+              <button class="btn btn-primary" ng-click="vm.addBanner()">添加Banner</button>
+            </div>
+          </form>
+          <div class="table-scrollable"  see-viewer>
+            <table class="table price-adjust-table">
+              <thead>
+                <tr>
+                  <th>轮播位置</th>
+                  <th>标题</th>
+                  <th>Banner图</th>
+                  <th>H5</th>
+                  <th>小程序</th>
+                  <th>状  态</th>
+                  <th>pv/uv</th>
+                  <th>ctr</th>
+                  <th style="width:150px;">活动时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="banner in vm.bannerList" ng-class="{banner_finished: banner.status_type == 3 ||   banner.status_type == 4 }">
+                  <td>{{banner.pos}}</td>
+                  <td>{{banner.banner_title}}</td>
+                  <td>
+                    <img class="ng-isolate-scope" see-src="banner.banner_imgurl" width="100px">
+                  </td>
+                  <td>{{banner.banner_url !== '' ? '√ ':'×'}}</td>
+                  <td>{{banner.xcx_url !== '' ? '√ ':'×'}}</td>
+                  <td>
+                    <font ng-if="banner.status_type > 2">{{banner.status_str}}</font>
+                    <font ng-if="banner.status_type == 1" color="red">{{banner.status_str}}</font>
+                    <font ng-if="banner.status_type == 2" color="green">{{banner.status_str}}</font>
+                  </td>
+                  <td>{{banner.pv_info.pv}}/{{banner.pv_info.uv}}</td>
+                  <td>{{banner.ctr*100 | percentage}}</td>
+                  <td>{{banner.start_time*1000 | date: 'yyyy-MM-dd'}}
+                    <br />
+                      {{banner.end_time*1000 | date: 'yyyy-MM-dd'}}
+                  </td>
+                  <td>
+                    <!-- <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="vm.setBannerStatus(banner.banner_id, 1)">上线</button> -->
+                    <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="vm.setBannerStatus(banner.banner_id, 0)" ng-if="banner.status_type == 2">下线</button>
+                    <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="vm.deleteBanner(banner.banner_id)" ng-if="banner.status_type == 1">删除</button>
+                    <button see-access="Super-Admin Elect-Admin" class="btn btn-sm btn-primary" ng-click="vm.editBanner(banner.banner_id)" ng-if="banner.status_type <= 2">编辑</button>
+                    <a class="btn btn-sm btn-primary" ng-href="{{banner.banner_url}}" target="_blank">
+                      <i class="icon-screen-smartphone"></i>链接
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination total-items="vm.total_items"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+
+</footer>

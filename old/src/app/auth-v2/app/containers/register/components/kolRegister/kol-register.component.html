@@ -1,0 +1,88 @@
+<div class="container">
+  <form class="auth-form" [formGroup]="kolRegisterForm">
+    <div class="form-group">
+      <label class="required">公众号名称</label>
+      <div class="form-item">
+        <input name="account_name"  type="text" class="form-control" [ngClass]="{'form-error':formErrors.account_name}"  formControlName="account_name" [(ngModel)]="formData.account_name" style="width: 302px">
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.account_name"><i class="fa fa-exclamation-circle"></i>{{formErrors.account_name}}</div>
+    </div>
+    <div class="form-group">
+      <label class="required">公众号ID(微信号)</label>
+      <div class="form-item">
+        <input name="account_id"  type="text" class="form-control"  [ngClass]="{'form-error':formErrors.account_id}" formControlName="account_id" [(ngModel)]="formData.account_id"  style="width: 302px">
+        <div *ngIf="!isMobile" class="pop-container">
+          <i class="icon-info"></i>
+          <div class="pop-content">
+            <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+          </div>
+        </div>
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.account_id"><i class="fa fa-exclamation-circle"></i>{{formErrors.account_id}}</div>
+    </div>
+    <div class="form-group">
+      <label>公司名称</label>
+      <div class="form-item">
+        <input name="company_name"  type="text" class="form-control"  [ngClass]="{'form-error':formErrors.company_name}"  formControlName="company_name" [(ngModel)]="formData.company_name"   style="width: 302px">
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.company_name"><i class="fa fa-exclamation-circle"></i>{{formErrors.company_name}}</div>
+    </div>
+    <div class="form-group">
+      <label class="required">联系人姓名</label>
+      <div class="form-item">
+        <input name="linkman_name"  type="text" class="form-control" [ngClass]="{'form-error':formErrors.linkman_name}" formControlName="linkman_name" [(ngModel)]="formData.linkman_name"   style="width: 302px">
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.linkman_name"><i class="fa fa-exclamation-circle"></i>{{formErrors.linkman_name}}</div>
+    </div>
+    <div class="form-group">
+      <label class="required">联系人电话</label>
+      <div class="form-item">
+        <input name="linkman_mobile"  type="text" class="form-control"  [ngClass]="{'form-error':formErrors.linkman_mobile}"  formControlName="linkman_mobile" [(ngModel)]="formData.linkman_mobile"   style="width: 302px">
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.linkman_mobile"><i class="fa fa-exclamation-circle"></i>{{formErrors.linkman_mobile}}</div>
+    </div>
+    <div class="form-group">
+      <label class="required">当前粉丝数</label>
+      <div class="form-item">
+        <select name="fans_count"  type="text" class="form-control" [ngClass]="{'form-error':formErrors.fans_count}"  formControlName="fans_count" [(ngModel)]="formData.fans_count"  style="width: 302px">
+          <option value="" selected>-- 请选择 --</option>
+          <option *ngFor="let range of fans_range" [value]="range">{{range}}</option>
+        </select>
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.fans_count"><i class="fa fa-exclamation-circle"></i>{{formErrors.fans_count}}</div>
+    </div>
+    <div class="form-group">
+      <label class="required">账号类型</label>
+      <div class="form-item">
+        <select name="account_type"  type="text" class="form-control" [ngClass]="{'form-error':formErrors.account_type}"  formControlName="account_type" [(ngModel)]="formData.account_type"  style="width: 302px">
+          <option value="" selected>-- 请选择 --</option>
+          <option *ngFor="let item of account_type" [value]="item.id">{{item.name}}</option>
+        </select>
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.account_type"><i class="fa fa-exclamation-circle"></i>{{formErrors.account_type}}</div>
+    </div>
+    <div class="form-group">
+      <label>从何处得知小电铺的</label>
+      <div class="form-item">
+        <select name="from_where"  type="text" class="form-control" [ngClass]="{'form-error':formErrors.from_where}"  formControlName="from_where" [(ngModel)]="formData.from_where"  style="width: 302px">
+          <option value="" selected>-- 请选择 --</option>
+          <option *ngFor="let item of from_where" [value]="item.id">{{item.name}}</option>
+        </select>
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.seller_mobile"><i class="fa fa-exclamation-circle"></i>{{formErrors.seller_mobile}}</div>
+    </div>
+    <div class="form-group">
+      <label>市场对接人</label>
+      <div class="form-item">
+        <input name="connection_man_name"  type="text" class="form-control"  [ngClass]="{'form-error':formErrors.connection_man_name}"  formControlName="from_where" [(ngModel)]="formData.connection_man_name"  style="width: 302px">
+      </div>
+      <div class="form-valid-tip" *ngIf="formErrors.connection_man_name"><i class="fa fa-exclamation-circle"></i>{{formErrors.connection_man_name}}</div>
+    </div>
+    <div class="form-group" [hidden]="!error">
+      <p class="error-msg">{{error}}</p>
+    </div>
+    <div class="next-btn-warp">
+      <button type="button" class="primary-btn" [disabled]="btn_disabled" (click)="onSubmit()">下一步</button>
+    </div>
+  </form>
+</div>

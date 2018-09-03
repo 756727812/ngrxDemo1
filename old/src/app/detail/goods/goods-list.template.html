@@ -1,0 +1,353 @@
+<div class="header">
+  <h2>
+    <strong>已{{ $ctrl.insale === '1' ? '上' : '下' }}架商品</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li>
+        <a href="/">Seego后台</a>
+      </li>
+      <li>
+        <a href="">商品管理</a>
+      </li>
+      <li class="active">已{{ $ctrl.insale === '1' ? '上' : '下' }}架商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <see-tabset see-hide="C2C-Seller New-Brand">
+          <see-tab heading="母商品" type="0" select="$ctrl.selectTab()"></see-tab>
+          <see-tab heading="子商品" type="1" select="$ctrl.selectTab()"></see-tab>
+        </see-tabset>
+        <form ng-submit="$ctrl.submitSearch()" class="form-inline">
+          <div class="form-group m-b-10">
+            <label class="control-label">
+              <div class="input-group">
+                <button class="btn btn-primary btn-max-w" type="button" ng-click="$ctrl.toSelectClass()">{{$ctrl.getSelectedClassName() ? '已选品类：' + $ctrl.getSelectedClassName() : '筛选品类'}}</button>
+              </div>
+            </label>
+          </div>
+          <!-- <div class="form-group ">
+               <label class="control-label">品类
+               <div class="input-group">
+               <span class="form-control">{{ $ctrl.getSelectedClassName() }}</span>
+               <div class="btn btn-primary input-group-addon" type="button" ng-click="$ctrl.toSelectClass()">选择品类!</div>
+               </div>
+               </label>
+               </div> -->
+          <div class="form-group m-b-10" see-hide="New-Brand">
+            <select name="country" class="form-control" ng-model="$ctrl.form_data.ship_country" ng-options="ship.location as ship.location for ship in $ctrl.country_list">
+              <option value="" selected>-- 请选择发货国家 --</option>
+            </select>
+          </div>
+          <div class="form-group m-b-10" see-hide="C2C-Seller New-Brand">
+            <select name="stored" ng-model="$ctrl.form_data.is_stored" class="form-control">
+              <option value="" selected>-- {{ $ctrl.isAdmin ? '是否为SEE仓商品' : '请选择是否是囤货商品' }} --</option>
+              <option value="1">{{ $ctrl.isAdmin ? 'SEE仓商品' : '囤货' }}</option>
+              <option value="0">{{ $ctrl.isAdmin ? '非SEE仓商品' : '非囤货' }}</option>
+            </select>
+          </div>
+          <!-- <div class="form-group m-b-10" see-hide="C2C-Seller New-Brand">
+            <select name="stored" ng-model="$ctrl.form_data.is_cloud_item" class="form-control">
+              <option value="0" selected>-- 请选择是否关联1688货源 --</option>
+              <option ng-value="1">全部</option>
+              <option ng-value="2">已关联1688货源</option>
+              <option ng-value="3">未关联1688货源</option>
+              <option ng-value="4">已取消关联1688货源</option>
+            </select>
+          </div> -->
+          <div class="form-group m-b-10" see-hide="C2C-Seller New-Brand">
+            <select name="stored" ng-model="$ctrl.form_data.youzan_flag" class="form-control">
+              <option value="0" selected>-- 请选择是否关联有赞的商品 --</option>
+              <option ng-value="0">全部</option>
+              <option ng-value="1">已关联有赞</option>
+              <option ng-value="2">未关联有赞</option>
+            </select>
+          </div>
+          <div class="form-group date-picker-group m-b-10">
+            <label class="control-label">
+              <input date-range-picker class="form-control date-picker-blue" type="text" ng-model="$ctrl.form_data.datePicker" placeholder="筛选日期">
+              <i class="icon si si-calenda tail-icon"></i>
+            </label>
+          </div>
+          <div ng-if="$ctrl.hash === '0'" class="form-group m-b-10" style="font-size: 0">
+            <select class="form-control"  class="form-control" ng-model="$ctrl.form_data.searchSelectData.selectedValue">
+              <option  ng-repeat="item in $ctrl.searchSelect  track by $index" ng-value="item.value" >{{item.label}}</option>
+            </select>
+            <input type="search" class="form-control" ng-model="$ctrl.form_data.searchSelectData.inputValue" placeholder="支持模糊搜索">
+          </div>
+          <div ng-if="$ctrl.hash === '1'" class="form-group m-b-10">
+            <label class="control-label">
+              <input type="search" class="form-control" ng-model="$ctrl.form_data.item_name" placeholder="商品名称">
+            </label>
+          </div>
+          <div class="form-group m-b-10" ng-if="$ctrl.hash === '1'">
+            <label class="control-label">
+              <input type="search" class="form-control" ng-model="$ctrl.form_data.parent_item_id" placeholder="母商品ID">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">
+              <input type="search" class="form-control" ng-model="$ctrl.form_data.item_id" placeholder="{{!$ctrl.is_c2c ? $ctrl.hash === '1' ? '子' : '母' : ''}}商品ID">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">
+              <input type="search" class="form-control" ng-model="$ctrl.form_data.sku_mark" placeholder="货号">
+            </label>
+          </div>
+          <div ng-if="$ctrl.hash === '1'" class="form-group">
+            <!-- <input name="choice_seller" type="text" class="form-control" ng-model="vm.choice_seller" autocomplete="off" required uib-typeahead="xdp as xdp.app_title for xdp in $ctrl.xdp_list | filter:{app_title:$viewValue, seller_mobile:$viewValue} " placeholder="输入小电铺的名称/手机号" typeahead-show-hint="true" typeahead-min-length="0" typeahead-popup-template-url="customXdpPopupTemplate.html"/> -->
+            <input name="xdp_id" type="text" class="form-control" ng-model="$ctrl.searchXdp" autocomplete="off" uib-typeahead="xdp as (xdp.app_title + '(' + xdp.seller_mobile + ')') for xdp in $ctrl.xdp_list | filter:$viewValue " placeholder="小电铺名称/后台登录帐号" typeahead-show-hint="true" typeahead-min-length="0" typeahead-popup-template-url="customXdpPopupTemplate.html"/>
+            <script type="text/ng-template" id="customXdpPopupTemplate.html">
+              <div class="custom-popup-wrapper"
+                    ng-style="{top: position().top+'px', left: position().left+'px'}"
+                    style="display: block;"
+                    ng-show="isOpen() && !moveInProgress"
+                    aria-hidden="{{!isOpen()}}">
+                <ul class="dropdown-menu" role="listbox" style="display:block;max-height:500px;overflow-y:scroll">
+                  <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }"
+                      ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">
+                    <!-- <div  template-url="templateUrl"></div> -->
+                    <a index="$index" match="match" query="query">
+                      <span>{{match.label}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </script>
+          </div>
+
+          <div class="form-group m-b-10" ng-if="$ctrl.insale != '1' && $ctrl.hash === '1'">
+            <!-- <label class="control-label">小电铺ID </label>{{$ctrl.xdpIdList}} -->
+            <label class="control-label">
+              <input type="search" class="form-control" size="30" ng-model="$ctrl.form_data.xdp_id_list" placeholder="小电铺ID，多个时以英文逗号分隔">
+            </label>
+            <!-- <ui-select multiple ng-model="$ctrl.xdpIdList" theme="bootstrap" close-on-select="false" title="选择小电铺" style="width: 300px;">
+              <ui-select-match placeholder="选择小电铺">{{$item.app_title}}</ui-select-match>
+              <ui-select-choices repeat="item.xdp_id as item in $ctrl.xdp_list | propsFilter: {xdp_id: $select.search}" refresh="$ctrl.getXdpList()"
+                refresh-delay="200">
+                <div ng-bind-html="item.app_title | highlight: $select.search"></div>
+              </ui-select-choices>
+            </ui-select> -->
+          </div>
+
+          <div class="form-group m-b-10">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa fa-search"></i>搜索</button>
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.addToHotItem()" see-hide="C2C-Seller New-Brand Fin-Admin" ng-hide="$ctrl.hash === '1'"
+              ng-if="$ctrl.insale === '1'">
+              <i class="fa fa-plus"></i>添加至热门单品库</button>
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.readyToSell()" see-hide="C2C-Seller New-Brand Fin-Admin" ng-if="$ctrl.insale !== '1' && $ctrl.hash==='1'">批量上架</button>
+          </div>
+        </form>
+
+        <!--其他权限 -->
+        <div see-hide="New-Brand" ng-if="$ctrl.goods_list.length" class="grid moveupdown materialList goods-list images-loaded">
+          <div class="grid-sizer"></div>
+          <div class="grid-item" ng-repeat="item in $ctrl.goods_list track by item.item_id" id="{{'item' + item.item_id}}">
+            <div class="item-label-box">
+              <span class="label label-i" ng-if="item.in_warehouse==1">{{ $ctrl.isAdmin ? 'SEE仓' : '囤货' }}</span>
+              <span class="label label-i" ng-if="item.in_warehouse!=1 && !$ctrl.isAdmin">非囤货</span>
+              <span class="label label-i" ng-if="item.distribution_flag==1">分销</span>
+              <span class="label label-i" ng-if="item.distribution_flag!=1">自营</span>
+              <span class="label label-i" ng-if="item.distribution_status==1">审核中</span>
+              <span class="label label-i" ng-if="item.distribution_status==2">供货中</span>
+            </div>
+            <div class="grid-item-image">
+              <img see-src="item.item_imgurl" class="img-viewer" alt="">
+              <div see-hide="Fin-Admin" class="btn-group font-size-25 bottom">
+                <a href="" class="" style="right:0;bottom:0;opacity:1;" ng-click="$ctrl.applyDistribution(item)" title="一键供货" ng-if="item.distribution_flag!=1 && item.distribution_status == 0 && item.parent_id == 0 && item.item_insale > 0">
+                  <i style="font-size:29px" class="si si-link"></i>
+                </a>
+                <a href="" class="" ng-click="$ctrl.hideGoods(item.item_id, item.hidden, $index)" title="{{item.hidden == '1' ? '显示商品' : '隐藏商品'}}">
+                  <i class="fa " ng-class="{ 'fa-eye-slash' : item.hidden == '0', 'fa-eye': item.hidden == '1'}"></i>
+                </a>
+                <a href="" class="" ng-click="$ctrl.onffItem(item.item_id, item.item_insale, item.activity_status, item.seckill_status, $index)"
+                  title="{{item.item_insale == '1' ? '下架' : '上架'}}">
+                  <i class="fa " ng-class="{ 'fa-cart-plus' : item.item_insale == '0', 'fa-trash-o': item.item_insale == '1'}"></i>
+                </a>
+              </div>
+              <a see-goods="item.item_id" class="goods-url" target="_blank"></a>
+            </div>
+            <div class="clear-fix p-5 m-0" style="font-size: 12px;">
+              <span class="pull-left">
+                <label>
+                  <input ng-if="$ctrl.insale === '1' && item.distribution_status > 1" type="checkbox" ng-model="item.is_checked" ng-change="$ctrl.selectedChanged()">
+                  <input see-hide="C2C-Seller New-Brand Fin-Admin" ng-if="$ctrl.insale !== '1' && $ctrl.hash==='1'" type="checkbox" ng-model="item.is_checked"
+                    ng-change="$ctrl.selectedChanged()">
+                  <span ng-bind="item.item_id" title="商品ID"></span>
+                </label>
+                <a ng-href="/goods/{{item.item_insale === '1' ? 'posted' : 'Off'}}?item_id={{item.parent_id}}#0" target="_blank" ng-if="item.parent_id !== '0'"
+                  ng-bind="'(' + item.parent_id + ')'"></a>
+              </span>
+              <span class="pull-right" ng-if="item.sku_mark">货号:{{item.sku_mark}}</span>
+            </div>
+            <div class="clear-fix p-5 m-0" style="font-size: 12px;">
+              <span class="pull-left">
+                {{item.price_list[0].text}}
+                <span class="text-primary">{{item.price_list[0].price
+                  < 0 ? '未编辑' : (item.price_list[0].price | currency: '￥')}}</span>
+                </span>
+                <span class="pull-right" title="{{item.parent_id !== '0' && item.in_promotion === '1' && '促销时间段：' + item.promotion_start_time + ' ~ ' + item.promotion_end_time}}">
+                  {{item.price_list[1].text}}
+                  <span class="text-primary">{{item.price_list[1].price
+                    < 0 ? '未编辑' : (item.price_list[1].price | currency: '￥')}}</span>
+                  </span>
+            </div>
+            <div class="clear-fix">
+              <div class="pull-left">
+                <span class="text-info" ng-bind="item.backend_seller_name" title="商户后台名称"></span>
+              </div>
+              <div class="pull-right" title="发货地">
+                <img style="width: 25px;" see-src="item.ship_country_logo" alt="" />
+                <span ng-bind="item.ship_country"></span>
+              </div>
+            </div>
+            <div class="clear-fix">
+              <span class="text-primary pull-left" title="囤货" ng-if="item.in_warehouse === '1'" see-hide="C2C-Seller">
+                <i class="fa fa-archive"></i>
+              </span>
+              <a ng-href="/goods/posted/{{item.class_id}}/{{item.item_id}}?type={{$ctrl.curPath}}" class="grid-item-desc m-b-10 text-info" title="进入商品编辑" ng-bind="item.item_name"
+                ng-if="item.parent_id === '0'"></a>
+              <a ng-href="/goods/generate-sub-goods/{{item.item_id}}?type={{$ctrl.curPath}}" class="grid-item-desc m-b-10 text-info" title="进入商品编辑" ng-bind="item.item_name"
+                ng-if="item.parent_id !== '0'"></a>
+            </div>
+            <div class="clear-fix">
+              <div class="pull-left">{{ item.item_created_at}}
+                <a href="/goods/list1688?page=1&status=0&name=&oriId={{item.cloud_item_id}}&kw=" target="_blank" class="text-primary" ng-if="item.cloud_item_id > 0"
+                  style="padding-left:15px;">1688</a>
+                <a href="/goods/list1688?page=1&status=1&name=&oriId={{item.cloud_item_id}}&kw=" target="_blank" class="text-muted" ng-if="item.cloud_item_id < 0"
+                  style="padding-left:15px;">1688</a>
+              </div>
+              <div class="pull-right">
+                <span ng-if="item.parent_id === '0' && !$ctrl.is_c2c && item.in_warehouse === '1'">
+                  <a ng-href="/wms/stock-detail?productId={{item.item_id}}" target="_blank" ng-if="!$ctrl.isAdmin">
+                    <span title="可售库存{{item.total_stock}}/总库存{{item.total_stock_in_wh}}，点击查看库存详情">
+                      <i class="fa fa-archive text-primary"></i>
+                      <span>{{item.total_stock}}/{{item.total_stock_in_wh}}</span>
+                    </span>
+                  </a>
+                  <span ng-if="$ctrl.isAdmin">
+                    <span title="可售库存{{item.total_stock}}/总库存{{item.total_stock_in_wh}}">
+                      <i class="fa fa-archive text-primary"></i>
+                      <span>{{item.total_stock}}/{{item.total_stock_in_wh}}</span>
+                    </span>
+                  </span>
+                </span>
+
+                <span ng-if="item.parent_id === '0' && !$ctrl.is_c2c && item.in_warehouse === '0'"><i class="fa fa-archive text-primary"></i>{{item.total_stock}}</span>
+
+                <span title="库存" ng-if="item.parent_id !== '0' || $ctrl.is_c2c">
+                  <i class="fa fa-archive text-primary"></i>
+                  <span ng-bind="item.total_stock"></span>
+                </span>
+                <span>
+                  <i class="fa fa-cart text-primary"></i>
+                  <span ng-if="item.parent_id !=='0'" ng-bind="item.item_insale === '1' ? '已上架' : '已下架'"></span>
+                  <span ng-if="item.parent_id === '0'">
+                    <a ng-href="/goods/{{item.item_insale === '1' ? 'posted' : 'Off'}}?parent_item_id={{item.item_id}}#1" target="_blank" ng-if="item.parent_id === '0' && !$ctrl.is_c2c">查看子商品</a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--新品牌权限-->
+        <div see-access="New-Brand" class="grid moveupdown materialList goods-list">
+          <div class="grid-sizer"></div>
+          <div class="grid-item" ng-repeat="item in $ctrl.goods_list track by item.item_id" id="{{'item' + item.item_id}}">
+            <div class="grid-item-image">
+              <img see-src="item.item_imgurl" class="img-viewer" style="width:230px;height:230px" alt="">
+              <div see-hide="Fin-Admin" class="btn-group font-size-25 bottom" style="right:0;bottom:0;">
+                <a see-hide="C2C-Seller New-Brand" href="" class="" ng-click="$ctrl.hideGoods(item.item_id, item.hidden, $index)" title="{{item.hidden == '1' ? '显示商品' : '隐藏商品'}}">
+                  <i class="fa " ng-class="{ 'fa-eye-slash' : item.hidden == '0', 'fa-eye': item.hidden == '1'}"></i>
+                </a>
+                <a href="" class="" style="right:0;bottom:0;opacity:0.5;" ng-click="$ctrl.onffItem(item.item_id, item.item_insale, item.activity_status, item.seckill_status, $index)"
+                  title="{{item.item_insale == '1' ? '下架' : '上架'}}">
+                  <i class="fa " ng-class="{ 'fa-cart-plus' : item.item_insale == '0', 'fa-trash-o': item.item_insale == '1'}"></i>
+                  <i class="fa " style="color:#fff;font-size:12px;margin-bottom:5px;">{{item.item_insale === '1' ? '下架' : '上架'}}</i>
+                </a>
+              </div>
+              <a href="{{item.buy_url}}" class="goods-url" target="_blank"></a>
+            </div>
+            <div class="clear-fix m-0" style="font-size: 14px;font-weight: 600;padding:0 5px;">
+              <span class="pull-left">
+                <span class="text-primary pull-left" title="囤货" ng-if="item.in_warehouse === '1'" see-hide="C2C-Seller New-Brand">
+                  <i class="fa fa-archive"></i>
+                </span>
+                <a href="/goods/posted/{{item.class_id}}/{{item.item_id}}?type={{$ctrl.curPath}}" class="grid-item-desc m-b-10 text-info" title="进入商品编辑" ng-bind="item.item_name"
+                  ng-if="item.parent_id === '0'"></a>
+                <a ng-href="/goods/generate-sub-goods/{{item.item_id}}?type={{$ctrl.curPath}}" class="grid-item-desc m-b-10 text-info" title="进入商品编辑" ng-bind="item.item_name"
+                  ng-if="item.parent_id !== '0'"></a>
+              </span>
+            </div>
+            <div class="clear-fix m-0" style="font-size: 12px;padding:0 5px;color: #666;">
+              <span class="pull-left" ng-if="item.sku_mark">货号:{{item.sku_mark}}</span>
+              <span class="pull-right" title="{{item.parent_id !== '0' && item.in_promotion === '1' && '促销时间段：' + item.promotion_start_time + ' ~ ' + item.promotion_end_time}}">
+                {{item.price_list[1].text}}
+                <span class="text-primary" style="color:#ff634c">{{item.price_list[1].price
+                  < 0 ? '未编辑' : (item.price_list[1].price | currency: '￥')}}</span>
+                </span>
+            </div>
+            <div class="clear-fix p-5 m-0" style="font-size: 12px;color: #666;">
+              <div class="pull-right">{{ item.item_created_at}}
+                <a href="/goods/list1688?page=1&status=0&name=&oriId={{item.cloud_item_id}}&kw=" target="_blank" class="text-primary" ng-if="item.cloud_item_id > 0"
+                  style="padding-left:15px;">1688</a>
+                <a href="/goods/list1688?page=1&status=1&name=&oriId={{item.cloud_item_id}}&kw=" target="_blank" class="text-muted" ng-if="item.cloud_item_id < 0"
+                  style="padding-left:15px;">1688</a>
+              </div>
+              <div class="pull-left">
+                <a ng-href="/wms/stock-detail?productId={{item.item_id}}" target="_blank" ng-if="item.parent_id === '0' && !$ctrl.is_c2c && item.in_warehouse === '1'">
+                  <span title="可售库存{{item.total_stock}}/总库存{{item.total_stock_in_wh}}，点击查看库存详情">
+                    <i class="fa fa-archive text-primary"></i>
+                    <span>{{item.total_stock}}/{{item.total_stock_in_wh}}</span>
+                  </span>
+                </a>
+                <span ng-if="item.parent_id === '0' && !$ctrl.is_c2c && item.in_warehouse === '0'">
+                  <i class="fa fa-archive text-primary"></i>{{item.total_stock}}</span>
+
+                <span title="库存" ng-if="item.parent_id !== '0' || $ctrl.is_c2c">
+                  <i class="fa fa-archive text-primary"></i>
+                  <span ng-bind="item.total_stock"></span>
+                </span>
+                <span>
+                  <i class="fa fa-cart text-primary"></i>
+                  <span ng-if="item.parent_id !=='0'" ng-bind="item.item_insale === '1' ? '已上架' : '已下架'"></span>
+                  <span ng-if="item.parent_id === '0'">
+                    <a ng-href="/goods/{{item.item_insale === '1' ? 'posted' : 'Off'}}?parent_item_id={{item.item_id}}#1" target="_blank" ng-if="item.parent_id === '0' && !$ctrl.is_c2c">查看子商品</a>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-content my-shop-empty" ng-if="$ctrl.b_get_list_success && $ctrl.goods_list.length == 0" see-access="New-Brand">
+          <div class="row">
+            <div class="col-xs-12" ng-if="$ctrl.insale === '1'">
+              <h1>
+                <i class="icon si si-emoji-sad"></i>{{$ctrl.b_get_searching? '没有符合条件的商品':'商品库现在空空哦~'}}</h1>
+              <div class="text-center" ng-if="!$ctrl.b_get_searching">
+                <center>快去发布你的第一个商品吧~</center>
+                <a href="/goods/publish" class="btn btn-primary" style="margin-top:15px;margin-bottom:25px;">发布商品</a>
+              </div>
+            </div>
+
+            <div class="col-xs-12" ng-if="$ctrl.insale === '0'">
+              <h1>
+                <i class="icon si si-emoji-sad"></i>没有符合条件的商品</h1>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-info" ng-if="!$ctrl.total_items">{{ $ctrl.list_info }}</p>
+        <pagination ng-if="$ctrl.total_items > 0" total-items="$ctrl.total_items" items-per-page="30"></pagination>
+      </div>
+    </div>
+  </div>
+</div>

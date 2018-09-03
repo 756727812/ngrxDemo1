@@ -1,0 +1,16 @@
+<div class="modal-picture-center">
+  <div class="modal-header bg-primary">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">子商品同步勾选售卖</h3>
+  </div>
+  <div class="modal-body">
+    <p>确认对所有子商品的该SKU同步勾选售卖？若确定，将立即生效，请谨慎操作</p>
+    <p style="color: #5971e8">
+      提示：当前所有子商品该SKU的已勾选售卖数/总数为：{{$ctrl.childStatus}}
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="submit" ng-click="$ctrl.ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">取消</button>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="row content-block" ng-if="$ctrl.data">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-header panel-link-header" ng-class="{noborder:!$ctrl.hasNonContent}">
+        <strong>近期内容电商</strong><i class="si si-arrow-right"></i>
+      </div>
+      <div class="panel-content">
+        <table
+          ng-if="!$ctrl.hasNonContent"
+          class="table table-striped">
+          <thead>
+          <tr>
+            <th>文章名</th>
+            <th>公众号</th>
+            <th class="col-date">上线时间</th>
+            <th>内容阅读数</th>
+            <th>浏览量</th>
+            <th>访客数</th>
+            <th>销量</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in $ctrl.data track by $index">
+            <td>{{item.article_title}}</td>
+            <td>{{item.wx_official_account}}</td>
+            <td>{{item.article_time}}</td>
+            <td>{{item.read_num}}</td>
+            <td>{{item.glance_over_num}}</td>
+            <td>{{item.visitor_num}}</td>
+            <td>{{item.sale_num}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+
+        <div ng-if="$ctrl.hasNonContent" class="empty-tips-wrap">
+          <div class="top-line">
+            <i class="si si-emoji-sad"></i>
+            <span>尚未进行内容电商推送</span>
+          </div>
+          <p class="tips-p">
+            内容电商和小电铺搭配，效果更佳哦～快来尝试吧
+          </p>
+          <!-- TODO 有两个内容电商，跳哪个呀-->
+          <span class="button" ng-click="$ctrl.goToContentBiz()">开启我的内容电商</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

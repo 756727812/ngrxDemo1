@@ -1,0 +1,406 @@
+<pro-header [title]="'采购详情'" [paths]="paths">
+  <ng-template #action>
+    <!-- <nz-button-group [nzSize]="'large'"> -->
+    <button nz-button (click)="cancel()" [nzSize]="'large'" *ngIf="purchaseData?.status===1">
+      <span>撤销</span>
+    </button>
+    <button nz-button (click)="navigateToEdit()" [nzSize]="'large'">
+      <span>编辑</span>
+    </button>
+    <!-- </nz-button-group> -->
+    <button nz-button (click)="isConfirmModalVisible=true" [nzType]="'primary'" [nzSize]="'large'" *ngIf="purchaseData?.status===1">
+      <span>财务确认</span>
+    </button>
+    <button nz-button [nzType]="'primary'" (click)="navigateToWarehouse()" [nzSize]="'large'" *ngIf="purchaseData?.status>1 && purchaseData?.status < 5">
+      <span>创建入库单</span>
+    </button>
+  </ng-template>
+  <ng-template #status>
+    单号：{{purchaseData.purchaseOrderNo}} 状态：
+    <span style="color: red;">{{purchaseData.statusStr}}</span>
+  </ng-template>
+  <ng-template #content>
+    <nz-tabset (nzSelectedIndexChange)="selectTab($event)">
+      <nz-tab *ngFor="let tab of tabs">
+        <ng-template #nzTabHeading>
+          {{tab.name}}
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+  </ng-template>
+</pro-header>
+
+<div class="purchase-detail">
+  <nz-card [nzBordered]="false">
+    <div class="purchase-order-detail" *ngIf="type === 0">
+      <h2 class="purchase-order-title">业务商品采购申请单</h2>
+      <h2 class="purchase-order-title">Commercial Purchase Application Form</h2>
+      <div class="purchase-info" nz-row [nzType]="'flex'" [nzJustify]="'start'" [nzAlign]="'middle'">
+        <div nz-col [nzSpan]="4">
+          &nbsp;&nbsp; 公司名称：
+          <br>（Company Name）
+        </div>
+        <div nz-col [nzSpan]="8" class="field-value">
+          {{purchaseData.buyer}}
+        </div>
+        <div nz-col [nzSpan]="3" [nzOffset]="5">
+          采购单号：
+          <br> Purchase No.
+        </div>
+        <div nz-col [nzSpan]="3" class="field-value">
+          {{purchaseData.purchaseOrderNo}}
+        </div>
+      </div>
+
+      <div class="purchase-info" nz-row [nzType]="'flex'" [nzJustify]="'start'" [nzAlign]="'middle'">
+        <div nz-col [nzSpan]="3">
+          &nbsp;&nbsp; 申请日期：
+          <br>（Applied Date）
+        </div>
+        <div nz-col [nzSpan]="3" class="field-value">
+          {{purchaseData.createTime | date: "yyyy-MM-dd"}}
+        </div>
+        <div nz-col [nzSpan]="3" [nzOffset]="1">
+          &nbsp;&nbsp; 部门：
+          <br>（Department）
+        </div>
+        <div nz-col [nzSpan]="2" class="field-value">
+          供应链
+        </div>
+        <div nz-col [nzSpan]="3" [nzOffset]="1">
+          &nbsp;&nbsp;&nbsp;申请人：
+          <br>（Applicant）
+        </div>
+        <div nz-col [nzSpan]="2" class="field-value">
+          {{purchaseData.applicant}}
+        </div>
+        <div nz-col [nzSpan]="3" [nzOffset]="1">
+          &nbsp;&nbsp; 货币：
+          <br>（Currency）
+        </div>
+        <div nz-col [nzSpan]="1" class="field-value">
+          {{purchaseData.currency}}
+        </div>
+      </div>
+
+      <div class="purchase-info" nz-row [nzType]="'flex'" [nzJustify]="'start'" [nzAlign]="'middle'">
+        <div nz-col [nzSpan]="3">
+          &nbsp;&nbsp; 供应商：
+          <br>（Supplier）
+        </div>
+        <div nz-col [nzSpan]="3" class="field-value">
+          {{purchaseData?.supplier.companyName}}
+        </div>        
+        <div nz-col [nzSpan]="4" [nzOffset]="1">
+          &nbsp;&nbsp; 供应商地址：
+          <br>(Suppliers Address)
+        </div>
+        <div nz-col [nzSpan]="12" class="field-value">
+          {{purchaseData.supplier.address}}
+        </div>
+      </div>
+      <div class="purchase-info" nz-row [nzType]="'flex'" [nzJustify]="'start'" [nzAlign]="'middle'" *ngIf="purchaseData.supplier.alipayAccount">
+        <div nz-col [nzSpan]="4">
+          &nbsp;&nbsp; 收款信息：
+          <br>（Beneficiars Info ）
+        </div>
+        <div nz-col [nzSpan]="19" class="field-value">
+          支付宝账号 {{purchaseData.supplier.alipayAccount}}
+        </div>
+      </div>
+      <div class="purchase-info m-b-20 m-t-10" nz-row [nzType]="'flex'" [nzJustify]="'start'" [nzAlign]="'middle'" *ngIf="!purchaseData.supplier.alipayAccount">
+        <div nz-col [nzSpan]="4" class="m-t-10 p-t-30">
+          &nbsp;&nbsp; 收款信息：
+          <br>（Beneficiars Info ）
+        </div>
+        <div nz-col [nzSpan]="19" class="field-value">
+          开户名：{{purchaseData.supplier.bankAccountName}}<br>
+          开户支行：{{purchaseData.supplier.bankName}}<br>
+          银行卡号：{{purchaseData.supplier.bankAccountNo}}<br>
+          Swift Code：{{purchaseData.supplier.swiftCode}}
+        </div>
+      </div>
+
+      <nz-table class="table--summary" #purchaseSumaryTable nzShowFooter [nzLoading]="loading" [nzIsPagination]="false" [nzAjaxData]="warehouseData?.summary"
+        *ngIf="warehouseData">
+        <thead nz-thead>
+          <tr>
+            <th nz-th></th>
+            <th nz-th>
+              <span>编号</span>
+            </th>
+            <th nz-th>
+              <span>商品</span>
+            </th>
+            <th nz-th>
+              <span>规格</span>
+            </th>
+            <th nz-th>
+              <span>单位</span>
+            </th>
+            <th nz-th>
+              <span>采购数量</span>
+            </th>
+            <th nz-th>
+              <span>采购单价</span>
+            </th>
+            <th nz-th>小计</th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let item of purchaseSumaryTable.data; index as index">
+            <td nz-td>{{index+1}}</td>
+            <td nz-td>SEE仓ID：{{item.warehouseItemId}}
+              <br>货号：{{item.itemNo}}</td>
+            <td nz-td>{{item.itemName}}</td>
+            <td nz-td>{{item.specificationName}}</td>
+            <td nz-td>{{item.unit}}</td>
+            <td nz-td>{{item.quantity}}</td>
+            <td nz-td>{{item.unitPrice}}</td>
+            <td nz-td>{{item.unitPrice * item.quantity}}</td>
+          </tr>
+          <tr nz-tbody-tr>
+            <td nz-td></td>
+            <td nz-td colspan="4">合计：</td>
+            <td nz-td colspan="2">{{purchaseData.sumQuantity}}</td>
+            <td nz-td colspan="2">{{purchaseData.sumAmount}}</td>
+          </tr>
+        </tbody>
+        <div nz-table-footer>
+          <div style="width: 100%;">
+            <div class="amount-info" nz-row [nzType]="'flex'">
+              <div nz-col class="amount-info__name">
+                <p>其他金额:</p>
+                <p>采购总金额:</p>
+                <p>大写总金额:</p>
+              </div>
+              <div nz-col [nzOffset]="1">
+                <p>{{purchaseData.otherAmount}}</p>
+                <p class="sum-amount">{{purchaseData.sumAmount + purchaseData.otherAmount}}</p>
+                <p class="sum-amount">{{purchaseData.sumAmount + purchaseData.otherAmount | chineseNumber}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-table>
+
+      <div class="purchase-info purchase-info--extra m-t-20" nz-row>
+        <div nz-col [nzSpan]="4">
+          &nbsp;&nbsp; 发票等凭证：{{purchaseData.voucher}}<br>
+          （Invoice）
+        </div>
+        <div nz-col [nzSpan]="19">
+
+        </div>
+      </div>
+      <div class="purchase-info purchase-info--extra" nz-row>
+        <div nz-col [nzSpan]="4">
+          &nbsp;&nbsp; 结款方式：&nbsp;&nbsp; {{purchaseData.settlementMethodStr}} &nbsp;
+          <span *ngIf="purchaseData.settlementMethod == 1">期望付款时间：{{purchaseData.expectPaymentTime | date: "yyyy-MM-dd"}}</span><br>
+          （Settlement Method）
+        </div>
+        <div nz-col [nzSpan]="19">
+
+        </div>
+      </div>
+      <div class="purchase-info purchase-info--extra" nz-row>
+        <div nz-col [nzSpan]="2">
+          &nbsp;&nbsp; 备注：<br>
+          （Remarks）
+        </div>
+        <div nz-col [nzSpan]="19" class="m-l-0">
+          {{purchaseData.remark}}
+        </div>
+      </div>
+      <br>
+      <br>
+
+      <h2 class="purchase-order-title">授权与审批</h2>
+      <h2 class="purchase-order-title m-b-20">Authorization &amp; signature</h2>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="3">
+          部门负责人签字：
+          <br>（Dpt. in Charge）
+        </div>
+        <div nz-col [nzSpan]="4" [nzOffset]="5">
+          财务部复核：
+          <br>（Financial Dpt. Review）
+        </div>
+        <div nz-col [nzSpan]="3" [nzOffset]="5">
+          CEO签字：
+          <br>（CEO）
+        </div>
+      </div>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="3">
+          日期（Date）：
+        </div>
+        <div nz-col [nzSpan]="4" [nzOffset]="5">
+          日期（Date）：
+        </div>
+        <div nz-col [nzSpan]="4" [nzOffset]="5">
+          日期（Date）：
+        </div>
+      </div>
+
+      <br>
+      <br>
+      <!-- <div nz-row>
+        <div nz-col [nzSpan]="3">
+          修改历史：
+        </div>
+        <div nz-col [nzSpan]="10">
+          2018-3-15 17:32 ，阿希axi@seeapp.com
+          <br> 2018-3-11 10:59 ，杨天舒 icy@seeapp.com
+        </div>
+      </div> -->
+
+    </div>
+
+    <div class="warehouse-detail" *ngIf="type === 1">
+      <h3 class="warehouse-detail__header"><i class="si si-shop-center-round"></i> &nbsp; 概况</h3>
+      <nz-table class="table--summary" #summaryTable [nzIsPagination]="false" [nzAjaxData]="warehouseData?.summary" *ngIf="warehouseData">
+        <thead nz-thead>
+          <tr>
+            <th nz-th></th>
+            <th nz-th>
+              <span>编号</span>
+            </th>
+            <th nz-th>
+              <span>商品</span>
+            </th>
+            <th nz-th>
+              <span>规格</span>
+            </th>
+            <th nz-th>
+              <span>单位</span>
+            </th>
+            <th nz-th>
+              <span>采购数量</span>
+            </th>
+            <th nz-th>
+              <span>已入库良品量</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let item of summaryTable.data; index as index">
+            <td nz-td>{{index+1}}</td>
+            <td nz-td>
+              SEE仓ID： {{item.warehouseItemId}}
+              <br> 货号：{{item.itemNo}}
+            </td>
+            <td nz-td>{{item.itemName}}</td>
+            <td nz-td>{{item.specificationName}}</td>
+            <td nz-td>{{item.unit}}</td>
+            <td nz-td>{{item.quantity}}</td>
+            <td nz-td [style.color]="item.goodQuantitySum < item.quantity && item.goodQuantitySum != 0 ? 'red' : '#000'">{{item.goodQuantitySum}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <h3 class="warehouse-detail__header"><i class="si si-fileboard"></i> &nbsp; 入库记录</h3>
+      <div *ngIf="warehouseData.warehouseRecords.length === 0" class="empty-info">
+        尚无
+      </div>
+      <div class="warehouse-records" *ngIf="warehouseData">
+        <nz-table #warehouseTable [nzPageSize]="10" nzShowTitle nzShowFooter nzBordered [nzIsPagination]="false" [nzAjaxData]="w.items"
+          *ngFor="let w of warehouseData.warehouseRecords">
+          <div nz-table-title>
+            <span class="left">入库单 {{w.warehouseOrderNo}} &nbsp;&nbsp; 状态：{{w.statusStr}}</span>
+            <span class="right">
+              <a [href]="'warehouse/warehouseOrder/' + w.id + '/detail'">查看入库单</a>
+            </span>
+          </div>
+          <thead nz-thead>
+            <tr>
+              <th nz-th></th>
+              <th nz-th>
+                <span>编号</span>
+              </th>
+              <th nz-th>
+                <span>商品</span>
+              </th>
+              <th nz-th>
+                <span>规格</span>
+              </th>
+              <th nz-th>
+                <span>单位</span>
+              </th>
+              <th nz-th>
+                <span>采购数量</span>
+              </th>
+              <th nz-th>
+                <span>预报入库量</span>
+              </th>
+              <th nz-th>
+                <span>实入库量(总量、良品、残品)</span>
+              </th>
+              <th nz-th>
+                <span>失效日期(复核)</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let item of warehouseTable.data; index as index">
+              <td nz-td>{{index+1}}</td>
+              <td nz-td>
+                SEE仓ID：{{item.warehouseItemId}}
+                <br> 货号：{{item.itemNo}}
+                <br> 实入货号：{{item.realItemNo}}
+              </td>
+              <td nz-td>
+                {{item.itemName}}
+              </td>
+              <td nz-td>{{item.specificationName}}</td>
+              <td nz-td>{{item.unit}}</td>
+              <td nz-td>{{item.quantity}}</td>
+              <td nz-td>{{item.warehouseQuantity}}</td>
+              <td nz-td *ngIf="w.status > 2">
+                <span [style.color]="item.inferiorQuantity > 0 || item.totalQuantity < item.warehouseQuantity ? 'red' : '#000'">{{item.totalQuantity}}</span>
+                <br> (良{{item.goodQuantity}}，
+                <span [style.color]="item.inferiorQuantity > 0 ? 'red' : '#000'">残{{item.inferiorQuantity}}</span>)
+              </td>
+              <td nz-td *ngIf="w.status <= 2">
+                NA
+              </td>
+              <td nz-td>
+                <span *ngIf="!item.expiryDate">无</span>
+                <span *ngIf="item.expiryDate">{{item.expiryDate | date: "yyyy-MM-dd"}}</span>
+                <br>
+                <span style="color:red" *ngIf="w.status > 2 && item.realExpiryDate != item.expiryDate">实入：{{item.realExpiryDate| date: "yyyy-MM-dd"}}</span>
+                <span *ngIf="w.status > 2 && item.expiryDate && item.realExpiryDate == item.expiryDate">无误</span>
+              </td>
+            </tr>
+          </tbody>
+          <div nz-table-footer>
+            <span class="left">仓库签收人： {{w.warehouseReceiver || 'NA'}} &nbsp;&nbsp; 联系电话：{{w.warehouseReceiverPhone || 'NA'}}</span>
+            <span class="right">
+              创建时间：{{w.createTime || 'NA'}} &nbsp;&nbsp; 入仓时间：{{w.warehouseTime || 'NA'}}
+            </span>
+          </div>
+        </nz-table>
+      </div>
+    </div>
+  </nz-card>
+</div>
+
+
+<nz-modal [nzVisible]="isConfirmModalVisible" [nzTitle]="'提示'" [nzContent]="modalContent" (nzOnCancel)="confirmer=''; isConfirmModalVisible=false"
+  (nzOnOk)="confirm()">
+  <ng-template #modalContent>
+    <div nz-row>
+      <div nz-col [nzSpan]="3">
+        确认人：
+      </div>
+      <div nz-col [nzSpan]="10">
+        <nz-input [(ngModel)]="confirmer" name="confirmer" [nzPlaceHolder]="'确认人'" [nzSize]="'large'"></nz-input>
+        <p *ngIf="confirmer?.length>0 && sellerName !== confirmer" style="color: red">仅支持输入当前账号对应的姓名</p>
+      </div>
+    </div>
+    <p>采购单一旦确认，将不再支持修改“备注”以外的信息，以避免财务纠纷。</p>
+    <p>确认提交？</p>
+  </ng-template>
+</nz-modal>

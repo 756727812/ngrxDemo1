@@ -1,0 +1,125 @@
+<div class="header">
+  <h2><strong>自媒体榜单</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">微信趋势</a></li>
+      <li class="active">自媒体榜单</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-2">
+            <div class="list-group">
+              <a href="" class="list-group-item bg-info color-white">自媒体分类</a>
+              <a href="" class="list-group-item" ng-repeat="lib in list_category" ng-click="changeCategory(lib.platform)" ng-class="{'active': catalog_name === lib.platform}"
+                ng-bind="lib.platform"></a>
+
+            </div>
+          </div>
+
+          <div class="col-xs-10">
+            <form class="form-inline m-b-6" ng-submit="searchAccount()">
+              <div class="form-group">
+                <!-- <label class="control-label">文章搜索：</label> -->
+                <input type="search" ng-model="keyword" ng-trim="true" class="form-control" placeholder="搜索自媒体">
+              </div>
+              <button class="btn btn-primary">查询</button>
+            </form>
+            <div class="pannel">
+              <div class="clear-fix" ng-show="showDate">
+                <p class="input-group pull-left" style="width: 200px;">
+                  <input type="text" class="form-control" uib-datepicker-popup datepicker-options="dateOptions" ng-model="dt" is-open="opened"
+                    current-text="今天" clear-text="清空" close-text="关闭" />
+                  <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary" ng-click="opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                </p>
+                <p class="text-info m-t-5 pull-left">榜单周期：<span ng-bind="calcPeriod()"></span></p>
+              </div>
+              <see-tabset>
+                <see-tab heading="今日榜" select="selectTab()" type="today"></see-tab>
+                <see-tab heading="日榜单" select="selectTab()" type="daily"></see-tab>
+                <see-tab heading="周榜单" select="selectTab()" type="weekly"></see-tab>
+                <see-tab heading="月榜单" select="selectTab()" type="monthly"></see-tab>
+              </see-tabset>
+            </div>
+            <div class="table-scrollable" ng-if="hasKeyword">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr class="boss-header">
+                    <th style="width:100px;">头像</th>
+                    <th style="width:300px;">自媒体</th>
+                    <th style="width:100px;">分类</th>
+                    <th>简介</th>
+                    <th>微信认证</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-show="isNull">
+                    <td colspan="5"> 暂无数据 </td>
+                  </tr>
+                  <tr ng-repeat="account in accountslist">
+                    <td>
+                      <a ng-href="/wechat/media/{{account.account_id}}&search=account"><img see-src="account.head_img_url" width="40" height="40" style="border-radius:50%;" /></a>
+                    </td>
+                    <td>
+                      <a ng-href="/wechat/media/{{account.account_id}}&search=account" ng-bind-html="account.nick_name | trustHtml"></a><br>
+                      <a class="text-warning" ng-href="/wechat/media/{{account.account_id}}&search=account" ng-bind="account.weixin_id"></a>
+                    </td>
+                    <td ng-bind="account.account_type"></td>
+                    <td ng-bind="account.account_intro"></td>
+                    <td ng-bind="account.cert_from"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-scrollable" ng-if="!hasKeyword">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr class="boss-header">
+                    <th style="width:55px;">排名</th>
+                    <th style="width:330px;">自媒体</th>
+                    <th>分类</th>
+                    <th class="sort-col" data-sort="total_article_num" style="padding-right: 18px;">发布数</th>
+                    <th class="text-right sort-col" data-sort="total_read_num" style="padding-right: 12px;">总阅读数</th>
+                    <th class="text-right sort-col" data-sort="idx1_read_num">头条阅读数</th>
+                    <th class="text-right sort-col" data-sort="max_read_num">最高阅读数</th>
+                    <th class="text-right sort-col" data-sort="ave_like_rate">点赞率</th>
+                    <th class="text-right sort-col" data-sort="score">爆款指数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-show="isNull">
+                    <td colspan="9"> 暂无数据 </td>
+                  </tr>
+                  <tr ng-repeat="account in accountslist">
+                    <td>#{{ offset + $index + 1 }}</td>
+                    <td>
+                      <a ng-href="/wechat/media/{{account.account_id}}" ng-bind="account.nick_name"></a><br>
+                      <a class="text-warning" ng-href="/wechat/media/{{account.account_id}}" ng-bind="account.weixin_id"></a>
+                    </td>
+                    <td ng-bind="account.account_type"></td>
+                    <td ng-bind="account.total_article_num"></td>
+                    <td class="text-right" ng-bind="account.total_read_num"></td>
+                    <td class="text-right" ng-bind="account.idx1_read_num"></td>
+                    <td class="text-right" ng-bind="account.max_read_num"></td>
+                    <td class="text-right" ng-bind="account.ave_like_rate | percentage"></td>
+                    <td class="text-danger text-right" ng-bind="account.score"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="total_items" items-per-page="50"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

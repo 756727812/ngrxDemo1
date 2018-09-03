@@ -1,0 +1,87 @@
+<!-- <h1><img src="//static.seecsee.com/seego_backend/global/images/logo/see-logo-black.png"" alt="">&nbsp;自媒体注册</h1> -->
+<form name="registerForm" class="form-signup w5c-form" ng-class="$ctrl.isMobile?'form-mobile':'form-horizontal'" role="form"
+  novalidate w5c-form-validate>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label required">公众号名称</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="mpname" class="form-control form-white" placeholder="" ng-model="$ctrl.platform_info[0].account_name"
+        w5c-dynamic-element required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label required">公众号ID(微信号)</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="mpid" class="form-control form-white" placeholder="" ng-model="$ctrl.platform_info[0].account_id"
+        w5c-dynamic-element uib-tooltip="请正确填写微信号，以便追踪小电铺运营数据效果" tooltip-placement="top-right" tooltip-trigger="'blur'" required>
+      <div ng-if="!$ctrl.isMobile" class="pop-tips-info-content" style="position: absolute;top: 20%;right: -10px;">
+        <i class="icon-info"></i>
+        <div class="pop-content">
+          <div class="inner clearfix">
+            <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">公司名称</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="cname" class="form-control form-white" placeholder="如有，请填写" ng-model="$ctrl.form_data.company_name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label required">联系人姓名</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="lname" class="form-control form-white" placeholder="" ng-model="$ctrl.form_data.linkman_name" w5c-dynamic-element
+        required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label required">联系人电话</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="lmobile" class="form-control form-white" placeholder="" ng-model="$ctrl.form_data.linkman_mobile"
+        w5c-dynamic-element required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label required">当前粉丝数</label>
+    <div class="col-md-7 col-xs-12">
+      <select name="tag_list" class="form-control form-white" ng-model="$ctrl.platform_info[0].fans_count" ng-options="t as t for t in $ctrl.fans_range"
+        w5c-dynamic-element required>
+        <option value="" selected>-- 请选择 --</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label required">账号类型</label>
+    <div class="col-md-7 col-xs-12">
+      <select name="type_list" class="form-control form-white" ng-model="$ctrl.form_data.account_type" ng-options="t.id as t.name for t in $ctrl.account_type"
+        w5c-dynamic-element required>
+        <option value="" selected>-- 请选择 --</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">从何处得知小电铺的</label>
+    <div class="col-md-7 col-xs-12">
+      <select name="from_list" class="form-control form-white" ng-model="$ctrl.form_data.from_where" ng-options="t.id as t.name for t in $ctrl.from_where"
+        w5c-dynamic-element>
+        <option value="" selected>-- 请选择 --</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-4 col-xs-12 control-label">市场对接人</label>
+    <div class="col-md-7 col-xs-12">
+      <input type="text" name="manname" class="form-control form-white" placeholder="如有，请填写" ng-model="$ctrl.form_data.connection_man_name">
+    </div>
+  </div>
+  <div class="text-center form-btn">
+    <!-- <a class="shop-btn shop-btn-sm" href="/auth.html#!/register/3">暂时跳过</a> -->
+    <button type="button" class="shop-btn shop-btn-lg m-t-20" ng-disabled="$ctrl.btn_disabled" w5c-form-submit="$ctrl.signup()">下一步</button>
+  </div>
+  <div class="text-center m-t-20">
+    <p class="text-center">品牌供应链合作，请将品牌介绍资料发送至邮箱</p>
+    <p class="text-primary text-center">supplychain@seeapp.com</p>
+  </div>
+</form>

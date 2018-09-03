@@ -1,0 +1,147 @@
+<form [nzLayout]="'inline'" nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form.value)">
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="type">商品类型</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-select formControlName="type" nzId="type" [nzPlaceHolder]="'全部'" nzAllowClear>
+            <nz-option *ngFor="let option of channelOptions" [nzLabel]="option.name" [nzValue]="option.id">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="category">品类</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-select formControlName="category" nzId="category" [nzPlaceHolder]="'全部'" nzAllowClear>
+            <nz-option *ngFor="let option of (categoryOptions$ | async)" [nzLabel]="option.categoryName" [nzValue]="option.categoryId">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="saleStatus">售卖状态</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-select formControlName="saleStatus" nzId="saleStatus" [nzPlaceHolder]="'全部'" nzAllowClear>
+            <nz-option *ngFor="let option of saleStatusOptions" [nzLabel]="option.name" [nzValue]="option.id">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="hiddenFlag">是否隐藏</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-select formControlName="hiddenFlag" nzId="hiddenFlag" [nzPlaceHolder]="'全部'" nzAllowClear>
+            <nz-option *ngFor="let option of isHiddenOptions" [nzLabel]="option.name" [nzValue]="option.id">
+            </nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="keyWord">关键字</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-input nzType="text" formControlName="keyWord" nzId="keyWord" [nzPlaceHolder]="'商品名、品牌名'"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="dateRange">创建时间</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-rangepicker formControlName="dateRange"></nz-rangepicker>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-sm">
+      <div nz-form-item class="d-flex">
+        <div nz-form-label>
+          <label for="priceFrom">价格区间 (元)</label>
+        </div>
+        <div nz-form-control class="flex-1">
+          <nz-input [nzType]="'number'" formControlName="priceFrom" style="width: calc(42%);"></nz-input>
+          <span nz-form-split class="formSplit">~</span>
+          <nz-input [nzType]="'number'" formControlName="priceTo" style="width: calc(42%);"></nz-input>
+        </div>
+      </div>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="4" class="text-left mb-sm">
+      <button nz-button type="submit" [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="loading">
+        <span>查询</span>
+      </button>
+      <button nz-button type="reset" [nzSize]="'large'" (click)="resetForm()">
+        <span>重置</span>
+      </button>
+    </div>
+  </div>
+</form>
+<div class="mb-sm">
+  <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="addInBatch()">
+    <i class="anticon anticon-plus"></i><span>批量添加</span>
+  </button>
+</div>
+<nz-table #nzTable nzShowQuickJumper nzShowSizeChanger [nzLoading]="loading" [nzAjaxData]="groupGoods?.list" [nzTotal]="groupGoods?.count"
+  [(nzPageSize)]="pageSize" (nzPageSizeChange)="changePage()" [(nzPageIndex)]="page" (nzPageIndexChange)="changePage()">
+  <thead nz-thead>
+    <tr>
+      <th nz-th>
+        商品图
+      </th>
+      <th nz-th>
+        商品名
+      </th>
+      <th nz-th>
+        品牌
+      </th>
+      <th nz-th>
+        价格
+      </th>
+      <th nz-th>
+        操作
+      </th>
+    </tr>
+  </thead>
+  <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let item of nzTable.data; let index = index">
+      <td nz-td>
+        <img [seeSrc]="item.imgUrl" width="90" >
+      </td>
+      <td nz-td>
+        <ellipsis lines="3" style="max-width: 280px">
+          <span [title]="item.commodityName" [innerText]="item.commodityName"></span>
+        </ellipsis>
+      </td>
+      <td nz-td>
+        <ellipsis lines="3" style="max-width: 280px">
+          <span [title]="item.brandName" [innerText]="item.brandName"></span>
+        </ellipsis>
+      </td>
+      <td nz-td>
+        ￥{{item.price}}
+      </td>
+      <td nz-td>
+        <a (click)="cancel(item)" *ngIf="item.selected">取消</a>
+        <a (click)="select(item)" *ngIf="!item.selected">选择</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

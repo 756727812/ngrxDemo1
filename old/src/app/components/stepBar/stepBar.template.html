@@ -1,0 +1,13 @@
+<ol class="step-progress" ng-class="{
+  'step-progress--medium': $ctrl.size === 'medium',
+  'step-progress--large': $ctrl.size === 'large'
+  }">
+  <li ng-repeat="item in $ctrl.steps" data-step="{{$index + 1}}"
+    ng-class="{
+      'is-active': $index + 1 === $ctrl.active,
+      'is-complete': $index + 1 < $ctrl.active,
+      }"
+    >
+    <span>{{item}}</span>
+  </li>
+</ol>

@@ -1,0 +1,119 @@
+<div>
+  <div class="header">
+    <h2>
+      <strong>我的圈子</strong>
+    </h2>
+    <div class="breadcrumb-wrapper">
+		  <ol class="breadcrumb">
+		    <li><a href="/">Seego后台</a></li>
+		    <li><a href="/wanted">心愿管理</a></li>
+		    <li class="active">创建圈子</li>
+		  </ol>
+	  </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal" name="createCircleForm" ng-submit="createCircle(createCircleForm)" novalidate>
+          <div class="form-group" ng-class="{'has-error': createCircleForm.name.$touched && createCircleForm.name.$invalid}">
+            <label class="col-sm-2 control-label required">圈子名称</label>
+            <div class="col-sm-7">
+              <input type="text" name="name" class="form-control" ng-model="formData.name" required/>
+            </div>
+            <div class="col-sm-3 help-see" ng-show="createCircleForm.name.$touched && createCircleForm.name.$invalid">
+              <p class="help-block">请填写圈子名称</p>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': bannerErr}">
+            <label class="col-sm-2 control-label required">圈子Banner</label>
+            <div class="col-sm-7">
+              <img width="360" height="240" class="img-thumbnail" see-src="formData.banner" alt="{{formData.name}}">
+              <span>750 &times; 500 像素， jpg或png</span>
+              <div>
+                <label class="btn btn-primary">
+                  上传Banner
+                  <input class="hide" type="file" see-file-select="uploadBanner" size="750x500" accept="image/jpg, image/jpeg, image/png">
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-3 help-see" ng-show="bannerErr">
+              <p class="help-block">请上传Banner</p>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': logoErr}">
+            <label class="col-sm-2 control-label required">圈子Logo</label>
+            <div class="col-sm-7">
+              <img width="150" class="img-thumbnail" see-src="formData.logo" alt="{{formData.name}}">
+              <div>
+                <label class="btn btn-primary">
+                  上传Logo
+                  <input class="hide" type="file" see-file-select="uploadLogo" accept="image/jpg, image/jpeg, image/png">
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-3 help-see" ng-show="logoErr">
+              <p class="help-block">请上传Logo</p>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': createCircleForm.description.$touched && createCircleForm.description.$invalid}">
+            <label class="col-sm-2 control-label required">圈子描述</label>
+            <div class="col-sm-7">
+              <textarea class="form-control" name="description" rows="5" ng-model="formData.description" required></textarea>
+            </div>
+            <div class="col-sm-3 help-see" ng-show="createCircleForm.description.$touched && createCircleForm.description.$invalid">
+              <p class="help-block">请填写描述</p>
+            </div>
+          </div>
+          <div see-access="PGC-Service">
+            <div class="form-group" ng-class="{'has-error': createCircleForm.wx.$touched && createCircleForm.wx.$invalid}">
+              <label class="col-sm-2 control-label required">微信号</label>
+              <div class="col-sm-7">
+                <input type="text" name="wx" class="form-control" ng-model="formData.wx" required/>
+              </div>
+              <div class="col-sm-3 help-see" ng-show="createCircleForm.wx.$touched && createCircleForm.wx.$invalid">
+                <p class="help-block">请填写微信号</p>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': createCircleForm.wb.$touched && createCircleForm.wb.$invalid}">
+              <label class="col-sm-2 control-label required">微博号</label>
+              <div class="col-sm-7">
+                <input type="text" name="wb" class="form-control" ng-model="formData.wb" required/>
+              </div>
+              <div class="col-sm-3 help-see" ng-show="createCircleForm.wb.$touched && createCircleForm.wb.$invalid">
+                <p class="help-block">请填写微博号</p>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': createCircleForm.web.$touched && createCircleForm.web.$invalid}">
+              <label class="col-sm-2 control-label required">官网</label>
+              <div class="col-sm-7">
+                <input type="text" name="web" class="form-control" ng-model="formData.web" required/>
+              </div>
+              <div class="col-sm-3 help-see" ng-show="createCircleForm.web.$touched && createCircleForm.web.$invalid">
+                <p class="help-block">请填写官网地址</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">圈子账号</label>
+            <div class="col-sm-7">
+              <select class="form-control" ng-init="formData.u_id=users[1].u_id" ng-options="user.u_id as user.u_username for user in users"
+                      ng-model="formData.u_id">
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-7">
+              <button type="submit" class="btn btn-lg btn-primary">
+                创建圈子
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+

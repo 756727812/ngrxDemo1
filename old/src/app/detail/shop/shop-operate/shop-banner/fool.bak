@@ -1,0 +1,41 @@
+
+  showCover() {
+    setTimeout(() => {
+      let that = this,
+        elCover = document.getElementById('lead-cover'),
+        elLBanner = document.getElementById('lead_banner'),
+        elLShopShow = document.getElementById('lead_shop_show');
+      this.applicationService.coverGuide(
+        elCover,
+        elLBanner,
+        '在这里配置的商品和图片会在小电铺首页显示',
+        function() {
+          // $(".lead-cover,.lead-info").hide()
+          that.applicationService.coverGuide(
+            elCover,
+            elLShopShow,
+            '点击这里，查看电铺装修效果',
+            function() {
+              $('.lead-cover,.lead-info').hide();
+              $('.lead-info')
+                .removeAttr('style')
+                .removeClass('lead_up');
+              let expireDate = new Date();
+              expireDate.setDate(expireDate.getDate() + 60);
+              that.$cookies.put('leadShopOperate', '1', {
+                expires: expireDate,
+              });
+            },
+          );
+          $('.lead-info')
+            .css({
+              left: 'initial',
+              right: '10px',
+              backgroundSize: '44px 60px',
+              backgroundPosition: '80% 0',
+            })
+            .addClass('lead_up');
+        },
+      );
+    }, 500);
+  }

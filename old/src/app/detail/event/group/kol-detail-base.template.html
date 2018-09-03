@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-2 text-center">
+            <img see-src="$ctrl.kol.avatar" width="100" alt="{{ $ctrl.kol.wechat_name }}" class="img-circle">
+          </div>
+          <div class="col-xs-6">
+            <h3 class="font-bold">{{ $ctrl.kol.wechat_name }}</h3>
+            <p class="m-b-0">微信号：{{ $ctrl.kol.wechat_id }}</p>
+            <p class="two-line">简介：{{ $ctrl.kol.wechat_desc }}</p>
+          </div>
+          <div class="col-xs-2">
+            <h3 class="font-bold">KQI <i see-hide="KOL New-Brand" class="fa fa-info-circle" uib-tooltip="基于公众号的阅读、点赞、评论以及内容商业特征覆盖程度等计算出来的KOL质量指标，用于衡量KOL在内容商业化方面的能力"></i></h3>
+            <p class="font-bold" ng-if="$ctrl.kol.kqi">{{ $ctrl.kol.kqi }}</p>
+          </div>
+          <div class="col-xs-2">
+            <h3 class="font-bold">影响力</h3>
+            <h3 class="font-bold">{{ $ctrl.kol.influence }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

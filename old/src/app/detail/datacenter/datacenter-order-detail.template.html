@@ -1,0 +1,43 @@
+<div see-access="Investors">
+	<div class="header">
+		<h2><strong>订单数据</strong></h2>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+					<h4>单日数据</h4>
+					<!--
+					<form class="form-inline m-t-20" ng-submit="$ctrl.statOrderSearch()">
+						<label class="control-label">搜索时间</label>
+	          <input date-range-picker  class="form-control date-picker" type="text" placeholder="请选择日期" ng-model="$ctrl.range">
+						<button type="submit" class="btn btn-primary">搜索</button>
+					</form>
+				-->
+
+					<div class="table-scrollable">
+						<table class="table table-hover table-striped align-right" style="width:300px;">
+							<thead>
+								<tr>
+									<th style="width:130px;align:left;">日期</th>
+									<th>下单数</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="order_info in $ctrl.trendStatData_inv">
+									<td>{{order_info.date}}</td>
+									<!--日期-->
+									<td>{{order_info.total_order_count}}</td>
+									<!--下单数 -->
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

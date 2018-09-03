@@ -1,0 +1,44 @@
+<div id="auth-register-mobile-success">
+  <i class="logo-icon si si-logo-hollow" ng-if="!$ctrl.isSeedata"></i>
+  <i class="see-icon si si-see" ng-if="$ctrl.isSeedata"></i>
+  <p class="succ-txt">已注册成功</p>
+  <ul class="steps">
+    <li>
+      <div class="left">
+        <div class="no-txt">第一步</div>
+        <div ng-if="!$ctrl.isSeedata">注册小电铺后台</div>
+        <div ng-if="$ctrl.isSeedata">注册SEE数</div>
+      </div>
+      <div class="right">
+        已完成
+      </div>
+    </li>
+    <li class="active">
+      <div class="left">
+        <div class="no-txt">第二步</div>
+        <div ng-if="!$ctrl.isSeedata">去电脑端开通小电铺套餐</div>
+        <div ng-if="$ctrl.isSeedata">去电脑端 <b>领取三个月VIP</b> </div>
+      </div>
+      <div class="right">
+        未完成
+      </div>
+    </li>
+  </ul>
+  <p ng-if="!$ctrl.isSeedata" class="site">portal.xiaodianpu.com</p>
+  <p ng-if="$ctrl.isSeedata" class="site">data.xiaodianpu.com</p>
+  <button
+     href=""
+    ng-if="!$ctrl.isSeedata"
+    ngclipboard
+    data-clipboard-text="https://portal.xiaodianpu.com"
+    ngclipboard-success="$ctrl.onCopySuccess()"
+    style="color: #fff;">复制链接</button>
+  <button
+     href=""
+    ng-if="$ctrl.isSeedata"
+    ngclipboard
+    data-clipboard-text="https://data.xiaodianpu.com/"
+    ngclipboard-success="$ctrl.onCopySuccess()"
+    style="color: #fff;">复制链接</button>
+  <a ng-if="$ctrl.isSeedata" class="btn btn-go" href="https://data.xiaodianpu.com/">手机端先看看</a>
+</div>

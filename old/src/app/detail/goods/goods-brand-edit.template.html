@@ -1,0 +1,113 @@
+<div class="header">
+  <h2><strong>编辑品牌</strong><span>--{{ brandName }}</span></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">编辑品牌</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" role="form" novalidate w5c-form-validate name="attrForm">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">品牌LOGO：</label>
+            <div class="col-sm-2 ">
+              <label class="btn btn-primary" style="margin-right: 18px;">上传图片
+                          <input type="file" see-file-select="upload" ratio="1:1" class="hide" accept="image/jpg, image/jpeg, image/png">
+                      </label>
+                      <p class="text-primary">图片比例1：1 <br>建议尺寸750*750</p>
+            </div>
+            <div class="col-sm-6">
+              <div class="img-preview">
+                          <img id="mainImage" width="250" class="img-thumbnail img-viewer" alt="logo" see-src="brandDetail.brand_logo?brandDetail.brand_logo:'//static.seecsee.com/seego_backend/images/see_default.png'" >
+                      </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">品牌banner：</label>
+            <div class="col-sm-2 ">
+              <label class="btn btn-primary" style="margin-right: 18px;">上传图片
+                <input type="file" see-file-select="upload1" class="hide" accept="image/jpg, image/jpeg, image/png">
+              </label>
+              <p class="text-primary">建议尺寸750*220</p>
+            </div>
+            <div class="col-sm-6">
+              <div class="img-preview">
+                <img id="bannerImage" width="250" class="img-thumbnail img-viewer" alt="banner" see-src="brandDetail.brand_banner?brandDetail.brand_banner:'//static.seecsee.com/seego_backend/images/see_default.png'" >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">品牌名称：</label>
+            <div class="col-sm-8 col-md-7">
+              <input type="text" class="form-control" ng-model="brandDetail.brand_name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">国家：</label>
+            <div class="col-sm-8 col-md-7">
+              <select name="type" class="form-control" ng-model="brandDetail.location_id">
+                          <option value="0" selected>-- 请选择国家 --</option>
+                          <option ng-repeat="country in countryList" value={{country.location_id}}>
+                                  {{country.location}}
+                              </option>
+                      </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">简介：</label>
+            <div class="col-sm-8 col-md-7">
+              <textarea name="" rows="3" class="form-control" placeholder="品牌简介" ng-model="brandDetail.brand_desc"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">一句话描述：</label>
+            <div class="col-sm-8 col-md-7">
+              <textarea name="" rows="1" class="form-control" placeholder="一句话描述" ng-model="brandDetail.brand_simple_desc"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">主营类目：</label>
+            <div class="col-sm-8 col-md-7" id="classList">
+              <label class="checkbox-inline" ><input type="checkbox" name="checkbox" ng-true-value="'1'" ng-model="checkboxClass[0]">包</label>
+              <label class="checkbox-inline" ><input type="checkbox" name="checkbox" ng-true-value="'2'" ng-model="checkboxClass[1]">服装</label>
+              <label class="checkbox-inline" ><input type="checkbox" name="checkbox" ng-true-value="'3'" ng-model="checkboxClass[2]">配饰</label>
+              <label class="checkbox-inline" ><input type="checkbox" name="checkbox" ng-true-value="'4'" ng-model="checkboxClass[3]">鞋子</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8 col-md-7">
+              <label class="checkbox-inline" ng-click="setStandardBrand()"><input type="checkbox" name="is_standard" ng-true-value="'1'" ng-false-value="0" ng-model="brandDetail.is_standard">设为标准品牌</label>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{hide:brandDetail.is_standard == '0'}">
+            <div class="col-sm-offset-2 col-sm-8 col-md-7">
+              <label class="checkbox-inline"><input type="checkbox" name="is_public" ng-true-value="'1'" ng-false-value="0" ng-model="brandDetail.is_public" >显示在客户端</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">评测类目：</label>
+            <div class="col-sm-8 col-md-7" id="classTypeList">
+              <label class="radio-inline" ><input type="radio" value="0" ng-model="brandDetail.class_type">空</label>
+              <label class="radio-inline" ><input type="radio" value="1" ng-model="brandDetail.class_type">包</label>
+              <label class="radio-inline" ><input type="radio" value="2" ng-model="brandDetail.class_type">服装</label>
+              <label class="radio-inline" ><input type="radio" value="3" ng-model="brandDetail.class_type">配饰</label>
+              <label class="radio-inline" ><input type="radio" value="4" ng-model="brandDetail.class_type">鞋子</label>
+            </div>
+          </div>
+          <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-8 col-md-7 ">
+                      <button type="button" w5c-form-submit="updateBrandInfo($event)" class="btn btn-primary">保存</button>
+                      <a class="btn btn-default" href="/goods/brand">取消</a>
+                  </div>
+              </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

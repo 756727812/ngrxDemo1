@@ -1,0 +1,204 @@
+<div class="header">
+  <h2><strong>账单详情</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">资产管理</a></li>
+      <li class="active">账单详情</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <table class="table table-bordered table-align-center" ng-hide="NoWithdraw">
+          <thead>
+            <tr class="title">
+              <th width="120px">结算期</th>
+              <th width="148px">实际结算金额</th>
+              <th width="114px">状态</th>
+              <th width="114px">订单数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="p35">
+              <td>{{WithdrawDetail.stat.settle_date}}</td>
+              <td>{{WithdrawDetail.stat.total_fee}}</td>
+              <td>{{WithdrawDetail.stat.status}}</td>
+              <td>{{WithdrawDetail.stat.order_count}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <uib-tabset>
+          <uib-tab>
+            <uib-tab-heading>
+              商家订单
+            </uib-tab-heading>
+            <form ng-submit="submitSearchOrder(0)" class="form-inline mt20">
+              <div class="form-group">
+                <label class="control-label">搜索订单
+                              <input type="search" class="form-control" style="width: 256px;" ng-model="searchForm.keyword1"
+                                    placeholder="订单号，买家名，商品名">
+                          </label>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">下单时间
+                              <input date-range-picker class="form-control date-picker" style="width: 200px;" type="text"
+                                    ng-model="datePicker1.date" options="datePickerOpts"/>
+                          </label>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+            </form>
+            <p ng-show="NoSelfWithdraw">帐单中没有订单喔</p>
+            <div class="table-scrollable">
+              <table class="table table-bordered m-t-10" ng-hide="NoSelfWithdraw">
+                <thead>
+                  <tr class="th_title title">
+                    <th colspan="2">商品</th>
+                    <th>单价数量</th>
+                    <th>代金券</th>
+                    <th>税金</th>
+                    <th>实付金额</th>
+                    <th>买家</th>
+                    <th style="min-width: 100px;">下单时间</th>
+                    <th>提现金额</th>
+                    <th style="min-width: 90px;">状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-light" ng-repeat-start="OrderItem in WithdrawDetail.self_order.list">
+                    <td class="placeholder" colspan="10"></td>
+                  </tr>
+                  <tr class="title title02">
+                    <td colspan="9">订单号：{{OrderItem.order_id}}</td>
+                    <td class="spe">
+                      <a class="h_underl" ng-href="/order/detail/{{OrderItem.order_id}}">查看详情</a>
+                    </td>
+                  </tr>
+                  <tr class="alignCenter" ng-repeat-end>
+                    <td class="alignCenter">
+                      <img width="100px" height="100px" see-src="OrderItem.f_imgurl">
+                    </td>
+                    <td class="alignCenter">
+                      <h4>{{OrderItem.subject}}</h4>
+                      <p>{{OrderItem.comments}}</p>
+                    </td>
+                    <td class="alignCenter">
+                      <h4>{{OrderItem.buy_price | currency:'￥'}}</h4>
+                      <p>{{OrderItem.quantity}}件</p>
+                    </td>
+                    <td class="alignCenter">
+                      {{OrderItem.coupon_price | currency:'￥'}}
+                    </td>
+                    <td class="alignCenter">
+                      {{OrderItem.tax | currency:'￥'}}
+                    </td>
+                    <td class="alignCenter">
+                      {{OrderItem.total_fee | currency:'￥' }}
+                    </td>
+                    <td class="alignCenter">
+                      {{OrderItem.name}}
+                    </td>
+                    <td class="alignCenter">
+                      {{OrderItem.buy_time}}
+                    </td>
+                    <td ng-bind="OrderItem.seller_money | currency:'￥'"></td>
+                    <td class="alignCenter">
+                      {{OrderItem.status_str}}
+                      <a href="" class="btn btn-circle btn-outline btn-primary" ng-show="OrderItem.seller_id == 1 && -1 == OrderItem.comments.indexOf('已经完成打款')"
+                        ng-click="finishPay(OrderItem.order_id)">完成提现</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--<pagination total-items="total_items"></pagination>-->
+          </uib-tab>
+          <uib-tab active="tab2Active">
+            <uib-tab-heading>
+              派发订单
+            </uib-tab-heading>
+            <form ng-submit="submitSearchOrder(1)" class="form-inline mt20">
+              <div class="form-group">
+                <label class="control-label">搜索订单
+                              <input type="search" class="form-control" style="width: 256px;" ng-model="searchForm.keyword2" placeholder="订单号，买家名，商品名">
+                          </label>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">下单时间
+                              <input date-range-picker class="form-control date-picker" style="width: 200px;" type="text"
+                                    ng-model="datePicker2.date" options="datePickerOpts"/>
+                          </label>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+            </form>
+            <p ng-show="NoDispatchWithdraw">帐单中没有订单喔</p>
+            <div class="table-scrollable">
+              <table class="table table-bordered m-t-10" ng-hide="NoDispatchWithdraw">
+                <thead>
+                  <tr class="th_title title">
+                    <th colspan="2">商品</th>
+                    <th>单价数量</th>
+                    <th>代金券</th>
+                    <th>税金</th>
+                    <th>派单金额</th>
+                    <th>买家</th>
+                    <th style="min-width: 100px;">下单时间</th>
+                    <th>提现金额</th>
+                    <th style="min-width: 90px;">状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-light" ng-repeat-start="OrderItem in WithdrawDetail.dispatch_order.list">
+                    <td class="placeholder" colspan="10"></td>
+                  </tr>
+                  <tr class="title title02">
+                    <td colspan="9">订单号：{{OrderItem.order_id}}</td>
+                    <td class="spe">
+                      <a class="h_underl" ng-href="/order/detail/{{OrderItem.order_id}}">查看详情</a>
+                    </td>
+                  </tr>
+                  <tr class="content tac" ng-repeat-end>
+                    <td class="mixpic br0">
+                      <img width="100px" height="100px" see-src="OrderItem.f_imgurl">
+                    </td>
+                    <td class="bl0">
+                      <h4>{{OrderItem.subject}}</h4>
+                      <p>{{OrderItem.comments}}</p>
+                    </td>
+                    <td>
+                      <h4>{{OrderItem.buy_price | currency:'￥'}}</h4>
+                      <p>{{OrderItem.quantity}}件</p>
+                    </td>
+                    <td>
+                      {{OrderItem.coupon_price | currency:'￥'}}
+                    </td>
+                    <td>
+                      {{OrderItem.tax | currency:'￥'}}
+                    </td>
+                    <td>
+                      {{OrderItem.total_fee | currency:'￥' }}
+                    </td>
+                    <td>
+                      {{OrderItem.name}}
+                    </td>
+                    <td>
+                      {{OrderItem.buy_time}}
+                    </td>
+                    <td ng-bind="OrderItem.seller_money | currency:'￥'"></td>
+                    <td>
+                      {{OrderItem.status_str}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--<pagination total-items="total_items"></pagination>-->
+          </uib-tab>
+        </uib-tabset>
+      </div>
+    </div>
+  </div>
+</div>
+

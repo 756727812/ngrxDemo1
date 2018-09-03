@@ -1,0 +1,73 @@
+<div class="header">
+	<h2><strong>入库信息</strong></h2>
+
+	<div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/store">库存管理</a></li>
+			<li class="active">入库信息</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+          <store-item id="$ctrl.id"></store-item>
+          <a ng-href="/store/goods-list/{{$ctrl.id}}/warehousing-info-new" class="btn btn-primary"><i class="fa fa-plus"></i>创建入库信息</a>
+
+					<div class="table-scrollable">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>入库时间</th>
+									<th>入库仓库</th>
+									<th>sku囤货码</th>
+                  <th>颜色&示意图</th>
+                  <th>尺码</th>
+                  <th>入库数量</th>
+                  <th>入库单价</th>
+                  <th>入库总金额</th>
+                  <th>录入人</th>
+                  <th>录入时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="log in $ctrl.warehousing_log_list track by log.storage_store_id">
+									<td>{{log.log_time}}</td>
+									<td>{{log.store_info.name}}</td>
+									<td>{{log.storage_sku_id}}</td>
+									<td>
+                    <span class="text-info">{{log.color_value}}</span>
+										<div class="img-container">
+                    	<img ng-if="log.sku_imgurl" see-src="log.sku_imgurl" alt="" see-viewer >
+										</div>
+                  </td>
+									<td>{{log.size_value}}</td>
+									<td>{{log.stock}}</td>
+									<td>
+										<span ng-show="log.sku_price">{{log.sku_price | currency: '￥'}}</span>
+									</td>
+									<td>
+										<span ng-show="log.sku_price">{{log.rmb | currency: '￥'}}</span>
+									</td>
+									<td>{{log.seller_email}}</td>
+									<td>{{log.create_time}}</td>
+									<td>
+										<button type="button" class="btn btn-sm btn-primary" ng-if="log.can_reset" ng-click="$ctrl.repeal(log.storage_store_id)">撤销</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+            <p ng-if="$ctrl.warehousing_log_list.length === 0">暂时还没有入库数据哦！</p>
+					</div>
+					<pagination total-items="$ctrl.total_items"></pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+

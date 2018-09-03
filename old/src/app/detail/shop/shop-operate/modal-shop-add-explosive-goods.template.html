@@ -1,0 +1,55 @@
+<div class="modal-header bg-primary">
+  <button type="button" class="close" ng-click="$ctrl.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">添加商品</h3>
+</div>
+<div class="modal-body">
+  <form class="form-inline" name="addExplosiveGoodsForm" ng-submit="$ctrl.getItemList()">
+    <div class="form-group">
+      <label class="control-label">
+        <select name="type" class="form-control" ng-model="$ctrl.formData.type" ng-change="$ctrl.getItemList()">
+          <option ng-value="3">全部</option>
+          <option ng-value="1">自营</option>
+          <option ng-value="2">分销</option>
+        </select>
+      </label>
+    </div>
+    <div class="form-group">
+      <label class"control-label">关键词
+      <input type="search" class="form-control" placeholder="请输入商品名" ng-model="$ctrl.formData.keyword">
+      </label>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+    </div>
+  </form>
+  <div class="table-scrollable">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>商品图</th>
+        <th>商品名</th>
+        <th>价格</th>
+        <th>售卖状态</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in $ctrl.items.list track by item.item_id">
+        <td width="100">
+          <img see-src="item.imgurl" alt="" class="img-viewer" width="47px" see-viewer>
+        </td>
+        <td ng-bind="item.item_name"></td>
+        <td ng-bind="item.item_price | currency: '￥'"></td>
+        <td ng-bind="item.item_status"></td>
+        <td>
+          <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.addExplosionItem(item.item_id)" ng-show="item.flag === 0">添加</button>
+          <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.cancelExplosionItem(item.item_id)" ng-show="item.flag === 1">取消</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <ul uib-pagination ng-if="$ctrl.items.count" total-items="$ctrl.items.count" items-per-page="10" ng-model="$ctrl.items.page" ng-change="$ctrl.getItemList($ctrl.items.page)"
+      max-size="5" class="pagination-sm m-t-0" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-link-numbers="true">
+  </ul>
+</div>

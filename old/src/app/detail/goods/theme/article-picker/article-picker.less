@@ -1,0 +1,131 @@
+@import '../../../../../styles/var';
+
+.modal-dialog.modal-goods-theme-add-to-article{
+  margin-top: 0;
+  top: 50%;
+  transform: translateY(-50%)!important;
+}
+
+.modal-goods-theme-theme-picker,
+.modal-goods-theme-add-to-article {
+  .modal-body {
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+
+    .main {
+      flex: 1;
+    }
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    form {
+      display: flex;
+      align-items: center;
+
+      button {
+        margin-left: 10px;
+      }
+    }
+
+    button,
+    input[type='text'] {
+      height: 34px;
+    }
+
+    input[type='text'] {
+      width: 140px;
+    }
+  }
+
+  .sep-line {
+    width: 100%;
+    height: 2px;
+    background-color: #ececec;
+    margin-top: 10px;
+    margin-bottom: 2px;
+  }
+
+  .btn-create-article {
+    cursor: pointer;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 10px;
+    color: white;
+    background-color: @primary-color;
+    font-weight: bold;
+  }
+
+  table {
+    table-layout: fixed;
+
+    td,
+    th {
+      text-align: center;
+      border: none !important;
+    }
+
+    th {
+      height: 48px;
+
+      &.op {
+        width: 100px;
+      }
+
+      &.xxxxtime {
+        width: 140px;
+      }
+    }
+
+    td {
+      &.title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .button,
+    .btn-add {
+      cursor: pointer;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      border: 1px solid @primary-color;
+      color: @primary-color;
+
+      &:hover {
+        color: white;
+        background-color: @primary-color;
+      }
+    }
+
+    .btn-view {
+      background-color: #e5e8f5;
+      color: #787c92;
+      margin-left: 8px;
+    }
+  }
+
+  .main {
+    min-height: 300px;
+  }
+
+  .empty-tips {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9699aa;
+    font-size: 14px;
+  }
+}

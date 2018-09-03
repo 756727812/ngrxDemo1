@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">审核退款申请</h4>
+</div>
+<div class="modal-body">
+  <table class="table">
+      <tbody>
+        <tr>
+          <td>申请时间：</td>
+          <td>{{formData.refund_time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        </tr>
+        <tr>
+          <td>退款理由：</td>
+          <td>{{formData.refund_desc}}</td>
+        </tr>
+        <tr>
+          <td class="bold">退款金额：</td>
+          <td class="bold text-danger">￥{{formData.refund_amount}}</td>
+        </tr>
+      </tbody>
+    </table>
+  <form class="form" name="form">
+    <div class="form-group" ng-if="cant_refund == 0">
+      <label class="radio-inline">
+        <input type="radio" ng-model="formData.action_style" value="acceptRefund">通过
+      </label>
+      <label class="radio-inline">
+        <input type="radio" ng-model="formData.action_style" value="rejectRefund">拒绝
+      </label>
+    </div>
+    <div class="form-group" ng-if="cant_refund == 1">
+      <label class="radio-inline">
+        <input type="radio" ng-model="formData.action_style" value="rejectRefund">拒绝
+      </label>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': form.reject_reason.$touched && form.reject_reason.$invalid}" ng-show="formData.action_style == 'rejectRefund'">
+      <label for="name" class="control-label required">请输入拒绝理由：</label>
+      <textarea name="reject_reason" class="form-control"  rows="3" ng-model="formData.reject_reason" required></textarea>
+    </div>
+    <div class="form-group">
+      <p class="text-danger">请你于48小时内处理该退款申请，若超过48小时未处理，则默认为通过退款请求。</p>
+      <p class="text-danger" ng-if="in_warehouse == 1"><br /><br />该中订单下所有小订单的退款申请都将采取同样操作</p>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="submit" ng-click="ok(form)" class="btn btn-primary" data-dismiss="modal">确定</button>
+  <button type="button" ng-click="cancel()" class="btn btn-default">取消</button>
+</div>

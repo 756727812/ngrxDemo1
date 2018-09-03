@@ -1,0 +1,90 @@
+<div class="header">
+  <h2><strong>首屏心愿答案</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">首屏心愿答案</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4>查看答案</h4>
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>描述</th>
+                <th width="120">图片</th>
+                <th>期望价格</th>
+                <th>发布时间</th>
+                <th>品类</th>
+                <th>回答数</th>
+                <th see-hide="Hide-DD">真实同求数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{theme.t_id}}</td>
+                <td>{{theme.t_title}}</td>
+                <td>
+                  <img width="100" see-viewer see-src="theme.t_imgurl" alt="{{theme.t_title}}"/>
+                </td>
+                <td>{{theme.t_price}}</td>
+                <td>{{theme.t_time}}</td>
+                <td>{{theme.t_hunttype}}</td>
+                <td>{{theme.t_findcount}}</td>
+                <td see-hide="Hide-DD">{{theme.t_followcount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="answerImgs" class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>回答者</th>
+                <th>描述</th>
+                <th width="120">图片</th>
+                <th>价格</th>
+                <th>回答时间</th>
+                <th>品类</th>
+                <th>评论数</th>
+                <th>点赞数</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="answer in answer">
+                <td>{{answer.f_id}}</td>
+                <td>{{answer.u_username}}</td>
+                <td>{{answer.f_comment}}</td>
+                <td>
+                  <img width="100" see-src="answer.f_imgurl" alt="{{answer.f_comment}}" see-viewer/>
+                </td>
+                <td>{{answer.f_price}}</td>
+                <td>{{answer.f_time}}</td>
+                <td></td>
+                <td>{{answer.reply_count}}</td>
+                <td>{{answer.f_followcount}}</td>
+                <td>
+                  <a class="btn btn-sm btn-primary" ng-href="/wanted/replyList/comment?fid={{answer.f_id}}"> <i class="fa fa-eye"></i>查看评论</a>
+                  <a class="btn btn-sm btn-primary" ng-href="/wanted/themeList/addReply?fid={{answer.f_id}}"> <i class="fa fa-plus-circle"></i>添加评论</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button ng-click="jumpToAnswer()" class="btn btn-primary" see-access="C2C-Seller New-Brand C2C-Service B2C-Service Fin-Admin Oper Super-Admin See-Admin Part-time-yy">
+        查看预答答案
+    </button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,76 @@
+<nz-table nz-col [nzSm]="24" #nzTable [nzIsPagination]="false" nzShowTitle [nzBordered]="true" [nzDataSource]="purchaseOrder?.items">
+  <div nz-table-title>
+    <span class="left">采购单：{{purchaseOrder.purchaseOrderNo}} 创建时间：{{purchaseOrder.createTime| date:"yyyy-MM-dd"}}</span>
+    <span class="right">入库量为0表示此商品暂不入库
+      <a [href]="'warehouse/purchaseOrder/' + purchaseOrder.purchaseOrderId + '/detail'" target="_blank">查看采购单</a>
+    </span>
+  </div>
+  <thead nz-thead>
+    <tr>
+      <th nz-th [hidden]="disabled" style="min-width: 35px;"></th>
+      <th nz-th>
+        <span>编号</span>
+      </th>
+      <th nz-th>
+        <span>商品</span>
+      </th>
+      <th nz-th>
+        <span>规格</span>
+      </th>
+      <th nz-th>
+        <span>单位</span>
+      </th>
+      <th nz-th>
+        <span>采购数量</span>
+      </th>
+      <th nz-th>
+        <span>预报入库量</span>
+      </th>
+      <th nz-th *ngIf="warehouseOrderStatus>2">
+        <span>实入库量
+          <br>(总量，良品，残品)</span>
+      </th>
+      <th nz-th>
+        <span>失效日期(选填)</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let item of nzTable.data; index as itemIndex">
+      <td nz-td [hidden]="disabled">
+        {{itemIndex+1}}
+      </td>
+      <td nz-td>
+        SEE仓ID: {{item.warehouseItemId}}
+        <br> 货号：{{item.itemNo}}
+        <br> 实入货号：{{item.realItemNo}}
+      </td>
+      <td nz-td>
+        {{item.itemName}}
+      </td>
+      <td nz-td>
+        {{item.specificationName}}
+      </td>
+      <td nz-td width="50px">
+        {{item.unit}}
+      </td>
+      <td nz-td width="100px">
+        {{item.quantity}}
+      </td>
+      <td nz-td>{{item.warehouseQuantity}}</td>
+      <td nz-td *ngIf="warehouseOrderStatus>2">
+        <span [style.color]="item.totalQuantity < item.warehouseQuantity ? 'red' : '#000'">{{item.totalQuantity}}</span>
+        <br> (良{{item.goodQuantity}}，
+        <span [style.color]="item.inferiorQuantity > 0 ? 'red' : '#000'">残{{item.inferiorQuantity}}</span>)
+      </td>
+      <td nz-td>
+        <span *ngIf="!item.expiryDate">无</span>
+        <span *ngIf="item.expiryDate">{{item.expiryDate | date: "yyyy-MM-dd"}}</span>
+
+        <br>
+        <span style="color:red" *ngIf="warehouseOrderStatus>2 && item.realExpiryDate != item.expiryDate">实入：{{item.realExpiryDate | date: "yyyy-MM-dd"}}</span>
+        <span *ngIf="warehouseOrderStatus>2 && item.expiryDate && item.realExpiryDate == item.expiryDate">无误</span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -1,0 +1,79 @@
+<nz-table #nzTable [nzAjaxData]="goods_list" [nzIsPagination]="'true'" nzShowSizeChanger="true" nzShowQuickJumper="true"
+  nzShowTotal="true" [nzLoading]="_loading" [nzTotal]="_total" [(nzPageIndex)]="_current" (nzPageIndexChange)="refreshData()"
+  [(nzPageSize)]="_pageSize" (nzPageSizeChange)="refreshData(true)">
+  <thead nz-thead>
+    <tr>
+      <th nz-td class="">
+        <span>商品图</span>
+      </th>
+      <th nz-td>
+        <span>商品ID</span>
+      </th>
+      <th nz-td>
+        <span>商品名</span>
+      </th>
+      <th nz-td>
+        <span>品牌</span>
+      </th>
+      <th nz-td>
+        <span>品类</span>
+      </th>
+      <th nz-td>
+        <span>售价</span>
+      </th>
+      <th nz-td>
+        <span>浏览pv</span>
+      </th>
+      <th nz-td>
+        <span>访客uv</span>
+      </th>
+      <th nz-td>
+        <span>销量</span>
+      </th>
+      <th nz-td>
+        <span>销售额GMV</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let item of nzTable.data;trackBy:item?.item_id;">
+      <td nz-td>
+        <a href="{{item.url_item}}" target="_blank">
+          <img [seeSrc]="item.item_imgurl" style="width:120px;height:120px;">
+        </a>
+      </td>
+      <td nz-td title="{{item.item_id}}">
+        <span>{{item.item_id}}</span>
+      </td>
+      <td nz-td title="{{item.item_name}}" class="col-xs-2">
+        <span>{{item.item_name}}</span>
+      </td>
+      <td nz-td>
+        <span>{{item.brand_name}}</span>
+      </td>
+      <td nz-td class="col-sm-2">
+        <span>{{item.class_name}}</span>
+      </td>
+      <td nz-td>
+        <span *ngIf="item.price_min == item.price_max">
+          ￥{{item.price_min}}
+        </span>
+        <span *ngIf="item.price_min !== item.price_max">
+          ￥{{item.price_min}}~￥{{item.price_max}}
+        </span>
+      </td>
+      <td nz-td>
+        <span>{{item.pv}}</span>
+      </td>
+      <td nz-td>
+        <span>{{item.uv}}</span>
+      </td>
+      <td nz-td>
+        <span>{{item.order_info.kol.order}}</span>
+      </td>
+      <td nz-td>
+        <span>￥{{item.order_info.kol.gmv}}</span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

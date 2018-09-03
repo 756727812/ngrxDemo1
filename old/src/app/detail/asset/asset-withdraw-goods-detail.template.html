@@ -1,0 +1,61 @@
+<div class="header">
+  <h2><strong>专题商品账单详情</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">资产管理</a></li>
+      <li class="active">专题商品账单详情</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <table class="table table-bordered table-align-center">
+            <thead>
+                <tr>
+                    <th>结算期</th>
+                    <th>结算金额</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td ng-bind="WithdrawDetail.settle_date"></td>
+                    <td ng-bind="WithdrawDetail.total_fee|currency:'￥'"></td>
+                    <td ng-bind="WithdrawDetail.status"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>商品ID</th>
+                        <th style="min-width: 100px;">商品图片</th>
+                        <th>商品名称</th>
+                        <th>商品价格</th>
+                        <th>销量</th>
+                        <th>结算金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="goods in goodsList track by $index">
+                        <td ng-bind="goods.item_id"></td>
+                        <td>
+                            <img alt="{{goods.item_name}}" class="img-thumbnail" width="100" height="100" see-src="goods.item_imgurl"/>
+                        </td>
+                        <td ng-bind="goods.item_name"></td>
+                        <td ng-bind="goods.item_price | currency:'￥'"></td>
+                        <td ng-bind="goods.adjust_sellcount"></td>
+                        <td ng-bind="goods.adjust_pgc_money | currency:'￥'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

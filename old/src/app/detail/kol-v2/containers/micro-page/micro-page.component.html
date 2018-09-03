@@ -1,0 +1,127 @@
+<nz-spin [nzSpinning]="_isSpinning">
+  <nz-card [nzBordered]="false">
+    <form [nzLayout]="'inline'" nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form.value)">
+      <div nz-row [nzGutter]="8">
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md" *ngIf="isAdmin">
+          <div nz-form-item class="d-flex">
+            <div nz-form-label>
+              <label for="range">页面标签</label>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-select formControlName="range" nzId="range" [nzSize]="'large'" [nzPlaceHolder]="'全部页面'" nzAllowClear>
+                <nz-option *ngFor="let option of options" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="mb-md">
+          <div nz-form-item class="d-flex">
+            <div nz-form-label>
+              <label for="name">页面名称</label>
+            </div>
+            <div nz-form-control class="flex-1">
+              <nz-input nzType="text" formControlName="name" nzId="name" [nzSize]="'large'" [nzPlaceHolder]="'请输入'"></nz-input>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzXs="24" nzSm="24" nzMd="8" class="text-left mb-md">
+          <button nz-button type="submit" [nzSize]="'large'" [nzType]="'primary'" [nzLoading]="loading$ | async">
+            <span>查询</span>
+          </button>
+          <button nz-button type="reset" [nzSize]="'large'" (click)="resetForm()">
+            <span>重置</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="mb-md">
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="add()">
+        <i class="anticon anticon-plus"></i>
+        <span>新建</span>
+      </button>
+    </div>
+    <div class="mb-md">
+      设置页面风格：
+      <nz-select style="width:120px;" [(ngModel)]="theme" [nzSize]="'large'">
+        <nz-option *ngFor="let option of themes" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+      <button nz-button type="button" [nzSize]="'small'" [nzType]="'primary'" (click)="changeTheme(theme)">
+        <span>设置</span>
+      </button>
+    </div>
+    <div class="mb-md">
+      <nz-alert [nzType]="'info'">
+        <span alert-body>
+          共
+          <strong class="text-primary">{{ count$ | async }}</strong> 个微页面
+        </span>
+      </nz-alert>
+    </div>
+    <nz-table #nzTable nzShowSizeChanger nzShowQuickJumper [nzLoading]="loading$ | async" [nzAjaxData]="microPages$ | async"
+      [nzTotal]="count$ | async" [(nzPageSize)]="pageSize" (nzPageSizeChange)="changePage()" [(nzPageIndex)]="page" (nzPageIndexChange)="changePage()">
+      <thead nz-thead>
+        <tr>
+          <th nz-th>
+            页面ID
+          </th>
+          <th nz-th>
+            页面名称
+          </th>
+          <th nz-th>
+            创建时间
+          </th>
+          <th nz-th *ngIf="isAdmin">
+            页面标签
+          </th>
+          <th nz-th>
+            操作
+          </th>
+        </tr>
+      </thead>
+      <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let item of nzTable.data; let index = index">
+          <td nz-td [innerText]="item.id"></td>
+          <td nz-td>
+            <div class="d-flex align-items-center">
+              <ellipsis lines="1" style="max-width: 200px">
+                <span [title]="item.name" [innerText]="item.name"></span>
+              </ellipsis>
+              <span *ngIf="item.type === 0" class="ant-badge-count isHomePage">商城首页</span>
+            </div>
+          </td>
+          <td nz-td [innerText]="item.createTime | date:'yyyy-MM-dd HH:mm:ss'"></td>
+          <td nz-td *ngIf="isAdmin">
+            <nz-badge *ngIf="item.link === 1" [nzStatus]="'success'" [nzText]="'已关联文章'"></nz-badge>
+          </td>
+          <td nz-td>
+            <a (click)="edit(item)">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <span *ngIf="!isAdmin">
+              <a (click)="openMicroPageLink(item)">微页面链接</a>
+              <nz-divider nzType="vertical"></nz-divider>
+            </span>
+            <a [routerLink]="['/store-construction']" [queryParams]="getStoreConstructionQueryParams(item.id)">装修</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <span *ngIf="item.type === 1">
+              <nz-popconfirm [nzTitle]="'是否确认将当前页面设为商城首页？'" (nzOnConfirm)="setAsHomePage(item)">
+                <a nz-popconfirm>设为首页</a>
+              </nz-popconfirm>
+              <nz-divider nzType="vertical"></nz-divider>
+            </span>
+            <span *ngIf="isAdmin">
+              <a (click)="links(item)">链接</a>
+              <nz-divider nzType="vertical"></nz-divider>
+            </span>
+            <nz-popconfirm [nzTitle]="'你是否要复制该页面？'" (nzOnConfirm)="copy(item)">
+              <a nz-popconfirm>复制</a>
+            </nz-popconfirm>
+            <nz-divider nzType="vertical" style="margin-left: 10px"></nz-divider>
+            <see-batch-assign-btn [useLinkBtn]="true" [sourceIds]="[item.id]" [sourceKolId]="+kolInfo.kolId" (onBusyStatusChange)="_isSpinning = $event"></see-batch-assign-btn>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+</nz-spin>

@@ -1,0 +1,137 @@
+@import "../../../../styles/var";
+@import "./avatar-block.less";
+@import "./power-block.less";
+@import "./data-block.less";
+
+#shop-info {
+  .panel-header.panel-link-header {
+    padding-left: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-bottom: 1px solid rgba(218, 218, 218, 0.5);
+    margin: 0 10px;
+
+    i {
+      font-size: 12px;
+      text-align: left;
+      margin-left: 7px;
+      display: none !important;
+    }
+  }
+
+  .main-content .page-content .panel-content {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  font-size: 14px;
+
+  /*  .popover {
+      background-color: #ffffff;
+      box-shadow: 0 2px 7px 0 rgba(219, 219, 219, 0.5);
+      border: solid 1px #e9e9e9;
+      border-radius: 0;
+      .arrow {
+        display: none;
+      }
+    }*/
+
+  .inline-block {
+    display: inline-block;
+  }
+
+  li {
+    line-height: 1;
+    list-style: none;
+  }
+
+  .pop {
+    z-index: 99;
+    display: none;
+    background: transparent;
+    white-space: nowrap;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding-top: 20px;
+    margin-top: -10px;
+
+    .inner {
+      background: white;
+      padding: 17px;
+      background-color: #fff;
+      box-shadow: 0 2px 7px 0 rgba(219, 219, 219, 0.5);
+      border: solid 1px #e9e9e9;
+      color: #000;
+      border-radius: 0;
+
+      p {
+        line-height: 1.2;
+        margin: 0;
+      }
+
+      a {
+        cursor: pointer;
+        float: right;
+        text-decoration: underline;
+        color: @primary-color;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .empty-tips-wrap {
+    text-align: center;
+
+    * {
+      text-align: center;
+    }
+
+    padding-top: 38px;
+    padding-bottom: 52px;
+
+    .top-line {
+      font-size: 14px;
+
+      i {
+        color: #c1c3d0;
+        font-size: 26px;
+      }
+    }
+
+    p.tips-p {
+      color: #999;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 24px auto 38px;
+      padding: 0 200px;
+    }
+
+    .button {
+      cursor: pointer;
+      margin: 0 auto;
+      display: inline-block;
+      width: 150px;
+      color: white;
+      background-color: @primary-color;
+      font-weight: bold;
+      font-size: 12px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 2px;
+    }
+  }
+
+  .indicator-block {
+    .panel-content {
+      padding: 0;
+    }
+
+    .button.more-detail {
+      background-color: #e5e8f5;
+      color: #787c92;
+    }
+  }
+}

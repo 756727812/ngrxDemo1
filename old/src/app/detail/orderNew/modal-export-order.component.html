@@ -1,0 +1,72 @@
+<form nz-form #f="ngForm" [nzLayout]="'horizontal'" (ngSubmit)="submitForm()">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label nz-form-item-required>报表类型</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="15">
+      <nz-radio-group name="type" [(ngModel)]="formData.type" (ngModelChange)="resetForm()">
+        <label nz-radio [nzValue]="1">
+          <span>基本订单信息</span>
+        </label>
+        <label nz-radio [nzValue]="2">
+          <span>订单交易流水</span>
+        </label>
+      </nz-radio-group>
+    </div>
+  </div>
+  <div nz-row nz-form-item>
+    <div nz-col [nzSpan]="6" nz-form-label>
+      <label nz-form-item-required>{{ formData.type === 1 ? '下单时间' : '状态更新时间' }}</label>
+    </div>
+    <div nz-col [nzSpan]="15" nz-form-control [nzValidateStatus]="getFormControlInvalidate('dateRange') ? 'error' : 'success'">
+      <nz-rangepicker
+        name="dateRange"
+        style="width: 100%"
+        [nzSize]="'large'"
+        [(ngModel)]="formData.dateRange"
+        [nzPlaceholder]="['起始日期', '结束日期']">
+      </nz-rangepicker>
+      <div nz-form-explain *ngIf="getFormControlInvalidate('dateRange')">请选择日期区间</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="6">
+      <label>筛选小电铺</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="15">
+      <nz-select
+        name="xiaoDianPuId"
+        nzAllowClear
+        nzShowSearch
+        [nzPlaceHolder]="'小电铺名称/手机号/邮箱'"
+        [nzFilter]="false"
+        [(ngModel)]="formData.xiaoDianPuId"
+        (nzSearchChange)="search$.next($event)"
+        [nzNotFoundContent]="'无法找到'"
+      >
+        <nz-option
+          *ngFor="let option of searchOptions"
+          [nzLabel]="option.sellerName + '(' + option.sellerMobile + ')'"
+          [nzValue]="option.id">
+        </nz-option>
+      </nz-select>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col [nzOffset]="2" [nzSpan]="19">
+      <nz-alert [nzType]="'info'" [nzMessage]="'提示：报表导出需要一定时间，请耐心等待。'" nzShowIcon></nz-alert>
+    </div>
+  </div>
+  <div nz-form-item nz-row class="customize-footer">
+    <div nz-form-label nz-col [nzSpan]="24">
+      <div class="ant-modal-footer">
+        <button type="button" nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+          <span>取消</span>
+        </button>
+        <button type="submit" nz-button [nzType]="'primary'" [nzSize]="'large'">
+          <span>确定</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

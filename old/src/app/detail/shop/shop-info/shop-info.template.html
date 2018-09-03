@@ -1,0 +1,21 @@
+<div class="header">
+  <h2><strong>小电铺概况</strong></h2>
+</div>
+<div id="shop-info" ng-if="$ctrl.ready">
+  <!-- TODO 所有 ng-if=data 改为 菊花提示 的方式 -->
+  <shop-info-indicator-block ng-if="$ctrl.isUnApplyYet"></shop-info-indicator-block>
+
+  <shop-info-avtar-block ng-if="!$ctrl.isUnApplyYet && $ctrl.profileData"
+                         data="$ctrl.profileData"></shop-info-avtar-block>
+  <shop-info-power-block ng-if="!$ctrl.isUnApplyYet && $ctrl.profileData"
+                         data="$ctrl.profileData"></shop-info-power-block>
+  <shop-info-data-block
+    caption="小电铺数据"
+    data="$ctrl.shopData"></shop-info-data-block>
+  <shop-info-data-block
+    ng-if="$ctrl.data.show_supply_data===1"
+    caption="供货商品数据"
+    data="$ctrl.supplyData"></shop-info-data-block>
+  <shop-info-flow-chart-block></shop-info-flow-chart-block>
+  <shop-info-content-block></shop-info-content-block>
+</div>

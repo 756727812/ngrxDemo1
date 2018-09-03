@@ -1,0 +1,49 @@
+<div class="header">
+	<h2><strong>仓库出库优先级</strong></h2>
+
+	<div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/store">库存管理</a></li>
+			<li class="active">仓库出库优先级</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+          <p>说明<br>1、优先出库定量锁库存的条目，再判断此处设置的仓库优先级<br>2、在定量锁库存的条目中，优先出库释放库存时间较早的条目</p>
+					<form class="form-horizontal w5c-form" name="storePriorityForm" novalidate w5c-form-validate>
+						<div class="form-group">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>优先级</th>
+                    <th>仓库</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="store in $ctrl.config_store track by $index">
+                    <td>{{$index + 1}}</td>
+                    <td>
+                      <select w5c-dynamic-name="'store' + $index" class="form-control" required
+                          ng-model="$ctrl.store_priority_array[$index]" w5c-dynamic-element
+                          ng-options="st.store_id as st.name for st in $ctrl.config_store">
+                          <option value="" selected>-- 请选择 --</option>
+                        </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+						</div>
+						<div class="form-group">
+							<button type="button" w5c-form-submit="$ctrl.save()" class="btn btn-primary">保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

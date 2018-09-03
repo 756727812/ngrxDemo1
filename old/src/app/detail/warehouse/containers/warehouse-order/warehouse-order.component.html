@@ -1,0 +1,177 @@
+<pro-header [title]="isEdit ? '编辑入库单' : '新建入库单'" [paths]="paths"></pro-header>
+<div class="warehouse-order">
+  <nz-card [nzBordered]="false">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="type">入库类型</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          采购入库
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="supplierId">选择仓库</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="3" [nzXs]="24">
+          <nz-select name="supplierId" nzAllowClear nzShowSearch [nzPlaceHolder]="'沙井仓'"
+            [nzDisabled]="true">
+          </nz-select>
+          <!-- <select >
+            <option value="" selected>沙井仓</option>
+          </select> -->
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isEdit">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="forecastTime">预报时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          {{warehouseDetail?.forecastTime}}
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>2">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="warehouseTime">入仓时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          {{warehouseDetail?.warehouseTime}}
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="items">关联采购单</label>
+        </div>
+        <div nz-col [nzSm]="14" [nzXs]="24">
+          <app-add-purchase-order-form-control formControlName="purchaseOrders" [warehouseStatus]="warehouseDetail.status" [isEdit]="isEdit">
+            <!-- <app-add-purchase-order-form-control formControlName="purchaseOrders"
+            [seeDisabled]="isEdit && warehouseDetail.status != 1 && warehouseDetail.status != 2"> -->
+          </app-add-purchase-order-form-control>
+          <div style="color: red" nz-form-explain *ngIf="isFormControlHasError('purchaseOrders', 'required')">请选择关联采购单</div>
+          <div style="color: red" nz-form-explain *ngIf="isFormControlHasError('purchaseOrders', 'quantity')">预报入库量错误</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="warehouseForcaster">入库预报人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <span *ngIf="!isEdit">{{sellerName}}({{sellerEmail}})</span>
+          <span *ngIf="isEdit">{{warehouseDetail.warehouseForecaster}}({{warehouseDetail.warehouseForecasterEmail}})</span>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="warehouseForecasterPhone">预报人联系电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24">
+          <nz-input formControlName="warehouseForecasterPhone" [nzType]="number"
+            [nzPlaceHolder]="''" [nzSize]="'large'" [nzDisabled]="isEdit && warehouseDetail.status != 1 && warehouseDetail.status != 2"></nz-input>
+          <div nz-form-explain *ngIf="isFormControlHasError('warehouseForecasterPhone', 'required')">预报人联系电话</div>
+
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isEdit && warehouseDetail.status >= 2">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="carrier">承运商</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <select formControlName="carrier" class="ant-input" required (change)="handleCarrierChange()" *ngIf="warehouseDetail.status == 2">
+            <option *ngFor="let c of carrierOptions" [value]="c">{{c}}</option>
+          </select>
+          <span *ngIf="warehouseDetail.status > 2">
+            {{warehouseDetail.carrier}}
+          </span>
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isEdit && warehouseDetail.status >= 2 && getFormControl('carrier').value !== '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="carrierInfo">运单号</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <nz-input formControlName="carrierInfo" [nzPlaceHolder]="''" [nzSize]="'large'" *ngIf="warehouseDetail.status == 2"></nz-input>
+          <span *ngIf="warehouseDetail.status > 2">{{warehouseDetail.carrierInfo}}</span>
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isEdit && warehouseDetail.status >= 2 && getFormControl('carrier').value === '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="carNo">车牌号</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <nz-input formControlName="carNo" [nzPlaceHolder]="''" [nzSize]="'large'" *ngIf="warehouseDetail.status == 2"></nz-input>
+          <span *ngIf="warehouseDetail.status > 2">{{warehouseDetail.carNo}}</span>
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isEdit && warehouseDetail.status >= 2 && getFormControl('carrier').value === '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="driverName">司机姓名</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <nz-input formControlName="driverName" [nzPlaceHolder]="''" [nzSize]="'large'" *ngIf="warehouseDetail.status == 2"></nz-input>
+          <span *ngIf="warehouseDetail.status > 2">{{warehouseDetail.driverName}}</span>
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isEdit && warehouseDetail.status >= 2 && getFormControl('carrier').value === '货拉拉'">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="driverPhone">司机电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          <nz-input formControlName="driverPhone" [nzPlaceHolder]="''" [nzSize]="'large'" *ngIf="warehouseDetail.status == 2"></nz-input>
+          <span *ngIf="warehouseDetail.status > 2">{{warehouseDetail.driverPhone}}</span>
+        </div>
+      </div>
+
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>2">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="warehouseReceiver">仓库签收人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          {{warehouseDetail?.warehouseReceiver}}
+        </div>
+      </div>
+
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>2">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="warehouseReceiverPhone">仓库签收人联系电话</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24">
+          {{warehouseDetail?.warehouseReceiverPhone}}
+        </div>
+      </div>
+
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>3">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="confirmer">入库确认人</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.confirmer}}
+        </div>
+      </div>
+
+      <div nz-form-item nz-row *ngIf="warehouseDetail.status>3">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="confirmWarehouseTime">确认入库时间</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+          {{warehouseDetail.confirmWarehouseTime | date: 'yyyy-MM-dd HH:mm'}}
+        </div>
+      </div>
+
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+          <label for="remark">备注(选填)</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="10" [nzXs]="24">
+          <nz-input formControlName="remark" [nzType]="'textarea'" [nzRows]="'4'" [nzPlaceHolder]="'可用于标记收货时仓库临时垫付运费等'"></nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row style="margin-bottom:8px;">
+        <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+          <!-- <button nz-button [nzSize]="'large'" [nzType]="'primary'" [disabled]="!validateForm.valid">提交</button> -->
+          <button nz-button [nzSize]="'large'" [nzType]="'primary'">提交</button>
+        </div>
+      </div>
+    </form>
+  </nz-card>
+</div>

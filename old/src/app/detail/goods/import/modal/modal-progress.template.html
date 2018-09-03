@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">{{vm.type}}进度</h3>
+</div>
+<div class="modal-body">
+    <h4 class="progress_desc" >
+      <svg viewBox="25 25 50 50" class="circular is-sm"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg>
+      <span>{{vm.warningMap[vm.data.type]}}</span>
+    </h4>
+    <p class="progress_status" ng-if="vm.progressStatus.process">{{vm.progressStatus.process}}</p>
+</div>
+<!-- <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+</div> -->

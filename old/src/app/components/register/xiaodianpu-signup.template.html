@@ -1,0 +1,68 @@
+<h1>小电铺注册</h1>
+<form name="registerForm" class="form-signup w5c-form" role="form" w5c-form-validate novalidate>
+  <label class="m-b-10"> 手机号 </label>
+  <!-- <div class="append-icon">
+    <input type="email" name="email" class="form-control form-white" placeholder="注册邮箱" autocomplete="off" required ng-model="$ctrl.formData.seller_email"
+      ng-blur="$ctrl.validateEmail(registerForm)">
+    <label for="seller_email" class="error" ng-show="$ctrl.email_validate_result" ng-bind="$ctrl.email_validate_result"></label>
+    <i class="icon-envelope"></i>
+  </div> -->
+  <div class="clear-fix">
+    <div class="col-xs-4 p-l-0">
+      <select name="country" class="form-control form-white" style="height: 34px" required
+        ng-model="$ctrl.validate_form.country_code"
+        ng-options="c.code as c.label group by c.letter for c in $ctrl.country_code_list"></select>
+    </div>
+    <div class="append-icon col-xs-8 p-0">
+      <input type="text" name="mobile" class="form-control form-white" placeholder="手机号"
+        ng-model="$ctrl.formData.seller_mobile" ng-pattern="/^1[0-9]{10}$/"
+        uib-tooltip="建议使用常用手机号"
+        tooltip-placement="top-right"
+        tooltip-trigger="'mouseenter focus'"
+        required>
+      <i class="fa fa-mobile"></i>
+    </div>
+  </div>
+  <label class="m-b-10"> 短信验证码 </label>
+  <div class="clear-fix">
+    <div class="append-icon col-xs-8 p-0">
+      <input type="text" name="code" class="form-control form-white" placeholder="请输入验证码"
+        ng-model="$ctrl.validate_form.code" ng-trim="true" required>
+      <i class="fa fa-comments"></i>
+    </div>
+    <div class="col-xs-4">
+      <button class="btn btn-primary btn-sm m-t-5" type="button" ng-click="$ctrl.sendSmsCode()"
+        ng-disabled="registerForm.mobile.$invalid || $ctrl.verify_btn.is_msg_sended">
+        {{ $ctrl.verify_btn.text }}{{ $ctrl.verify_btn.is_msg_sended ? '（' + $ctrl.verify_btn.seconds + '）' : '' }}</button>
+    </div>
+  </div>
+  <label class="m-b-10"> 登录密码 </label>
+  <div class="append-icon">
+    <input type="password" name="password" class="form-control form-white" placeholder="设置密码" autocomplete="off" required ng-model="$ctrl.formData.seller_pwd" 
+      ng-pattern="/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&_]{8,16}$/">
+    <i class="icon-lock"></i>
+  </div>
+  <label class="m-b-10"> 再次输入登录密码 </label>
+  <div class="append-icon">
+    <input type="password" name="password2" class="form-control form-white" placeholder="确认密码" autocomplete="off" ng-model="$ctrl.formData.pwd_repeat"
+      w5c-repeat="password" required>
+    <i class="icon-lock"></i>
+  </div>
+  <div class="terms option-group">
+        <label for="terms" class="m-t-10">
+            <input type="checkbox" name="terms" id="terms" icheck ng-model="$ctrl.is_term_checked" skin="icheckbox_square" /> 同意
+            <a href="//m.seeapp.com/see/static/seego/daily.html " target="_blank ">《See购服务商日常交易行为规范》</a>
+        </label>
+    </div>
+  <div class="form-group m-b-10 " ng-show="$ctrl.errors.length">
+    <div class="alert alert-danger">
+      <ui>
+        <li ng-repeat="error in $ctrl.errors track by $index" ng-bind="error"></li>
+      </ui>
+    </div>
+  </div>
+  <button type="button" class="btn btn-lg btn-dark m-t-20" ng-disabled="$ctrl.btn_disabled" w5c-form-submit="$ctrl.signup()">注册</button>
+  <div class="clearfix">
+    <p class="pull-right m-t-20"><a href="login.html">已经有账号?点击登录</a></p>
+  </div>
+</form>

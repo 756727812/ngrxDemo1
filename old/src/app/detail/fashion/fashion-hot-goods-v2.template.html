@@ -1,0 +1,334 @@
+<div id="fashion-hot-goods">
+  <div class="header fashion-header">
+    <h2><strong>热门单品</strong></h2>
+
+    <div class="breadcrumb-wrapper" ng-hide="true">
+      <ol class="breadcrumb">
+        <li><a href="/">Seego后台</a></li>
+        <li><a href="/fashion">全球时尚</a></li>
+        <li class="hotgoods">热门单品</li>
+      </ol>
+    </div>
+
+    <goods-theme-list-btn-goods-mark></goods-theme-list-btn-goods-mark>
+
+  </div>
+  <!-- <a href="/contact/shop#4" class="fashion-btn fashion-btn-primary topButton" ng-show="$ctrl.isShow" >分销商品说明</a> -->
+
+  <div class="fashion">
+
+    <see-tabset see-hide="KOL New-Brand" ng-if="false">
+      <see-tab select="$ctrl.selectTab()" heading="单品"    type="1"></see-tab>
+      <see-tab select="$ctrl.selectTab()" heading="主题库"  type="2"></see-tab>
+      <see-tab select="$ctrl.selectTab()" heading="品牌库"  type="3"></see-tab>
+    </see-tabset>
+
+    <div class="row"  ng-show="$ctrl.hash === '1'">
+      <div class="col-xs-12 portlets">
+        <div class="panel">
+            <div class="panel-content text-center" style="padding: 20px 20px 20px 20px;">
+              <div class="btn-group fashion-nav-bar">
+                <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.searchForm.class_type === '0'}" ng-click="$ctrl.classTypeFilter('0')"><!--<img src="https://static.seecsee.com/seego_plus/images/fashion/img_btn/{{$ctrl.searchForm.class_type === '0' ? '00' : '0'}}.png" width="22" height="22" />-->热门</button>
+                <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.searchForm.class_type === '3'}" ng-click="$ctrl.classTypeFilter('3')"><!--<img src="https://static.seecsee.com/seego_plus/images/fashion/img_btn/{{$ctrl.searchForm.class_type === '3' ? '33' : '3'}}.png" width="22" height="22" />-->家居</button>
+                <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.searchForm.class_type === '2'}" ng-click="$ctrl.classTypeFilter('2')"><!--<img src="https://static.seecsee.com/seego_plus/images/fashion/img_btn/{{$ctrl.searchForm.class_type === '2' ? '22' : '2'}}.png" width="22" height="22" />-->美妆</button>
+                <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.searchForm.class_type === '4'}" ng-click="$ctrl.classTypeFilter('4')"><!--<img src="https://static.seecsee.com/seego_plus/images/fashion/img_btn/{{$ctrl.searchForm.class_type === '4' ? '44' : '4'}}.png" width="22" height="22" />-->零食</button>
+                <button type="button" class="btn btn-default" ng-class="{'btn-primary': $ctrl.searchForm.class_type === '5'}" ng-click="$ctrl.classTypeFilter('5')"><!--<img src="https://static.seecsee.com/seego_plus/images/fashion/img_btn/{{$ctrl.searchForm.class_type === '5' ? '55' : '5'}}.png" width="22" height="22" />-->时尚</button>
+              </div>
+
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="filter-bar" ng-show="$ctrl.hash === '1'" style="margin-bottom:20px;">
+      <form ng-submit="$ctrl.submitSearch()" class="form-inline" style="margin-top:-10px">
+        <div class="form-group m-b-8">
+          <a href="" ng-click="$ctrl.changeOrder('1')" ng-class="{ 'text-info': $ctrl.searchForm.order_id == '1'}" class="fashion-btn">利润从高到低</a> &nbsp;
+          <a href="" ng-click="$ctrl.changeOrder('2')" ng-class="{ 'text-info': $ctrl.searchForm.order_id == '2'}" class="fashion-btn">最新发布</a> &nbsp;
+          <!-- <a class="text-info">供货价区间</a> -->
+          <input type="number" min="0" class="form-control form-white" style="width:120px;" placeholder="￥最低供货价" ng-model="$ctrl.searchForm.filter_price_start"  ng-focus="$ctrl.changeInputPrice()" ng-blur="$ctrl.lostInput()">&nbsp;&nbsp;-&nbsp;
+          <input type="number" min="{{$ctrl.searchForm.filter_price_start}}" class="form-control form-white" style="width:120px;" placeholder="￥最高供货价" ng-model="$ctrl.searchForm.filter_price_end"  ng-focus="$ctrl.changeInputPrice()" ng-blur="$ctrl.lostInput()">
+          <button ng-if="$ctrl.searchForm.show_btn == 1" type="submit" class="btn btn-primary" see-hide="New-Brand">确定</button>
+            <a class="text-info" see-hide="KOL New-Brand">&nbsp;&nbsp;|&nbsp;&nbsp;库存</a>
+            <label class="control-label" see-hide="KOL New-Brand">
+                <select class="form-control" ng-model="$ctrl.searchForm.goods_flag" ng-change="$ctrl.submitSearch()">
+                    <option value="0">全部</option>
+                    <option value="2">库存稳定</option>
+                    <option value="1">库存紧张</option>
+                </select>
+            </label>
+
+            <a class="text-info" see-hide="KOL New-Brand">&nbsp;&nbsp;|&nbsp;&nbsp;状态</a>
+            <label class="control-label" ng-if="!$ctrl.isKolOrNewBand()">
+                <select class="form-control" ng-model="$ctrl.searchForm.kol_flag" ng-change="$ctrl.submitSearch()">
+                    <option value="0">全部</option>
+                    <option value="1">KOL可见</option>
+                    <option value="2">KOL不可见</option>
+                </select>
+            </label>
+        </div>
+        <div class="btn-group font-size-25" see-hide="KOL New-Brand" style="padding-top:-10px;">
+          <a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'table'}" ng-disabled="$ctrl.show_type === 'table'" ng-click="$ctrl.changeShowType('table')"><i class="fa fa-list"></i></a>&nbsp;|&nbsp
+          <a href="" ng-class="{ 'text-info': $ctrl.show_type !== 'grid'}" ng-disabled="$ctrl.show_type === 'grid'" ng-click="$ctrl.changeShowType('grid')"><i class="fa fa-table"></i></a>
+        </div>
+
+      </form>
+      <form ng-submit="$ctrl.submitSearch()" class="form-inline searchForm">
+        <button type="submit" class="btn btn-primary m-b-2 searchButton"><i class="fa fa-search"></i></button>
+        <div class="form-group m-b-2" style="margin-right: 0;">
+          <label class="control-label search">
+              <input see-hide="KOL New-Brand" type="search" class="form-control form-white" ng-model="$ctrl.searchForm.keyword" placeholder="商品名/品牌/商品ID/备注">
+              <input see-access="KOL New-Brand" type="search" class="form-control form-white" ng-model="$ctrl.searchForm.keyword" placeholder="请输入商品名或品牌名">
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="goods-list-block">
+      <div class="panel">
+        <div class="panel-content">
+          <div ng-show="$ctrl.hash === '1'">
+
+            <div id="hotgoodsList" class="table-scrollable materialList" ng-if="$ctrl.show_type === 'table'">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>商品图</th>
+                    <th>商品名</th>
+                    <th see-hide="KOL New-Brand">商品ID</th>
+                    <th see-hide="KOL New-Brand">推荐理由</th>
+                    <th>品类</th>
+                    <th>品牌</th>
+                    <th>发货地</th>
+
+                    <th see-hide="KOL New-Brand">库存</th>
+                    <th>可供规格</th>
+
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">供货价</th>
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">建议零售价</th>
+                    <!-- 给KOL开放货源 <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">货源</th> -->
+                    <!--
+                    <th>货源</th>
+                  -->
+                    <!--
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">浏览量</th>
+                    <th see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">销量</th>
+                    -->
+                    <th see-hide="KOL New-Brand">备注</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in $ctrl.hotgoods_list">
+                    <td>
+                      <img see-src="item.item_imgurl" see-viewer width="100" alt="{{item.item_name}}">
+                    </td>
+                    <td ng-bind="item.item_name"></td>
+                    <td  see-hide="KOL New-Brand" ng-bind="item.item_id"></td>
+                    <td  see-hide="KOL New-Brand">
+                      <a href="" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" editable-textarea="item.recommend_reason" e-rows="7" e-cols="40"
+                        onbeforesave="$ctrl.saveRecommend($data, item.item_id)"><i class="fa fa-pencil-square-o"></i>{{item.recommend_reason}}</a>
+                      <span see-access="KOL New-Brand">{{item.recommend_reason}}</span>
+                    </td>
+                    <td ng-bind="item.class_name"></td>
+                    <td ng-bind="item.brand_name"></td>
+                    <td ng-bind="item.ship_country"></td>
+
+                    <td  see-hide="KOL New-Brand" ng-bind="item.stock"></td>
+                    <td ng-bind="item.sku_detail_str"></td>
+
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">
+                      <span ng-if="item.supply_price_start">{{item.supply_price_start | currency: '￥'}}</span>
+                      <span ng-if="item.supply_price_start && item.supply_price_end">&nbsp;~&nbsp;</span>
+                      <span ng-if="item.supply_price_end">{{item.supply_price_end | currency: '￥'}}</span>
+                    </td>
+
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" >
+                      <span ng-if="item.suggested_retail_price_from != item.suggested_retail_price_to">{{item.suggested_retail_price_from}}~{{item.suggested_retail_price_to}}</span>
+                      <span ng-if="item.suggested_retail_price_from == item.suggested_retail_price_to">{{item.suggested_retail_price_from}}</span>
+                    </td>
+                    <!--
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin">
+                      <select style="width:80px" class="form-control" ng-model="item.goods_status" ng-change="$ctrl.changeGoodsStatus(item.item_id,item.goods_status)"
+                        ng-options="cat.id as cat.name for cat in $ctrl.list_goods_status" required>
+                        </select>
+                    </td>
+                    <td see-access="KOL New-Brand" ng-bind="item.goods_status_str">
+                    </td>
+                  -->
+                    <!--
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-bind="item.num_uv"></td>
+                    <td see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-bind="item.num_sell"></td>
+                  -->
+                    <td  see-hide="KOL New-Brand">
+                      <a href="" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" editable-textarea="item.notes" e-rows="7" e-cols="40"
+                        onbeforesave="$ctrl.saveNotes($data, item.item_id)"><i class="fa fa-pencil-square-o"></i>{{item.notes}}</a>
+                      <span see-access="KOL New-Brand">{{item.notes}}</span>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-primary" ng-href="{{item.buyurl}}" target="_blank">商品详情</a>
+                      <!--隐藏这个按钮
+                      <button type="button" class="btn btn-sm btn-primary" see-access="KOL-Admin See-Admin Super-Admin Elect-Admin" ng-click="$ctrl.hideGoods(item.item_id, item.is_public)"
+                        ng-bind="item.is_public === 1 ? '隐藏商品' : '显示商品'"></button>
+                      -->
+                      <button class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin" ng-click="$ctrl.materialSync(item.item_id)">移出单品库</button>
+                      <button class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin See-Admin Elect-Admin"
+                        ng-click="$ctrl.materialTop(item.item_id, item.top_flag)">{{ item.top_flag === 0 ? '置顶' : '取消置顶' }}</button>
+                      <!--
+                      <button class="btn btn-sm btn-primary" type="button" see-access="KOL-Admin Super-Admin Elect-Admin" ng-click="$ctrl.materialSupplyPrice(item.item_id, item.supply_price_start, item.supply_price_end)">编辑供货价</button>
+                    -->
+                      <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.materialFavorItemAdd(item.item_id, item.is_favor)">{{ item.is_favor === 0 ? '收藏' : '取消收藏' }}</button>
+
+                      <a class="temp-detail-switch" href ng-if="item.goods_status === 1" ng-click="$ctrl.changeGoodsStatus(item.item_id,0)">
+                          <div id="div1" class="close1">
+                              <div id="div2" class="close2"></div>
+                          </div>
+                          <span>库存充足</span>
+                      </a>
+                      <a class="temp-detail-switch" href ng-if="item.goods_status === 0" ng-click="$ctrl.changeGoodsStatus(item.item_id,1)">
+                          <div id="div1" class="open1">
+                              <div id="div2" class="open2"></div>
+                          </div>
+                          <span>库存充足</span>
+                      </a>
+
+                      <a class="temp-detail-switch" href ng-if="item.kol_flag === 0" ng-click="$ctrl.hideGoods(item.item_id,0)">
+                          <div id="div1" class="close1">
+                              <div id="div2" class="close2"></div>
+                          </div>
+                          <span>KOL可见</span>
+                      </a>
+                      <a class="temp-detail-switch" href ng-if="item.kol_flag === 1" ng-click="$ctrl.hideGoods(item.item_id,1)">
+                          <div id="div1" class="open1">
+                              <div id="div2" class="open2"></div>
+                          </div>
+                          <span>KOL可见</span>
+                      </a>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div infinite-scroll="$ctrl.getNextPage()" infinite-scroll-distance="3" class="grid moveupdown materialList" ng-if="$ctrl.show_type === 'grid'">
+              <div class="grid-sizer"></div>
+              <div class="grid-item" ng-repeat="item in $ctrl.hotgoods_list" id="{{'lead_item_'+$index}}">
+                <div class="grid-item-image" style="height:230px;">
+                  <center><img see-src="item.item_imgurl" class="img-viewer" alt="">
+                  </center>
+                  <div see-hide="KOL New-Brand" class="btn-group font-size-25 top"  style="text-align:center;background-color:rgba(0,0,0,0);margin-left:160px;">
+                    <a href="" class="" ng-click="$ctrl.hideGoods(item.item_id, item.kol_flag)"  style="padding-left:5px;color:#cccccc;">
+                        <i class="fa " ng-class="{ 'fa-eye-slash' : item.kol_flag == '0', 'fa-eye': item.kol_flag == '1'}"></i>
+                    </a>
+                  </div>
+                  <goods-theme-goods-list-btn-favor
+                    on-change="$ctrl.onFavorChange(itemId, value)"
+                    item-id="item.item_id"
+                    active="item.is_favor"
+                  ></goods-theme-goods-list-btn-favor>
+                  <a report="PAGE_HOT_COMMODITY.CLICK_COMMODITY"
+                    report-ext1="{{item.item_id}}"
+                    ng-href="{{item.buyurl}}" class="goods-url" target="_blank"></a>
+                </div>
+
+                <div class="desc-wrap">
+                  <div class="share-block" see-hide="New-Brand">
+                      <a href="" class="fashion-btn fashion-btn-primary" ng-click="$ctrl.materialFavorItemAdd(item.item_id, item.is_favor)" ng-if="item.is_favor === 0">
+                        添加到收藏夹
+                      </a>
+                      <a  href="" class="fashion-btn selected" ng-if="item.is_favor === 1">已添加到收藏夹</a>
+                    </div>
+                    <div class="share-block" see-access="New-Brand">
+                      <a report="PAGE_HOT_COMMODITY.BTN_ADD_TO_SHOP"
+                          report-ext1="{{item.item_id}}"
+                          class="fashion-btn fashion-btn-primary" ng-class="{'disabled':$ctrl.isQuhaodian}">
+                          <common-btn-sell-goods item-id="item.item_id"
+                            on-success="$ctrl.onSellGoodsSuccess()"
+                          ></common-btn-sell-goods>
+                        </a>
+                      <!-- <a report="PAGE_HOT_COMMODITY.BTN_OFF_SALE"
+                          report-ext1="{{item.item_id}}"
+                          class="fashion-btn fashion-btn-primary"
+                          ng-click="$ctrl.addWarehouseItem(item.item_id)">添加到仓库</a> -->
+
+                        <a report="PAGE_HOT_COMMODITY.BTN_OFF_SALE"
+                            report-ext1="{{item.item_id}}"
+                            class="fashion-btn fashion-btn-primary fashion-btn-off-store">
+                          <common-btn-off-store item-id="item.item_id"
+                            on-success="$ctrl.onAddWarehouseSuccess(itemId)"
+                          ></common-btn-off-store>
+                        </a>
+                    </div>
+
+                  <div see-hide="New-Brand" class="clear-fix" style="padding:5px 10px 10px;">
+                    <div class="pull-left">
+                      <span class="text-info" title="{{item.brand_name}}">
+                        {{item.brand_name | moreContent:10 }}
+                      </span>
+                    </div>
+                    <div class="pull-right">
+                      <span class="text-info" title="{{item.class_name}}">
+                        {{item.class_name | moreContent:10 }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="goods-sell-point-wrap">
+                    <div ng-if="item.topic_item_sell_point" class="innerwrap">
+                      <goods-theme-goods-list-sell-point
+                        content="item.topic_item_sell_point"
+                        append-to=".goods-list-block .grid">
+                      </goods-theme-goods-list-sell-point>
+                    </div>
+                  </div>
+
+                  <a ng-href="{{item.buyurl}}"
+                    title="{{item.item_name}}"
+                    class="item-name ellipsis"
+                    target="_blank">
+                      {{item.item_name }}
+                  </a>
+
+                  <div class="profit-line ellipsis">
+                    <span>最高利润:&nbsp;&nbsp;<span class="text-info" style="color:#ff634c;" ng-bind="item.str_margin"></span>
+                    </span>
+                  </div>
+
+                  <div class="price-line ellipsis">
+                    <span>供货价/建议售价:&nbsp;<span class="text-info" ng-bind="item.str_price_kol"></span>/<span class="text-info" ng-bind="item.str_price_sell"></span>
+                    </span>
+                  </div>
+                </div>
+
+
+                <div class="clear-fix store">
+                  <div class="pull-left">
+                    <!--库存充足不显示-->
+                    <span class="text-info" ng-if="item.goods_status === 0 && false ">
+                      {{item.str_new_goods_status}}
+                    </span>
+                    <span class="text-primary" ng-if="item.goods_status === 1">
+                      {{item.str_new_goods_status}}
+                    </span>
+                  </div>
+                  <div class="pull-right" see-hide="KOL New-Brand">
+                    <span class="text-info">
+                      库存:&nbsp;{{item.stock}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div ng-if="$ctrl.show_type === 'grid' && $ctrl.is_show_all == 1" style="text-align:center">
+            <br />
+            <label class="text-info" style="font-size:11px; font-color=gray;">
+              加载完毕，需要查看更多商品，请联系管理员
+            </label>
+          </div>
+          <pagination ng-if="$ctrl.show_type !== 'grid'" total-items="$ctrl.total_items"></pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

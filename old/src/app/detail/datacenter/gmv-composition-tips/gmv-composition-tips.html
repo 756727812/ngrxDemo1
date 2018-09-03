@@ -1,0 +1,25 @@
+<div class="gmv-composition-tips" ng-class="{'has-data': $ctrl.isTipsVisible}">
+  <span class="val">
+    <ng-transclude></ng-transclude>
+  </span>
+  <ul>
+    <li><span class="labe">自动化：</span>{{$ctrl.data.auto_total_fee | currency: '￥'}}</li>
+    <li><span class="labe">品牌：</span>{{$ctrl.data.brand_total_fee | currency: '￥'}}</li>
+    <li><span class="labe">流量型：</span>{{$ctrl.data.flow_total_fee | currency: '￥'}}</li>
+    <li><span class="labe">原创型：</span>{{$ctrl.data.create_total_fee | currency: '￥'}}</li>
+    <li><span class="labe">中心化：</span>{{$ctrl.data.center_total_fee | currency: '￥'}}</li>
+    <li><span class="labe">其他：</span>{{$ctrl.data.other_total_fee | currency: '￥'}}</li>
+  </ul>
+</div>
+
+
+<!--
+$data[$k]['auto_total_fee'] = $v['auto_total_fee'] / 100;//自动化
+$data[$k]['brand_total_fee'] = $v['brand_total_fee'] / 100;//品牌
+$data[$k]['flow_total_fee'] = $v['flow_total_fee'] / 100;//流量型
+$data[$k]['create_total_fee'] = $v['create_total_fee'] / 100;//原创型
+$data[$k]['center_total_fee'] = $v['center_total_fee'] / 100;//中心化
+$data[$k]['other_total_fee'] = $v['other_total_fee'] / 100;//其他
+
+
+ -->

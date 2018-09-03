@@ -1,0 +1,25 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+	<h3 class="modal-title">详情</h3>
+</div>
+<div class="modal-body">
+	<p class="clear-fix">
+		<span class="pull-left">
+      <img class="img-circle" style="width: 30px;" see-src="vm.item.author.blogger_pic" alt="{{vm.item.author.blogger}}" />
+      {{vm.item.author.blogger}}</span>
+		<span class="pull-right"><i class="fa fa-clock-o"></i>{{+vm.item.item.publish_time * 1000 | date:'yyyy-MM-dd H:m:s'}}</span>
+	</p>
+	<div class="media">
+		<div class="media-left">
+			<img class="media-object" style="width: 200px;" see-src="vm.item.item.img_url" alt="">
+		</div>
+		<div class="media-body">
+			<h4 class="text-info" ng-bind-html="vm.item.item.desc | trustHtml"></h4>
+			<p class="row">
+				<span class="col-sm-6"><i class="fa fa-eye"></i>浏览数{{vm.item.item.read_num}}</span>
+				<span class="col-sm-6"><i class="fa fa-thumbs-o-up"></i>点赞数{{vm.item.item.likes}}</span>
+			</p>
+			<a ng-href="{{vm.item.url}}" class="text-primary"><i class="fa fa-link"></i>查看原链接</a>
+		</div>
+	</div>
+</div>

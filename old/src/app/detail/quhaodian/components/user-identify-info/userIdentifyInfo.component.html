@@ -1,0 +1,9 @@
+<div class="container">
+  <p> <label>真实姓名：</label>{{identifyInfo.realName}}</p>
+  <p><label>性别：</label>{{identifyInfo.gender === 1 ? '男':'女'}}</p>
+  <p><label>身份证号码：</label>{{identifyInfo.identifyNumber}}</p>
+  <p><label>身份证照片：</label>
+    <img class="identify-img"  [seeSrc]="identifyInfo.frontUrl">
+    <img class="identify-img" [seeSrc]="identifyInfo.backendUrl">
+  </p>
+</div>

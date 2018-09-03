@@ -1,0 +1,51 @@
+<form nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form)">
+  <div nz-form-item nz-row>
+    <div nz-col nzXs="24" nzSm="7" nz-form-label>
+      <label>文章标题</label>
+    </div>
+    <div nz-col nzXs="24" nzSm="14" nz-form-control nzHasFeedback>
+      <nz-input formControlName="title" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'公众号上即将发布或已发布的文章的标题'">
+      </nz-input>
+      <div nz-form-explain *ngIf="isFormControlHasError('title', 'required')">请输入文章标题</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-col nzXs="24" nzSm="7" nz-form-label>
+      <label>上线时间</label>
+    </div>
+    <div nz-col nzXs="24" nzSm="14" nz-form-control nzHasFeedback>
+      <nz-datepicker formControlName="start_time" [nzSize]="'large'" [nzPlaceHolder]="'请选择'"></nz-datepicker>
+      <div nz-form-explain *ngIf="isFormControlHasError('start_time', 'required')">请选择上线时间</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-col nzXs="24" nzSm="7" nz-form-label>
+      <label>文章楼层</label>
+    </div>
+    <div nz-col nzXs="24" nzSm="14" nz-form-control nzHasFeedback>
+      <nz-input formControlName="floor_level" [nzType]="'number'" [nzSize]="'large'" [nzPlaceHolder]="levelPlaceholder"></nz-input>
+      <div nz-form-explain *ngIf="isFormControlHasError('floor_level', 'required')">请输入文章楼层</div>
+      <div nz-form-explain *ngIf="isFormControlHasError('floor_level', 'pattern')">请输入正确的文章楼层</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-col nzXs="24" nzSm="7" nz-form-label>
+      <label>文章链接（选填）</label>
+    </div>
+    <div nz-col nzXs="24" nzSm="14" nz-form-control nzHasFeedback>
+      <nz-input formControlName="url" [nzType]="'url'" [nzSize]="'large'" [nzPlaceHolder]="'填写文章的具体链接'">
+      </nz-input>
+      <div nz-form-explain *ngIf="isFormControlHasError('url', 'pattern')">格式不正确，请复制包含 weixin.qq.com 的完整链接</div>
+    </div>
+  </div>
+  <nz-alert [nzType]="'info'" [nzMessage]="'公众号文章推送前，请确保下方信息填写正确，否则将会影响到文章数据的获取，下方信息稍后可在当前页面进行编辑'" nzShowIcon>
+  </nz-alert>
+  <div class="customize-footer">
+    <button type="submit" nz-button [nzType]="'primary'" [nzSize]="'large'">
+      确定
+    </button>
+    <button type="button" nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleCancel($event)">
+      取消
+    </button>
+  </div>
+</form>

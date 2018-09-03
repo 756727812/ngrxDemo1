@@ -1,0 +1,106 @@
+<div class="header">
+  <h2><strong>接口管理</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/security">安全管理</a></li>
+      <li class="active">接口管理</li>
+    </ol>
+  </div>
+</div> 
+
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="clear-fix">
+
+        <div>
+          <form class="form-inline" ng-submit="$ctrl.changeFilter()">
+            <div class="form-group m-b-10">
+                <label class="control-label"> 平台
+                  <select class="form-control" ng-model="$ctrl.platform" ng-options="item.value as item.name for item in $ctrl.filter_platform" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 模块
+                  <select class="form-control" ng-model="$ctrl.ctrl_id" ng-options="item.value as item.name for item in $ctrl.filter_ctrl" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 接口类型
+                  <select class="form-control" ng-model="$ctrl.api_type" ng-options="item.value as item.name for item in $ctrl.filter_api_type" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 筛选
+                  <select class="form-control" ng-model="$ctrl.type" ng-options="item.value as item.name for item in $ctrl.filter_type" ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+                <label class="control-label"> 排序
+                  <select class="form-control" ng-model="$ctrl.rank" ng-options="item.value as item.name for item in $ctrl.filter_rank"  ng-change="$ctrl.changeFilter()">
+                  </select>
+                </label>
+ 
+                <label class="control-label">
+                    <input type="text" name="keyword" class="form-control" placeholder="接口链接/接口名" ng-model="$ctrl.keyword">
+                </label>
+
+                <button class="btn btn-primary" type="submit">搜索</button>
+            </div>
+ 
+          </form>
+          <div class="table-scrollable">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>平台</th>
+                  <th>模块名</th>
+                  <th>接口链接</th>
+                  <th>接口名</th>
+                  <th>设置类型</th>
+                  <th>24小时/总<br />请求数</th>
+                  <th>生效策略/<br />失效策略</th>
+                  <th>异常数</th>
+                  <!--
+                  <th>优先级</th>
+                  <th>排序(越大越前)</th>
+                -->
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in $ctrl.list_api track by $index">
+                	<td>{{item.platform_name}}</td>
+                    <td>{{item.ctrl_name}}</td>
+                    <td>{{item.url}}</td>
+                    <td><a href="" editable-textarea="item.name" e-rows="1" e-cols="16"
+                            onbeforesave="$ctrl.updateApiName($data, item.api_id)"><i class="fa fa-pencil-square-o"></i>{{item.name}}</a></td>
+                    <td>
+                      <select style="width:80px" class="form-control" ng-model="item.api_type"  ng-change="$ctrl.updateApiType(item.api_type,item.api_id)" 
+                        ng-options="cat.value as cat.name for cat in $ctrl.filter_api_type" required>
+                        </select>
+                    </td>
+                    <td>{{item.num_access}}/{{item.num_access_all}}</td>
+                    <td>{{item.num_config_enable}} / {{item.num_config_disable}}</td>
+                    <td ng-if="item.num_warning == 0 ">{{item.num_warning}}</td>
+                    <td ng-if="item.num_warning > 0 "><font color=red>{{item.num_warning}}</font></td>
+                    <!--
+                    <td>{{item.level}}</td>
+                    <td>{{item.rank}}</td>
+                  -->
+                    <td>
+                      <button class="btn btn-sm btn-primary" type="button"  ng-click="$ctrl.managerConfig(item)">{{item.num_config > 0 ? '查看策略':'配置策略'}}</button>
+                      <button ng-if="item.num_warning > 0" class="btn btn-sm btn-primary" type="button"  ng-click="$ctrl.managerLog(item.api_id)">查看报警</button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+ 
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+

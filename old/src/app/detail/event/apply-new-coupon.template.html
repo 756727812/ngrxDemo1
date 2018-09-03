@@ -1,0 +1,288 @@
+<div class="header">
+  <h2><strong>优惠券申请</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">优惠券申请</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <p ng-if="$ctrl.is_c2c">已申请<span class="text-primary">{{$ctrl.seller_coupon_count}}</span>张优惠券，<span class="text-primary">{{$ctrl.working_coupon_count}}</span>张已审核通过，还能申请
+          <span class="text-primary">{{4-$ctrl.seller_coupon_count}}</span>张券</p>
+        <div class="container">
+          <form id="submitCouponApplyForm" name="submitCouponApplyForm" role="form" class="form-horizontal m-t-20" novalidate>
+
+            <div class="form-group" ng-class="{'has-error': submitCouponApplyForm.activity_desc.$touched && submitCouponApplyForm.activity_desc.$invalid}">
+              <label for="originalPrice" class="col-sm-2 control-label required">用途</label>
+
+              <div class="col-sm-7">
+                <div class="input-group">
+
+                  <input id="originalPrice" type="text" name="activity_desc" class="form-control" placeholder="5-10个字" ng-model="$ctrl.activity_desc"
+                    required>
+                  <span class="input-group-addon">{{submitCouponApplyForm.activity_desc.$viewValue.length || 0}}/10</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': submitCouponApplyForm.type.$touched && submitCouponApplyForm.type.$invalid}">
+              <label for="coupon_type" class="col-sm-2 control-label required">类型</label>
+
+              <div class="col-sm-7">
+                <select class="form-control" name="type" id="coupon_type" ng-model="$ctrl.type" ng-change="$ctrl.changeType()" required>
+                              <option value="" selected>-- 请选择 --</option>
+                              <option value="1">代金券</option>
+                              <option value="2">满减券</option>
+                              <!--<option value="3">全场满减券</option>-->
+                          </select>
+              </div>
+            </div>
+            <div class="form-group" ng-show="$ctrl.type === '1'">
+              <label class="col-sm-2 control-label required">代金券金额</label>
+
+              <div class="col-sm-7">
+                <label class="radio-inline">
+                          <input type="radio" style="margin-top: 10px;" name="daijinquanRadio" id="inlineRadio1" value="1" ng-model="$ctrl.selectedDaijinquan"
+                          required>
+                          <input type="number" min="1" class="form-control" name="coupon_price_start" style="display: inline-block;width: 80px;" ng-model="$ctrl.coupon_price_start"
+                          ng-disabled="!($ctrl.selectedDaijinquan == 1)" required>&nbsp;元
+                      </label>
+                <label class="radio-inline" ng-if="!$ctrl.is_c2c">
+                          <input type="radio" style="margin-top: 10px;" name="daijinquanRadio" id="inlineRadio2" value="2" ng-model="$ctrl.selectedDaijinquan"
+                          required="">随机
+                          <input type="number" min="1" class="form-control" name="coupon_price_start" style="display: inline-block; width: 80px;" ng-model="$ctrl.coupon_price_start"
+                          ng-disabled="!($ctrl.selectedDaijinquan == 2)" required="">&nbsp;至&nbsp;
+                          <input type="number" min="1" class="form-control" name="coupon_price_end"
+                          style="display: inline-block; width: 80px;" ng-model="$ctrl.coupon_price_end" ng-disabled="!($ctrl.selectedDaijinquan == 2)"
+                          required="">&nbsp;元之间
+                      </label>
+              </div>
+            </div>
+            <div class="form-group" ng-show="$ctrl.type === '2'">
+              <label class="col-sm-2 control-label required">满减券金额</label>
+
+              <div class="col-sm-7">
+                <div>
+                  <div style="display: inline-block;">
+                    满&nbsp;
+                    <input type="number" min="1" name="limit_money" class="form-control" style="display: inline-block;width: 80px;" ng-model="$ctrl.limit_money"
+                      required="">&nbsp;元
+                  </div>
+                  <div style="display: inline-block;">
+                    减&nbsp;
+                    <input type="number" min="1" name="coupon_price_start" class="form-control" style="display: inline-block;width: 80px;" ng-model="$ctrl.coupon_price_start"
+                      required="">&nbsp;元
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-show="type === '3'">
+              <div class="form-group">
+                <label class="col-sm-2 control-label required">满减券金额</label>
+
+                <div class="col-sm-7">
+                  <div class="m-b-5" ng-repeat="item in allFullCutList track by $index">
+                    满&nbsp;
+                    <input type="number" min="1" name="limit_money" class="form-control" style="display: inline-block;width: 80px;" ng-model="$ctrl.item.limit_money"
+                      required="">&nbsp;元 减&nbsp;
+                    <input type="number" min="1" name="coupon_price_start" class="form-control" style="display: inline-block;width: 80px;" ng-model="$ctrl.item.coupon_price_start"
+                      required="">&nbsp;元
+                    <button type="button" class="btn btn-sm btn-primary" style="margin: 0;height:35px;" ng-show="$index == 0" ng-click="$ctrl.addOneAllFullCut()"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-sm btn-primary" style="margin: 0;height:35px;" ng-hide="$index == 0" ng-click="$ctrl.delOneAllFullCut($index)"><i class="fa fa-minus"></i>
+                              </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': submitCouponApplyForm.couponTitle.$touched &&
+                                      submitCouponApplyForm.couponTitle.$invalid}">
+                <label class="col-sm-2 control-label required">优惠券描述</label>
+
+                <div class="col-sm-7">
+                  <div class="input-group">
+                    <input type="text" maxlength="29" name="couponTitle" class="form-control" placeholder="客户端展示用户满减条件，最多输入29个字，品牌品类限制后台自动配置显示"
+                      ng-model="$ctrl.coupon_title">
+                    <span class="input-group-addon">{{submitCouponApplyForm.couponTitle.$viewValue.length || 0}}/29</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-if="!$ctrl.is_c2c">
+              <label for="coupon_type" class="col-sm-2 control-label">适用于</label>
+
+              <div class="col-sm-7">
+                <div id="BRAND">
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div class=" col-sm-2">
+                      <label class="control-label m-b-0" style="line-height: 35px;">
+                                      <input type="checkbox" id="checkboxForKol" name="checkKolSeller" ng-model="$ctrl.checkKolSeller">&nbsp;Kol
+                                  </label>
+                    </div>
+                    <div class="col-sm-8" style="padding-left: 0;">
+                      <input type="text" ng-model="$ctrl.selectedKol" uib-typeahead="sellerItem as sellerItem.seller_name for sellerItem in $ctrl.kolSellerList | filter:{seller_name:$viewValue} | limitTo:8"
+                        class="form-control brandsArr" ng-disabled="!$ctrl.checkKolSeller">
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div class=" col-sm-2">
+                      <label class="control-label m-b-0" style="line-height: 35px;">
+                                      <input type="checkbox" id="checkboxForBrand" name="checkBrand1" ng-model="$ctrl.checkBrand1">&nbsp;品牌
+                                  </label>
+                    </div>
+                    <div class="col-sm-8" style="padding-left: 0;">
+                      <input type="text" ng-model="$ctrl.selectedBrand1" uib-typeahead="brandItem as brandItem.brand_name for brandItem in $ctrl.brandList | filter:{brand_name:$viewValue} | limitTo:8"
+                        class="form-control brandsArr" ng-disabled="!$ctrl.checkBrand1">
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" style="height:35px;" ng-click="$ctrl.addOneBrand()" ng-disabled="!$ctrl.checkBrand1"><i class="fa fa-plus"></i></button>
+                  </div>
+                  <div class="row" style="margin-bottom: 10px;" ng-show="$ctrl.NO2Brand">
+                    <div class=" col-sm-2">
+                      <label class="control-label m-b-0;" style="margin-left: 16px;line-height: 35px;">品牌</label>
+                    </div>
+                    <div class="col-sm-8" style="padding-left: 0;">
+                      <input type="text" ng-model="$ctrl.selectedBrand2" uib-typeahead="brandItem as brandItem.brand_name for brandItem in $ctrl.brandList | filter:{brand_name:$viewValue} | limitTo:8"
+                        class="form-control brandsArr" ng-disabled="!$ctrl.checkBrand1">
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" style="height:35px;" ng-click="$ctrl.deleteOneBrand(2)" ng-disabled="!$ctrl.checkBrand1"><i class="fa fa-minus"></i></button>
+                  </div>
+                  <div class="row" style="margin-bottom: 10px;" ng-show="$ctrl.NO3Brand">
+                    <div class=" col-sm-2">
+                      <label class="control-label m-b-0" style="margin-left: 16px;line-height: 35px;">品牌</label>
+                    </div>
+                    <div class="col-sm-8" style="padding-left: 0;">
+                      <input type="text" ng-model="$ctrl.selectedBrand3" uib-typeahead="brandItem as brandItem.brand_name for brandItem in $ctrl.brandList | filter:{brand_name:$viewValue} | limitTo:8"
+                        class="form-control brandsArr" ng-disabled="!$ctrl.checkBrand1">
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" style="height:35px;" ng-click="$ctrl.deleteOneBrand(3)" ng-disabled="!$ctrl.checkBrand1"><i class="fa fa-minus"></i></button>
+                  </div>
+                </div>
+
+                <div id="CLASS">
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-sm-2">
+                      <label class="control-label m-b-0" style="line-height: 35px;">
+                                      <input id="checkboxForClass" type="checkbox" ng-model="$ctrl.checkClass1">&nbsp;品类
+                                  </label>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0;">
+                      <select class="form-control" ng-model="$ctrl.selectedClass1" ng-change="$ctrl.selectedSubClass1 = null" ng-options="classItem.class_name for classItem in $ctrl.classList"
+                        ng-disabled="!$ctrl.checkClass1">
+                                      <option value="" selected>-- 请选择 --</option>
+                                  </select>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0;">
+                      <select class="form-control" ng-model="$ctrl.selectedSubClass1" ng-options="subClassItem.class_name for subClassItem in $ctrl.selectedClass1.subClass"
+                        ng-disabled="!$ctrl.selectedClass1 || !$ctrl.checkClass1">
+                                  </select>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" style="height:35px;" ng-click="$ctrl.addOneClass()" ng-disabled="!$ctrl.checkClass1"><i class="fa fa-plus"></i></button>
+                  </div>
+
+                  <div class="row" style="margin-bottom: 10px;" ng-show="$ctrl.NO2Class">
+                    <div class="col-sm-2">
+                      <label class="control-label m-b-0" style="margin-left: 16px;line-height: 35px;">品类</label>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0;">
+                      <select class="form-control" ng-model="$ctrl.selectedClass2" ng-change="$ctrl.selectedSubClass2 = null" ng-options="classItem.class_name for classItem in $ctrl.classList"
+                        ng-disabled="!$ctrl.checkClass1">
+                                      <option value="" selected>-- 请选择 --</option>
+                                  </select>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0;">
+                      <select class="form-control" ng-model="$ctrl.selectedSubClass2" ng-options="subClassItem.class_name for subClassItem in $ctrl.selectedClass2.subClass"
+                        ng-disabled="!$ctrl.selectedClass2 || !$ctrl.checkClass1">
+                                  </select>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" style="height:35px;" ng-click="$ctrl.deleteOneClass(2)" ng-disabled="!$ctrl.checkClass1"><i class="fa fa-minus"></i></button>
+                  </div>
+
+                  <div class="row" style="margin-bottom: 10px;" ng-show="$ctrl.NO3Class">
+                    <div class="col-sm-2">
+                      <label class="control-label m-b-0" style="margin-left: 16px;line-height: 35px;">品类</label>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0;">
+                      <select class="form-control" ng-model="$ctrl.selectedClass3" ng-change="$ctrl.selectedSubClass3 = null" ng-options="classItem.class_name for classItem in $ctrl.classList"
+                        ng-disabled="!$ctrl.checkClass1">
+                                      <option value="" selected>-- 请选择 --</option>
+                                  </select>
+                    </div>
+                    <div class="col-sm-4" style="padding-left: 0;">
+                      <select class="form-control" ng-model="$ctrl.selectedSubClass3" ng-options="subClassItem.class_name for subClassItem in $ctrl.selectedClass3.subClass"
+                        ng-disabled="!$ctrl.selectedClass3 || !$ctrl.checkClass1">
+                                  </select>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary" style="height:35px;" ng-click="$ctrl.deleteOneClass(3)" ng-disabled="!$ctrl.checkClass1"><i class="fa fa-minus"></i></button>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group" ng-if="!$ctrl.is_c2c" ng-hide="$ctrl.type == 3">
+              <label class="col-sm-2 control-label required">数量</label>
+
+              <div class="col-sm-7" style="margin-left: -20px;">
+                <label class="checkbox-inline">
+                          <input type="radio" id="inlineCheckbox1" name="limit_user_num" value="-1" ng-model="$ctrl.radio_check.limit_user_num" required=""> 全体用户
+                      </label>
+                <label class="checkbox-inline">
+                          <input type="radio" id="inlineCheckbox2" name="limit_user_num" value="-2" ng-model="$ctrl.radio_check.limit_user_num" required=""> 视活动人数而定
+                      </label>
+                <label class="checkbox-inline">
+                          <input type="radio" id="inlineCheckbox3" name="limit_user_num" value="-3" ng-model="$ctrl.radio_check.limit_user_num" required="" style="margin-top: 11px;"> 准确数量
+                          <input type="number" min="1" class="form-control" name="limit_user_num_equal_minus3" ng-model="$ctrl.limit_user_num_equal_minus3"
+                          ng-disabled="!($ctrl.radio_check.limit_user_num == '-3')" required="" style="display: inline-block;width: 80px;">&nbsp;张
+                      </label>
+                <div class="help-block" ng-if="$ctrl.radio_check.limit_user_num == '-3' && !$ctrl.limit_user_num_equal_minus3">
+                  <p>请填写优惠券准确数量</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-if="!$ctrl.is_c2c" ng-hide="$ctrl.type == 3">
+              <label class="col-sm-2 control-label">限制</label>
+
+              <div class="col-sm-7">
+                <label class="checkbox-inline p-l-0">
+                          <input type="checkbox" style="margin-top: 11px; display: none;" ng-model="$ctrl.allow_limit_per"> 每个用户限领
+                          <input type="number" min="1" class="form-control" ng-model="$ctrl.limit_per" ng-disabled="!$ctrl.allow_limit_per" style="display: inline-block;width: 55px;">&nbsp;张
+                      </label>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': submitCouponApplyForm.datePicker.$touched && submitCouponApplyForm.datePicker.$invalid}">
+              <label class="col-sm-2 control-label required">有效日期</label>
+
+              <div class="col-sm-7">
+                <input date-range-picker class="form-control date-picker"
+                  name="datePicker" style="width: 200px;" type="text" ng-model="$ctrl.datePicker.date" required/><!-- ng-disabled="$ctrl.is_c2c"  -->
+              </div>
+              <div class="help-block" ng-messages="submitCouponApplyForm.datePicker.$error" ng-if="submitCouponApplyForm.datePicker.$touched">
+                <p ng-message="required">请填写优惠券有效日期</p>
+              </div>
+            </div>
+            <div class="form-group" ng-if="$ctrl.is_c2c">
+              <label class="col-sm-2 control-label">不参与活动的商品ID</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" placeholder="用英文逗号','隔开" ng-model="$ctrl.filter_items">
+              </div>
+            </div>
+            <div class="form-group">
+              <p class="alert alert-danger col-sm-offset-1 col-sm-8" ng-show="$ctrl.showErr">{{$ctrl.showErr}}</p>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-7">
+                <button type="submit" class="btn btn-lg btn-primary" ng-disabled="$ctrl.seller_coupon_count === 4 || $ctrl.is_loading" ng-click="$ctrl.submitApply()">确定
+                      </div>
+                  </button>
+              </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

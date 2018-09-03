@@ -1,0 +1,96 @@
+<div class="header">
+  <h2><strong>修改{{isC2C ? '商户' : '达人'}}描述</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">修改描述</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal w5c-form" name="userForm" w5c-form-validate novalidate>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">{{isC2C ? '商户' : '达人'}}标签</label>
+            <div class="col-sm-7">
+              <select class="form-control" ng-model="formData.u_tag" name="u_tag" required>
+                    <option value="" selected>-- 请选择 --</option>
+                    <option value="法国时尚买手">法国时尚买手</option>
+                    <option value="澳洲时尚买手">澳洲时尚买手</option>
+                    <option value="欧洲时尚买手">欧洲时尚买手</option>
+                    <option value="美国时尚买手">美国时尚买手</option>
+                    <option value="日本时尚买手">日本时尚买手</option>
+                    <option value="英国高街推荐">英国高街推荐</option>
+                    <option value="韩国时尚买手">韩国时尚买手</option>
+                    <option value="运动休闲推荐">运动休闲推荐</option>
+                    <option value="少女系推荐">少女系推荐</option>
+                    <option value="奢侈品折扣推荐">奢侈品折扣推荐</option>
+                    <option value="包类推荐师">包类推荐师</option>
+                    <option value="配饰推荐师">配饰推荐师</option>
+                    <option value="品牌推荐家">品牌推荐家</option>
+                    <option value="实力采购家">实力采购家</option>
+                    <option value="搭配达人">搭配达人</option>
+                    <option value="独立设计师">独立设计师</option>
+                    <option value="热心好买手">热心好买手</option>
+                    <option value="英国高街推荐">英国高街推荐</option>
+                    <option value="明星扒款手">明星扒款手</option>
+                    <option value="折扣推荐">折扣推荐</option>
+                    <option value="潮牌推荐">潮牌推荐</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+          </div>
+          <div class="form-group" ng-if="formData.u_tag == '其他'">
+            <label class="col-sm-2 control-label required">其他</label>
+            <div class="col-sm-7">
+              <input type="text" name="u_tag_other" w5c-dynamic-element required ng-trim="true" ng-model="formData.custom_tag" class="form-control"
+                placeholder="10字以内" maxlength="10">
+            </div>
+            <p>{{formData.custom_tag.length || 0 }}/10</p>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label required">{{isC2C ? '商户' : '达人'}}描述</label>
+            <div class="col-sm-7">
+              <textarea class="form-control" name="ud_desc" placeholder="40字以内" required ng-model="formData.ud_desc" maxlength="40"></textarea>
+            </div>
+            <p>{{formData.ud_desc.length || 0 }}/40</p>
+          </div>
+          <div ng-if="isC2C">
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">主营类目</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" name="seller_class" w5c-dynamic-element ng-model="formData.seller_class" ng-required="isC2C"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">主营品牌</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" name="seller_brand" w5c-dynamic-element ng-model="formData.seller_brand" ng-required="isC2C"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label required">主营商品发货地</label>
+              <div class="col-sm-7">
+                <select name="seller_ship_country" id="seller_ship_country" class=" form-control" ng-model="formData.seller_ship_country"
+                  w5c-dynamic-element ng-required="isC2C" ng-options="country.location_id as country.location for country in countryList">
+                    </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-7 col-sm-offset-2">
+              <button class="btn btn-primary" type="submit" w5c-form-submit="submitForm(userForm)">确定</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

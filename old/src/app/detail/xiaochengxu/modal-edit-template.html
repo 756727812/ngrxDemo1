@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">模板设置</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">适用范围</label>
+            <div class="col-sm-7">
+              <select ng-disabled="vm.template_info.id" name="type" class="form-control" ng-model="vm.template_info.type" required>
+                <option ng-repeat="item in vm.typeOptions"
+                  value="{{item.tmeplate_type}}">{{item.tmeplate_str}}</option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">模板ID</label>
+            <div class="col-sm-7">
+              <input name="template_id" type="text" trim="true" class="form-control" ng-model="vm.template_info.template_id" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">版本，如 v1.0.1</label>
+            <div class="col-sm-7">
+              <input name="user_version" type="text" trim="true" class="form-control" ng-model="vm.template_info.user_version" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">描述</label>
+            <div class="col-sm-7">
+              <input name="user_desc" type="text" trim="true" class="form-control" ng-model="vm.template_info.user_desc" ng-trim="true" required>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+@import "../../../../../styles/var.less";
+
+.modal-goods-theme-msg {
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .num {
+    color: @primary-color;
+
+    &.warn {
+      color: #ff6b6b;
+    }
+  }
+
+  table {
+    td:first-child {
+      text-align: right;
+    }
+
+    td.num {
+      text-align: center;
+      padding: 0 10px;
+    }
+  }
+
+  .xxxxlines {
+    display: flex;
+    align-items: flex-end;
+    flex-flow: column wrap;
+  }
+
+  p {
+    display: block;
+    margin: 0;
+
+    &.title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    &.line {
+      line-height: 1.5;
+      font-size: 14px;
+    }
+  }
+}

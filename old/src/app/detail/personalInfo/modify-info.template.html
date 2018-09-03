@@ -1,0 +1,81 @@
+<div class="header">
+  <h2><strong>修改个人信息</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/">个人信息</a></li>
+      <li class="active">修改个人信息</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-horizontal" name="userForm" ng-submit="submitForm(userForm)" novalidate>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_country.$touched && userForm.seller_country.$invalid}">
+                <label class="col-sm-2 control-label required">居住地所在国家</label>
+                <div class="col-sm-7">
+                    <select name="seller_country" id="seller_country" class=" form-control" ng-model="formData.seller_country" required>
+                        <option ng-repeat="country in countryList" value="{{country.location_id}}">{{country.location}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 help-see" ng-show="userForm.seller_country.$touched && userForm.seller_country.$invalid">
+                    <p class="help-block">请选择居住地所在国家</p>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': userForm.seller_addr.$touched && userForm.seller_addr.$invalid}">
+                <label class="col-sm-2 control-label required">详细地址</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" name="seller_addr" ng-model="formData.seller_addr" required />
+                </div>
+                <div class="col-sm-3 help-see" ng-show="userForm.seller_addr.$touched && userForm.seller_addr.$invalid">
+                    <p class="help-block">请填写详细地址</p>
+                </div>
+            </div>
+            <div class="form-group cardImages">
+                <label class="col-sm-2 control-label required" ng-if="formData.seller_type != 2">证件照</label>
+                <label class="col-sm-2 control-label required" ng-if="formData.seller_type == 2">证件照／营业执照</label>
+                <div class="col-sm-7" ng-if="formData.seller_type != 2">
+                    <img src="//static.seecsee.com/seego_backend/images/picturebox.png" style="max-width: 200px;cursor: pointer;" class="img-viewer" see-viewer ng-src="{{seller_idcard_front_imgurl_show}}">
+                    <label class="btn btn-sm btn-primary" style="margin: 10px auto;">上传清晰证件照
+                        <input type="file" style="display: none;" see-auth-file-select="uploadFrontImg" ng-model="formData.seller_idcard_front_imgurl" accept="images/*" required/>
+                    </label>
+                    <br>
+                    <img src="//static.seecsee.com/seego_backend/images/picturebox.png" style="max-width: 200px;cursor:pointer;" class="img-viewer" see-viewer ng-src="{{seller_idcard_back_imgurl_show}}">
+                    <label class="btn btn-sm btn-primary" style="margin: 10px auto;">上传手持证件照
+                        <input type="file" style="display: none;" see-auth-file-select="uploadBackImg" ng-model="formData.seller_idcard_back_imgurl" accept="image/jpg, image/jpeg, image/png" required/>
+                    </label>
+                </div>
+                <div class="col-sm-7" ng-if="formData.seller_type == 2">
+                    <div class="img-container" style="position: relative;height: auto;" ng-if="companyUrl.length == 0">
+                        <div style="position: relative;">
+                            <img class="img-thumbnail" src="//static.seecsee.com/seego_backend/images/picturebox.png">
+                        </div>
+                    </div>
+                    <div class="img-container m-t-20 m-b-20" ng-repeat="item in companyUrl track by $index" style="position: relative; height: auto;">
+                        <div style="position: relative;">
+                            <img class="img-thumbnail" see-src="item">
+                            <a href="" class="img-del-btn" ng-click="deleteImg($index)"></a>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="btn btn-sm btn-primary" style="margin: 10px auto;" multiple accept="image/jpg, image/jpeg, image/png" ngf-select="uploadBusinessImgs($files)">请上传证件资料上传营业执照</label>
+                    </div>
+                    <!-- <label class="btn btn-sm btn-primary" style="margin: 10px auto;">请上传证件资料上传营业执照
+                        <input type="file" style="display: none;" ngf-select="uploadBusinessImgs($files)" ng-model="formData." accept="image/jpg, image/jpeg, image/png" required/>
+                    </label> -->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-7 col-sm-offset-2">
+                    <button class="btn btn-primary" type="submit">确定</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

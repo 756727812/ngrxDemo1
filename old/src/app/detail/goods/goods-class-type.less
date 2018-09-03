@@ -1,0 +1,21 @@
+#goods-class-type {
+  .select-address {
+    .select-address-container {
+      ul {
+        > li {
+          overflow: auto !important;
+          // 囧 模板里面不是拿 li 循环!
+          > span.item-title {
+            margin: 0;
+            padding: 2px 7px;
+            line-height: 25px !important;
+
+            &:hover {
+              background-color: #e5e8f5;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<div class="magic-cube">
+  <div class="placeholder" *ngIf="!config.links || config.links.length === 0">
+    <img alt="" src="../../../../../../../images/image-mc.png" />
+  </div>
+  <div *ngIf="config.links && config.links.length > 0" class="magic-cube_con">
+    <div *ngFor="let link of config.links;let i = index" [ngStyle]="selectedStyles(link,i,config.magicSize)">
+      <img alt="" [seeSrc]="link.imgUrl" [ngStyle]="defaultImgStyle(link)" thumbnail="!{{selectedStyles(link,i,config.magicSize).cw}}x{{selectedStyles(link,i,config.magicSize).ch}}r/gravity/center/crop/{{selectedStyles(link,i,config.magicSize).cw}}x{{selectedStyles(link,i,config.magicSize).ch}}"
+      />
+    </div>
+  </div>
+</div>

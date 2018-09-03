@@ -1,0 +1,71 @@
+<div class="header">
+	<h2><strong>分销库存锁定</strong></h2>
+
+	<div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+			<li><a href="/">Seego后台</a></li>
+			<li><a href="/store">库存管理</a></li>
+			<li class="active">分销库存锁定</li>
+		</ol>
+	</div>
+</div>
+<div>
+	<div class="row">
+		<div class="col-xs-12 portlets">
+			<div class="panel">
+				<div class="panel-content">
+          <store-item id="$ctrl.id"></store-item>
+          <a ng-href="/store/goods-list/{{$ctrl.id}}/distribution-store-lock-new" class="btn btn-primary"><i class="fa fa-plus"></i>创建库存锁定条目</a>
+
+					<div class="table-scrollable">
+						<table class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<th>库存锁定ID</th>
+                  <th>分销渠道</th>
+									<th>所在仓库</th>
+									<th>SKU囤货码</th>
+                  <th>颜色&示意图</th>
+                  <th>尺码</th>
+                  <th>库存锁定量</th>
+                  <th>库存锁定时间</th>
+                  <th>录入人</th>
+                  <th>录入时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="log in $ctrl.distribution_log_list track by log.storage_allot_id">
+									<td>{{log.storage_allot_id}}</td>
+									<td>{{log.to_seller_email}}</td>
+									<td>{{log.store_info.name}}</td>
+									<td>{{log.storage_sku_id}}</td>
+									<td>
+                    <span class="text-info">{{log.color_value}}</span>
+										<div class="img-container">
+                    	<img ng-if="log.sku_imgurl" see-src="log.sku_imgurl" alt="" see-viewer>
+										</div>
+                  </td>
+									<td>{{log.size_value}}</td>
+									<td>
+                    <span ng-if="log.auto_sync === '1'">实时闲置库存：</span>{{log.stock}}
+                  </td>
+									<td>{{log.begin_time}}<br>&nbsp;至&nbsp;<br>{{log.end_time}}</td>
+									<td>{{log.seller_email}}</td>
+									<td>{{log.create_time}}</td>
+									<td>
+										<button type="button" class="btn btn-sm btn-primary" ng-if="log.can_cancel === true" ng-click="$ctrl.allotCancel(log.storage_allot_id)">立刻释放锁定库存</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+            <p ng-if="$ctrl.distribution_log_list.length === 0">暂时还没有分销库存锁定数据哦！</p>
+					</div>
+					<pagination total-items="$ctrl.total_items"></pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+

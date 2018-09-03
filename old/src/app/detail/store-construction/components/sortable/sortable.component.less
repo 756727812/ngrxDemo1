@@ -1,0 +1,357 @@
+.sortalble-container > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.add-item-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 46px;
+  background-color: #fbfbfb;
+  border: dashed 1px #e5e5e5;
+  margin-top: 16px;
+
+  &[hidden] {
+    display: none;
+  }
+
+  i.anticon {
+    font-size: 40px;
+    color: #d8d8d8;
+  }
+}
+
+.del-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+  border-radius: 50%;
+  font-size: 12px;
+  outline: 0;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  background-color: #ff7070;
+  border-color: #ff7070;
+  display: none !important;
+
+  &:hover {
+    color: #fff;
+    background-color: #ff7070;
+    border-color: #ff7070;
+    transform: scale(1.1);
+  }
+}
+
+.coupon {
+  &-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &-item {
+    display: flex;
+    height: 70px;
+    position: relative;
+    margin-bottom: 16px;
+    cursor: move;
+
+    &:hover {
+
+      .del-btn {
+        display: inline-flex !important;
+      }
+
+      .coupon-item-detail {
+        background-color: #f7f7f7;
+      }
+    }
+  }
+
+  &-to-display {
+    width: 126px;
+    height: 100%;
+    background-color: #ff7070;
+    margin-bottom: 1;
+  }
+
+  &-item-detail {
+    display: flex;
+    flex: 1;
+    background-color: transparent;
+    padding-left: 10px;
+    height: 100%;
+
+    &--right {
+      padding: 0 10px;
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  &-item-title {
+    line-height: 1.5;
+    font-size: 12px;
+    color: #999;
+    margin-top: 6px;
+  }
+
+  &-item-perid {
+    width: 100px;
+    line-height: 1.4;
+    font-size: 10px;
+    color: #999;
+  }
+
+  &-item-perid-status {
+    font-weight: bold;
+  }
+
+  &-add-btn {
+    height: 48px;
+    background-color: #fbfbfb;
+    border: dashed 1px #e5e5e5;
+    position: relative;
+    text-align: center;
+
+    a {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      font-size: 14px;
+      color: #999;
+      line-height: 48px;
+    }
+
+    .anticon {
+      font-size: 20px;
+      color: #d8d8d8;
+      margin-right: 5px;
+    }
+  }
+}
+
+.date-display {
+  position: relative;
+  display: inline-block;
+  text-decoration: underline;
+  padding-right: 14px;
+  line-height: 1.4;
+
+  i {
+    position: absolute;
+    display: none;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    transform: scale(0.83);
+    transform-origin: right center;
+    color: #999;
+    opacity: 0.7;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &:hover {
+    i {
+      display: block;
+    }
+  }
+}
+
+.pick-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.coupon-content {
+  display: flex;
+  width: 125px;
+  height: 100%;
+  color: #fff;
+
+  .info {
+    flex-grow: 1;
+    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 16px;
+    background-color: #ff7070;
+
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+
+      sub {
+        font-size: 12px;
+        font-weight: lighter;
+      }
+    }
+
+    .user {
+      font-weight: bold;
+    }
+  }
+
+  .status {
+    width: 21px;
+    white-space: normal;
+    background-color: #ef6161;
+    text-align: center;
+    padding-top: 3px;
+  }
+}
+
+// 已领完
+.run-out {
+  color: #d55231;
+}
+
+// 已结束
+.has-finished {
+  color: #787878;
+}
+
+// 发放中
+.dispensing {
+  color: #7ed321;
+}
+
+.item {
+  &-name {
+    font-size: 12px;
+    text-align: center;
+    color: #999;
+  }
+
+  &-container {
+    width: 104px;
+    height: 110px;
+    display: inline-block;
+    position: relative;
+    padding-top: 6px;
+    cursor: move;
+
+    &:hover {
+      background-color: #f1f1f1;
+
+      .del-btn {
+        display: inline-flex !important;
+      }
+
+      .item-name {
+        color: #5971e8;
+      }
+    }
+  }
+
+  &-img-container {
+    width: 80px;
+    height: 80px;
+    border: solid 1px #e7e7e7;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    span {
+      margin: auto;
+      position: absolute;
+      display: inline-block;
+      width: 50%;
+      height: 50%;
+      background-color: #000;
+      opacity: 0.7;
+      color: #fff;
+      text-align: center;
+      border-radius: 50%;
+      line-height: 4.5;
+    }
+  }
+}
+
+.category {
+  position: relative;
+  cursor: move;
+  width: 100%;
+
+  &-list {
+    padding-bottom: 10px;
+  }
+
+  &-info {
+    padding-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    a {
+      display: inline-block;
+      padding-right: 14px;
+    }
+  }
+
+
+  &-add-btn {
+    display: block;
+    height: 48px;
+    background-color: #fbfbfb;
+    border: dashed 1px #e5e5e5;
+    position: relative;
+    text-align: center;
+
+    a {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      font-size: 14px;
+      color: #999;
+      line-height: 48px;
+    }
+
+    .anticon {
+      font-size: 20px;
+      color: #d8d8d8;
+      margin-right: 5px;
+    }
+  }
+
+  &:hover {
+    background-color: #f8f8f8;
+
+    .del-btn {
+      display: inline-flex !important;
+    }
+  }
+}
+
+.has-error {
+  .coupon-add-btn, .category-add-btn {
+    border: 1px solid red;
+  }
+}
+

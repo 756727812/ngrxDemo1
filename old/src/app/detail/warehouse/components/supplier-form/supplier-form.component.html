@@ -1,0 +1,239 @@
+<nz-card [nzBordered]="false">
+  <form nz-form [formGroup]="form" (ngSubmit)="submitForm($event, form)">
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>公司名称</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else companyNameInput">{{ getFormControl('companyName').value }}</span>
+          <ng-template #companyNameInput>
+            <nz-input formControlName="companyName" [nzType]="'text'" [nzSize]="'large'">
+            </nz-input>
+            <div nz-form-explain *ngIf="isFormControlHasError('companyName', 'required')">请填写公司名称</div>
+            <div nz-form-explain *ngIf="isFormControlHasError('companyName', 'duplicated')">该名称已被占用，请重新填写</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>类型</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else typeInput">{{ getFormControl('type').value | supplierType }}</span>
+          <ng-template #typeInput>
+            <nz-select formControlName="type" [nzPlaceHolder]="'-- 请选择 --'" nzAllowClear>
+              <nz-option
+                *ngFor="let option of typeOptions"
+                [nzLabel]="option.label"
+                [nzValue]="option.value">
+              </nz-option>
+            </nz-select>
+            <div nz-form-explain *ngIf="isFormControlHasError('type', 'required')">请选择供应商类型</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>联系人</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else contactInput">{{ getFormControl('contact').value }}</span>
+          <ng-template #contactInput>
+            <nz-input formControlName="contact" [nzType]="'text'" [nzSize]="'large'">
+            </nz-input>
+            <div nz-form-explain *ngIf="isFormControlHasError('contact', 'required')">请填写联系人</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>联系方式</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else contactInfoInput">{{ getFormControl('contactInfo').value }}</span>
+          <ng-template #contactInfoInput>
+            <nz-input formControlName="contactInfo" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'手机/办公电话/微信号'">
+            </nz-input>
+            <div nz-form-explain *ngIf="isFormControlHasError('contactInfo', 'required')">请填写联系方式</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>地址（选填）</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else addressInput">{{ getFormControl('address').value }}</span>
+          <ng-template #addressInput>
+            <nz-input formControlName="address" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'Beneficiary\'s Address，海外公司请务必填写此项'">
+            </nz-input>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>收款方式</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else paymentMethodInput">{{ getFormControl('paymentMethod').value | paymentMethod }}</span>
+          <ng-template #paymentMethodInput>
+            <nz-radio-group formControlName="paymentMethod">
+              <label nz-radio [nzValue]="0">
+                <span>支付宝</span>
+              </label>
+              <label nz-radio [nzValue]="1">
+                <span>银行</span>
+              </label>
+            </nz-radio-group>
+            <div nz-form-explain *ngIf="isFormControlHasError('paymentMethod', 'required')">请选择收款方式</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row [hidden]="getFormControl('paymentMethod').value === 1">
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>支付宝帐号</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else alipayAccountInput">{{ getFormControl('alipayAccount').value }}</span>
+          <ng-template #alipayAccountInput>
+            <nz-input formControlName="alipayAccount" [nzType]="'text'" [nzSize]="'large'">
+            </nz-input>
+            <div nz-form-explain *ngIf="isFormControlHasError('alipayAccount', 'required')">请填写支付宝账号</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div [hidden]="getFormControl('paymentMethod').value === 0">
+      <div nz-form-item nz-row>
+        <div nz-col nzXs="24" nzSm="7" nz-form-label>
+          <label>开户名</label>
+        </div>
+        <div>
+          <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+            <span *ngIf="detailMode; else bankAccountNameInput">{{ getFormControl('bankAccountName').value }}</span>
+            <ng-template #bankAccountNameInput>
+              <nz-input formControlName="bankAccountName" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'Beneficiary\'s Name'">
+              </nz-input>
+              <div nz-form-explain *ngIf="isFormControlHasError('bankAccountName', 'required')">请填写开户名</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-col nzXs="24" nzSm="7" nz-form-label>
+          <label>开户支行</label>
+        </div>
+        <div>
+          <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+            <span *ngIf="detailMode; else bankNameInput">{{ getFormControl('bankName').value }}</span>
+            <ng-template #bankNameInput>
+              <nz-input formControlName="bankName" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'Beneficiary\'s Bank Name，请精确至支行名称'">
+              </nz-input>
+              <div nz-form-explain *ngIf="isFormControlHasError('bankName', 'required')">请填写开户支行</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-col nzXs="24" nzSm="7" nz-form-label>
+          <label>开户行地址（选填）</label>
+        </div>
+        <div>
+          <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+            <span *ngIf="detailMode; else bankAddressInput">{{ getFormControl('bankAddress').value }}</span>
+            <ng-template #bankAddressInput>
+              <nz-input formControlName="bankAddress" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'Beneficiary\'s Bank Address，海外账户请务必填写此项'">
+              </nz-input>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-col nzXs="24" nzSm="7" nz-form-label>
+          <label>银行卡号</label>
+        </div>
+        <div>
+          <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+            <span *ngIf="detailMode; else bankAccountNoInput">{{ getFormControl('bankAccountNo').value }}</span>
+            <ng-template #bankAccountNoInput>
+              <nz-input formControlName="bankAccountNo" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'Beneficiary\'s Account No.'">
+              </nz-input>
+              <div nz-form-explain *ngIf="isFormControlHasError('bankAccountNo', 'required')">请填写银行卡号</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-col nzXs="24" nzSm="7" nz-form-label>
+          <label>Swift Code（选填）</label>
+        </div>
+        <div>
+          <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+            <span *ngIf="detailMode; else swiftCodeInput">{{ getFormControl('swiftCode').value }}</span>
+            <ng-template #swiftCodeInput>
+              <nz-input formControlName="swiftCode" [nzType]="'text'" [nzSize]="'large'" [nzPlaceHolder]="'海外账户请务必填写此项'">
+              </nz-input>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>SEE对接人</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else seeAccesserInput">{{ getFormControl('seeAccesser').value }}</span>
+          <ng-template #seeAccesserInput>
+            <nz-select
+              nzAllowClear
+              [nzPlaceHolder]="'-- 请选择 --'"
+              formControlName="seeAccesser"
+              [nzNotFoundContent]="'无法找到'"
+              nzShowSearch>
+              <nz-option
+                *ngFor="let option of accessors"
+                [nzLabel]="option.sellerName + '(' + option.sellerEmail + ')'"
+                [nzValue]="option.sellerName">
+              </nz-option>
+            </nz-select>
+            <div nz-form-explain *ngIf="isFormControlHasError('seeAccesser', 'required')">请填写SEE对接人</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-col nzXs="24" nzSm="7" nz-form-label>
+        <label>备注（选填）</label>
+      </div>
+      <div>
+        <div nz-col nzXs="24" nzSm="12" nzMd="10" nz-form-control nzHasFeedback>
+          <span *ngIf="detailMode; else remarkInput">{{ getFormControl('remark').value }}</span>
+          <ng-template #remarkInput>
+            <nz-input formControlName="remark" [nzRows]="2" [nzType]="'textarea'" [nzSize]="'large'">
+            </nz-input>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div nz-form-item nz-row [hidden]="detailMode">
+      <div nz-col [nzOffset]="7" nzXs="24" nzSm="12" nzMd="10" nz-form-control>
+        <button nz-button [nzLoading]="loading" [nzType]="'primary'" [nzSize]="'large'">提交</button>
+      </div>
+    </div>
+  </form>
+</nz-card>

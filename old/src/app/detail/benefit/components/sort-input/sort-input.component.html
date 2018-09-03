@@ -1,0 +1,7 @@
+<ng-container *ngIf="!isFold">
+  <input  nz-input [value]="sort || 0"  type="number" style="width:40px;text-align:center"  min="0" (blur)="saveData($event.target.value)" />
+  <i class="icon fa fa-pencil-square-o edit-name" (click)="toggle()"></i>
+</ng-container>
+<ng-container   *ngIf="isFold">
+  {{sort || 0}} <i class="icon fa fa-pencil-square-o edit-name" (click)="toggle()"></i>
+</ng-container>

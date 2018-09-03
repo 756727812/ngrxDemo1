@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+  <h3 class="modal-title">修改收货地址 </h3>
+</div>
+<div class="modal-body">
+  <div id="modifyAddr" class="select-address form-inline">
+    <div class="select-address-container">
+      <ul>
+
+        <li>
+          <!-- 省份 -->
+          <span ng-repeat="item in provinces" ng-click="aSet.p(item.p)" ng-class="{'item-title': true, 'label label-primary': p === item.p}">
+                    {{item.p}} {{x}}
+                </span>
+        </li>
+
+        <li ng-show="cities">
+          <!-- 城市 -->
+          <span ng-repeat="item in cities" ng-click="aSet.c(item.n)" ng-class="{'item-title': true, 'label label-primary': c === item.n}">
+                    {{item.n}}
+                </span>
+        </li>
+        <li ng-show="c">
+          <!-- 县级 -->
+          <span ng-repeat="item in dists" ng-click="aSet.a(item.s)" ng-class="{'item-title': true, 'label label-primary': a === item.s}">
+                    {{item.s}}
+                </span>
+          <h5 ng-if="!dists" class="text-muted text-center">没有县级资料</h5>
+        </li>
+      </ul>
+    </div>
+
+    <div class="select-address-footer">
+      <strong class="text-danger">{{ p }} {{ c }} {{ a }}　</strong>
+      <input ng-show="p" ng-model="d" class="form-control input-sm" type="text" placeholder="具体街道" />
+      <button ng-click="clear()" class="btn btn-sm btn-primary">清空</button>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+  <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

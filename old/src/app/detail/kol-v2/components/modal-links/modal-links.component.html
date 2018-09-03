@@ -1,0 +1,41 @@
+<nz-tabset [nzTabPosition]="'left'" [nzShowPagination]="false">
+  <nz-tab>
+    <ng-template #nzTabHeading>文章</ng-template>
+    <div class="comp has-link">
+      <display-xcx-path [label]="'小程序路径'" [path]="paths?.articlePath"></display-xcx-path>
+      <display-xcx-path *ngIf="paths?.mallPath" [label]="'商城路径'" [path]="paths?.mallPath"></display-xcx-path>
+      <display-xcx-qrcode [qrs]="paths?.articleQrs"></display-xcx-qrcode>
+      <div class="how-to">
+        <span class="yellow-q">?</span>
+        <faq-link name="how-to-put-xcx-in-article">如何将小程序卡片放入文章</faq-link>
+      </div>
+    </div>
+  </nz-tab>
+  <nz-tab>
+    <ng-template #nzTabHeading>微信群</ng-template>
+    <div class="comp has-link wx-group">
+      <div class="top-title">
+        将商品详情以小程序卡片/小程序码的形式进行传播
+      </div>
+      <display-xcx-qrcode [qrs]="paths?.wxGroupQrs"></display-xcx-qrcode>
+    </div>
+  </nz-tab>
+  <nz-tab>
+    <ng-template #nzTabHeading>线下渠道</ng-template>
+    <div class="comp has-link">
+      <div class="top-title">
+        用于易拉宝，地铁，海报，等线下传播渠道的统计
+      </div>
+      <display-xcx-qrcode [qrs]="paths?.offlineQrs"></display-xcx-qrcode>
+    </div>
+  </nz-tab>
+  <nz-tab>
+    <ng-template #nzTabHeading>公众号菜单</ng-template>
+    <div class="comp has-link">
+      <div class="top-title">
+        配置/统计 公众号菜单时，可取此链接
+      </div>
+      <display-xcx-path [label]="'小程序路径'" [path]="paths?.publicNumberPath"></display-xcx-path>
+    </div>
+  </nz-tab>
+</nz-tabset>

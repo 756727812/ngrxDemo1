@@ -1,0 +1,234 @@
+<div class="header">
+  <h2>
+    <strong>我的圈子</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">添加回答</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+<div class="row">
+    <div class="scroll-fix">
+        <div id="themeImage" class="table-scrollable">
+            <table class="table table-hover">
+              <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>图片</th>
+                        <th>描述</th>
+                        <th>期望价格</th>
+                        <th>发布时间</th>
+                        <th>标签</th>
+                        <th>回答数</th>
+                        <th  see-hide="Hide-DD" see-access="See-Admin Oper Super-Admin">真实同求数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td ng-bind="theme.t_id"></td>
+                        <td><img width="100" class="img-viewer" alt="{{::theme.t_title}}" see-src="theme.t_imgurl" see-viewer></td>
+                        <td ng-bind="theme.t_title"></td>
+                        <td ng-bind="theme.t_price"></td>
+                        <td ng-bind="theme.t_time"></td>
+                        <td ng-bind="theme.tab"></td>
+                        <td ng-bind="theme.t_findcount"></td>
+                        <td  see-hide="Hide-DD" see-access="See-Admin Oper Super-Admin" ng-bind="theme.t_followcount"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <form class="form-horizontal" name="addAnswerForm" ng-submit="addAnswer(formData, addAnswerForm, themeType)" novalidate>
+        <div class="form-group" ng-hide="q_id">
+            <label class="col-sm-2 control-label">回答类型</label>
+            <div class="col-sm-7">
+                <div class="btn-group">
+                    <label class="btn btn-default">
+                        <input type="radio" class="toggle" name="answer" ng-model="answerType" value="1" ng-disabled="typeFlag==2"> 回复商品
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" class="toggle" name="answer" ng-model="answerType" value="2"> 回复文字
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div ng-show="answerType == 1">
+            <div class="form-group" ng-show="isFromEditPost">
+                <label class="col-sm-2 control-label required">商品名称</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" ng-model="item_name" ng-disabled="!isFromEditPost"/>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-error': addAnswerForm.f_buyurl.$touched && addAnswerForm.f_buyurl.$invalid}">
+                <label class="col-sm-2 control-label required">商品链接</label>
+                <div class="col-sm-5">
+                    <input class="form-control" type="text" name="f_buyurl" required ng-model="formData.f_buyurl"
+                           ng-disabled="!isNew" >
+                </div>
+                <div class="col-sm-2">
+                    <a ng-hide="q_id" ng-show="isNew" ng-href="/wanted/themeList/selectGoods?tid={{tid}}&from={{from}}&prepare=0&ori={{ori}}&themeType={{themeType}}" class="btn btn-primary"
+                       see-access="C2C-Seller New-Brand Part-time Oper Super-Admin See-Admin PGC-Part">从商品库中选择</a>
+                    <a ng-show="q_id" ng-href="/wanted/themeList/selectGoods?q_id={{q_id}}&ori={{ori}}&prepare=0" class="btn btn-primary">从商品库中选择</a>
+                    <button ng-show="isNew && formData.f_buyurl" ng-click="getGoodsInfo()" class="btn btn-primary">解析商品外链</button>
+                </div>
+                <div class="col-sm-3 help-see"
+                     ng-show="addAnswerForm.f_buyurl.$touched && addAnswerForm.f_buyurl.$invalid">
+                    <p class="help-block">请填写商品链接</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">商品图片</label>
+                <div class="col-sm-7">
+                    <img width="150" class="img-thumbnail" see-src="formData.f_imgurl" alt="" >
+                    <label id="itemImage" class="btn btn-primary">{{isNew?'点击上传图片':'点击更换图片'}}
+                        <input type="file" name="itemImage" see-file-select="upload" class="hide" accept="image/jpg, image/jpeg, image/png"
+                               required>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-error': addAnswerForm.f_price.$touched && addAnswerForm.f_price.$invalid}">
+                <label class="col-sm-2 control-label required">价格</label>
+                <div class="col-sm-7">
+                    <input type="number" name="f_price" min="0" class="form-control" ng-model="formData.f_price"
+                           required ng-disabled="!isNew"/>
+                </div>
+                <div class="col-sm-3 help-see"
+                     ng-show="addAnswerForm.f_price.$touched && addAnswerForm.f_price.$invalid">
+                    <p class="help-block">请填写商品价格</p>
+                </div>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-error': addAnswerForm.f_brand.$touched && addAnswerForm.f_brand.$invalid}">
+                <label class="col-sm-2 control-label required">品牌</label>
+                <div class="col-sm-7">
+                    <!--<input type="text" class="form-control" ng-model="formData.f_brand" required ng-disabled="!isNew"/>-->
+                    <input name="f_brand" type="text" ng-model="formData.f_brand" class="form-control"
+                           autocomplete="off"
+                           uib-typeahead="brandItem as brandItem.brand_name for brandItem in brandList | filter:{brand_name:$viewValue} | limitTo:8"
+                           required ng-disabled="!hasNewBrand"/>
+                    <div ng-show="hasNewBrand && isNewBrand">
+                        <p>新建品牌"{{formData.f_brand}}",请完善品牌信息(选填)</p>
+                        <div class="">
+                            <label id="brandImage"
+                                   class="col-sm-3 bg-white bg-font-white text-center upload-image-label">
+                                <p ng-hide="formData.brandImage">点击上传品牌图片</p>
+                                <input type="file" see-file-select="uploadBrand" class="hide">
+                            </label>
+                            <div class="col-sm-5">
+                                <textarea class=" form-control" style="height: 150px;" placeholder="请填写品牌描述"
+                                          ng-model="brand_desc"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 help-see"
+                     ng-show="addAnswerForm.f_brand.$touched && addAnswerForm.f_brand.$invalid">
+                    <p class="help-block">请填写商品品牌</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选择圈主</label>
+                <div class="col-sm-7">
+                    <select class="form-control" ng-options="user.u_id as user.u_username for user in users"
+                            ng-model="formData.u_id">
+                        <option value="">--请选择 --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">通过手机号设置作者</label>
+                <div class="col-sm-7">
+                    <input type="tel" name="u_mobile" class="form-control" ng-model="formData.u_mobile"/>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="answerType == 2">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">回答图片</label>
+                <div class="col-sm-7">
+                    <img width="150" class="img-thumbnail" see-src="formData.f_imgurl" alt="" >
+                    <label id="itemImage" class="btn btn-primary">{{isNew?'点击上传图片':'点击更换图片'}}
+                        <input type="file" name="itemImage" see-file-select="upload" class="hide" accept="image/jpg, image/jpeg, image/png" >
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选择圈主</label>
+                <div class="col-sm-7">
+                    <select class="form-control" ng-options="user.u_id as user.u_username for user in users"
+                            ng-model="formData.u_id">
+                        <option value="">--请选择 --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">通过手机号设置作者</label>
+                <div class="col-sm-7">
+                    <input type="tel" name="u_mobile" class="form-control" ng-model="formData.u_mobile"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">添加评论</label>
+            <div class="col-sm-7">
+                <textarea id="add_comment" name="f_comment" class="form-control" rows="5"
+                    ng-model="formData.f_comment"></textarea>
+            </div>
+            <div class="col-sm-3 help-see">
+                <p>{{formData.f_comment.length}}个字</p>
+                <!--<p class="help-block" ng-show="addAnswerForm.f_comment.$touched && addAnswerForm.f_comment.$invalid">请填写评论，且字数大于10个字</p>-->
+            </div>
+        </div>
+        <div class="form-group" ng-show="search_ids && answerType == 1">
+            <label class="col-sm-2 control-label">选择原因</label>
+            <div class="col-sm-7">
+                <textarea id="add_description" ng-model="formData.description" class="form-control" rows="5"
+                          placeholder="请填写选择该商品的原因"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8 col-md-7">
+                <div class="chekbox">
+                    <label><input type="checkbox" ng-model="isPre" ng-true-value="1" ng-false-value="0">&nbsp;&nbsp;预约发布</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="isPre == 1">
+            <label class="col-sm-2 control-label">预约发布时间</label>
+            <div class="col-sm-8 col-md-7">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                        <input type="text" datetime="yyyy-MM-dd HH:mm:ss" class="form-control pre-form-control" data-ng-model="formData.f_time">
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="formData.f_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }" data-on-set-time="onSetPreTime(newDate, oldDate)"/>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="errMsg">
+            <div class="alert alert-danger col-sm-offset-2 col-sm-7">{{errMsg}}</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-7">
+                <button type="submit" class=" btn btn-lg btn-primary">确定</button>
+                <button type="reset" onClick="history.back()" class="col-sm-offset-1 btn btn-lg btn-default">取消</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+      </div>
+    </div>
+  </div>

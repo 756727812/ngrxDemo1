@@ -1,0 +1,8 @@
+<div class="auth-container register-container fade-in" [ngClass]="{mobile:isMobile}">
+  <div class="auth-content register-content">
+    <register-step-one *ngIf="currentStep ===1 "></register-step-one>
+    <register-step-two *ngIf="currentStep ===2 "></register-step-two>
+    <register-step-three *ngIf="currentStep ===3 && !isMobile "></register-step-three>
+    <mobile-register-success *ngIf="(currentStep == 3 || currentStep == 4) && isMobile"></mobile-register-success>
+  </div>
+</div>

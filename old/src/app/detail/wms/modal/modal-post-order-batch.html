@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h3 class=ortlet-title>重新出库</h3>
+</div>
+<form class="form-horizontal w5c-form" name="postOrderForm" novalidate w5c-form-validate>
+  <div class="modal-body text-left">
+    <div class="post-order-loading" ng-if="vm.status == 'loading'">
+      <svg viewBox="25 25 50 50" class="circular is-sm"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg>
+      <span>正在重新出库中{{vm.doneCount}}/{{vm.orderCount}}个中订单</span>
+    </div>
+    <div class="post-order-form-body" ng-if="vm.status == 'form'">
+      <p>
+        请输入一个中订单号后，换行再输入另一个中订单号
+      </p>
+      <div class="form-group" >
+        <!-- 占位符 -->
+        <div class="col-sm-12">
+          <textarea class="form-control" ng-model="vm.orders" rows="10" required w5c-customizer="vm.validateOrder()" name="orders">
+          </textarea>
+          <span>已输入：{{vm.orderCount}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="post-order-result" ng-if="vm.status == 'finished'">
+      <div class="table-scrollable">
+        <table class="table table-hover">
+          <tr>
+            <td ng-if="vm.postOrderResult.length>0">失败{{vm.postOrderResult.length}}个</td>
+            <td ng-if="vm.postOrderResult.length==0">全部中订单号重新出库成功</td>
+            <td></td>
+          </tr>
+          <tr ng-repeat="item in vm.postOrderResult" ng-if="vm.postOrderResult.length>0">
+            <td>{{item.midOrderId}}</td>
+            <td>
+              <i class="si si-danger invalid"></i>&nbsp;{{item.result}}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确认</button>
+    <button class="btn dark btn-outline" type="button" ng-click="vm.cancel()" ng-hide="vm.status!=='form'">取消</button>
+  </div>
+  <div class="clearfix" ng-show="postOrderForm.orders.$error.required">
+    <p class="pull-right m-r-20"><i class="si si-danger invalid"></i>&nbsp;请至少输入一个订单</p>
+  </div>
+  <div class="clearfix" ng-show="postOrderForm.orders.$error.customizer">
+    <p class="pull-right m-r-20"><i class="si si-danger invalid"></i>&nbsp;一次最多导入150个订单</p>
+  </div>
+</form>

@@ -1,0 +1,338 @@
+@import "../var";
+@import "btn";
+.inputFocus {
+  background-color: white !important;
+  color: @see-input-edit-color !important;
+  border-color: @see-input-edit-border-color !important;
+  box-shadow: none;
+}
+
+////////////////////////////////////
+//// 输入框
+///////////////////////////////////
+.see-input-text {
+  height: 40px;
+  font-size: 14px;
+  padding-left: @see-input-padding-left;
+  padding-right: @see-input-padding-left;
+  color: @see-input-color !important;
+  border: 1px solid @see-input-border-color !important;
+  border-color: @see-input-border-color !important;
+  &:focus {
+    .inputFocus;
+    outline: none;
+  }
+  &::placeholder {
+    color: #999;
+  }
+  &+.clear-icon {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: @see-input-color;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+      color: @see-input-edit-color;
+    }
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+  }
+}
+
+form.ng-invalid.ng-submitted:not(.hide-input-error) {
+  .see-input-text.ng-invalid {
+    color: @see-input-error-color !important;
+    border-color: @see-input-error-border-color !important;
+  }
+  .see-select-wrap.ng-invalid,
+  .see-select.ui-select-container.ng-invalid {
+    .ui-select-toggle {
+      border-color: @see-input-error-border-color !important;
+      color: @see-input-error-color !important;
+    }
+  }
+}
+
+////////////////////////////////////
+//// 下拉选项
+///////////////////////////////////
+@see-select-height: 40px;
+.see-select.ui-select-bootstrap {
+  .ui-select-match-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  .btn-default-focus {
+    box-shadow: none;
+    outline: none;
+    border-color: @see-input-border-color;
+    background-color: @see-input-background-color;
+  }
+  .ui-select-toggle.btn:not(.btn-sm):not(.btn-hg):not(.btn-xs):not(.btn-lg):not(.bootstrap-touchspin-up):not(.bootstrap-touchspin-down),
+  .ui-select-toggle.btn {
+    background-color: #fff !important;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.2;
+    border-color: @see-input-border-color !important;
+    color: @see-input-color;
+    padding-left: @see-input-padding-left;
+    height: @see-select-height;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    z-index: 1001;
+    &:focus {
+      .inputFocus;
+    }
+    &:hover {
+      background: @see-input-background-color !important;
+    }
+    >i {
+      padding-left: 0!important;
+      padding-right: 0!important;
+    }
+  }
+  .ui-select-search-hidden {
+    display: none;
+  }
+  .ui-select-choices {
+    padding: 0;
+    background-color: #ffffff;
+    box-shadow: 0 1px 5px 0 rgba(216, 216, 216, 0.5);
+    border: solid 1px #ededed;
+    min-width: 140px;
+  }
+  .ui-select-choices-row.active>span {
+    background-color: @primary-color;
+  }
+  .ui-select-choices-row>span {
+    padding-left: @see-input-padding-left;
+    padding-right: @see-input-padding-left;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    line-height: 1;
+  }
+}
+
+////////////////////////////////////
+//// 勾选框
+///////////////////////////////////
+.see-checkbox {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  .content {
+    margin-left: 7px;
+  }
+  &:hover {
+    input::before {
+      border-color: #787c92;
+    }
+  }
+  .content {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    color: #000000;
+    cursor: pointer;
+  }
+}
+
+.see-checkbox-icon,
+.see-checkbox input {
+  display: inline-block;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  margin: 0;
+  outline: none;
+  &:focus {
+    outline: none !important;
+  }
+  &::before {
+    z-index: 1;
+    display: table;
+    width: 100%;
+    height: 100%;
+    border: 2px solid @see-checkbox-border-color;
+    background: @see-checkbox-bg-color;
+    content: ' ';
+    transition: background-color 20ms ease-in-out;
+    border-radius: 2px;
+  }
+  &::after {
+    z-index: 1;
+    transition: opacity 0.05s ease-in-out;
+    transform: translate(-53%, -70%) rotate(-45deg);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: table;
+    width: 13px;
+    height: 7px;
+    border: 2px solid @see-checkbox-bg-color;
+    border-top: 0;
+    border-right: 0;
+    content: ' ';
+    opacity: 0;
+  }
+  &:disabled {
+    &::before {
+      background-color: @see-checkbox-disabled-bg-color;
+      border: solid 1px @see-checkbox-disabled-border-color;
+    }
+  }
+  &.checked,
+  &:checked {
+    &::before {
+      background: @see-checkbox-checked-bg-color;
+      border: none;
+    }
+    &::after {
+      opacity: 1;
+    }
+  }
+  &[type="radio"] {
+    &::before {
+      border-radius: 100%;
+    }
+  }
+  &:disabled+.content {
+    cursor: not-allowed;
+  }
+}
+
+.see-radio-group,
+.see-mul-check {
+  li {
+    line-height: 1;
+    list-style: none;
+  }
+}
+
+////////////////////////////////////
+//// 分页栏
+///////////////////////////////////
+// 使用 uib-pagination
+.see-pagination-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .pre-txt {
+    color: #999999;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 4px;
+  }
+  ul.pagination {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    li {
+      >a {
+        border: solid 1px #e9e9e9;
+        text-align: center;
+        font-size: 12px;
+        color: #9c9c9c;
+      }
+    }
+    li.pagination-next,
+    li.pagination-prev {
+      >a {
+        padding: 0 !important;
+        width: 54px;
+        height: 26px;
+        line-height: 26px;
+      }
+    }
+    li.pagination-page {
+      >a {
+        padding: 0;
+        width: 18px;
+        height: 18px;
+      }
+    }
+    li.active {
+      >a {
+        background-color: #d0d2dc;
+        color: #787c92;
+      }
+    }
+  }
+}
+
+////////////////////////////////////
+//// 表单底部错误提示
+///////////////////////////////////
+ul.see-form-errors {
+  li {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 18px;
+    font-size: 12px;
+    color: #787c92;
+    &+li {
+      margin-top: 8px;
+    }
+    i {
+      margin-right: 7px;
+      color: #ff6b6b;
+      font-size: 20px;
+    }
+  }
+}
+
+////////////////////////////////////
+//// 弹窗（固定）
+///////////////////////////////////
+.see-fixed-modal {
+  .modal-dialog {
+    display: flex;
+    height: auto;
+    margin: 0 auto;
+    top: 45%;
+    transform: translateY(-50%) !important;
+    max-height: 80%;
+    overflow: hidden;
+    .modal-content {
+      display: flex; // 使用 component 方式的 modal，其根孩子都是组件标签
+      >*:not(div) {
+        display: flex;
+        flex-direction: column;
+        .modal-body {
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+////////////////////////////////////
+//// Loading Mask
+///////////////////////////////////
+.spinner.loading-mask {
+  position: absolute;
+  z-index: 999999;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.05);
+  >div {
+    z-index: 1;
+    background-color: #8D90A2;
+  }
+}

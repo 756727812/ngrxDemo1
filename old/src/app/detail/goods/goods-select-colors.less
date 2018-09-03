@@ -1,0 +1,59 @@
+.goods-select-colors {
+  position: relative;
+
+  &-pop {
+    position: absolute;
+    width: 500px;
+    min-height: 1px;
+    background-color: #fff;
+    display: flex;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+  }
+
+  .current-group {
+    background-color: #ddd;
+  }
+
+  .color {
+    &-title {
+      ul,
+      li {
+        list-style: none;
+      }
+
+      li {
+        padding: 5px 20px 5px 15px;
+        border-right: 1px solid #eee;
+        cursor: pointer;
+        min-width: 100px;
+
+        &:hover {
+          background-color: #ddd;
+        }
+      }
+    }
+
+    &-content {
+      flex-grow: 1;
+      padding: 10px 20px;
+
+      h2 {
+        font-size: 18px;
+      }
+
+      &-details {
+        &-item {
+          float: left;
+          padding: 5px 10px;
+          cursor: pointer;
+          min-width: 90px;
+
+          &:hover {
+            background-color: #ddd;
+          }
+        }
+      }
+    }
+  }
+}

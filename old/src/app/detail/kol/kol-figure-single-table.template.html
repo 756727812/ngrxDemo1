@@ -1,0 +1,39 @@
+<div class="panel">
+  <div class="panel-header bg-gray-light">
+    <h3><strong>{{ $ctrl.header }}</strong></h3>
+  </div>
+  <div class="panel-content">
+    <div class="table-scrollable">
+      <table class="table table-hover">
+        <thead>
+          <th ng-repeat="th in $ctrl.thead">
+            {{ th }}
+            <i class="fa fa-info-circle" uib-tooltip="基于品类分布、出现位置、词性、频度等，计算出来品类的评分，用于衡量该品类在KOL中的热度情况"
+              ng-if="$ctrl.tableUrl === 'da_portrait_detail_hot' && $last && $ctrl.tableParam === '0'"></i>
+            <i class="fa fa-info-circle" uib-tooltip="基于品牌分布、出现位置，频度等，计算出每个品牌的评分，用于衡量该品牌在KOL中的热度情况"
+              ng-if="$ctrl.tableUrl === 'da_portrait_detail_hot' && $last && $ctrl.tableParam === '1'"></i>
+            <i class="fa fa-info-circle" uib-tooltip="与品牌/品类评分计算相似，用于衡量KOL的热词热度情况"
+              ng-if="$ctrl.tableUrl === 'da_portrait_detail_hot' && $last && $ctrl.tableParam === '2'"></i>
+          </th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in $ctrl.items.list">
+            <td>{{ item.rank }}</td>
+            <td>{{ item.key_word }}</td>
+            <td>
+              <div class="progress" ng-if="$ctrl.isPercent">
+                <div class="progress-bar progress-bar-primary" ng-style="{ width: item.score + '%'}"></div>
+              </div>
+              <span>{{ item.score }} <b ng-if="$ctrl.isPercent">%</b></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p ng-if="!$ctrl.items.count">暂无数据</p>
+    </div>
+    <ul uib-pagination ng-if="$ctrl.items.count" total-items="$ctrl.items.count" items-per-page="10" ng-model="$ctrl.items.page" ng-change="$ctrl.getKOLTableDetail($ctrl.items.page)"
+      max-size="5" class="pagination-sm m-t-0" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-link-numbers="true">
+    </ul>
+  </div>
+</div>
+</div>

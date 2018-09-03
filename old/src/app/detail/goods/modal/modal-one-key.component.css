@@ -1,0 +1,21 @@
+.cur-progress{padding:120px 160px}
+
+.little-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.little-circle.success {
+  background-color: #78af2d;
+}
+
+.little-circle.fail {
+  background-color: #bc2a42;
+}
+
+.batch-err{
+  color:#bc2a42;font-size: 20px;padding:40px;text-align: center;
+}

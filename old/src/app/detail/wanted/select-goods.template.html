@@ -1,0 +1,139 @@
+<div class="header">
+  <h2>
+    <strong>内容兼职</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">选择商品</li>
+		</ol>
+	</div>
+</div>
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div id="select-goods-detail">
+          <div class="scroll-fix">
+            <div class="table-scrollable themeImage m-0">
+              <table class="table table-hover table-striped m-b-0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>图片</th>
+                    <th>描述</th>
+                    <th>期望价格</th>
+                    <th>发布时间</th>
+                    <!--<th>品类</th>-->
+                    <th>标签</th>
+                    <th>回答数</th>
+                    <th  see-hide="Hide-DD" see-access="See-Admin Oper Super-Admin">真实同求数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{theme.t_id}}</td>
+                    <td><img width="100" class="img-viewer" alt="{{theme.t_title}}" see-src="theme.t_imgurl"
+                             see-viewer></td>
+                    <td>{{theme.t_title}}</td>
+                    <td>{{theme.t_price}}</td>
+                    <td>{{theme.t_time}}</td>
+                    <!--<td>{{theme.cy_name}}</td>-->
+                    <td>{{theme.tab}}</td>
+                    <td>{{theme.t_findcount}}</td>
+                    <td  see-hide="Hide-DD" see-access="See-Admin Oper Super-Admin">{{theme.t_followcount}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <form ng-submit="searchGoods()" class="form-inline m-t-10">
+            <div class="form-group">
+              <label class="control-label">搜索商品</label>
+              <input type="text" autofocus class="form-control" ng-model="searchData.keyword_name" placeholder="商品名称">
+              <input type="text" class="form-control" ng-model="searchData.keyword_id" placeholder="商品ID">
+            </div>
+            <div class="form-group">
+              <label class="control-label">筛选sku类型</label>
+              <select ng-model="searchData.prepare" class="form-control">
+                <option value="" selected>全部</option>
+                <option value="1">准sku</option>
+                <option value="0">sku</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              搜索
+            </button>
+          </form>
+
+          <div class="selectGoods goodsImages">
+            <div see-access="Part-time Oper" class="grid-portfolio m-t-10">
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-xlg-2 m-t-10" ng-repeat="item in itemList">
+                  <img class="img-responsive img-rounded img-viewer" see-src="item.item_imgurl" alt="{{item.item_name}}" see-viewer >
+                  <p class="m-b-0">ID: {{item.item_id}}</p>
+                  <p class="m-b-0">{{item.item_name}}</p>
+                  <p class="m-b-0">{{item.item_price | currency: '￥'}} <span class="pull-right">库存：{{item.stock || item.item_stock || 0}}</span></p>
+                  <p class="m-b-0">{{item.item_created_at || item.create_time}}</p>
+                  <button type="button" ng-click="selectGood(item.item_id)" class="btn btn-sm btn-primary"><i class="fa fa-check"></i>选择</button>
+                  <a class="btn btn-sm btn-primary" see-goods="item.item_id" target="_blank">
+                    <i class="icon-screen-smartphone"></i>预览</a>
+                </div>
+              </div>
+            </div>
+            <div see-hide="Part-time Oper" class="table-scrollable" see-viewer>
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th>商品ID</th>
+                    <th width="120">商品主图</th>
+                    <th>商品名称</th>
+                    <th>价格</th>
+                    <th>库存</th>
+                    <th>总销量</th>
+                    <th>点击率</th>
+                    <th>放入心愿数</th>
+                    <th style="min-width: 95px;">创建时间</th>
+                    <th width="60">状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in itemList">
+                    <td>{{item.item_id}}</td>
+                    <td>
+                      <img width="100" class="img-thumbnail img-viewer" see-src="item.item_imgurl" alt="{{item.item_name}}" >
+                    </td>
+                    <td>
+                      {{item.item_name}}
+                    </td>
+                    <td>
+                      {{item.item_price | currency: '￥'}}
+                    </td>
+                    <td>{{item.stock || item.item_stock}}</td>
+                    <td>{{item.sale_count || 0}}</td>
+                    <td>{{item.click_num || 0}}</td>
+                    <td>{{item.theme_num || 0}}</td>
+                    <td>{{item.item_created_at || item.create_time}}</td>
+                    <td>
+                      {{item.item_insale == '1' ? '已上架' : '已下架'}}
+                    </td>
+                    <td>
+                      <button type="button" ng-click="selectGood(item.item_id)" class="btn btn-sm btn-primary"><i class="fa fa-check"></i>选择
+                      </button>
+                      <a class="btn btn-sm btn-primary" see-goods="item.item_id" target="_blank">
+                        <i class="icon-screen-smartphone"></i>预览</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination total-items="total_items"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

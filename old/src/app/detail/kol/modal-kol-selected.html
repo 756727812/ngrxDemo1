@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">设置默认商城</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="selectedKOLForm" novalidate w5c-form-validate role="form">
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">设置默认商城</label>
+            <div class="col-sm-7">
+                <select name="defaultMall" class="form-control" ng-model="vm.article_id" ng-options="item.article_id as item.title for item in vm.mall_list" required>
+                    <option value="" selected>-- 请选择 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">确定</button>
+            <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+        </div>
+    </form>
+</div>

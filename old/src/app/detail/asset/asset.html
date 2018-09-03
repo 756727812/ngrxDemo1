@@ -1,0 +1,52 @@
+<div ng-controller="assetController as vm">
+  <div class="header">
+    <h2 ng-show="vm.currentType === 'settle'"><strong>所有账单</strong></h2>
+
+    <h2 ng-show="vm.currentType === 'settlePgc'"><strong>所有账单</strong></h2>
+
+    <h2 ng-show="vm.currentType === 'withdrawDetail'"><strong>账单详情</strong></h2>
+
+    <h2 ng-show="vm.currentType === 'withdrawDetailTopic'"><strong>专题账单详情</strong></h2>
+
+    <h2 ng-show="vm.currentType === 'withdrawDetailGoods'"><strong>专题商品账单详情</strong></h2>
+
+    <div class="breadcrumb-wrapper" ng-hide="true">
+      <ol class="breadcrumb">
+        <li><a href="/">Seego后台</a></li>
+        <li><a href="/asset">资产管理</a></li>
+        <li ng-show="vm.currentType === 'settle' || vm.currentType === 'settlePgc'" class="active">所有账单</li>
+        <li ng-show="vm.currentType === 'withdrawDetail' || vm.currentType === 'withdrawDetailTopic' || vm.currentType === 'withdrawDetailGoods'"
+          class="active">账单详情</li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 portlets">
+      <div class="panel">
+        <div class="panel-content" ng-include="vm.template"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="header">
+  <h2><strong>所有账单</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">资产管理</a></li>
+      <li class="active">所有账单</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+
+      </div>
+    </div>
+  </div>
+</div>
+

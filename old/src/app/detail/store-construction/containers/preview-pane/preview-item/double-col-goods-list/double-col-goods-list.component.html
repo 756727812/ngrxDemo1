@@ -1,0 +1,49 @@
+<div class="double-col-goods-list">
+  <ul class="nav-bar">
+    <ng-container *ngIf="!targets || targets.length === 0">
+      <li class="tab active">
+        <span>分类一</span>
+      </li>
+      <li class="tab">
+        <span>分类二</span>
+      </li>
+      <li class="tab">
+        <span>分类三</span>
+      </li>
+      <li class="tab">
+        <span>分类四</span>
+      </li>
+    </ng-container>
+    <li class="item"
+        *ngFor="let item of targets; let i = index"
+        [ngClass]="{'active': i===activeIndex }">
+      <span>{{item.categoryName.replace('（系统默认）', '')}}</span>
+    </li>
+  </ul>
+  <div class="items-container clearfix">
+    <ng-container *ngIf="!targets || targets.length === 0">
+      <app-preview-placeholder-item [bottomBarH]="15" [width]="178" [imgHeight]="178"></app-preview-placeholder-item>
+      <app-preview-placeholder-item [bottomBarH]="15" [width]="178" [imgHeight]="178"></app-preview-placeholder-item>
+    </ng-container>
+    <div *ngIf="targets && targets.length">
+      <ng-container *ngFor="let item of targets[activeIndex]?.items">
+        <div class="item">
+          <div class="item-image">
+            <img alt=""
+                 [seeSrc]="item.mainImgUrl || item.imgUrl" />
+          </div>
+          <div class="item-name">
+            <ellipsis lines="1" style="height: 16px">
+              {{item.itemName}}
+            </ellipsis>
+          </div>
+          <div class="price">
+            <span class="daily-price">￥{{item.dailyPrice || item.price}}</span>
+            <span class="ori-price">￥{{item.oriPrice}}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

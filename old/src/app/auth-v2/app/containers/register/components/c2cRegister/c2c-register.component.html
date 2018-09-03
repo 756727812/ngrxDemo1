@@ -1,0 +1,73 @@
+<div class="container">
+  <form class="auth-form">
+    <div class="form-group">
+      <label>公司名称</label>
+      <div class="form-item">
+        <input name="seller_company"  type="text" class="form-control" [(ngModel)]="formData.seller_company"   style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>联系人名称</label>
+      <div class="form-item">
+        <input name="brand_contact_name"  type="text" class="form-control" [(ngModel)]="formData.brand_contact_name"   style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>公众号名称</label>
+      <div class="form-item">
+        <input name="wx_official_name"  type="text" class="form-control" [(ngModel)]="formData.wx_official_name" placeholder="如没有，可不填" style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>公众号ID(微信号)</label>
+      <div class="form-item">
+        <input name="wx_official_account"  type="text" class="form-control"  [(ngModel)]="formData.wx_official_account" placeholder="如没有，可不填"  style="width: 302px">
+        <div *ngIf="!isMobile" class="pop-container">
+          <i class="icon-info"></i>
+          <div class="pop-content">
+            <img width="300px" class="img-viewer ng-isolate-scope" alt="" src="//static.seecsee.com/images/wechat_tips_info.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>品牌适合人群</label>
+      <div class="form-item">
+        <input name="brand_suitable_crowd"  type="text" class="form-control" [(ngModel)]="formData.brand_suitable_crowd" style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>品牌平均售价</label>
+      <div class="form-item">
+        <input name="brand_avg_price"  type="text" class="form-control" [(ngModel)]="formData.brand_avg_price"  style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>品牌消费人群</label>
+      <div class="form-item">
+        <input name="brand_consume_crowd"  type="text" class="form-control" [(ngModel)]="formData.brand_consume_crowd"  style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>品牌毛利空间</label>
+      <div class="form-item">
+        <input name="brand_gross_profit"  type="text" class="form-control"  [(ngModel)]="formData.brand_gross_profit"  style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>经营类目</label>
+      <div class="form-item">
+        <input name="brand_business_category"  type="text" class="form-control" [(ngModel)]="formData.brand_business_category"  style="width: 302px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>品牌对接人</label>
+      <div class="form-item">
+        <input name="connection_man_name"  type="text" class="form-control"  [(ngModel)]="formData.connection_man_name"  placeholder="如无，可不填" style="width: 302px">
+      </div>
+    </div>
+    <div class="next-btn-warp">
+      <button type="button" class="primary-btn" [disabled]="btn_disabled" (click)="onSubmit()">下一步</button>
+    </div>
+  </form>
+</div>

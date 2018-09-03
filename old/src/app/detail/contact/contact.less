@@ -1,0 +1,51 @@
+.contact {
+  &-shop {
+    &__menu {
+      ul {
+        list-style: none;
+        padding-left: 30px !important;
+        width: 100%;
+
+        li {
+          cursor: pointer;
+          color: #8d90a2;
+          padding: 5px 0;
+          font-weight: bold;
+          font-size: 16px;
+          border-right: 5px solid transparent;
+          margin: 20px 0;
+          margin-right: -15px;
+
+          &.cur {
+            color: #5971e8;
+            border-right-color: #5971e8;
+          }
+        }
+      }
+    }
+
+    &__content {
+      border-left: 1px solid #e5e8f5;
+      padding-bottom: 50px;
+      min-height: 700px;
+
+      dt {
+        padding: 10px 0 20px;
+        font-size: 16px;
+      }
+
+      dl {
+        padding: 0 50px;
+      }
+
+      dd {
+        margin-bottom: 16px;
+
+        img {
+          display: block;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

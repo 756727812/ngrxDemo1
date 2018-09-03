@@ -1,0 +1,89 @@
+<div class="header">
+  <h2>
+    <strong>用户心愿分类</strong>
+  </h2>
+  <div class="breadcrumb-wrapper">
+		<ol class="breadcrumb">
+		  <li><a href="/">Seego后台</a></li>
+		  <li><a href="/wanted">心愿管理</a></li>
+		  <li class="active">用户心愿分类</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+          <uib-tabset>
+            <uib-tab ng-repeat="tab in tabs" select="filterByType(tab.type)">
+              <uib-tab-heading>
+                {{tab.title}}<span class="badge" ng-class="{'badge-primary': tab.count, 'badge-default': !tab.count}">{{tab.count}}</span>
+              </uib-tab-heading>
+            </uib-tab>
+          </uib-tabset>
+
+          <div class="table-scrollable" style="margin-top: -20px !important;">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>用户昵称</th>
+                  <th width="120">图片</th>
+                  <th>描述</th>
+                  <th>发布时间</th>
+                  <th>物品名称</th>
+                  <th>其他标签</th>
+                  <th>品牌</th>
+                  <th>地区</th>
+                  <th>商品id</th>
+                  <th>回答数</th>
+                  <th see-hide="Hide-DD">真实同求数</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="theme in themeList">
+                  <td ng-bind="theme.t_id"></td>
+                  <td ng-bind="theme.u_username"></td>
+                  <td>
+                    <div class="img-container">
+                      <img class="img-viewer"  alt="{{::theme.t_title}}" see-src="theme.t_imgurl" see-viewer>
+                    </div>
+                  </td>
+                  <td ng-bind="theme.t_title"></td>
+                  <td ng-bind="theme.t_time"></td>
+                  <td ng-bind="theme.cl_class"></td>
+                  <td ng-bind="theme.cl_text"></td>
+                  <td ng-bind="theme.cl_brand"></td>
+                  <td ng-bind="theme.cl_area"></td>
+                  <td ng-bind="theme.item_id"></td>
+                  <td ng-bind="theme.t_findcount"></td>
+                  <td ng-bind="theme.t_followcount" see-hide="Hide-DD"></td>
+                  <td>
+                    <a see-access="Oper Super-Admin See-Admin" class="btn btn-sm btn-primary" target="_blank" ng-href="/wanted/theme/edit/{{::theme.t_id}}"> <i class="fa fa-edit"></i>编辑</a>
+                    <a class="btn btn-sm btn-primary" target="_blank" ng-href="/wanted/themeList/theme-answer/{{::theme.t_id}}?ori=themeclassified"> <i class="fa fa-eye"></i>查看答案</a>
+                    <a class="btn btn-sm btn-primary" target="_blank" ng-href="/wanted/themeList/addAnswer?tid={{::theme.t_id}}&ori=themeclassified">
+                      <i class="fa fa-plus-circle"></i>添加答案</a>
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="matchImgPop(theme.t_id,theme.t_imgurl,seller_id,host)" see-access="Super-Admin  B2C-Service Part-time Oper">
+                      <i class="fa fa-check"></i>匹配答案</button>
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="hideMe(theme.t_id)" see-access="See-Admin Oper Super-Admin">
+                      <i class="fa fa-cloud"></i>隐藏</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center">
+            <uib-pagination total-items="totalItems" ng-model="currentPage" items-per-page="20" max-size="5" ng-change="pageChanged()"
+                            first-text="首页" last-text="末页" previous-text="上一页" next-text="下一页" class="pagination-sm" boundary-links="true" force-ellipses="true"></uib-pagination>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+
+</footer>
+
+

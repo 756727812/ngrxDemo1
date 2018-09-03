@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "semicolon": false,
+    "function-name": false,
+    "import-name": false,
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-snake-case",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "ter-arrow-parens": [
+      true,
+      "as-needed",
+      {
+        "requireForBlockBody": false
+      }
+    ],
+    "no-this-assignment": false
+  }
+}

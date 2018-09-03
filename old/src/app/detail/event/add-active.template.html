@@ -1,0 +1,129 @@
+<div class="header">
+  <h2><strong>新建活动</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">新建活动</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form id="submitActiveForm" name="submitActiveForm" role="form" class="form-horizontal m-t-20" ng-submit="submitForm(submitActiveForm.$valid)"
+        novalidate>
+
+            <div class="form-group" ng-class="{'has-error': submitActiveForm.event_name.$touched && submitActiveForm.event_name.$invalid}">
+                <label for="event_name" class="col-sm-2 control-label required">活动名称</label>
+
+                <div class="col-sm-7">
+                    <input id="event_name" type="text" name="event_name" class="form-control" placeholder="建议5-10个字" ng-model="event_name" required>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': submitActiveForm.active_column.$touched && submitActiveForm.active_column.$invalid}">
+                <label for="set_id" class="col-sm-2 control-label required">所属栏目</label>
+
+                <div class="col-sm-7">
+                    <select class="form-control" name="set_id" id="set_id" ng-model="set_id" required ng-options="set.id as set.set_name for set in sets">
+                        <option value="" selected>-- 请选择 --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': submitActiveForm.release_date.$touched && submitActiveForm.release_date.$invalid}">
+              <label class="col-sm-2 control-label required">活动上线时间</label>
+
+                <div class="col-sm-7">
+                    <input date-range-picker class="form-control date-picker" name="release_date" style="width: 200px;" type="text" ng-model="release_date.date"
+                    options="datePicker.opt" required/>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': submitActiveForm.apply_date.$touched && submitActiveForm.apply_date.$invalid}">
+              <label class="col-sm-2 control-label required">活动报名时间</label>
+
+                <div class="col-sm-7">
+                    <input date-range-picker class="form-control date-picker" name="apply_date" style="width: 200px;" type="text" ng-model="apply_date.date"
+                    options="datePicker.opt" required/>
+                </div>
+            </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">商品报名条件</label>
+
+                <div class="col-sm-7">
+                  <div class="row m-b-10">
+                        <div class="col-sm-2">
+                            <label class="control-label">
+                                <input type="checkbox" ng-model="active_local_switch" />地区
+                            </label>
+                        </div>
+                        <div class="col-sm-9">
+                            <label class="control-label" ng-repeat="location in countryList">
+                                <input ng-disabled="!active_local_switch" type="checkbox" name="area" ng-model="active_local[location.location]"
+                                /> {{location.location}}
+                            </label>
+                        </div>
+                    </div>
+
+                  <div class="row m-b-10">
+                        <div class=" col-sm-2">
+                            <label class="control-label">
+                                <input type="checkbox" id="checkboxForBrand" name="checkBrand1" ng-model="checkBrand1">&nbsp;品牌
+                            </label>
+                        </div>
+                    <div class="col-sm-9 m-b-10">
+                      <div class="row m-b-10" ng-repeat="brand in brand_list">
+                                <div class="col-sm-6">
+                                    <input type="text" ng-model="brand.selectedBrand1" uib-typeahead="brandItem as brandItem.brand_name for brandItem in brandList | filter:{brand_name:$viewValue} | limitTo:8"
+                                    class="form-control brandsArr" ng-disabled="!checkBrand1">
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="addOneBrand(brand,$index!=0?'-':'+')" ng-disabled="!checkBrand1"><i class="fa" ng-class="{'+':'fa-plus','-':'fa-minus'}[$index!=0?'-':'+']"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label class="control-label">
+                                <input id="checkboxForClass" type="checkbox" ng-model="checkClass1">&nbsp;品类
+                            </label>
+                        </div>
+                      <div class="col-sm-9 m-b-10">
+                        <div class="row m-b-10" ng-repeat="clz in class_list">
+                                <div class="col-sm-5">
+                                    <select class="form-control" ng-model="clz.selectedClass1" ng-change="selectedSubClass1 = null" ng-options="classItem.class_name for classItem in classList"
+                                    ng-disabled="!checkClass1">
+                                        <option value="" selected>-- 请选择 --</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select class="form-control" ng-model="clz.selectedSubClass1" ng-options="subClassItem.class_name for subClassItem in clz.selectedClass1.subClass"
+                                    ng-disabled="!clz.selectedClass1 || !checkClass1">
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="addOneClass(clz,$index!=0?'-':'+')" ng-disabled="!checkClass1"><i class="fa" ng-class="{'+':'fa-plus','-':'fa-minus'}[$index!=0?'-':'+']"></i> </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+              <button id="submitBtn" type="submit" class="btn btn-lg btn-primary col-sm-offset-2 m-r-20">确定
+                </button>
+              <button id="cancelBtn" type="reset" class="btn btn-lg btn-dark col-sm-offset-2"
+                      ng-click="cancel()">取消
+                </button>
+            </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

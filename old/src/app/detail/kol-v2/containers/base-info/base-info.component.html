@@ -1,0 +1,16 @@
+<nz-card [nzBordered]="false">
+  <div class="base-info">
+    <ul >
+      <li>KOL名称：{{data?.kolName}}</li>
+      <li>KOLID：{{data?.kolId}}</li>
+      <li>小电铺名称：{{data?.xdpName}}</li>
+      <li>小电铺ID：{{data?.xdpId}}</li>
+     <!-- <li>小程序主页链接：<span class="link">{{data?.homePagePath}}</span><a class="copy" ngxClipboard [cbContent]="data?.homePagePath" (click)="showMsg()" >复制</a></li>-->
+    </ul>
+   <!-- <div class="see-qrcode">
+      <img class="qrcode"  [seeSrc]="data?.homePageUrl" />
+      <p class="pre-view text-center">微信扫码预览商品</p>
+      <a class="download" target="_blank" [href]="data?.homePageUrl" [download]="data?.homePageUrl">下载</a>
+    </div>-->
+  </div>
+</nz-card>

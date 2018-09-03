@@ -1,0 +1,90 @@
+<div class="header">
+  <h2><strong>品牌库管理</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">商品管理</a></li>
+      <li class="active">品牌库管理</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-inline m-b-10" ng-submit="searchBrand()">
+          <div class="form-group">
+            <label class="control-label">品牌搜索：</label>
+            <input type="search" ng-model="keyword" class="form-control" placeholder="输入品牌名称关键词">
+          </div>
+          <div class="form-group">
+            <label class="control-label">标准品牌筛选：</label>
+            <select ng-model="type" class="form-control">
+                <option value="0" selected>所有</option>
+                <option value="1">标准品牌</option>
+                <option value="2">非标准品牌</option>
+                <option value="3">可评测品牌</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">排序：</label>
+            <select ng-model="sort" class="form-control">
+                <option value="1" selected>按创建时间</option>
+                <option value="2">按商品数</option>
+            </select>
+          </div>
+          <button class="btn btn-primary">查询</button>
+        </form>
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>品牌LOGO</th>
+                <th>品牌ID</th>
+                <th>品牌名称</th>
+                <th>国家</th>
+                <th>简介</th>
+                <th>主营类目</th>
+                <th>标准品牌</th>
+                <th>商品数</th>
+                <th see-hide="PGC-Part">重名检测</th>
+                <th>是否有评测</th>
+                <th>显示在客户端</th>
+                <th width='85'>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="brand in brandslist">
+                <td><img class="img-viewer" see-src="brand.brand_logo?brand.brand_logo:'//static.seecsee.com/seego_backend/images/see_default.png'" width="120"
+                    height="120" see-viewer></td>
+                <td ng-bind="brand.brand_id"></td>
+                <td ng-bind="brand.brand_name"></td>
+                <td ng-bind="brand.location"></td>
+                <td>{{brand.brand_desc.length>20?brand.brand_desc.substr(0,17)+'...':brand.brand_desc}}</td>
+                <td ng-bind="brand.class_text"></td>
+                <td class="text-center"><i class="fa {{brand.is_standard === '1' ? 'fa-check' : ''}}"></i></td>
+                <td>
+                  <a ng-href="{{brand.item_num == '0' ?'':getUrlprefix+'/static/detail/item_list.html?brand_id='+brand.brand_id}}"
+                    ng-bind="brand.item_num"></a>
+                </td>
+                <td class="text-center" see-hide="PGC-Part">{{brand.similar_count}}<br/><a ng-show="brand.similar_count != '0'"  href="/goods/brand/check/{{brand.brand_id}}/{{brand.brand_name}}">查看详情</a></td>
+                <td class="text-center">{{brand.class_type > 0 ?'有':'无'}}</td>
+                <td class="text-center"><i class="fa {{(brand.is_standard === '1'&&brand.is_public === '1') ? 'fa-check' : ''}}"></i></td>
+                <td>
+                  <a  href="/goods/brand/edit/{{brand.brand_id}}/{{brand.brand_name}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</a>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="mergeBrand(brand)" see-hide="PGC-Part"><i class="fa fa-plus"></i>手动合并</button>
+                  <button type="button" class="btn btn-sm {{brand.item_num != '0' ? 'btn-default' : 'btn-primary'}}" ng-click="removeBrand(brand.brand_id)"
+                    ng-disabled="{{brand.item_num != '0'?true:false}}" see-hide="PGC-Part"><i class="fa fa-times"></i>删除</button>
+                  <button type="button" class="btn btn-sm btn-primary" ng-click="markBrand(brand)" ng-if="brand.class_type > 0">查看评分</button>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination total-items="total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

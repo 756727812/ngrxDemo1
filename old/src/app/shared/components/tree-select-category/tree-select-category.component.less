@@ -1,0 +1,172 @@
+.see-tree-select-wrap.show {
+  .input-area {
+    border-color: #8193ee;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(89, 113, 232, 0.2);
+    border-right-width: 1px !important;
+  }
+
+  .select-area-wrap {
+    .select-area {
+      display: block;
+      opacity: 1;
+      transform: scaleY(1);
+      transform-origin: 0% 0% 0;
+    }
+  }
+
+}
+
+.see-tree-select-wrap {
+  width: 300px;
+  position: relative;
+
+  .input-area {
+    min-height: 32px;
+    cursor: text;
+    zoom: 1;
+    outline: 0;
+    user-select: none;
+    box-sizing: border-box;
+    display: block;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    border-top-width: 1.02px;
+    transition: all 0.3s cubic-bezier(0.645,0.045,0.355,1);
+    line-height: 1.5;
+    color: rgba(0,0,0,0.65);
+    font-size: 14px;
+  }
+
+  .input-area.flex-fill {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 8px;
+
+    nz-input {
+      width: 50px;
+      flex: 1 1 auto;
+    }
+
+  }
+
+  .input-area.flex-fill.line-feed {
+    nz-input {
+      width: 100%;
+    }
+
+  }
+
+  .select-area-wrap {
+    position: relative;
+
+    .select-area {
+      z-index: 99999;
+      position: absolute;
+      width: 100%;
+      top: 4px;
+      opacity: 0;
+      display: none;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    span.ant-tree-switcher {
+      margin: 0;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      display: inline-block;
+      vertical-align: top;
+      border: 0;
+      cursor: pointer;
+      outline: 0;
+      text-align: center;
+    }
+
+    span.ant-tree-switcher.has-no-sons {
+      color: #fff;
+    }
+
+    span.ant-tree-switcher.ant-tree-switcher_open::after {
+      font-size: 12px;
+      font-size: 7px\9;
+      -webkit-transform: scale(0.58333333) rotate(0);
+      transform: scale(0.58333333) rotate(0);
+      display: inline-block;
+      font-family: anticon, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\e606";
+      font-weight: 700;
+      transition: -webkit-transform 0.3s;
+      transition: transform 0.3s;
+      transition: transform 0.3s,-webkit-transform 0.3s;
+    }
+
+    span.ant-tree-switcher.ant-tree-switcher_close::after {
+      font-size: 12px;
+      font-size: 7px\9;
+      display: inline-block;
+      font-family: anticon, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\e606";
+      font-weight: 700;
+      transition: -webkit-transform 0.3s;
+      transition: transform 0.3s;
+      transition: transform 0.3s,-webkit-transform 0.3s;
+      -webkit-transform: rotate(270deg) scale(0.59);
+      transform: rotate(270deg) scale(0.59);
+    }
+  }
+
+}
+
+:host ::ng-deep .ant-input {
+  border: none;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+:host ::ng-deep .ant-input:focus {
+  box-shadow: none;
+}
+
+:host ::ng-deep nz-tag span {
+  margin-top: 5px;
+}
+
+.see-tree-select-wrap .font-highlight {
+  color: #f5222d;
+}
+
+:host ::ng-deep .ant-checkbox + span {
+  padding-right: 0;
+}
+
+:host ::ng-deep .input-area.flex-fill .anticon.anticon-close-circle {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  color: rgba(0,0,0,0.25);
+  display: none;
+}
+
+:host ::ng-deep .input-area.flex-fill:focus .anticon.anticon-close-circle, :host ::ng-deep .input-area.flex-fill:hover .anticon.anticon-close-circle {
+  display: block;
+}
+
+:host ::ng-deep .select-area li label span:nth-child(2) {
+  max-width: 180px;
+  display: inline-flex;
+}

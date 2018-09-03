@@ -1,0 +1,12 @@
+<div class="container">
+  <h1 class="title">小电铺注册</h1>
+  <p class="tip">选择你的身份，以便得到SEE数据系统更好的服务</p>
+  <ul class="tab-list">
+    <li class="tab-item" [ngClass]="{active:activeTab === 1}" (click)="activeTab = 1">我是自媒体</li>
+    <li class="tab-item" [ngClass]="{active:activeTab === 2}" (click)="activeTab = 2">我是品牌</li>
+  </ul>
+  <div class="tab-container">
+    <kol-register [hidden]="activeTab !== 1"></kol-register>
+    <c2c-register [hidden]="activeTab !== 2"></c2c-register>
+  </div>
+</div>

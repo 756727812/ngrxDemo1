@@ -1,0 +1,70 @@
+<div class="banner-upload">
+  <div class="spin-wrap" [hidden]="!uploading">
+    <nz-spin class="spin" [nzSize]="'large'"></nz-spin>
+  </div>
+  <ul class="item-list" [(sortablejs)]="_value" [sortablejsOptions]="sortableOptions">
+    <li *ngFor="let item of value; let i = index;">
+      <div class="main-wrap" *ngIf="item.imgUrl && (sIndex===null || sIndex === item.index)">
+        <div class="i-close-wrap" (click)="handleRemoveClick(i)" *ngIf="sIndex === null">
+          <i class="close si si-close2"></i>
+        </div>
+
+        <div class="img-seat">
+          <img [seeSrc]="item?.imgUrl" alt="">
+        </div>
+        <div class="setting">
+          <div class="pick-wrap">
+            <nz-rangepicker class="date-picker" [nzShowTime]="nzShowTime" [nzFormat]="'YYYY-MM-DD HH:mm'" [(ngModel)]="item._dateRange"
+              (ngModelChange)="handleDateRangeNgModelChange(item, $event)" [nzDisabledDate]="_disabledDate">
+            </nz-rangepicker>
+          </div>
+          <div class="line">
+            <span class="labl">跳转至</span>
+            <div class="right">
+              <div class="triggers" [hidden]="item.target">
+                <a (click)="openGoodsPicker(i, $event)">商品</a>
+                <!-- <a (click)="openArticlePicker(i, $event)">商品合集</a> -->
+                <a (click)="openMicroPagePicker(i, $event)">微页面</a>
+                <a (click)="openGrouponPicker(i, $event)" [hidden]="!isAdmin">拼团商品</a>
+                <div *ngIf="isMagic" class="magic-cube-user">
+                  <a (click)="pullCustom($event,item.target?.itemName,i)">拉起客服</a>
+                  <a (click)="pullShare($event,item.target?.itemName,i)">拉起分享</a>
+                </div>
+              </div>
+              <div class="target-line" [hidden]="!item.target">
+                <span *ngIf="item.linkType === LINK_TYPE.GOODS" class="name">{{item.target?.itemName}}</span>
+                <!-- <span *ngIf="item.linkType === LINK_TYPE.ARTICLE" class="name">{{item.target?.articleTitle}}</span> -->
+                <span *ngIf="item.linkType === LINK_TYPE.GROUPON" class="name">{{item.target?.activityName}}</span>
+                <span *ngIf="item.linkType === LINK_TYPE.MICRO_PAGE" class="name">{{item.target?.micropageName}}</span>
+                <span *ngIf="item.linkType=== LINK_TYPE.MAGIC_CUSTOM" class="name">拉起客服</span>
+                <span *ngIf="item.linkType=== LINK_TYPE.MAGIC_SHARE" class="name">拉起分享</span>
+                <a class="remove" (click)="removeLinkTarget(i)">移除</a>
+              </div>
+            </div>
+          </div>
+          <div class="line" *ngIf="standaloneTime">
+            <span class="labl">显示时间</span>
+            <div class="right">
+              <a [hidden]="item._dateRange && (item._dateRange[0] || item._dateRange[1])" (click)="openDatePicker(i)">独立设置</a>
+              <div *ngIf="item._dateRange && (item._dateRange[0] || item._dateRange[1])" class="date-display">
+                <div class="text-wrap" (click)="openDatePicker(i)">
+                  <span>{{item._dateRange[0] | date: 'MM.dd'}}</span>~
+                  <span>{{item._dateRange[1] | date: 'MM.dd'}}</span>
+                </div>
+                <i (click)="clearDateRange(i, $event)" class="si si-close2"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="init-trigger" [hidden]="value?.length && !multiple || (multiple && sIndex === null && value?.length === limit)">
+    <nz-basic-upload name="image" [nzBeforeUpload]="beforeUpload" [nzAccept]="'image/jpg, image/jpeg, image/png, image/gif'" [nzAction]="'/api/item/upload'"
+      (nzOnError)="onError($event)" (nzOnProgress)="onProgress($event)" (nzOnStart)="onStart($event)" (nzOnSuccess)="onSuccess($event)">
+      <div class="trigger-txt">
+        <i class="plus"></i>
+      </div>
+    </nz-basic-upload>
+  </div>
+</div>

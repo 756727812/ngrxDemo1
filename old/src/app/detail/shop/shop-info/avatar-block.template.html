@@ -1,0 +1,58 @@
+<div class="row avatar-block">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-xs-6 profile-section">
+            <img see-src="$ctrl.data.img" alt="$ctrl.data.app_title" width="64" height="64" class="img-circle avatar">
+            <ul class="descr-block">
+              <li>
+                <span class="name">{{$ctrl.data.app_title}}</span>
+                <div class="auth-wrap"
+                     ng-if="$ctrl.data.is_auth === 1"
+                >
+                  <i class="tick-icon"></i>
+                  <div class="pop">
+                    <div class="inner clearfix">
+                      <p>已通过个人/企业认证</p>
+                      <a href="/personalInfo/account?page=1#4">去修改</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="auth-wrap" ng-if="$ctrl.data.is_auth !== 1">
+                  <i class="tick-icon disabled"></i>
+                  <div class="pop">
+                    <div class="inner clearfix">
+                      <p>尚未通过个人/企业认证<br />
+                        认证后，可启用小电铺更多功能</p>
+                      <a href="/personalInfo/account?page=1#4">去认证</a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="type-label">{{$ctrl.data.type_str}}</span>
+                <div class="upgrade-wrap" ng-if="$ctrl.data.type === 1 || $ctrl.data.type === 2">
+                  <span class="txt">升级服务</span><i class="si si-file-arrow-up" />
+                  <div class="pop">
+                    <div class="inner clearfix">
+                      <p>升级服务，请联系工作人员</p>
+                      <img src="/api/xiaodianpu/headingHelpImg" width="120">
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-6 btns-section">
+            <a class="button" href="/goods/posted">加入商品</a>
+            <a
+              class="button"
+              ng-click="$ctrl.openShopAccessInfo()"
+              report="'PAGE_SHOP_OVERVIEW.BTN_ACCESS_SHOP'">访问小电铺</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

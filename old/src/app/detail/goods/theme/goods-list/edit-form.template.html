@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <i type="button"
+     class="si si-close close"
+     ng-click="$ctrl.close()"
+     data-dismiss="modal"></i>
+  <h3 class="modal-title">商品信息</h3>
+</div>
+<div class="modal-body"
+     loading-mask="$ctrl.loading">
+  <form ng-submit="$ctrl.submit()"
+        name="$ctrl.form"
+        novalidate>
+    <div class="control-wrap">
+      <!-- <div class="line">
+        <span class="labe">商品文案链接</span>
+        <div class="val-wrap">
+          <input type="url"
+                 placeholder="请输入对应石墨链接"
+                 name="wordLink"
+                 ng-model="$ctrl.formData.wordLink"
+                 class="see-input-text" />
+        </div>
+      </div> -->
+      <div class="line">
+        <span class="labe">商品卖点</span>
+        <div class="val-wrap">
+          <textarea textarea-autosize
+                    placeholder=""
+                    name="sellPoint"
+                    ng-model="$ctrl.formData.sellPoint"
+                    class="see-input-text"
+                    row="2"
+                    maxlength="1000"></textarea>
+        </div>
+      </div>
+      <div class="line">
+        <span class="labe">商品推荐icon</span>
+        <div class="val-wrap">
+          <see-radio-group items="$ctrl.topicItemIconDisplayOptions"
+                           ng-model="$ctrl.formData.topicItemIconDisplay"></see-radio-group>
+        </div>
+      </div>
+      <div class="line"
+           ng-if="$ctrl.form.$submitted && $ctrl.hasError()">
+        <span class="labe">&nbsp;</span>
+        <div class="val-wrap">
+          <ul class="see-form-errors">
+            <li ng-repeat="item in $ctrl.form.$error.required track by $index">
+              <i class="fa fa-info-circle"></i>
+              <span ng-if="item.$name==='wordLink'">请填写商品文案链接</span>
+            </li>
+            <li ng-repeat="item in $ctrl.form.$error.url track by $index">
+                <i class="fa fa-info-circle"></i>
+                <span ng-if="item.$name==='wordLink'">商品文案链接格式不对</span>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-btns">
+      <button type="submit"
+              class="button ok">确定</button>
+    </div>
+  </form>
+</div>

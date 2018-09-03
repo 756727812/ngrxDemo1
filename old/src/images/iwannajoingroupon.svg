@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="87" height="29" viewBox="0 0 87 29">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#FF3B30" d="M0 0h87v28.828H0z"/>
+        <text fill="#FFF" font-family="HiraginoSansGB-W6, Hiragino Sans GB" font-size="10" font-weight="500" letter-spacing="1.583">
+            <tspan x="20" y="18">我要参团</tspan>
+        </text>
+    </g>
+</svg>

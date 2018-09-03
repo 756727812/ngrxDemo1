@@ -1,0 +1,160 @@
+<div class="panel">
+  <div class="panel-content">
+    <!-- <p ng-hide="urlFrom === 'sidebar' || urlFrom === 'kolV2'">
+      <a routerLink="/event2/coupon/" [queryParams]="queryParams" >
+        <i class="fa fa-chevron-left"></i>返回下单返券活动列表</a>
+    </p> -->
+    <p>
+      <a (click)="cancelSubmit(formGroup.dirty)"><i class="fa fa-chevron-left"></i>返回下单返券活动列表</a>
+    </p>
+    <nz-spin [nzSpinning]="_isSpinning" class="loading-spin m-t-20">
+      <form nz-form [formGroup]="formGroup" [nzLayout]="'vertical'" class="event-form" (ngSubmit)="submit()">
+
+        <div style="display: none;">
+          <input type="text" id="HackPreventChromeAutocomplete" name="HackPreventChromeAutocomplete" />
+        </div>
+
+        <h1>{{isView ? '查看下单返券' : '创建下单返券'}}</h1>
+
+        <!-- 活动名称 -->
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="4">
+            <label for="activityName" nz-form-item-required>活动名称</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="6">
+            <nz-input [nzSize]="'large'" inputLenPostfix="15" formControlName="activityName" (input)="formatName('activityName')" (nzBlur)="formatName('activityName')" [nzDisabled]="isView" [nzId]="'activityName'"></nz-input>
+          </div>
+        </div>
+
+        <div nz-col [nzOffset]="4">
+          <span class="custom-error" *ngIf="formGroup.get('activityName').dirty && formGroup.controls.activityName.hasError('required')">
+            <i class="si si-danger"></i>&nbsp;请输入活动名称</span>
+        </div>
+
+        <!-- 活动时间 -->
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="4">
+            <label nz-form-item-required>活动时间</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="6">
+            <nz-rangepicker formControlName="rangeTime" [nzDisabledDate]="disabledDate" nzShowTime [nzDisabled]="isView" (ngModelChange)="validateActTime($event)"
+              [nzFormat]="'YYYY-MM-DD HH:mm:ss'"></nz-rangepicker>
+            <span class="custom-error" *ngIf="formGroup.get('rangeTime').dirty && formGroup.controls.rangeTime.hasError('required')">
+              <i class="si si-danger"></i>&nbsp;请选择活动时间</span>
+            <span class="custom-error" *ngIf="actTimeResult === 1">
+              <i class="si si-danger"></i>&nbsp;活动开始时间需晚于当前时间</span>
+            <span class="custom-error" *ngIf="actTimeResult === 2">
+              <i class="si si-danger"></i>&nbsp;活动结束时间需晚于开始时间</span>
+          </div>
+        </div>
+
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="4">
+            <label nz-form-item-required>优惠券礼包</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="8">
+              <button nz-button [nzType]="'primary'" (click)="openCouponPicker()"  class="w-100"  [disabled]="isView">
+                <span>{{couponList ? "修改添加" : "添加优惠券"}}</span>
+              </button>
+              <span class="custom-error" *ngIf="formGroup.get('couponList').dirty && (!couponList || couponList.length < 1)">
+                <i class="si si-danger"></i>&nbsp;请添加优惠券</span>
+          </div>
+        </div>
+
+        <div nz-form-item nz-row *ngIf="couponList">
+          <div nz-form-label nz-col [nzSm]="4">
+            </div>
+          <div nz-form-control nz-col [nzSm]="10">
+            <table class="table table-bordered table-center table-condensed">
+              <thead>
+                <tr>
+                  <th>名称</th>
+                  <th>面额/门槛</th>
+                  <th>有效期</th>
+                  <th>状态</th>
+                  <th>承担者</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let item of couponList; let i = index;">
+
+                  <td>{{item.name}}</td>
+                  <td>
+                    {{item.couponPrice | currency: '￥'}} / {{item.limitMoney | currency: '￥'}}
+                  </td>
+                  <td>
+                   {{item.avaliableTimeStart | date:'yyyy-MM-dd HH:mm:ss'}} ~ {{item.avaliableTimeEnd | date:'yyyy-MM-dd HH:mm:ss'}}
+                  </td>
+                  <td [ngSwitch]="item.status">
+                    <span *ngSwitchCase='1'>审核中</span>
+                    <span *ngSwitchCase='2'>未通过审核</span>
+                    <span *ngSwitchCase='3'>发放中</span>
+                    <span *ngSwitchCase='4'>已领完</span>
+                    <span *ngSwitchCase='5'>已结束</span>
+                    <span *ngSwitchDefault>--</span>
+                  </td>
+                  <td>{{item.moneyPayer == 1 ? "小电铺客户" : "SEE"}}</td>
+                  <td>
+                   <a *ngIf="!isView" (click)="removeCoupon(item.id)">移除</a>
+                   <span *ngIf="isView">--</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="4">
+            <label nz-form-item-required>支付门槛</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="8">
+            <nz-input-number class="w-100" nzAllowClear="true" (nzBlur)="handleZero('MinPaymentAmount')" [nzSize]="'large'" [nzDisabled]="isView" [nzMin]="0" [nzMax]="99999999" [nzStep]="1" formControlName="MinPaymentAmount"></nz-input-number>元
+            <span class="custom-error" *ngIf="formGroup.get('MinPaymentAmount').dirty && formGroup.controls.MinPaymentAmount.hasError('required')">
+              <i class="si si-danger"></i>&nbsp;请输入支付门槛金额</span>
+            <span class="custom-error" *ngIf="formGroup.get('MinPaymentAmount').dirty && formGroup.get('MinPaymentAmount').value < 0">
+              <i class="si si-danger"></i>&nbsp;支付门槛必须是大于0的正整数</span>
+          </div>
+        </div>
+
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="4">
+            <label nz-form-item-required>限制数量</label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="8">
+            <nz-input-number class="w-100" nzAllowClear="true" (nzBlur)="handleZero('limitCount')" [nzSize]="'large'" [nzDisabled]="isView" [nzMin]="1" [nzMax]="99999999" [nzStep]="1" formControlName="limitCount"></nz-input-number>
+            <span class="custom-error" *ngIf="formGroup.get('limitCount').dirty && formGroup.controls.limitCount.hasError('required')">
+              <i class="si si-danger"></i>&nbsp;请输入限制数量</span>
+            <span class="custom-error" *ngIf="formGroup.get('limitCount').dirty && formGroup.get('limitCount').value < 1">
+              <i class="si si-danger"></i>&nbsp;限制数量必须是大于1的正整数</span>
+          </div>
+        </div>
+        <div nz-form-item nz-row>
+          <div nz-col [hidden]="isView" [nzOffset]="4">
+            <button nz-button type="submit" [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isSubmitting">
+              <span>确定</span>
+            </button>
+            <a nz-button class="cancel-btn" [nzSize]="'large'" (click)="cancelSubmit(formGroup.dirty)">
+              <span>取消</span>
+            </a>
+          </div>
+
+          <div nz-col *ngIf="isView" [nzOffset]="4">
+            <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="goBack()">
+              <span>返回</span>
+            </button>
+          </div>
+        </div>
+      </form>
+      <nz-modal [nzVisible]="modalVisible" [nzTitle]="'返回下单返券活动列表'" [nzContent]="modalContent" (nzOnCancel)="modalCancel($event)"
+        (nzOnOk)="modalOk($event)">
+        <ng-template #modalContent>
+          <p>当前填写内容将丢失，是否确认返回？</p>
+        </ng-template>
+      </nz-modal>
+    </nz-spin>
+  </div>
+</div>

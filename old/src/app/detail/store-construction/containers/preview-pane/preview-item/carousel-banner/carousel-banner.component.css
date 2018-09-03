@@ -1,0 +1,45 @@
+:host ::ng-deep .ant-carousel {
+  .slick-slide {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #f3f3f3;
+    color: #5958d2;
+    overflow: hidden;
+  }
+  .slick-dots li {
+    z-index: 11;
+    button {
+      box-sizing: content-box;
+      cursor: pointer;
+      background: #000;
+      opacity: 1;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 7px;
+      height: 7px;
+      z-index: 11;
+    }
+    &.slick-active button {
+      background: #fff;
+      border: 2px solid #000;
+      opacity: 1;
+      width: 7px;
+    }
+  }
+}
+
+h3 {
+  color: #5958d2;
+}
+
+img {
+  width: 100%;
+}
+
+.placeholder {
+  > img {
+    width: 130px;
+    margin: 50px auto 0;
+  }
+}

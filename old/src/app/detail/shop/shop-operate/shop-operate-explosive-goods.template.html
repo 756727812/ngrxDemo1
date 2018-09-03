@@ -1,0 +1,42 @@
+<div class="shop-operate-explosive-goods">
+  <h2>爆款商品配置</h2>
+  <form name="explosiveGoodsForm" class="form-horizontal">
+    <div class="form-group">
+      <div class="col-xs-12">
+        <button class="btn btn-primary pull-right" type="button" ng-click="$ctrl.openAddGoodsModal()">添加爆款商品</button>
+      </div>
+    </div>
+    <!--<div class="form-group shop-operate-explosive-goods-title-input">
+      <label><span>标题名称</span>
+        <input type="text" class="form-control form-white" name="title" ng-model="$ctrl.formData.title" ng-keyup="$ctrl.updateExplosionITitle($event)" placeholder="自定义爆款商品标题">
+      </label>
+    </div>-->
+  </form>
+  <div ng-if="$ctrl.explosiveGoodsList.length === 0" class="empty-tips">
+    <div class="sep"></div>
+    <div class="word-wrap">
+      <p class="text-center m-t-50" >你还没有配置任何爆款商品</p>
+    </div>
+  </div>
+  <div class="table-scrollable" ng-if="$ctrl.explosiveGoodsList.length > 0">
+    <table class="table table-hover m-t-20">
+      <tbody>
+        <tr ng-repeat="item in $ctrl.explosiveGoodsList track by item.item_id">
+          <td class="shop-operate-explosive-goods-item-title">爆款商品{{$index + 1}}</td>
+          <td width="100">
+            <img see-src="item.imgurl" class="img-viewer" width="88" alt="" see-viewer>
+          </td>
+          <td>
+            <div class="action-group-container">
+              <button class="btn btn-sm btn-default" ng-click="$ctrl.moveOrder($index, $index - 1)" ng-class="{ 'btn-primary': $index > 0 }" ng-disabled="$index === 0"><i class="fa fa-chevron-up"></i></button>
+              <button class="btn btn-sm btn-default" ng-click="$ctrl.moveOrder($index, $index + 1)" ng-class="{ 'btn-primary': $index < $ctrl.explosiveGoodsList.length - 1 }" ng-disabled="$index === ($ctrl.explosiveGoodsList.length - 1)"><i class="fa fa-chevron-down"></i></button>
+              <button class="btn btn-sm btn-primary" ng-click="$ctrl.delExplosionItem(item.item_id)"><i class="fa fa-times"></i></button>
+            </div>
+            <p class="shop-operate-explosive-goods-item-name" ng-bind="item.item_name"></p>
+            <p class="shop-operate-explosive-goods-item-price" ng-bind="item.item_price | currency: '￥'"></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

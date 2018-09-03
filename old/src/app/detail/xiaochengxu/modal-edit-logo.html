@@ -1,0 +1,60 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">小电铺信息配置</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal w5c-form" name="addNotice" novalidate w5c-form-validate role="form">
+
+        <div class="form-group">
+          <label class="control-label col-sm-4 ">邀请图</label>
+          <div class="col-sm-7">
+            <label class="btn btn-primary btn-sm">上传图片
+              <input type="file" see-file-select="vm.uploadUrlSharePng" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize>
+            </label>
+            <br />
+            <img ng-if="vm.info.json_config.url_share_png !== ''" id="mainImage" width="200" class="img-viewer" see-src="vm.info.json_config.url_share_png">
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label class="control-label col-sm-4 ">小电铺 logo</label>
+          <div class="col-sm-7">
+            <label class="btn btn-primary btn-sm">上传图片
+              <input type="file" see-file-select="vm.uploadLogo1" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize>
+            </label>
+            <br />
+            <label ng-if="vm.info.json_config.logo_1 !== '' && vm.info.json_config.logo_1 != 'https://image.seecsee.com/s/p/public_v2/1b0/062/h9o/3x4he04k8s8csso04wcgwok4ko.png'" class="btn btn-primary btn-sm" ng-click="vm.resetLogo1()">&nbsp;&nbsp;&nbsp;&nbsp;重置
+            </label>
+            <br />
+            <img ng-if="vm.info.json_config.logo_1 !== ''" id="mainImage" width="60" class="img-viewer" see-src="vm.info.json_config.logo_1">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4 ">代理公司 logo</label>
+          <div class="col-sm-7">
+            <label class="btn btn-primary btn-sm">上传图片
+              <input type="file" see-file-select="vm.uploadLogo2" class="hide" accept="image/jpg, image/jpeg, image/png" saveSize>
+            </label>
+            <br />
+            <label ng-if="vm.info.json_config.logo_2 !== ''" class="btn btn-primary btn-sm" ng-click="vm.resetLogo2()">&nbsp;&nbsp;&nbsp;&nbsp;重置
+            </label>
+            <br />
+            <img ng-if="vm.info.json_config.logo_2 !== ''" id="mainImage" width="60" class="img-viewer" see-src="vm.info.json_config.logo_2">
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4 required">logo 下方文本</label>
+            <div class="col-sm-7">
+              <input name="app_id" type="text" trim="true" class="form-control" ng-model="vm.info.json_config.text" ng-trim="true" required >
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" ng-click="vm.ok()">确定</button>
+          <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      </div>
+    </form>
+</div>

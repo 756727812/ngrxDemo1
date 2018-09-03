@@ -1,0 +1,49 @@
+<!-- <div class="preview-wrap"> -->
+<!-- <div class="scroll-wrap"> -->
+  <h3>支付完成页面配置</h3><br/>
+  <div class="row-wrap">
+    <div class="row-left">支付提示模块</div>
+    <div class="row-right"><img style="width: 320px;padding-left: 60px;padding-bottom:  30px;" src="./post-pay.png"/></div>
+  </div>
+  <div class="preview-pane virture-magic-cube">
+    <div class="row-left">魔方模块</div>
+    <div class="innerwrap row-right">
+      <ul class="preview-list">
+        <ng-container *ngFor="let elem of (elems$ | async);trackBy: trackByElem">
+          <li [class]="'preview-item-wrap-'+elem.data.type" *ngIf="elem.data.type == -5">
+            <div class="preview-item" [ngClass]="{'active': !!(focusElemVid$ | async) && elem.vid === (focusElemVid$ | async)}">
+              <app-preview-item-outlet
+                [class]="'preview-item-outlet-'+elem.vid"
+                [elem]="elem"
+                [active]="elem.vid === (focusElemVid$ | async)"
+                (elemClick)="magicCubeFocus(elem)"></app-preview-item-outlet>
+            </div>
+            <span class="init-warn" *ngIf="isConfigEmpty(elem.data.config)" [innerHTML]="getInitialWarning(elem.data.type)"></span>
+          </li>
+        </ng-container>
+        <div class="init-trigger" [hidden]="elemsCount[41] > 4 " (click)="hanldeClickItem(item)">
+          <div class="trigger-txt">
+            <i class="plus"></i>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+  <div class="row-wrap p-t-30">
+    <div class="row-left">推荐商品模块</div>
+    <div class="row-right">
+      <nz-spin [nzSpinning]="isSpining" [nzSize]="'large'">
+        <nz-radio-group [(ngModel)]="recommend" (ngModelChange)="recommendChange()">
+          <label nz-radio [nzValue]="'1'">
+            <span>显示</span>
+          </label>
+          <label nz-radio [nzValue]="'0'">
+            <span>不显示</span>
+          </label>
+        </nz-radio-group>
+    </nz-spin>
+    </div>
+  </div>
+  <!-- </div>  -->
+
+<!-- </div> -->

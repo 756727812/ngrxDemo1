@@ -1,0 +1,137 @@
+<div class="header">
+    <h2><strong>模版详情 —— {{$ctrl.template_name}}</strong></h2>
+</div>
+<div class="row">
+    <div class="col-sm-12 portlets">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="pull-right" ng-if="$ctrl.hash === '1'">
+                    <!--
+                    <button class="btn btn-primary" ng-click="">批量设置 / KOL个性化设置</button>
+                -->
+                    <button class="btn btn-primary" ng-click="$ctrl.selectGoods()" style="margin: 0;">添加商品</button>
+                </div>
+                <see-tabset>
+                    <see-tab heading="可售商品 {{$ctrl.res.count_sell}}" select="$ctrl.selectTab()" type="1">
+                    </see-tab>
+                    <see-tab heading="非可售商品 {{$ctrl.res.count_not_sell}}" select="$ctrl.selectTab()" type="2">
+                    </see-tab>
+                </see-tabset>
+                <div class="table-scrollable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>排序</th>
+                                <th>商品ID</th>
+                                <th>商品图</th>
+                                <th>品牌
+                                    <br>品类
+                                    <br>商品名</th>
+                                <th>售价</th>
+                                <th>供货价</th>
+                                <th>当日销量
+                                    <br>订单/SKU</th>
+                                <th>总销量
+                                    <br>订单/SKU</th>
+                                <th>浏览量
+                                    <br>当日/总</th>
+                                <th>商详转化率
+                                    <br>当日/总</th>
+                                <th>库存
+                                    <br>剩余/锁定/总</th>
+                                <!-- <th>上新时间</th> -->
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $ctrl.template_list track by $index">
+                                <td>
+                                    <a href="" editable-textarea="item.item_rank" e-rows="1" e-cols="11" onbeforesave="$ctrl.rankItem(item.template_id,item.mall_id,item.item_id,$data,'修改商品排序？')"><i class="fa fa-pencil-square-o"></i>{{item.item_rank}}</a>
+                                </td>
+                                <td>{{item.item_id}}</td>
+                                <td><img see-src="item.item_imgurl" style="width:120px;height:120px;"></td>
+                                <td>{{item.brand_name}}
+                                    <br>{{item.class_name}}
+                                    <br>{{item.item_name | moreContent: 10}}</td>
+                                <td>
+                                    <label ng-if="item.price_min == item.price_max">
+                                        ￥{{item.price_min}}
+                                    </label>
+                                    <label ng-if="item.price_min !== item.price_max">
+                                        ￥{{item.price_min}}~￥{{item.price_max}}
+                                    </label>
+                                </td>
+                                <td>
+                                    <label ng-if="item.price_kol_min == item.price_kol_max">
+                                        ￥{{item.price_kol_min}}
+                                    </label>
+                                    <label ng-if="item.price_kol_min !== item.price_kol_max">
+                                        ￥{{item.price_kol_min}}~￥{{item.price_kol_max}}
+                                    </label>
+                                </td>
+                                <td>
+                                    <div style="width:150px;display:block;">
+                                        总下单：{{item.gmv_today_info.ex_all.order}}/{{item.gmv_today_info.ex_all.num_item}}
+                                        <br />总支付：{{item.gmv_today_info.all.order}}/{{item.gmv_today_info.all.num_item}}
+                                        <br>包税：{{item.gmv_today_info.normal.order}}/{{item.gmv_today_info.normal.num_item}}
+                                        <br>国内：{{item.gmv_today_info.sham.order}}/{{item.gmv_today_info.sham.num_item}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width:150px;display:block;">
+                                        总下单：{{item.gmv_info.ex_all.order}}/{{item.gmv_info.ex_all.num_item}}
+                                        <br />总支付：{{item.gmv_info.all.order}}/{{item.gmv_info.all.num_item}}
+                                        <br>包税：{{item.gmv_info.normal.order}}/{{item.gmv_info.normal.num_item}}
+                                        <br>国内：{{item.gmv_info.sham.order}}/{{item.gmv_info.sham.num_item}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width:150px;display:block;">
+                                        UV {{item.pv_info.uv.today}}/{{item.pv_info.uv.all}}
+                                        <br/>PV {{item.pv_info.pv.today}}/{{item.pv_info.pv.all}}
+                                    </div>
+                                </td>
+                                <td>{{item.trans_info.today}}%/{{item.trans_info.all}}%</td>
+                                <td>{{item.stock_info.free}}/{{item.stock_info.locked}}/{{item.stock_info.all}}</td>
+                                <td>{{item.str_status}}</td>
+                                <td>
+                                    <div ng-if="$ctrl.hash === '1'">
+                                        <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.popSet(item.item_id)">批量个性化</button>
+                                        <a class="temp-detail-switch" href ng-if="item.tag_recommend === '0'" ng-click="$ctrl.recommendItem(item.template_id,item.mall_id,item.item_id,1,'设为爆款')">
+                                            <div id="div1" class="close1">
+                                                <div id="div2" class="close2"></div>
+                                            </div>
+                                            <span>热卖推荐</span>
+                                        </a>
+                                        <a class="temp-detail-switch" href ng-if="item.tag_recommend === '1'" ng-click="$ctrl.recommendItem(item.template_id,item.mall_id,item.item_id,0,'取消爆款')">
+                                            <div id="div1" class="open1">
+                                                <div id="div2" class="open2"></div>
+                                            </div>
+                                            <span>热卖推荐</span>
+                                        </a>
+                                    </div>
+                                    <a class="temp-detail-switch" href ng-if="item.is_hide === '0'" ng-click="$ctrl.hideItem2(item.template_id,item.mall_id, item.item_id,1,'隐藏商品')">
+                                        <div id="div1" class="open1">
+                                            <div id="div2" class="open2"></div>
+                                        </div>
+                                        <span>可见</span>
+                                    </a>
+                                    <a class="temp-detail-switch" href ng-if="item.is_hide === '1'" ng-click="$ctrl.hideItem2(item.template_id,item.mall_id,item.item_id,0,'取消隐藏商品')">
+                                        <div id="div1" class="close1">
+                                            <div id="div2" class="close2"></div>
+                                        </div>
+                                        <span>已隐藏</span>
+                                    </a>
+                                    <button ng-if="item.can_delete === 1" class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.deleteItem(item.template_id,item.mall_id,item.item_id,1,'要删除？删除后，所有使用该模板的商城也会同步删除该商品，请谨慎操作！')">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pagination total-items="$ctrl.total_items"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

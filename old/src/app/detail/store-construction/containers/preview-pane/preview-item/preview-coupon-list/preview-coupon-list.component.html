@@ -1,0 +1,31 @@
+<div class="preview-coupon-list">
+  <ul class="placeholder" *ngIf="!config.targets || config.targets.length === 0">
+    <div class="coupon placeholder">
+      <img src="./coupon.png" />
+    </div>
+  </ul>
+  <ul *ngIf="config.targets && config.targets.length > 0">
+    <li *ngFor="let item of config.targets">
+      <div class="coupon">
+        <img [seeSrc]="item.imgUrl" />
+        <div class="info">
+          <p class="name">
+            <ellipsis lines="2">{{item.frontendShowName || ''}}
+            </ellipsis>
+          </p>
+          <div class="labels">
+            <span>满{{item.limitMoney}}可用</span>
+          </div>
+          <div class="act-info">
+            <div class="money">
+              <i>￥</i>
+              <span>{{item.couponPrice || 30}}</span>
+            </div>
+            <span class="to-use" [ngClass]="{disabled:item.status>3}">{{(item.status|couponStatus).replace('发放中','立即抢券')}}</span>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li *ngFor="let coupon of coupons"></li>
+  </ul>
+</div>

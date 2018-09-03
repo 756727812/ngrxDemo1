@@ -1,0 +1,139 @@
+<div class="header">
+  <h2><strong>详情统计</strong></h2>
+
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">微信趋势</a></li>
+      <li class="active">详情统计</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="info-box article-detail">
+              <div class="info-content">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="base-info clearfix">
+                      <div class="title">
+                        <b><a target="_blank" href="{{artiInfo.article_url | article_url}}" style="color: #333;" ng-bind="artiInfo.title"></a></b>
+                      </div>
+                      <div class="nav">
+                        <span><i class="fa fa-external-link"></i><a target="_blank" href="{{artiInfo.article_url | article_url}}">查看原文</a></span>
+                        <span><i class="fa fa-clock-o"></i>{{artiInfo.publish_time | dateFormat}}</span>
+                      </div>
+                      <span class="desc" ng-bind="artiInfo.summary"></span>
+                    </div>
+                    <div class="header-img">
+                      <img see-src="artiInfo.head_img_url">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="classify">
+                      <div class="field-row">
+                        <label>所属自媒体</label>
+                        <a ng-href="/wechat/media/{{artiInfo.account_id}}" class="text-primary"><i class="fa fa-link"></i>{{artiInfo.arti_class[0].replace("所属自媒体","")}}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="common-box article-stat">
+              <div class="box-header">
+                <b class="box-title">数据统计</b>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="info-block">
+                      <span>阅读数</span><br/>
+                      <b ng-bind="artiInfo.read_num | fixdata:'阅读数'"></b>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="info-block">
+                      <span>点赞数</span><br/>
+                      <b ng-bind="artiInfo.like_num"></b>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="info-block">
+                      <span>点击率</span><br/>
+                      <b ng-bind="artiInfo.like_rate | percentage:2"></b>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="info-block">
+                      <span>影响力</span><br/>
+                      <b ng-bind="artiInfo.score | number:2"></b>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="info-block">
+                      <span>热度</span><br/>
+                      <b ng-bind="artiInfo.speed | number:2"></b>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="info-block last">
+                      <span>流行度</span><br/>
+                      <b ng-bind="artiInfo.quality | number:2"></b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="common-box account-stat">
+              <div class="box-header">
+                <b class="box-title">文章评论</b>
+              </div>
+              <div class="box-body">
+                <div class="table-scrollable">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                      <tr class="boss-header">
+                        <th>用户</th>
+                        <th>昵称</th>
+                        <th class="sort-col sorted">评论时间</th>
+                        <th class="sort-col">评论内容</th>
+                        <th class="sort-col">点赞数
+                          <th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-show="isNull">
+                        <td colspan="5"> 文章暂无评论 </td>
+                      </tr>
+                      <tr ng-repeat="comment in commentList">
+                        <td><img see-src="comment.head_img_url" class="img-circle" height="40" width="40" alt="comment.nick_name"></td>
+                        <td ng-bind="comment.nick_name"></td>
+                        <td ng-bind="comment.publish_time"></td>
+                        <td ng-bind-html="comment.content"></td>
+                        <td ng-bind="comment.like_num"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

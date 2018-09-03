@@ -1,0 +1,91 @@
+<nz-card [nzBordered]="false">
+  <div class="type-radio">
+    <nz-radio-group [ngModel]="configType" (ngModelChange)="onCfgTypeChange($event)">
+      <label nz-radio [nzValue]="'default'">
+        <span>默认设置</span>
+      </label>
+      <label id="custom-radio" nz-radio [nzValue]="'custom'">
+        <span>个性化设置</span>
+      </label>
+    </nz-radio-group>
+  </div>
+  <div class="tips-container">
+    <nz-alert [nzType]="'info'">
+      <span alert-body>
+        {{configType === 'default' ? defaultTips : customTips}}
+      </span>
+    </nz-alert>
+  </div>
+  <form *ngIf="configType === 'custom'" nz-form
+          [ngClass]="{submitted:submitted}"
+          [formGroup]="formGroup"
+          [nzLayout]="'vertical'"
+          class="event-form"
+          (ngSubmit)="submit()">
+
+    <!-- 文案名称 -->
+    <div nz-form-item
+          nz-row>
+      <div nz-form-label
+            nz-col
+            [nzSm]="4">
+        <label for="shareText"
+                nz-form-item-required>文案</label>
+      </div>
+      <div nz-form-control
+            nz-col
+            [nzSm]="20">
+        <div class="flex-container">
+          <div class="share-text-wrapper">
+            <nz-input [nzSize]="'large'"
+                      formControlName="shareText"
+                      [nzId]="'shareText'"></nz-input>
+          </div>
+          <span class="custom-error"
+            *ngIf="submitted && formGroup.controls.shareText.hasError('required')">
+            <i class="si si-danger"></i>&nbsp;请输入文案名称</span>
+        </div>
+      </div>
+    </div>
+    <div nz-col
+        [nzOffset]="4">
+      <span class="text-length-tips">{{titleTips}}</span>
+    </div>
+
+    <!-- TODO required 选择商品 -->
+    <div nz-form-item
+          nz-row>
+      <div nz-form-label
+            nz-col
+            [nzSm]="4">
+        <label nz-form-item-required>图片</label>
+      </div>
+      <div nz-form-control
+            nz-col
+            [nzSm]="10">
+        <see-img-upload [initFileList]="initImg"
+                        [imgValid]="imgValid"
+                        (onUploadSuccess)="uploadImgSuccess($event)"
+                        (onUploadError)="uploadImgError($event)"
+                        (onRemoveImg)="removeImg($event)"></see-img-upload>
+        <span class="custom-error"
+              *ngIf="submitted && !imgUrl">
+          <i class="si si-danger"></i>&nbsp;请选择一张图片</span>
+      </div>
+    </div>
+    <div nz-col
+        [nzOffset]="4">
+      <span class="text-length-tips">{{imageTips}}</span>
+    </div>
+
+    <div nz-col [nzOffset]="4" class="submit-line">
+      <button nz-button
+              type="submit"
+              [nzType]="'primary'"
+              [nzSize]="'large'">
+        <span>发布</span>
+      </button>
+    </div>
+
+  </form>
+</nz-card>

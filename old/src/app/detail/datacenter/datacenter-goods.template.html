@@ -1,0 +1,121 @@
+<div class="header">
+  <h2><strong>商品数据</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="/datacenter">数据中心</a></li>
+      <li class="active">商品数据</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <form class="form-inline w5c-form" name="search_form" novalidate w5c-validate ng-submit="$ctrl.submitArticleSearch()">
+          <div class="form-group m-b-10">
+            <label class="control-label">搜索字段
+              <input name="item_name" class="form-control" style="min-width: 190px;" type="search" placeholder="商品名称/母商品ID/子商品ID" ng-model="$ctrl.search_form.search">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">日期
+              <input date-range-picker class="form-control date-picker" type="text" placeholder="请选择日期" ng-model="$ctrl.search_form.date_picker">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">品类
+              <div class="input-group">
+                <span class="form-control">{{ $ctrl.getSelectedClassName() }}</span>
+                <div class="btn btn-primary input-group-addon" type="button" ng-click="$ctrl.toSelectClass()">选择品类</div>
+              </div>
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">价格
+              <input name="min_price" type="number" style="width: 70px" class="form-control" ng-model="$ctrl.search_form.min_price">&nbsp;至&nbsp;
+              <input name="max_price" type="number" style="width: 70px" class="form-control"
+                ng-model="$ctrl.search_form.max_price" ng-required="$ctrl.search_form.min_price">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">品牌所属国
+              <select class="form-control" ng-model="$ctrl.search_form.location_id"
+                ng-options="c.location_id as c.location for c in $ctrl.config_location">
+                <option value="">-- 请选择 --</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <label class="control-label">
+              <input name="kol_seller_email" type="text" class="form-control" required placeholder="请选择品牌"
+                ng-model="$ctrl.search_form.brand" autocomplete="off"
+                uib-typeahead="brand as brand.brand_name for brand in $ctrl.brand_list | filter:{brand_name:$viewValue} | limitTo:8"
+                typeahead-show-hint="true" typeahead-min-length="0">
+            </label>
+          </div>
+          <div class="form-group m-b-10">
+            <button class="btn btn-primary" type="submit">搜索</button>
+          </div>
+          <a class="btn btn-primary m-b-10" target="_blank" download ng-href="/api/data_api/exportDatacenterItems?{{$ctrl.str_export}}">
+            <i class="fa fa-file-excel-o"></i>导出列表</a>
+        </form>
+        <div class="table-scrollable">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>母商品ID<br>一级品类</th>
+                <th>商品主图</th>
+                <th>品牌<br>商品名称</th>
+                <th>品牌所属国</th>
+                <th>价格</th>
+                <th>商户帐号<br>商户名</th>
+                <th>浏览PV <a href="" ng-click="$ctrl.changeOrder('0')" ng-class="{ 'text-info': $ctrl.order_id !== '0'}"><i class="fa fa-caret-down"></i></a>
+                  <br>（所选时间/历史累计）
+                </th>
+                <th>浏览UV <a href="" ng-click="$ctrl.changeOrder('1')" ng-class="{ 'text-info': $ctrl.order_id !== '1'}"><i class="fa fa-caret-down"></i></a>
+                  <br>（所选时间/历史累计）
+                </th>
+                <th>付款订单数
+                  <i class="fa fa-question-circle" uib-tooltip="按小订单"></i>
+                  <a href="" ng-click="$ctrl.changeOrder('2')" ng-class="{ 'text-info': $ctrl.order_id !== '2'}"><i class="fa fa-caret-down"></i></a>
+                  <br>（所选时间/历史累计）
+                </th>
+                <th>购买转化率
+                  <i class="fa fa-question-circle" uib-tooltip="支付用户数/商详浏览uv"></i>
+                  <a href="" ng-click="$ctrl.changeOrder('3')" ng-class="{ 'text-info': $ctrl.order_id !== '3'}"><i class="fa fa-caret-down"></i></a>
+                  <br>（所选时间/历史累计）
+                </th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in $ctrl.item_list track by item.itemId">
+                <td>{{item.itemId}}<br><br>{{item.className}}</td>
+                <td>
+                  <div class="img-container">
+                    <!-- see-viewer alt="{{item.itemName}}"-->
+                   <a see-goods="item.itemId" target="_blank" > <img see-src="item.itemImgUrl"></a>
+                  </div>
+                </td>
+                <td>{{item.brandName}}<br><br><a see-goods="item.itemId" target="_blank" >{{item.itemName}}</a></td>
+                <td>{{item.shipCountry}}</td>
+                <td>{{item.itemPrice/100 | currency: '￥'}}</td>
+                <td>{{item.sellerEmail}}<br><br>{{item.sellerName}}</td>
+                <td>{{item.itemPv}}&nbsp;/&nbsp;{{item.itemAllPv}}</td>
+                <td>{{item.itemUv}}&nbsp;/&nbsp;{{item.itemAllUv}}</td>
+                <td>{{item.itemOrderNum}}&nbsp;/&nbsp;{{item.itemOrderAllNum}}</td>
+                <td>{{item.itemOrderRate | percentage: 2}}&nbsp;/&nbsp;{{item.itemOrderAllRate | percentage: 2}}</td>
+                <td>
+                  <button class="btn btn-sm btn-primary" type="button" ng-click="$ctrl.showDistributionData(item.itemId)">分销数据</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination total-items="$ctrl.total_items"></pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

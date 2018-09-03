@@ -1,0 +1,184 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.ok()" data-dismiss="modal">&times;</button>
+  <h1 class="modal-title" ng-if="vm.mall_id == 0">
+    <font color="black" style="font-size:20px">批量设置/KOL个性化设置</font>
+  </h1>
+  <h1 class="modal-title" ng-if="vm.mall_id != 0">
+    <font color="black" style="font-size:20px">批量设置</font>
+  </h1>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-20 portlets" style="padding-left:20px;">
+      <div class="form-group">
+        <label class="control-label col-sm-1">商品</label>
+        <div class="col-sm-4">
+          <select class="form-control" ng-model="vm.cur_item" ng-change="vm.changeProduct()" ng-options="item.item_name for item in vm.list_item">
+            <option value="" selected>-- 请选择 --</option>
+          </select>
+        </div>
+        <!-- 功能未实现
+              <div class="col-sm-1">
+                 <label class="control-label col-sm-1">搜索</label>
+              </div>
+              <div class="col-sm-4">
+                 <input name="floor_level" type="text" class="form-control" ng-model="" placeholder="KOL名称" ng-trim="true" >
+              </div>
+            -->
+      </div>
+
+      <div class="table-scrollable" ng-if="vm.cur_item" style="overflow: visible;">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>KOL名称
+                <br />商城名
+                <br />商城ID
+                <br />
+              </th>
+              <th>商品ID
+                <br />商品名
+                <br />
+                <a href="" editable-textarea="vm.cur_item.item_name" e-rows="1" e-cols="64" onbeforesave="vm.setAllInfo($data,0)">
+                  <i class="fa fa-pencil-square-o"></i>批量改名</a>
+              </th>
+              <th>售价
+                <br />
+                <a href="" type="number" editable-textarea="vm.cur_item.price_min" e-rows="1" e-cols="12" onbeforesave="vm.setAllInfo($data,1)">
+                  <i class="fa fa-pencil-square-o"></i>批量调价</a>
+              </th>
+              <th>供货价
+                <!--
+                          <br /><a href=""  type="number" editable-textarea="vm.cur_item.price_kol_min" e-rows="1" e-cols="12"
+                            onbeforesave="vm.setAllInfo($data,2)"><i class="fa fa-pencil-square-o"></i>批量调价</a>-->
+              </th>
+              <!--<th>库存设置</th>-->
+              <th ng-if="vm.is_set_one_item != 1">状态
+                <div ng-if="vm.num_clash > 0">
+                  <br />批量覆盖KOL已有的商品？
+                  <br />
+                  <div>
+                    <input type="radio" value="是" ng-click="vm.batchChoiceStatus(1)" name="cover">是 &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" value="否" ng-click="vm.batchChoiceStatus(0)" name="cover">否
+                  </div>
+                </div>
+              </th>
+              <th>上线时间
+                <br />
+                <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" name="start_time" datetime="MM/dd HH:mm" class="form-control" style="height: 34px;width: 110px;" data-ng-model="vm.cur_item.online_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="vm.cur_item.online_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" ng-change="vm.changeSubTime(false)"
+                    />
+                  </ul>
+                </div>
+              </th>
+              <th>库存锁定</th>
+              <th>SKU设置</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.list_kol_mall">
+              <td>
+                {{item.kol_info.kol_name}}
+                <br /> {{item.new_mall_name}}
+                <br /> {{item.mall_id}}
+              </td>
+
+              <td title="{{item.choice_item.item_name}}">
+                <label ng-if="item.choice_item.item_id != 0">
+                  {{item.choice_item.item_id}}
+                </label>
+                <br />
+                <label>
+                  <a href="" editable-textarea="item.choice_item.item_name" e-rows="1" e-cols="64" onbeforesave="vm.setItemName($data,item.choice_item)">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <font color="{{item.choice_item.is_all_set_0}}">{{item.choice_item.item_name | moreContent:10}}</font>
+                  </a>
+                </label>
+              </td>
+              <td>
+                <label ng-if="item.choice_item.price_min == item.choice_item.price_max">
+                  <a type="number" href="" editable-textarea="item.choice_item.price_min" e-rows="1" e-cols="12" onbeforesave="vm.setItemPrice($data,item.choice_item)">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <font color="{{item.choice_item.is_all_set_1}}">{{item.choice_item.price_min}}</font>
+                  </a>
+                </label>
+                <label ng-if="item.choice_item.price_min != item.choice_item.price_max">
+                  <font color="{{item.choice_item.is_all_set_1}}">￥{{item.choice_item.price_min}}~￥{{item.choice_item.price_max}}</font>
+                </label>
+              </td>
+              <td>
+                <!--供货价不可编辑-->
+                <label ng-if="false">
+                  <!-- ng-if="item.choice_item.price_kol_min == item.choice_item.price_kol_max">-->
+                  <a type="number" href="" editable-textarea="item.choice_item.price_kol_min" e-rows="1" e-cols="12" onbeforesave="vm.setItemKolPrice($data,item.choice_item)">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <font color="{{item.choice_item.is_all_set_2}}">{{item.choice_item.price_kol_min}}</font>
+                  </a>
+                </label>
+                <label ng-if="true">
+                  <!-- ng-if="item.choice_item.price_kol_min != item.choice_item.price_kol_max">-->
+                  <font color="{{item.choice_item.is_all_set_2}}">￥{{item.choice_item.price_kol_min}}~￥{{item.choice_item.price_kol_max}}</font>
+                </label>
+              </td>
+              <!--
+                        <td>
+                          <label class="checkbox-inline">
+                          <input type="checkbox" 
+                            ng-true-value="1"  
+                            >读取闲置库存
+                          </label>
+                          <label class="checkbox-inline">
+                            <input type="checkbox"  
+                              ng-true-value="1" ng-false-value="0"
+                               >锁定定量库存
+                          </label>
+                        </td>
+                      -->
+
+              <td ng-if="item.choice_item.set_clash_status == 0 && vm.is_set_one_item != 1">
+                <font color="green">{{item.choice_item.set_clash_str}}</font>
+              </td>
+
+              <!-- ng-checked="item.choice_item.set_clash_choice_yes" -->
+              <!-- ng-checked="item.choice_item.set_clash_choice_no" -->
+              <td ng-if="item.choice_item.set_clash_status != 0 && vm.is_set_one_item != 1">该KOL已有，是否覆盖信息
+                <br />
+                <input type="radio" value="是" ng-click="vm.choiceStatus(item,1)" ng-modal="item.choice_item.set_clash_choice"
+                  name="cover">是 &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" value="否" ng-click="vm.choiceStatus(item,0)" ng-modal="item.choice_item.set_clash_choice"
+                  name="cover">否
+              </td>
+
+              <td>
+                <div class="dropdown" style="margin-bottom: 10px;display: inline-block;">
+                  <a class="dropdown-toggle" id="dropdown3" role="button" data-toggle="dropdown" data-target="#" href="" aria-expanded="false">
+                    <input type="text" name="start_time" datetime="MM/dd HH:mm" class="form-control" style="height: 34px;width: 110px;color:{{item.choice_item.is_all_set_3}}"
+                      data-ng-model="item.choice_item.online_time">
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="item.choice_item.online_time" data-datetimepicker-config="{ dropdownSelector: '#dropdown3' }"
+                      ng-change="vm.changeSubTime(item.choice_item)" />
+                  </ul>
+                </div>
+              </td>
+              <td>{{item.choice_item.not_share_parent_stock}}个SKU锁定</td>
+              <td>
+                <button class="btn btn-sm btn-primary ng-scope" ng-click="vm.setSku(item)">设置SKU</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消修改</button>
+  <button class="btn btn-primary" type="button" ng-click="vm.ok()">保存修改</button>
+</div>

@@ -1,0 +1,63 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="vm.cancel()" data-dismiss="modal">&times;</button>
+  <h1 class="modal-title"><font color="black" style="font-size:20px">【{{vm.template_name}}】模板-选择KOL</font></h1>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal w5c-form" name="addKOLForm" novalidate w5c-form-validate role="form">
+    <div class="form-group">
+      <label class="control-label col-sm-2">已选KOL </label>
+      <div class="col-sm-9">
+        <ui-select multiple ng-model="vm.selected_list" theme="bootstrap" close-on-select="false" title="选择KOL" on-remove="vm.deleteKol($item.kol_id, $model.kol_id)" on-select="vm.formSelectKol()">
+          <ui-select-match placeholder="选择KOL...">{{$item.kol_name}}</ui-select-match>
+          <ui-select-choices repeat="item in vm.kol_list | propsFilter: {kol_name: $select.search}">
+            <div ng-bind-html="item.kol_name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
+        <p>已选中 <i class="text-primary">{{vm.total_items}}</i>个KOL</p>
+      </div>
+    </div>
+    <!-- <div class="form-group">
+      <label class="control-label col-sm-2">已选KOL</label>
+      <div class="col-sm-9">
+        <div>
+          <a  href="" class="btn btn-sm btn-primary" ng-repeat="item in vm.selected_list track by $index">{{item.kol_name}}<span ng-click="vm.deleteKol(item.kol_id)">&nbsp;&nbsp;&nbsp;&nbsp;x</span></a>
+        </div>
+        <p>已选中 <i class="text-primary">{{vm.total_items}}</i>个KOL</p>
+      </div>
+    </div> -->
+    <div class="form-group">
+      <div class="col-sm-4 col-sm-offset-2">
+        <div class="panel panel-default">
+          <div class="panel-heading">标签</div>
+          <div class="panel-body">
+            <div class="col-sm-12">
+              <div class="checkbox tab-list" ng-repeat="item in vm.tab_list track by $index" ng-hide="!item.can_choice">
+                <input type="checkbox" ng-model="vm.isSlected[$index]" ng-click="vm.showKol(item.tab_id,$index,vm.isSlected[$index])">
+                <label ng-click="vm.showKol(item.tab_id,$index)">{{item.name}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">名单</div>
+          <div class="panel-body">
+            <div class="col-sm-12">
+              <div class="checkbox" ng-repeat="item in vm.item_list track by $index">
+                <label>
+                  <input type="checkbox" ng-checked="item.is_checked" ng-model="item.is_checked" ng-change="vm.selectKol(item.kol_id,item.is_checked)">{{item.kol_name}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <font color="red" ng-if="vm.is_not_chocie == 1">请选择KOL</font>
+      <button class="btn btn-default" type="button" ng-click="vm.cancel()">取消</button>
+      <button class="btn btn-primary" type="button" w5c-form-submit="vm.ok()">下一步</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">修改商品规格 </h3>
+</div>
+<div class="modal-body">
+    <p class="text-danger">已选择：{{attr_value}}</p>
+    <form class="form-horizontal" role="form">
+        <div class="form-group" ng-repeat="sku in skus">
+            <label for="expressCode" class="col-sm-4 control-label required">{{sku.attr_name}}</label>
+            <div class="col-sm-7">
+                <label class="radio-inline" ng-repeat="spec in sku.spec"><input type="radio" name="{{sku.value_id}}" ng-model='newChoice[sku.attr_key_id]' ng-value="spec.value_id" ng-change="checkItemSku()">{{spec.attr_value}}</label>
+            </div>
+        </div>
+    </form>
+    <div class="table-scrollable">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th colspan="2">价差提醒</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>修改规格后应付</td>
+                    <td><span>{{ sku_price| currency:''}}</span>元</td>
+                </tr>
+                <tr>
+                    <td>用户已支付</td>
+                    <td>{{ total_fee|currency: ''}}元</td>
+                </tr>
+                <tr>
+                    <td>价差</td>
+                    <td><span ng-show="sku_price">{{ sku_price - total_fee || 0 | currency: ''}}</span>元</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

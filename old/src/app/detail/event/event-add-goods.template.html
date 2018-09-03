@@ -1,0 +1,89 @@
+<style>
+    .activebr {
+        border: 1px solid #F2784B;
+    }
+
+    .text_overflow {
+        display: inline-block;
+        width: 98%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+</style>
+<div class="header">
+  <h2><strong>添加活动商品</strong></h2>
+  <div class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li><a href="/">Seego后台</a></li>
+      <li><a href="">活动管理</a></li>
+      <li class="active">添加活动商品</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <h4>{{event.event_name}} - 添加商品</h4>
+        <form ng-submit="submitSearch()" class="form-inline m-t-20">
+            <div class="form-group">
+                <label class="control-label">搜索商品
+                    <input placeholder="商品名、ID、货号" type="text" class="form-control" ng-model="cond.keyword">
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">发货地：
+                    <input placeholder="" type="text" class="form-control" ng-model="cond.ship_country">
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">品牌：
+                    <input type="text" ng-model="brandItem" uib-typeahead="brandItem as brandItem.brand_name for brandItem in brandList | filter:{brand_name:$viewValue} | limitTo:8"
+                    class="form-control brandsArr">
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>搜索</button>
+        </form>
+        <div class="row mt10">
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-6">选择：<a ng-click="select(true)">全选</a> - <a ng-click="select(false)">无</a></div>
+                    <div class="col-sm-6">报名条件:{{getLimit(event.limit_region,event.limit_brand,event.limit_class)}}</div>
+                </div>
+                <div class="row">
+                    <div ng-click="selectItem(item)" ng-class="{true:'activebr'}[select_items.indexOf(item)!=-1]" ng-repeat="item in items" class="col-sm-2 thumbnail mr20 ">
+                        <div style="height: 100px;background-size: cover;background-image: url({{item.item_imgurl}})"></div>
+                        <div title="{{item.item_name}}" class="text_overflow">{{item.item_name}}</div>
+                        <div title="{{item.stock}}" class="text_overflow">货存: {{item.stock}}件</div>
+                        <div>价格: {{item.item_price}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" style="border-left: 1px solid;padding-left: 0px;">
+                <div class="row m-l-10">
+                    <div class="col-sm-6">已选:</div>
+                </div>
+                <div class="row  m-l-10">
+                    <div ng-dblclick="selectItem(item)" ng-repeat="item in select_items" class="col-sm-3 thumbnail m-r-20 ">
+                        <button type="button" class="close" ng-click="selectItem(item)">&times;</button>
+                        <div style="height: 100px;background-size: cover;background-image: url({{item.item_imgurl}})"></div>
+                        <div title="{{item.item_name}}" class="text_overflow">{{item.item_name}}</div>
+                        <div title="{{item.stock}}" class="text_overflow">货存: {{item.stock}}件</div>
+                        <div>价格: {{item.item_price}}</div>
+                        <div title="{{item.stock}}" class="text_overflow">备注: <input type="text" ng-model="select_items_remark[item.item_id]"/></div>
+                    </div>
+                </div>
+                <button ng-show="select_items.length>0" ng-click="submit()" class="btn btn-primary m-l-10"><i class="fa fa-search"></i>提交</button>
+            </div>
+        </div>
+        <div class="row">
+            <center>
+                <a ng-click="nextPage()" href="">加载下一页</a>
+            </center>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

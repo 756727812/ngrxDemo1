@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-12 portlets">
+    <div class="panel">
+      <div class="panel-content">
+        <div class="row marketing-info">
+          <div class="col-xs-4 col-lg-4 text-left">
+            <img ng-src="{{$ctrl.kol.xdpIcon || '../../../images/icons/logo.png'}}" width="50" class="img-circle"><label class="p-l-20">营销工具概况</label>
+          </div>
+          <div class="col-xs-2 col-lg-2 text-center">
+            <h2>{{ $ctrl.kol.couponActivityCount}}<sub>个</sub></h2>
+            <h3 class="font-bold">优惠券活动 <i class="fa fa-info-circle" uib-tooltip="当前时间状态为“发放中”的优惠券个数"></i></h3>
+          </div>
+          <div class="col-xs-2 col-lg-2 text-center">
+            <h2>{{ $ctrl.kol.seckillActivityCount}}<sub>个</sub></h2>
+            <h3 class="font-bold">秒杀活动 <i class="fa fa-info-circle" uib-tooltip="当前时间状态为“进行中”的秒杀商品个数"></i></h3>
+          </div>
+          <div class="col-xs-2 col-lg-2 text-center">
+            <h2>{{ $ctrl.kol.grouponActivityCount}}<sub>个</sub></h2>
+            <h3 class="font-bold">拼团活动 <i class="fa fa-info-circle" uib-tooltip="当前时间状态为“进行中”的拼团商品个数"></i></h3>
+          </div>
+          <div class="col-xs-2 col-lg-2">
+            <h3 class="font-bold m-t-30">正在进行中···</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
